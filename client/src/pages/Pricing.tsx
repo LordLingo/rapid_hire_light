@@ -14,6 +14,7 @@ import { Link } from "wouter";
 import { ArrowUpRight, Check } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
+import { PricingLineItem } from "@/components/heroes/HeroCards";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
 import StickyEstimateBar from "@/components/site/StickyEstimateBar";
@@ -160,8 +161,7 @@ export default function Pricing() {
           </>
         }
         lede="No platform fees, no seat licenses, no minimums. Per-check pricing that scales with your hiring volume — and a written quote inside one business day."
-        image="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/pricing_hero_notebook-f5JfAAShueNb6ABcJdVYC5.webp"
-        imageAlt="An open notebook on a sunlit oak desk showing handwritten pricing columns, a small cobalt-blue page tab, and a ceramic coffee cup beside it."
+        visual={<PricingLineItem />}
       />
 
       {/* Tiers — 3 cards: Essential / Professional (MOST CHOSEN) / Comprehensive */}

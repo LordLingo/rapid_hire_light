@@ -36,8 +36,8 @@ import {
 } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
-import SupportStatusBadge from "@/components/site/SupportStatusBadge";
 import CandidateContactForm from "@/components/site/CandidateContactForm";
+import { SupportAnswerTimeCard, OnTheLineNow } from "@/components/heroes/HeroCards";
 import { useSeo } from "@/hooks/useSeo";
 
 /* ---------- content ---------- */
@@ -318,16 +318,14 @@ export default function Support() {
           </>
         }
         lede={`No phone tree. No offshore call center. No "your ticket is important to us" loop. When you call Rapid Hire, a named US-based specialist in ${HQ_CITY} picks up — usually in seconds. They know your account, they know FCRA, and they have the authority to actually fix things.`}
-        image="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/support_hero_specialist-HEXgPhZR4JWHwtvLhhnH7x.webp"
-        imageAlt={`Over-the-shoulder view of a US-based Rapid Hire specialist on a headset at a sunlit oak desk in ${HQ_CITY}.`}
+        visual={<SupportAnswerTimeCard />}
       />
 
-      {/* Hero CTAs + live answer-time panel */}
+      {/* Hero CTAs */}
       <section className="bg-[color:var(--color-paper)]">
         <div className="container pb-16">
-          <div className="grid grid-cols-12 gap-8">
-            <div className="col-span-12 lg:col-span-7 reveal-on-scroll">
-              <div className="flex flex-wrap items-center gap-3">
+          <div className="reveal-on-scroll">
+            <div className="flex flex-wrap items-center gap-3">
                 <a
                   href={`tel:${PHONE_TEL}`}
                   className="btn-press inline-flex items-center gap-2 rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-3 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
@@ -348,12 +346,7 @@ export default function Support() {
                 >
                   <Mail className="size-4" aria-hidden />
                   {SUPPORT_EMAIL}
-                </a>
-              </div>
-            </div>
-
-            <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
-              <SupportStatusBadge />
+              </a>
             </div>
           </div>
         </div>
@@ -380,14 +373,8 @@ export default function Support() {
                 you skip the queue entirely.
               </p>
 
-              <div className="mt-12 overflow-hidden rounded-[20px] border border-border paper-shadow bg-white">
-                <img
-                  src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/support_desk_row-eygC86RUxGQaNX9YxnYwkZ.webp"
-                  alt="A row of light oak workstations with over-ear headsets on stands at a sunlit Prosper, TX office — the Rapid Hire support floor."
-                  className="w-full h-[200px] sm:h-[240px] md:h-[280px] object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div className="mt-12">
+                <OnTheLineNow />
               </div>
 
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">

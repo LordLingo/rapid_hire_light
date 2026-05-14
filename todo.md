@@ -221,3 +221,34 @@
 - [x] Swept the codebase end-to-end (`grep -rIn Houston`) and updated 11 occurrences across Support page (HQ_CITY constant, 4 specialist `city` fields, comparison-table rapid line, hero lede via interpolation, hero alt via interpolation, desk-row banner alt), Contact Headquarters card, SupportStatusBadge "Where we are" line, `shared/support-status.json` liveLabel, OG image trust line in both `vite.config.ts` and `server/index.ts`, plus the `blogOg.test.ts` assertion
 - [x] Added the full street address `4261 E University Dr, Prosper, TX 75078` to the Contact Headquarters card (line 1: street; line 2: city/state/zip · country) and added a structured `PostalAddress` block (streetAddress, addressLocality, addressRegion, postalCode, addressCountry) to the Support JSON-LD Organization so the address is machine-readable
 - [x] Final grep confirms zero remaining "Houston" references in source; vitest 76/76 passing; dev server LSP/TS clean; checkpoint pending
+
+## 29. Imagery V2 — superseded by V3 (product-card heroes)
+- [x] Direction was rejected on user feedback ("BETTER AI" → then "could be infographics"); replaced by V3 plan in section 30/31. No still-life photo set was shipped.
+- [x] Lock a tighter art direction: cinematic editorial documentary, single hard side-light + warm fill, 35mm look, very shallow depth (f/1.8), subtle film grain, unified palette of bone white + warm oak + ink black + a single brand-blue accent prop, no faces, no on-screen text, no laptop logos, no over-decorated desks
+- [ ] Write a per-image shot spec (subject, framing, light direction, prop list, do/don't list) for 8 images: about_hero, about_story, services_hero, pricing_hero, integrations_hero, contact_hero, support_hero, support_desk
+- [ ] Generate each image with the much tighter prompts (one batch, all 8 in parallel) — first the anchor "about_hero", then 7 in parallel with it referenced as the style anchor
+- [ ] Upload via `manus-upload-file --webdev` to get persistent URLs
+- [ ] Swap references in About / Services / Pricing / Integrations / Contact / Support, and update Support hero + desk-row alt text to "Prosper, TX"
+- [ ] QA every touched page in browser (desktop + mobile), confirm no broken images
+- [ ] Vitest 76/76, save checkpoint, deliver
+
+## 30. Imagery V3 — compete with Checkr / HireRight / Sterling / First Advantage (DONE)
+- [x] Audited those four sites' hero strategies (what they show: dashboards, report cards, flow diagrams, candidate UX, motion); confirm Rapid Hire's gap is "product visualization," not "more stock photos"
+- [ ] Lock a new visual system: per-page hero is a CODE-RENDERED product card built from the existing design system (already proven on Home with the "Maya R. — Logistics Lead" report card) — no AI photos for product moments, because nothing beats a clean fake-real product UI for trust
+- [ ] Design 6 page-specific product-visual heroes:
+  - About → "Built in Prosper, TX" — small org-chart card (3 nodes: Compliance · Verifications · Support) with timestamps
+  - Services → "Stack of screens, ordered" — a vertical pill list of the 6 services with status chips
+  - Pricing → "What you actually pay" — a single line-item invoice card (3 lines + total) with "no setup fee" pill
+  - Integrations → "Plugs into your stack" — a 6-logo-tile grid in a chrome window header (ATS / HRIS / SSO)
+  - Contact → "Reach a human" — a tiny inbound-call card (Caller · Wait time · Picked up by) in our brand
+  - Support → already strong, refine the answer-time panel into the same product-card vocabulary
+- [x] Reserve AI PHOTOS only for moments where a real photo earns its keep (e.g. About story, Support desk wide banner) — and make those people-with-purpose, hands on keys / mid-conversation / receipt-of-call body language, not still-life desks
+- [x] Build the product cards as small composable React components (`HeroCard*`), drop them into `PageHero` via the existing `image` slot replacement (rename to `visual` slot accepting ReactNode)
+- [x] Vitest 76/76 still passing, browser QA across viewports, checkpoint pending
+
+## 31. Imagery V3 execution — product-card + infographic heroes (DONE)
+- [x] Generalized `PageHero` to accept a `visual` ReactNode slot (kept `image` prop as a back-compat shim)
+- [x] Built `client/src/components/heroes/HeroCards.tsx` exporting AboutOrgChart, TrustLedger, ServicesStack, PricingLineItem, IntegrationsGrid, ContactCallCard, SupportAnswerTimeCard, OnTheLineNow — all in the existing brand vocabulary (Fraunces serif numerals, accent-ink chips, paper-shadow card, hairline borders), no AI photos
+- [x] Wired into About hero (org chart) + About story section (TrustLedger replacing the editorial photo); Services hero (vertical service stack with status chips); Pricing hero (line-item invoice card with no-setup-fee pill); Integrations hero (chrome-window 6-tile grid); Contact hero (inbound-call card); Support hero (answer-time card) + The Desk band (OnTheLineNow timeline strip replacing the wide banner photo)
+- [x] Removed the duplicate SupportStatusBadge below the Support hero (the new SupportAnswerTimeCard inside the hero made it redundant) and tightened the CTA row to a single full-width band
+- [x] Vitest 76/76 still passing; LSP/TS clean; browser QA verified About / Services / Pricing / Integrations / Contact / Support heroes; checkpoint pending

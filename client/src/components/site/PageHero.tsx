@@ -3,20 +3,50 @@
   Compact masthead used on inner pages. Numbered eyebrow rail on the left,
   large Fraunces headline + body lede on the right.
 
-  Optional `image` prop adds a framed editorial photograph to the right
-  column on lg+ screens, matching the WhyUs treatment (rounded-18 +
-  paper-shadow + hairline border). When no image is passed, the hero
-  falls back to the original text-only layout used by Privacy/Terms.
+  Optional `visual` prop adds a framed product card / infographic to the
+  right column on lg+ screens, matching the WhyUs treatment (rounded-18 +
+  paper-shadow + hairline border). Pass any React node — typically a small
+  `HeroCard*` component from `client/src/components/heroes/`.
+
+  The legacy `image` + `imageAlt` props remain supported as a thin shim so
+  pages can still pass a plain image URL if needed; new pages should
+  prefer `visual`.
 */
+import * as React from "react";
+
 type Props = {
   eyebrow: string;
   title: React.ReactNode;
   lede: string;
+  /** Preferred: a React node rendered inside the framed right-column card. */
+  visual?: React.ReactNode;
+  /** Legacy fallback: an image URL. Ignored when `visual` is provided. */
   image?: string;
   imageAlt?: string;
 };
 
-export default function PageHero({ eyebrow, title, lede, image, imageAlt }: Props) {
+export default function PageHero({
+  eyebrow,
+  title,
+  lede,
+  visual,
+  image,
+  imageAlt,
+}: Props) {
+  const rightSlot = visual
+    ? visual
+    : image
+    ? (
+        <img
+          src={image}
+          alt={imageAlt ?? ""}
+          className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      )
+    : null;
+
   return (
     <section className="relative overflow-hidden bg-[color:var(--color-paper)]">
       <div
@@ -34,7 +64,7 @@ export default function PageHero({ eyebrow, title, lede, image, imageAlt }: Prop
             <div className="mt-3 hairline" />
           </div>
 
-          {image ? (
+          {rightSlot ? (
             <>
               <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
                 <h1 className="font-display text-[40px] sm:text-[52px] md:text-[64px] leading-[1.05] tracking-[-0.025em] text-[color:var(--color-ink)]">
@@ -46,13 +76,7 @@ export default function PageHero({ eyebrow, title, lede, image, imageAlt }: Prop
               </div>
               <div className="col-span-12 lg:col-span-4 reveal-on-scroll">
                 <div className="overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
-                  <img
-                    src={image}
-                    alt={imageAlt ?? ""}
-                    className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
-                    loading="eager"
-                    decoding="async"
-                  />
+                  {rightSlot}
                 </div>
               </div>
             </>
