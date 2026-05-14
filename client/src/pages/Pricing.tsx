@@ -2,8 +2,9 @@
   Editorial Calm — Pricing page
   Layout:
    - PageHero with eyebrow "Pricing".
-   - Two-tier pricing cards (Starter / Volume) on hairline grid, no boxy shadows.
-   - "What's included" comparison list.
+   - Three-tier pricing cards (Essential / Professional / Comprehensive) on hairline grid, no boxy shadows.
+     Middle Professional card filled with brand-blue + "MOST CHOSEN" badge.
+   - Pricing calculator.
    - Add-ons row (chips).
    - FAQ short strip.
    - Closing CTA → /contact.
@@ -14,41 +15,89 @@ import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import PricingCalculator from "@/components/site/PricingCalculator";
 
-const TIERS = [
+type Tier = {
+  eyebrow: string;
+  name: string;
+  price: string;
+  unit: string;
+  blurb: string;
+  bestFor: string;
+  whyPickIt: string;
+  notFor: string;
+  features: string[];
+  cta: string;
+  ctaHref: string;
+  featured?: boolean;
+};
+
+const TIERS: Tier[] = [
   {
-    eyebrow: "01 — Starter",
-    name: "Starter",
-    price: "$24",
-    unit: "per check, billed monthly",
+    eyebrow: "01 — Essential",
+    name: "Essential",
+    price: "$24.95",
+    unit: "per check",
     blurb:
-      "For teams hiring fewer than 50 people a year. No platform fee, no minimums — just per-check pricing on the screens you actually run.",
-    cta: "Request a quote",
+      "The compliance-grade starting point for new hiring teams. Includes SSN trace, sex-offender registry, and a national + county criminal search.",
+    bestFor: "Single hires. Small teams running 1–10 checks a month.",
+    whyPickIt:
+      "Compliance-grade floor at the lowest defensible price. Pay per check, no contract.",
+    notFor:
+      "Roles requiring federal criminal, multi-county, MVR, or drug screening.",
     features: [
-      "SSN trace + nationwide criminal database",
-      "County criminal search (1 jurisdiction)",
-      "FCRA-compliant disclosures + e-sign",
-      "Mobile candidate experience",
-      "U.S.-based support, same-day response",
+      "SSN trace & address history",
+      "National criminal database + SOR",
+      "1 county criminal search",
+      "Global watchlist (OFAC)",
     ],
+    cta: "Get an Essential quote",
+    ctaHref: "/contact?tier=essential&note=Interested+in+the+Essential+package",
   },
   {
-    eyebrow: "02 — Volume",
-    name: "Volume",
-    price: "Custom",
-    unit: "per-check pricing scales with hiring volume",
+    eyebrow: "02 — Professional",
+    name: "Professional",
+    price: "$44.95",
+    unit: "per check",
     blurb:
-      "For teams hiring 50+ a year, or running multi-jurisdiction, drug, MVR, education, or international screens. Includes ATS integration + dedicated CSM.",
-    cta: "Talk to sales",
-    featured: true,
+      "The package most employers actually need. Adds federal criminal, employment, and education verification on top of Essential.",
+    bestFor:
+      "Most employers. 10–100 checks a month across mixed roles.",
+    whyPickIt:
+      "Adds federal criminal, employment & education verification — the package that actually matches what HR teams need 80% of the time.",
+    notFor:
+      "DOT, healthcare credentialing, or executive roles needing 3+ employment checks.",
     features: [
-      "Everything in Starter",
-      "Unlimited county / federal jurisdictions",
-      "Drug & health (12,000+ collection sites)",
-      "Motor Vehicle Reports (all 50 states)",
-      "Education + employment verification",
-      "Native ATS / HRIS integrations",
-      "Dedicated Customer Success Manager",
+      "Everything in Essential",
+      "1 employment verification",
+      "1 education verification",
+      "7-year address history search",
+      "Federal criminal search",
     ],
+    cta: "Get a Professional quote",
+    ctaHref: "/contact?tier=professional&note=Interested+in+the+Professional+package",
+    featured: true,
+  },
+  {
+    eyebrow: "03 — Comprehensive",
+    name: "Comprehensive",
+    price: "$74.95",
+    unit: "per check",
+    blurb:
+      "Built for regulated and high-trust roles. Includes multi-county, multi-verification, and DOT-ready add-ons.",
+    bestFor:
+      "Regulated industries. Healthcare, transportation, finance, executive hires.",
+    whyPickIt:
+      "Multi-county, multi-verification, MVR or 5-panel drug screen included. DOT-ready.",
+    notFor:
+      "Volume hiring at >250/month — talk to us about a Custom Volume contract instead.",
+    features: [
+      "Everything in Professional",
+      "Up to 3 county criminal searches",
+      "Up to 3 employment verifications",
+      "MVR or 5-panel drug screen",
+      "Civil records search",
+    ],
+    cta: "Get a Comprehensive quote",
+    ctaHref: "/contact?tier=comprehensive&note=Interested+in+the+Comprehensive+package",
   },
 ];
 
@@ -93,65 +142,134 @@ export default function Pricing() {
         lede="No platform fees, no seat licenses, no minimums. Per-check pricing that scales with your hiring volume — and a written quote inside one business day."
       />
 
-      {/* Tiers */}
+      {/* Tiers — 3 cards: Essential / Professional (MOST CHOSEN) / Comprehensive */}
       <section className="bg-white border-y border-border">
         <div className="container py-20 md:py-28">
-          <div className="grid grid-cols-12 gap-x-10 gap-y-10">
-            {TIERS.map((t) => (
-              <article
-                key={t.name}
-                className={[
-                  "reveal-on-scroll col-span-12 lg:col-span-6 rounded-[20px] border p-8 md:p-10",
-                  t.featured
-                    ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-paper)]"
-                    : "border-border bg-white",
-                ].join(" ")}
-              >
-                <p className="eyebrow">{t.eyebrow}</p>
-                <h3 className="mt-4 font-display text-[36px] md:text-[44px] leading-none tracking-[-0.02em] text-[color:var(--color-ink)]">
-                  {t.name}
-                </h3>
-                <div className="mt-6 flex items-baseline gap-2">
-                  <span className="font-display text-[44px] md:text-[56px] leading-none tracking-[-0.02em] text-[color:var(--color-ink)]">
-                    {t.price}
-                  </span>
-                  <span className="text-[13px] text-[color:var(--color-ink-muted)] uppercase tracking-wider">
-                    {t.unit}
-                  </span>
-                </div>
-                <p className="mt-6 text-[15px] leading-[1.75] text-[color:var(--color-ink-soft)] max-w-prose">
-                  {t.blurb}
-                </p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
+            {TIERS.map((t) => {
+              const isFeatured = !!t.featured;
+              const labelClass = isFeatured
+                ? "text-[10.5px] font-medium uppercase tracking-[0.18em] text-white/85"
+                : "text-[10.5px] font-medium uppercase tracking-[0.18em] text-[color:var(--color-accent-ink)]";
+              const dividerClass = isFeatured
+                ? "my-7 h-px bg-white/20"
+                : "my-7 h-px bg-border";
+              return (
+                <article
+                  key={t.name}
+                  className={[
+                    "reveal-on-scroll relative flex flex-col rounded-[20px] border p-8 md:p-9",
+                    isFeatured
+                      ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] text-white shadow-[0_24px_60px_-30px_rgba(37,99,235,0.45)] lg:scale-[1.02] lg:-mt-2"
+                      : "border-border bg-[color:var(--color-paper)] text-[color:var(--color-ink)]",
+                  ].join(" ")}
+                >
+                  {isFeatured && (
+                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-accent-ink)] shadow-sm border border-[color:var(--color-accent-ink)]/20">
+                      <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
+                      Most Chosen
+                    </span>
+                  )}
 
-                <ul className="mt-8 space-y-3.5">
-                  {t.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3">
-                      <span className="mt-[3px] grid place-items-center size-5 shrink-0 rounded-full border border-border text-[color:var(--color-accent-ink)]">
-                        <Check className="size-3" strokeWidth={2} />
-                      </span>
-                      <span className="text-[14.5px] leading-[1.6] text-[color:var(--color-ink)]">
-                        {f}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                  <p className={isFeatured ? "text-[10.5px] font-medium uppercase tracking-[0.2em] text-white/70" : "eyebrow"}>{t.eyebrow}</p>
+                  <h3 className={[
+                    "mt-4 font-display text-[34px] md:text-[40px] leading-none tracking-[-0.02em]",
+                    isFeatured ? "text-white" : "text-[color:var(--color-ink)]",
+                  ].join(" ")}>
+                    {t.name}
+                  </h3>
+                  <p className={[
+                    "mt-4 text-[14.5px] leading-[1.6] max-w-prose",
+                    isFeatured ? "text-white/85" : "text-[color:var(--color-ink-soft)]",
+                  ].join(" ")}>
+                    {t.blurb}
+                  </p>
 
-                <div className="mt-10">
-                  <Link
-                    href="/contact"
-                    className={[
-                      "btn-press inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-[14px] font-medium",
-                      t.featured
-                        ? "bg-[color:var(--color-accent-ink)] text-white hover:bg-[color:var(--color-accent-ink-strong)]"
-                        : "border border-[color:var(--color-ink)] text-[color:var(--color-ink)] hover:bg-[color:var(--color-accent-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-white",
-                    ].join(" ")}
-                  >
-                    {t.cta}
-                    <ArrowUpRight className="size-4" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+                  <div className="mt-6 flex items-baseline gap-2">
+                    <span className={[
+                      "font-display text-[40px] md:text-[48px] leading-none tracking-[-0.02em]",
+                      isFeatured ? "text-white" : "text-[color:var(--color-ink)]",
+                    ].join(" ")}>
+                      {t.price}
+                    </span>
+                    <span className={[
+                      "text-[12px] uppercase tracking-wider",
+                      isFeatured ? "text-white/70" : "text-[color:var(--color-ink-muted)]",
+                    ].join(" ")}>
+                      {t.unit}
+                    </span>
+                  </div>
+
+                  <div className="mt-7 space-y-4">
+                    <div>
+                      <p className={labelClass}>Best for</p>
+                      <p className={[
+                        "mt-1.5 text-[13.5px] leading-[1.6]",
+                        isFeatured ? "text-white" : "text-[color:var(--color-ink)]",
+                      ].join(" ")}>
+                        {t.bestFor}
+                      </p>
+                    </div>
+                    <div>
+                      <p className={labelClass}>Why pick it</p>
+                      <p className={[
+                        "mt-1.5 text-[13.5px] leading-[1.65]",
+                        isFeatured ? "text-white/95" : "text-[color:var(--color-ink-soft)]",
+                      ].join(" ")}>
+                        {t.whyPickIt}
+                      </p>
+                    </div>
+                    <div>
+                      <p className={labelClass}>Not for</p>
+                      <p className={[
+                        "mt-1.5 text-[13.5px] leading-[1.6]",
+                        isFeatured ? "text-white/85" : "text-[color:var(--color-ink-muted)]",
+                      ].join(" ")}>
+                        {t.notFor}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className={dividerClass} />
+
+                  <ul className="space-y-3">
+                    {t.features.map((f) => (
+                      <li key={f} className="flex items-start gap-3">
+                        <span className={[
+                          "mt-[3px] grid place-items-center size-5 shrink-0 rounded-full",
+                          isFeatured
+                            ? "bg-white/15 text-white"
+                            : "border border-border text-[color:var(--color-accent-ink)]",
+                        ].join(" ")}>
+                          <Check className="size-3" strokeWidth={2.25} />
+                        </span>
+                        <span className={[
+                          "text-[14px] leading-[1.6]",
+                          isFeatured ? "text-white" : "text-[color:var(--color-ink)]",
+                        ].join(" ")}>
+                          {f}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto pt-9">
+                    <Link
+                      href={t.ctaHref}
+                      className={[
+                        "btn-press inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[13.5px] font-medium",
+                        isFeatured
+                          ? "bg-white text-[color:var(--color-accent-ink)] hover:bg-white/90"
+                          : "border border-[color:var(--color-ink)] text-[color:var(--color-ink)] hover:bg-[color:var(--color-accent-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-white",
+                      ].join(" ")}
+                    >
+                      {t.cta}
+                      <ArrowUpRight className="size-4" />
+                    </Link>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
