@@ -21,6 +21,7 @@ import {
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { ServicesStack } from "@/components/heroes/HeroCards";
+import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 
 const SERVICES = [
   {
@@ -127,6 +128,7 @@ export default function Services() {
         }
         lede="Comprehensive background screening services tailored to elevate your hiring process and boost your team's success — with the SLAs and inclusions written down where you can see them."
         visual={<ServicesStack />}
+        belowVisual={<HeroMiniStats page="services" />}
       />
 
       <section className="bg-white border-y border-border">

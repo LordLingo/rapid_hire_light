@@ -15,6 +15,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { PricingLineItem } from "@/components/heroes/HeroCards";
+import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
 import StickyEstimateBar from "@/components/site/StickyEstimateBar";
@@ -162,6 +163,7 @@ export default function Pricing() {
         }
         lede="No platform fees, no seat licenses, no minimums. Per-check pricing that scales with your hiring volume — and a written quote inside one business day."
         visual={<PricingLineItem />}
+        belowVisual={<HeroMiniStats page="pricing" />}
       />
 
       {/* Tiers — 3 cards: Essential / Professional (MOST CHOSEN) / Comprehensive */}

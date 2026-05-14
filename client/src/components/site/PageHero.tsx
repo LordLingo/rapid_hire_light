@@ -20,6 +20,8 @@ type Props = {
   lede: string;
   /** Preferred: a React node rendered inside the framed right-column card. */
   visual?: React.ReactNode;
+  /** Optional second slot rendered DIRECTLY UNDER the framed card in the same right column. Used by `HeroMiniStats`. */
+  belowVisual?: React.ReactNode;
   /** Legacy fallback: an image URL. Ignored when `visual` is provided. */
   image?: string;
   imageAlt?: string;
@@ -30,6 +32,7 @@ export default function PageHero({
   title,
   lede,
   visual,
+  belowVisual,
   image,
   imageAlt,
 }: Props) {
@@ -74,10 +77,11 @@ export default function PageHero({
                   {lede}
                 </p>
               </div>
-              <div className="col-span-12 lg:col-span-4 reveal-on-scroll">
-                <div className="overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
+              <div className="col-span-12 lg:col-span-4">
+                <div className="reveal-on-scroll overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
                   {rightSlot}
                 </div>
+                {belowVisual}
               </div>
             </>
           ) : (

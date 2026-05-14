@@ -26,6 +26,23 @@ import {
   FileSearch,
   Headphones,
 } from "lucide-react";
+import integrationsData from "@shared/integrations.json";
+
+type IntegrationItem = {
+  name: string;
+  mark: string;
+  category: "ATS" | "HRIS" | "Payroll" | "CRM";
+  status: "Live" | "Beta" | "Request";
+  body: string;
+};
+export const INTEGRATIONS: IntegrationItem[] = (
+  integrationsData as unknown as { items: IntegrationItem[] }
+).items;
+
+/** Helper: stagger style for hero-card child rows. */
+function staggerDelay(i: number, step = 70) {
+  return { ["--stagger-delay" as never]: `${i * step}ms` } as React.CSSProperties;
+}
 
 /* ---------- shared chrome ---------- */
 
@@ -92,10 +109,11 @@ export function AboutOrgChart() {
       </p>
 
       <div className="mt-5 grid gap-3">
-        {nodes.map((n) => (
+        {nodes.map((n, i) => (
           <div
             key={n.label}
-            className="flex items-center gap-3 rounded-[12px] border border-border px-3 py-2.5"
+            className="hero-stagger-child flex items-center gap-3 rounded-[12px] border border-border px-3 py-2.5"
+            style={staggerDelay(i)}
           >
             <span className="grid place-items-center size-8 rounded-full bg-[color:var(--color-paper)] text-[color:var(--color-accent-ink)]">
               <n.icon className="size-4" strokeWidth={1.6} aria-hidden />
@@ -147,10 +165,11 @@ export function ServicesStack() {
       </p>
 
       <ul className="mt-5 grid gap-2">
-        {rows.map((r) => (
+        {rows.map((r, i) => (
           <li
             key={r.label}
-            className="flex items-center justify-between gap-3 rounded-[10px] border border-border px-3 py-2"
+            className="hero-stagger-child flex items-center justify-between gap-3 rounded-[10px] border border-border px-3 py-2"
+            style={staggerDelay(i)}
           >
             <span className="text-[13px] text-[color:var(--color-ink-soft)] truncate">
               {r.label}
@@ -195,10 +214,11 @@ export function PricingLineItem() {
       </p>
 
       <div className="mt-5 grid gap-2">
-        {lines.map((l) => (
+        {lines.map((l, i) => (
           <div
             key={l.label}
-            className="flex items-center justify-between gap-3 border-b border-border last:border-0 py-2"
+            className="hero-stagger-child flex items-center justify-between gap-3 border-b border-border last:border-0 py-2"
+            style={staggerDelay(i)}
           >
             <span className="text-[13px] text-[color:var(--color-ink-soft)]">
               {l.label}
@@ -225,14 +245,11 @@ export function PricingLineItem() {
 /* ---------- Integrations: chrome window + tile grid ---------- */
 
 export function IntegrationsGrid() {
-  const tiles = [
-    { mark: "WD", label: "Workday" },
-    { mark: "GR", label: "Greenhouse" },
-    { mark: "LV", label: "Lever" },
-    { mark: "BB", label: "BambooHR" },
-    { mark: "OKT", label: "Okta SSO" },
-    { mark: "SCIM", label: "SCIM 2.0" },
-  ];
+  // Show the first 6 LIVE integrations from the shared source of truth so
+  // the hero stays in sync with the /integrations page list.
+  const tiles = INTEGRATIONS.filter((it) => it.status === "Live")
+    .slice(0, 6)
+    .map((it) => ({ mark: it.mark, label: it.name }));
   return (
     <CardChrome
       eyebrow="Stack · connected"
@@ -254,10 +271,11 @@ export function IntegrationsGrid() {
       </p>
 
       <div className="mt-5 grid grid-cols-3 gap-2.5">
-        {tiles.map((t) => (
+        {tiles.map((t, i) => (
           <div
             key={t.mark}
-            className="flex flex-col items-center gap-1 rounded-[10px] border border-border bg-[color:var(--color-paper)] px-2 py-3"
+            className="hero-stagger-child flex flex-col items-center gap-1 rounded-[10px] border border-border bg-[color:var(--color-paper)] px-2 py-3"
+            style={staggerDelay(i, 60)}
           >
             <span className="grid place-items-center size-9 rounded-full bg-white border border-border text-[10.5px] font-medium tracking-wider text-[color:var(--color-accent-ink)]">
               {t.mark}
@@ -303,15 +321,21 @@ export function ContactCallCard() {
       </div>
 
       <div className="mt-5 grid gap-2.5">
-        <div className="flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+        <div
+          className="hero-stagger-child flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5"
+          style={staggerDelay(0)}
+        >
           <span className="text-[12.5px] text-[color:var(--color-ink-muted)]">
             Caller
           </span>
           <span className="text-[13px] text-[color:var(--color-ink)]">
-            Atlas Staffing · Houston, TX
+            Atlas Staffing · Prosper, TX
           </span>
         </div>
-        <div className="flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+        <div
+          className="hero-stagger-child flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5"
+          style={staggerDelay(1)}
+        >
           <span className="text-[12.5px] text-[color:var(--color-ink-muted)]">
             Wait time
           </span>
@@ -319,7 +343,10 @@ export function ContactCallCard() {
             <Clock className="size-3.5" aria-hidden /> 11s
           </span>
         </div>
-        <div className="flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5">
+        <div
+          className="hero-stagger-child flex items-center justify-between rounded-[10px] border border-border px-3 py-2.5"
+          style={staggerDelay(2)}
+        >
           <span className="text-[12.5px] text-[color:var(--color-ink-muted)]">
             Picked up by
           </span>

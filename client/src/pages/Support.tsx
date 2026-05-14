@@ -38,6 +38,7 @@ import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import CandidateContactForm from "@/components/site/CandidateContactForm";
 import { SupportAnswerTimeCard, OnTheLineNow } from "@/components/heroes/HeroCards";
+import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import { useSeo } from "@/hooks/useSeo";
 
 /* ---------- content ---------- */
@@ -319,6 +320,7 @@ export default function Support() {
         }
         lede={`No phone tree. No offshore call center. No "your ticket is important to us" loop. When you call Rapid Hire, a named US-based specialist in ${HQ_CITY} picks up — usually in seconds. They know your account, they know FCRA, and they have the authority to actually fix things.`}
         visual={<SupportAnswerTimeCard />}
+        belowVisual={<HeroMiniStats page="support" />}
       />
 
       {/* Hero CTAs */}

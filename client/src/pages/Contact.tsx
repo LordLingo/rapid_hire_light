@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { ContactCallCard } from "@/components/heroes/HeroCards";
+import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 
 const SERVICES = [
   "Employment Screening",
@@ -145,6 +146,7 @@ export default function Contact() {
         }
         lede="Tell us about your hiring volume and the roles you screen for. Our U.S.-based, FCRA-certified team will respond the same business day with a tailored package."
         visual={<ContactCallCard />}
+        belowVisual={<HeroMiniStats page="contact" />}
       />
 
       <section className="bg-white border-y border-border">

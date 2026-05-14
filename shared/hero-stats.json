@@ -1,0 +1,37 @@
+{
+  "_comment": "Per-page live mini-stats shown under the hero card. Update the numbers here weekly; the heroes will pick them up automatically. Each page exposes 3 cells with a tiny label, value, and trend hint.",
+  "updatedAt": "2026-05-14",
+  "windowLabel": "Last 7 days",
+  "pages": {
+    "about": [
+      { "label": "Reports cleared",  "value": "4,218", "hint": "Last 7 days" },
+      { "label": "Avg turnaround",   "value": "19m",   "hint": "Across all packages" },
+      { "label": "FCRA pass rate",   "value": "99.7%", "hint": "Audit-ready" }
+    ],
+    "services": [
+      { "label": "Federal criminal", "value": "85% < 24h", "hint": "Last 7 days" },
+      { "label": "Verifications",    "value": "18h avg",   "hint": "Employer hits" },
+      { "label": "Drug & health",    "value": "24h",       "hint": "Negative results" }
+    ],
+    "pricing": [
+      { "label": "Setup fees",       "value": "$0",       "hint": "Always" },
+      { "label": "Minimum volume",   "value": "None",     "hint": "Pay per check" },
+      { "label": "Avg client save",  "value": "31%",      "hint": "vs. Big-4 list price" }
+    ],
+    "integrations": [
+      { "label": "Live integrations",   "value": "10",        "hint": "ATS · HRIS · Payroll" },
+      { "label": "Time to connect",     "value": "< 5 min",   "hint": "OAuth handshake" },
+      { "label": "Webhooks delivered",  "value": "118k / wk", "hint": "Signed · retried" }
+    ],
+    "contact": [
+      { "label": "Avg phone pickup", "value": "14 sec",   "hint": "Last 7 days" },
+      { "label": "Email response",   "value": "< 1 hour", "hint": "Business hours" },
+      { "label": "Where we are",     "value": "Prosper, TX", "hint": "Zero offshore" }
+    ],
+    "support": [
+      { "label": "Dispute response", "value": "< 4 hours", "hint": "FCRA timeline beat" },
+      { "label": "FCRA-trained",     "value": "100%",      "hint": "Every specialist" },
+      { "label": "Avg team tenure",   "value": "5.2 yrs",   "hint": "Same desk, same people" }
+    ]
+  }
+}

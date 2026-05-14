@@ -13,6 +13,7 @@ import { ArrowUpRight, ShieldCheck, Compass, Sparkles, BadgeCheck } from "lucide
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { AboutOrgChart, TrustLedger } from "@/components/heroes/HeroCards";
+import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 
 const STATS = [
   { k: "85%+", v: "of checks complete in under 24 hours" },
@@ -75,6 +76,7 @@ export default function About() {
         }
         lede="Rapid Hire Solutions is a U.S.-based, FCRA-certified background screening platform built for hiring teams that need speed without giving up compliance."
         visual={<AboutOrgChart />}
+        belowVisual={<HeroMiniStats page="about" />}
       />
 
       {/* Story */}

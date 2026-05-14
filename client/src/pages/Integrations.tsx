@@ -13,6 +13,21 @@ import { Plug, Zap, RefreshCcw, ArrowUpRight } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { IntegrationsGrid } from "@/components/heroes/HeroCards";
+import HeroMiniStats from "@/components/heroes/HeroMiniStats";
+import integrationsData from "@shared/integrations.json";
+
+type IntegrationCategory = "ATS" | "HRIS" | "Payroll" | "CRM";
+type IntegrationStatus = "Live" | "Beta" | "Request";
+type IntegrationItem = {
+  name: string;
+  mark: string;
+  category: IntegrationCategory;
+  status: IntegrationStatus;
+  body: string;
+};
+const INTEGRATIONS: IntegrationItem[] = (
+  integrationsData as { items: IntegrationItem[] }
+).items;
 
 const STEPS = [
   {
@@ -38,26 +53,6 @@ const STEPS = [
   },
 ];
 
-const INTEGRATIONS: {
-  name: string;
-  category: "ATS" | "HRIS" | "Payroll" | "CRM";
-  body: string;
-  status: "Live" | "Beta" | "Request";
-}[] = [
-  { name: "Greenhouse", category: "ATS", status: "Live", body: "Auto-trigger packages on stage move; report PDF attached to candidate profile." },
-  { name: "Lever", category: "ATS", status: "Live", body: "Two-way sync of background check status, requisition + offer stages." },
-  { name: "Workday", category: "HRIS", status: "Live", body: "Pre-hire screening with Workday Recruiting and Onboarding workflows." },
-  { name: "BambooHR", category: "HRIS", status: "Live", body: "New-hire automation: kick off MVR + drug screen at offer acceptance." },
-  { name: "Bullhorn", category: "ATS", status: "Live", body: "Native panel for staffing teams; bulk-order packages from a tearsheet." },
-  { name: "Workable", category: "ATS", status: "Live", body: "One-click background check from candidate profile, results in-app." },
-  { name: "JazzHR", category: "ATS", status: "Live", body: "Trigger checks at any pipeline stage and send candidate-facing forms." },
-  { name: "iCIMS", category: "ATS", status: "Beta", body: "Marketplace integration; full bi-directional status + report sync." },
-  { name: "ADP Workforce Now", category: "Payroll", status: "Live", body: "Roll background check results into your onboarding + payroll setup." },
-  { name: "Paylocity", category: "Payroll", status: "Live", body: "Run pre-hire screens and write outcomes into Paylocity onboarding." },
-  { name: "SAP SuccessFactors", category: "HRIS", status: "Beta", body: "Enterprise-grade integration for global hiring with localized packages." },
-  { name: "Salesforce", category: "CRM", status: "Request", body: "Custom-built for staffing and BPO clients — request access from the team." },
-];
-
 const CATS = ["All", "ATS", "HRIS", "Payroll", "CRM"] as const;
 
 export default function Integrations() {
@@ -75,6 +70,7 @@ export default function Integrations() {
         }
         lede="From day-one ATS triggers to writing adjudication decisions back into your HRIS, our integrations turn the screening step from a manual hand-off into a quiet background process."
         visual={<IntegrationsGrid />}
+        belowVisual={<HeroMiniStats page="integrations" />}
       />
 
       {/* How it works */}
