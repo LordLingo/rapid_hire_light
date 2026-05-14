@@ -1,0 +1,35 @@
+{
+  "_comment": "Build-time mirror of (slug, title, tag) for the dynamic /api/og/blog/<slug>.svg endpoint. The endpoint is a pure Node module (vite plugin + Express server) and so cannot import the @/ runtime registry; this JSON is its source of truth. Kept in sync with client/src/lib/blog.ts and the 6 post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly — adding, renaming, or retitling a post without updating this file fails CI.",
+  "posts": [
+    {
+      "slug": "fcra-compliance-guide",
+      "title": "Background Check Compliance: A Complete FCRA Guide for Employers",
+      "tag": "compliance"
+    },
+    {
+      "slug": "background-check-turnaround-times",
+      "title": "How Long Does a Background Check Take? Realistic Turnaround Times in 2026",
+      "tag": "operations"
+    },
+    {
+      "slug": "pre-employment-drug-testing",
+      "title": "Pre-Employment Drug Testing: Panels, Costs, and Compliance Explained",
+      "tag": "drug-screening"
+    },
+    {
+      "slug": "dot-driver-background-checks-mvr",
+      "title": "DOT Driver Background Checks and MVR: What Carriers Need to Know",
+      "tag": "dot"
+    },
+    {
+      "slug": "continuous-employee-monitoring",
+      "title": "Continuous Employee Monitoring: The Modern Alternative to Annual Re-Checks",
+      "tag": "continuous-monitoring"
+    },
+    {
+      "slug": "ban-the-box-fair-chance-hiring",
+      "title": "Ban-the-Box and Fair Chance Hiring: A State-by-State 2026 Compliance Brief",
+      "tag": "fair-chance"
+    }
+  ]
+}

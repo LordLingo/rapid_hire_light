@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cc_mp60i1s2_r1pp5v",
+    "createdAt": "2026-05-14T21:40:07.682Z",
+    "fullName": "Test C",
+    "email": "test@example.com",
+    "reportId": "24A-1",
+    "message": "Quick question."
+  },
+  {
+    "id": "cc_mp60i76d_ml8cby",
+    "createdAt": "2026-05-14T21:40:14.677Z",
+    "fullName": "Test C",
+    "email": "test@example.com",
+    "reportId": "24A-1",
+    "message": "Quick question."
+  },
+  {
+    "id": "cc_mp60khhh_wrxkuk",
+    "createdAt": "2026-05-14T21:42:01.349Z",
+    "fullName": "Avery Candidate",
+    "email": "avery@example.com",
+    "reportId": "24A-99001",
+    "message": "I authorized a check last week and want a copy of the file."
+  }
+]

@@ -28,7 +28,6 @@ import {
   ShieldCheck,
   Clock,
   MapPin,
-  Headphones,
   CheckCircle2,
   Users,
   UserCheck,
@@ -37,6 +36,8 @@ import {
 } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
+import SupportStatusBadge from "@/components/site/SupportStatusBadge";
+import CandidateContactForm from "@/components/site/CandidateContactForm";
 import { useSeo } from "@/hooks/useSeo";
 
 /* ---------- content ---------- */
@@ -47,7 +48,6 @@ const SUPPORT_EMAIL = "support@rapidhiresolutions.com";
 const CANDIDATE_EMAIL = "candidates@rapidhiresolutions.com";
 const HQ_CITY = "Houston, TX";
 const ANSWER_TIME = "14 sec";
-const REPORTING_WEEK = "Week of May 5–11, 2026";
 
 type Specialist = {
   initials: string;
@@ -341,45 +341,7 @@ export default function Support() {
             </div>
 
             <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
-              <div className="rounded-[20px] border border-border bg-white p-6 sm:p-7 shadow-sm">
-                <div className="flex items-center gap-2 eyebrow text-[color:var(--color-ink-muted)]">
-                  <Headphones className="size-3.5 text-[color:var(--color-accent-ink)]" aria-hidden />
-                  <span>Live · this week</span>
-                </div>
-                <p className="mt-4 font-display text-[56px] leading-none tracking-[-0.02em] text-[color:var(--color-ink)]">
-                  {ANSWER_TIME}
-                </p>
-                <p className="mt-2 text-[14px] text-[color:var(--color-ink-soft)]">
-                  average time to a US-based human on the phone
-                </p>
-                <div className="mt-6 grid grid-cols-2 gap-5 border-t border-border pt-5">
-                  <div>
-                    <p className="eyebrow text-[10.5px] text-[color:var(--color-ink-muted)]">
-                      Coverage
-                    </p>
-                    <p className="mt-2 text-[14px] text-[color:var(--color-ink)]">
-                      7am–7pm Central
-                    </p>
-                    <p className="text-[14px] text-[color:var(--color-ink-soft)]">
-                      Mon–Fri
-                    </p>
-                  </div>
-                  <div>
-                    <p className="eyebrow text-[10.5px] text-[color:var(--color-ink-muted)]">
-                      Where we are
-                    </p>
-                    <p className="mt-2 text-[14px] text-[color:var(--color-ink)]">
-                      {HQ_CITY}
-                    </p>
-                    <p className="text-[14px] text-[color:var(--color-accent-ink)]">
-                      Zero offshore
-                    </p>
-                  </div>
-                </div>
-                <p className="mt-5 eyebrow text-[10.5px] text-[color:var(--color-ink-muted)]">
-                  Updated weekly · {REPORTING_WEEK}
-                </p>
-              </div>
+              <SupportStatusBadge />
             </div>
           </div>
         </div>
@@ -550,7 +512,7 @@ export default function Support() {
                   <div
                     key={row.question}
                     className={[
-                      "grid grid-cols-12 gap-0 items-start border-b border-border last:border-b-0",
+                      "compare-row grid grid-cols-12 gap-0 items-start border-b border-border last:border-b-0",
                       i % 2 === 1 ? "bg-[color:var(--color-paper-soft)]/40" : "",
                     ].join(" ")}
                   >
@@ -647,8 +609,9 @@ export default function Support() {
                   </div>
                   <p className="mt-5 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                     Questions about a report you authorized, a result you don't
-                    recognize, or a copy of your file? Our candidate-care team
-                    can help — usually the same business day.
+                    recognize, or a copy of your file? Use the form below or call
+                    — either way, a US-based candidate-care specialist replies the
+                    same business day.
                   </p>
                   <div className="mt-6 hairline" />
                   <ul className="mt-5 grid gap-3 text-[14px] text-[color:var(--color-ink)]">
@@ -707,6 +670,32 @@ export default function Support() {
                     </li>
                   </ul>
                 </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Candidate-direct contact form */}
+      <section className="border-t border-border bg-[color:var(--color-paper-soft)]">
+        <div className="container py-20 md:py-24">
+          <div className="grid grid-cols-12 gap-8">
+            <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
+              <p className="eyebrow">05.5 — Candidate inquiry</p>
+              <div className="mt-3 hairline" />
+            </div>
+            <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
+              <h2 className="font-display text-[40px] sm:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)] max-w-3xl">
+                Candidate? Send a quick message.
+              </h2>
+              <p className="mt-6 max-w-2xl text-[16px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                Skip the call queue. Tell us what you're trying to resolve and a
+                US-based candidate-care specialist will respond the same business
+                day. Your inquiry is routed away from the employer/sales desk
+                automatically.
+              </p>
+              <div className="mt-10 rounded-[20px] border border-border bg-white p-6 sm:p-9">
+                <CandidateContactForm candidateEmail={CANDIDATE_EMAIL} />
               </div>
             </div>
           </div>
@@ -840,7 +829,7 @@ function SupportFaq({ items }: { items: { q: string; a: React.ReactNode }[] }) {
               <span
                 aria-hidden
                 className={[
-                  "mt-1 grid place-items-center size-8 rounded-full border border-border text-[color:var(--color-ink-soft)] transition-transform duration-200",
+                  "support-faq-toggle mt-1 grid place-items-center size-8 rounded-full border border-border text-[color:var(--color-ink-soft)]",
                   isOpen ? "rotate-45 text-[color:var(--color-accent-ink)] border-[color:var(--color-accent-ink)]" : "",
                 ].join(" ")}
               >
@@ -848,7 +837,7 @@ function SupportFaq({ items }: { items: { q: string; a: React.ReactNode }[] }) {
               </span>
             </button>
             <div
-              className="grid transition-[grid-template-rows] duration-300 ease-out"
+              className="support-faq-panel grid"
               style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
             >
               <div className="overflow-hidden">

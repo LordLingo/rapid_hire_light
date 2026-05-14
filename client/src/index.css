@@ -424,3 +424,73 @@
     transform: none;
   }
 }
+
+/* -----------------------------------------------------------
+   Support page polish
+   ----------------------------------------------------------- */
+
+/* Pulsing dot on the live SupportStatusBadge — gentle accent halo, ~1.6s loop. */
+@media (prefers-reduced-motion: no-preference) {
+  .support-status-dot-live {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--color-accent-ink) 55%, transparent);
+    animation: supportStatusPulse 1.6s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+  }
+  @keyframes supportStatusPulse {
+    0%   { box-shadow: 0 0 0 0   color-mix(in oklch, var(--color-accent-ink) 55%, transparent); }
+    70%  { box-shadow: 0 0 0 7px color-mix(in oklch, var(--color-accent-ink) 0%,  transparent); }
+    100% { box-shadow: 0 0 0 0   color-mix(in oklch, var(--color-accent-ink) 0%,  transparent); }
+  }
+}
+
+/* Comparison-row hover tint: subtle accent halo on hover, smooth fade. */
+.compare-row {
+  transition:
+    background-color 240ms cubic-bezier(0.23, 1, 0.32, 1),
+    color 240ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .compare-row:hover {
+    background-color: color-mix(
+      in oklch,
+      var(--color-accent-ink) 5%,
+      var(--color-paper-soft, #f5f4ee)
+    );
+  }
+}
+
+/* Support FAQ chevron + height transitions get a touch of warmth.
+   The grid-rows trick from the original implementation already animates
+   height; this just standardises easing/duration and gives the chevron
+   a slightly slower, snappier rotation. */
+.support-faq-toggle {
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+              color 200ms ease-out,
+              border-color 200ms ease-out,
+              background-color 200ms ease-out;
+}
+.support-faq-panel {
+  transition: grid-template-rows 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .support-faq-toggle,
+  .support-faq-panel {
+    transition: none !important;
+  }
+}
+
+/* -----------------------------------------------------------
+   Blog reading progress bar (BlogPost detail page)
+   ----------------------------------------------------------- */
+.reading-progress-bar {
+  transition: opacity 240ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.reading-progress-fill {
+  transition: width 120ms linear;
+  will-change: width;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress-bar,
+  .reading-progress-fill {
+    transition: none !important;
+  }
+}

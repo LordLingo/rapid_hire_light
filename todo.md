@@ -195,3 +195,11 @@
 - [x] Wired into BlogPost.tsx between PostBody and tag chips so it lives at the natural "I just finished reading" moment
 - [x] Footer: added a subtle ShieldCheck pill (28px round) before "Trusted by 800+ HR & staffing teams", using `--color-accent-halo` at 12% bg / 45% border so it reads as a trust mark rather than a button — visible on both blog index and post pages
 - [x] Vitest 60/60 still passing; browser QA confirmed share row renders on /blog/fcra-compliance-guide, copy button toggles, and footer pill is visible site-wide; checkpoint saved
+
+## 25. Support enhancements + blog OG images + reading progress
+- [x] Added `shared/support-status.json` (state, avg answer time, weekly answered count, location, updated date) and a `SupportStatusBadge` rendering it in the /support hero with a brand-accent pulse dot — editable without code
+- [x] Built `CandidateContactForm` on /support (name, email, optional report ID, message) with client-side validation, success-state card, and a real `POST /api/candidate-contact` (mirrored in `vitePluginCandidateContactApi` for dev + Express in `server/index.ts` for prod) persisting to `data/candidate_contact_submissions.json`
+- [x] Polished comparison-table row hover tint and FAQ chevron rotate + body height transition; all motion gated behind `prefers-reduced-motion`
+- [x] Dynamic Open Graph image per post: `/api/og/blog/:slug.svg` (1200×630 SVG, brand mark + tag + wrapped title + Houston/FCRA trust line) reading from `shared/blog-og.json`; wired into BlogPost `useSeo` (`og:image`, `twitter:image`) and JSON-LD `image`
+- [x] Fixed-top `ReadingProgressBar` on /blog/:slug — rAF-throttled scroll listener, brand-accent fill on hairline track, hides under 2% / over 99.5%, `prefers-reduced-motion` safe, `data-reading-progress` attribute for testability
+- [x] Vitest: 76/76 passing (added `blogOg.test.ts` for SVG rendering + `candidateContact.test.ts` for the validator + a `shared/blog-og.json` sync block in `blog.test.ts`); browser QA confirmed status badge, candidate-form submit success, OG endpoint live, reading-progress bar fills on scroll; checkpoint pending

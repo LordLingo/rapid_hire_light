@@ -206,6 +206,44 @@ describe("shared/blog-meta.json sync", () => {
   });
 });
 
+// ---------------------------------------------------------------------------
+// shared/blog-og.json (consumed by the dynamic /api/og/blog/:slug.svg endpoint
+// in vite.config.ts and server/index.ts) must stay in sync with the runtime
+// registry. Mismatch = the social card shows the wrong title for crawlers, a
+// silent SEO regression. We assert slug coverage, exact title match, and that
+// the chosen `tag` is one the post actually carries.
+// ---------------------------------------------------------------------------
+import ogMeta from "../../../shared/blog-og.json";
+
+describe("shared/blog-og.json sync", () => {
+  type OgPost = { slug: string; title: string; tag: string };
+  const ogPosts = (ogMeta.posts as OgPost[]) ?? [];
+
+  it("includes the exact set of runtime slugs", () => {
+    const runtime = listPosts();
+    expect(new Set(ogPosts.map((p) => p.slug))).toEqual(
+      new Set(runtime.map((p) => p.slug)),
+    );
+  });
+
+  it("matches each post's title exactly", () => {
+    const runtime = listPosts();
+    const titleBySlug = new Map(runtime.map((p) => [p.slug, p.title]));
+    for (const og of ogPosts) {
+      expect(og.title, og.slug).toBe(titleBySlug.get(og.slug));
+    }
+  });
+
+  it("chooses a tag that the post actually carries", () => {
+    const runtime = listPosts();
+    const tagsBySlug = new Map(runtime.map((p) => [p.slug, p.tags]));
+    for (const og of ogPosts) {
+      const carried = tagsBySlug.get(og.slug) ?? [];
+      expect(carried, og.slug).toContain(og.tag);
+    }
+  });
+});
+
 describe("tag helpers", () => {
   it("getAllTags returns lower-kebab-case tags, sorted", () => {
     const tags = getAllTags();

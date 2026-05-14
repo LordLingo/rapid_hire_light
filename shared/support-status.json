@@ -1,0 +1,11 @@
+{
+  "_comment": "Live support metrics surfaced by the SupportStatusBadge on /support. Intentionally a hand-edited JSON file — owner can update weekly without a code change. Keep field shape stable: SupportStatusBadge is typed against it.",
+  "answerTimeSeconds": 14,
+  "answerTimeLabel": "14 sec",
+  "weekLabel": "Week of May 5\u201311, 2026",
+  "answeredThisWeek": 612,
+  "live": true,
+  "liveLabel": "Live now \u00b7 Houston desk",
+  "offlineLabel": "Outside live hours \u00b7 voicemail returns within 1 business hour",
+  "updatedAt": "2026-05-12"
+}

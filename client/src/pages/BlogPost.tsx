@@ -12,6 +12,7 @@ import NotFound from "@/pages/NotFound";
 import { useSeo } from "@/hooks/useSeo";
 import { PostBody } from "@/components/site/PostBody";
 import ShareButtons from "@/components/site/ShareButtons";
+import ReadingProgressBar from "@/components/site/ReadingProgressBar";
 import {
   formatPublishedDate,
   getPostBySlug,
@@ -34,6 +35,15 @@ export default function BlogPost() {
       ? `${window.location.origin}/blog/${post.slug}`
       : `/blog/${post.slug}`;
 
+  // Dynamic Open Graph image: a 1200×630 SVG card built server-side from
+  // shared/blog-og.json. Falls back to the post.cover when the post explicitly
+  // ships its own social image. Absolute URL is required by OG crawlers.
+  const ogImage =
+    post.cover ??
+    (typeof window !== "undefined"
+      ? `${window.location.origin}/api/og/blog/${post.slug}.svg`
+      : `/api/og/blog/${post.slug}.svg`);
+
   // BlogPosting JSON-LD with the fields Google's rich-result tester expects.
   const jsonLd = {
     "@context": "https://schema.org",
@@ -52,7 +62,7 @@ export default function BlogPost() {
     articleSection: post.tags[0]?.replace(/-/g, " "),
     wordCount: post.body.split(/\s+/).filter(Boolean).length,
     inLanguage: "en-US",
-    image: post.cover ? [post.cover] : undefined,
+    image: [ogImage],
   };
 
   useSeo({
@@ -60,7 +70,7 @@ export default function BlogPost() {
     description: post.metaDescription,
     canonical: url,
     ogType: "article",
-    image: post.cover,
+    image: ogImage,
     jsonLd,
   });
 
@@ -68,6 +78,7 @@ export default function BlogPost() {
 
   return (
     <SiteShell>
+      <ReadingProgressBar />
       {/* Hero */}
       <section className="relative overflow-hidden bg-[color:var(--color-paper)]">
         <div

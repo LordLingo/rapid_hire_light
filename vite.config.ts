@@ -260,6 +260,239 @@ function vitePluginContactApi(): Plugin {
 }
 
 // =============================================================================
+// Candidate-Contact API plugin
+// POST /api/candidate-contact — validates payload, persists to
+//                              data/candidate_contact_submissions.json
+// GET  /api/candidate-contact — returns recent submissions (preview convenience)
+// Modeled on /api/contact but with a candidate-specific schema:
+//   { fullName, email, reportId?, message }
+// Kept separate from /api/contact so candidate inquiries don't pollute the
+// employer/sales submission stream — they get triaged by a different desk.
+// =============================================================================
+
+const CANDIDATE_DATA_FILE = path.join(CONTACT_DATA_DIR, "candidate_contact_submissions.json");
+
+function ensureCandidateStore() {
+  if (!fs.existsSync(CONTACT_DATA_DIR)) fs.mkdirSync(CONTACT_DATA_DIR, { recursive: true });
+  if (!fs.existsSync(CANDIDATE_DATA_FILE)) fs.writeFileSync(CANDIDATE_DATA_FILE, "[]\n", "utf-8");
+}
+
+function readCandidateSubmissions(): unknown[] {
+  ensureCandidateStore();
+  try {
+    const raw = fs.readFileSync(CANDIDATE_DATA_FILE, "utf-8");
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+
+function appendCandidateSubmission(entry: Record<string, unknown>) {
+  const list = readCandidateSubmissions();
+  list.push(entry);
+  fs.writeFileSync(CANDIDATE_DATA_FILE, JSON.stringify(list, null, 2) + "\n", "utf-8");
+}
+
+export type CandidateContactPayload = {
+  fullName: string;
+  email: string;
+  reportId: string;
+  message: string;
+};
+
+export function validateCandidateContactPayload(payload: any):
+  | { ok: true; value: CandidateContactPayload }
+  | { ok: false; error: string } {
+  if (!payload || typeof payload !== "object") return { ok: false, error: "Invalid payload" };
+  const fullName = String(payload.fullName ?? "").trim();
+  const email = String(payload.email ?? "").trim();
+  const reportId = String(payload.reportId ?? "").trim();
+  const message = String(payload.message ?? "").trim();
+  if (!fullName) return { ok: false, error: "Full name is required." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, error: "A valid email address is required." };
+  }
+  if (!message) return { ok: false, error: "A short message about your inquiry is required." };
+  if (fullName.length > 200 || email.length > 320 || reportId.length > 80 || message.length > 5000) {
+    return { ok: false, error: "One or more fields are too long." };
+  }
+  return { ok: true, value: { fullName, email, reportId, message } };
+}
+
+function vitePluginCandidateContactApi(): Plugin {
+  return {
+    name: "manus-candidate-contact-api",
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use("/api/candidate-contact", (req, res) => {
+        if (req.method === "GET") {
+          const list = readCandidateSubmissions();
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ count: list.length, submissions: list.slice(-50).reverse() }));
+          return;
+        }
+        if (req.method !== "POST") {
+          res.writeHead(405, { "Content-Type": "application/json", Allow: "GET, POST" });
+          res.end(JSON.stringify({ ok: false, error: "Method not allowed" }));
+          return;
+        }
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+          if (body.length > 1_000_000) req.destroy();
+        });
+        req.on("end", () => {
+          let payload: unknown;
+          try {
+            payload = JSON.parse(body || "{}");
+          } catch {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ ok: false, error: "Invalid JSON" }));
+            return;
+          }
+          const result = validateCandidateContactPayload(payload);
+          if (!result.ok) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ ok: false, error: result.error }));
+            return;
+          }
+          const entry = {
+            id: `cc_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+            createdAt: new Date().toISOString(),
+            ...result.value,
+          };
+          try {
+            appendCandidateSubmission(entry);
+          } catch {
+            res.writeHead(500, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ ok: false, error: "Could not persist submission" }));
+            return;
+          }
+          res.writeHead(201, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ ok: true, id: entry.id }));
+        });
+      });
+    },
+  };
+}
+
+// =============================================================================
+// Dynamic blog Open Graph image plugin
+// GET /api/og/blog/:slug.svg — emits a 1200x630 SVG OG card for a single post,
+//                              built from shared/blog-meta.json + a tiny
+//                              meta-only registry mirror in shared/blog-og.json.
+// SVG is small (~3 KB), cache-safe, and renders crisply on every social card.
+// =============================================================================
+
+type BlogOgEntry = { slug: string; title: string; tag: string };
+
+function loadBlogOgEntries(): BlogOgEntry[] {
+  const p = path.join(PROJECT_ROOT, "shared", "blog-og.json");
+  if (!fs.existsSync(p)) return [];
+  try {
+    const raw = JSON.parse(fs.readFileSync(p, "utf-8")) as { posts?: BlogOgEntry[] };
+    return Array.isArray(raw.posts) ? raw.posts : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Wrap a string into <= maxChars per line, breaking on word boundaries. */
+export function wrapTitleForOg(title: string, maxChars: number, maxLines: number): string[] {
+  const words = title.split(/\s+/).filter(Boolean);
+  const lines: string[] = [];
+  let line = "";
+  for (const w of words) {
+    if (!line) { line = w; continue; }
+    if ((line + " " + w).length <= maxChars) {
+      line += " " + w;
+    } else {
+      lines.push(line);
+      line = w;
+      if (lines.length === maxLines - 1) break;
+    }
+  }
+  if (line) lines.push(line);
+  // If words remain after maxLines, append ellipsis to the last line.
+  const usedWords = lines.join(" ").split(/\s+/).length;
+  if (usedWords < words.length && lines.length > 0) {
+    let last = lines[lines.length - 1];
+    if (last.length > maxChars - 1) last = last.slice(0, maxChars - 1);
+    lines[lines.length - 1] = last + "…";
+  }
+  return lines.slice(0, maxLines);
+}
+
+function xmlEscapeText(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export function renderBlogOgSvg(entry: BlogOgEntry): string {
+  const titleLines = wrapTitleForOg(entry.title, 28, 4);
+  // Approximate line height matching the 64px serif title size.
+  const lineHeight = 78;
+  const startY = 240;
+  const tspans = titleLines
+    .map((ln, i) => `<tspan x="96" y="${startY + i * lineHeight}">${xmlEscapeText(ln)}</tspan>`) 
+    .join("");
+  const tagLabel = entry.tag.replace(/-/g, " ").toUpperCase();
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="halo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0ecff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#fafaf7" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#FAFAF7" />
+  <circle cx="1080" cy="120" r="360" fill="url(#halo)" />
+  <rect x="96" y="96" width="6" height="42" fill="#3b82f6" />
+  <text x="118" y="126" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600" letter-spacing="4" fill="#1f2937">RAPID HIRE SOLUTIONS</text>
+  <text x="96" y="180" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" letter-spacing="3" fill="#3b82f6">${xmlEscapeText(tagLabel)}</text>
+  <text font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#0f172a" letter-spacing="-1">${tspans}</text>
+  <line x1="96" y1="540" x2="1104" y2="540" stroke="#e7e5dc" stroke-width="1" />
+  <text x="96" y="580" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">A US-based CRA · Houston, TX · FCRA certified</text>
+  <text x="1104" y="580" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">rapidhiresolutions.com</text>
+</svg>
+`;
+}
+
+function vitePluginBlogOgImage(): Plugin {
+  return {
+    name: "manus-blog-og-image",
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use("/api/og/blog/", (req, res) => {
+        const url = req.url || "";
+        // Match `/<slug>.svg` (the leading `/api/og/blog` prefix is stripped by Vite middleware).
+        const m = url.match(/^\/?([a-z0-9-]+)\.svg(?:\?|$)/i);
+        if (!m) {
+          res.writeHead(404, { "Content-Type": "text/plain" });
+          res.end("Not found");
+          return;
+        }
+        const slug = m[1];
+        const entry = loadBlogOgEntries().find((e) => e.slug === slug);
+        if (!entry) {
+          res.writeHead(404, { "Content-Type": "text/plain" });
+          res.end("Unknown post");
+          return;
+        }
+        const svg = renderBlogOgSvg(entry);
+        res.writeHead(200, {
+          "Content-Type": "image/svg+xml; charset=utf-8",
+          "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+        });
+        res.end(svg);
+      });
+    },
+  };
+}
+
+// =============================================================================
 // Sitemap + robots.txt generator
 // Emits dist/public/sitemap.xml and dist/public/robots.txt at the end of
 // `vite build`. Slugs and tags come from shared/blog-meta.json so the plugin
@@ -411,7 +644,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginContactApi(), vitePluginSitemap()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginContactApi(), vitePluginCandidateContactApi(), vitePluginBlogOgImage(), vitePluginSitemap()];
 
 export default defineConfig({
   plugins,
