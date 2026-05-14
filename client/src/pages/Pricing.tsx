@@ -9,13 +9,14 @@
    - FAQ short strip.
    - Closing CTA → /contact.
 */
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Link } from "wouter";
 import { ArrowUpRight, Check, Sparkles, TrendingUp } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
+import StickyEstimateBar from "@/components/site/StickyEstimateBar";
 
 type TierId = "essential" | "professional" | "comprehensive";
 type Tier = {
@@ -178,9 +179,16 @@ const PRICING_FAQ = [
 
 export default function Pricing() {
   const [matchedTier, setMatchedTier] = useState<TierId | null>(null);
+  const [estimate, setEstimate] = useState<CalculatorEstimate | null>(null);
+  const calculatorEndRef = useRef<HTMLDivElement | null>(null);
   const handleEstimate = useCallback((e: CalculatorEstimate) => {
+    setEstimate(e);
     setMatchedTier(matchTierFromPerCheck(e.perCheckNet));
   }, []);
+  const matchedTierLabel =
+    matchedTier && TIERS.find((t) => t.id === matchedTier)?.name
+      ? (TIERS.find((t) => t.id === matchedTier)!.name as string)
+      : null;
 
   return (
     <SiteShell>
@@ -394,6 +402,9 @@ export default function Pricing() {
 
       {/* Calculator */}
       <PricingCalculator onEstimateChange={handleEstimate} />
+      {/* Sentinel — when this scrolls out of view above the viewport, the sticky
+          estimate bar appears at the bottom of the screen with the live numbers. */}
+      <div ref={calculatorEndRef} aria-hidden="true" className="h-px w-full" />
 
       {/* Add-ons */}
       <section className="bg-[color:var(--color-paper)]">
@@ -488,6 +499,13 @@ export default function Pricing() {
           </div>
         </div>
       </section>
+
+      {/* Sticky estimate mini-bar — anchored to bottom, only after user scrolls past the calculator. */}
+      <StickyEstimateBar
+        estimate={estimate}
+        matchedTierLabel={matchedTierLabel}
+        sentinelRef={calculatorEndRef}
+      />
     </SiteShell>
   );
 }
