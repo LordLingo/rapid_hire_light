@@ -11,6 +11,7 @@ import SiteShell from "@/components/site/SiteShell";
 import NotFound from "@/pages/NotFound";
 import { useSeo } from "@/hooks/useSeo";
 import { PostBody } from "@/components/site/PostBody";
+import ShareButtons from "@/components/site/ShareButtons";
 import {
   formatPublishedDate,
   getPostBySlug,
@@ -117,6 +118,9 @@ export default function BlogPost() {
           <div className="hidden lg:block lg:col-span-3" />
           <div className="col-span-12 lg:col-span-9 max-w-3xl">
             <PostBody markdown={post.body} />
+
+            {/* Share */}
+            <ShareButtons url={url} title={post.title} />
 
             {/* Tag chips */}
             <div className="mt-14 flex flex-wrap gap-2">

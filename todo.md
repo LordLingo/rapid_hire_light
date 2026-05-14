@@ -187,3 +187,11 @@
 - [x] Wired `/support` route in App.tsx; added Support to header nav (between Pricing and Contact Us) and to the footer Company column
 - [x] Emitted JSON-LD Organization + ContactPoint schema via useSeo (toll-free phone, opening hours M–F 7–19 CT + Sat 9–13 CT, support@/candidates@ email contact points) — verified live via DOM probe
 - [x] Re-ran vitest 60/60 still passing; browser QA verified hero, comparison table, candidate/client cards, and FAQ accordion expand/collapse on the live preview; added `/support` to the build sitemap STATIC_ROUTES; checkpoint saved
+
+## 24. Social share buttons on blog posts + footer trust icon
+- [x] Built `client/src/components/site/ShareButtons.tsx`: 40px round icon buttons for X, LinkedIn, Facebook + Copy-link, on-brand hover (accent-ink halo), focus-visible ring; X uses an inline SVG since the post-rebrand glyph isn't in lucide
+- [x] Pure share-intent URLs (twitter.com/intent/tweet, linkedin.com/sharing/share-offsite, facebook.com/sharer/sharer.php) — no third-party scripts, no trackers; encodes URL + title; reuses the canonical `${origin}/blog/{slug}` URL already computed for SEO
+- [x] Copy-link uses `navigator.clipboard.writeText` with a textarea fallback for older browsers; toast confirmation + 1.6s checkmark state; aria-labels and titles on every control
+- [x] Wired into BlogPost.tsx between PostBody and tag chips so it lives at the natural "I just finished reading" moment
+- [x] Footer: added a subtle ShieldCheck pill (28px round) before "Trusted by 800+ HR & staffing teams", using `--color-accent-halo` at 12% bg / 45% border so it reads as a trust mark rather than a button — visible on both blog index and post pages
+- [x] Vitest 60/60 still passing; browser QA confirmed share row renders on /blog/fcra-compliance-guide, copy button toggles, and footer pill is visible site-wide; checkpoint saved

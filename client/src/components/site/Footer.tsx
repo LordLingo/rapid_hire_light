@@ -5,6 +5,7 @@
 */
 import { Link } from "wouter";
 import { toast } from "sonner";
+import { ShieldCheck } from "lucide-react";
 
 type FooterItem = { label: string; to?: string };
 
@@ -102,10 +103,18 @@ export default function Footer() {
 
         {/* social-proof anchor above the bottom bar */}
         <div className="mt-16 pt-8 border-t border-[color:var(--color-footer-border)] flex flex-wrap items-center justify-between gap-4 reveal-on-scroll">
-          <p className="font-display text-[18px] sm:text-[20px] tracking-[-0.01em] text-[color:var(--color-footer-foreground)]">
-            Trusted by{" "}
-            <span className="text-[color:var(--color-accent-halo)]">800+</span>{" "}
-            HR &amp; staffing teams
+          <p className="flex items-center gap-2.5 font-display text-[18px] sm:text-[20px] tracking-[-0.01em] text-[color:var(--color-footer-foreground)]">
+            <span
+              aria-hidden
+              className="inline-flex size-7 items-center justify-center rounded-full border border-[color:color-mix(in_oklch,var(--color-accent-halo)_45%,transparent)] bg-[color:color-mix(in_oklch,var(--color-accent-halo)_12%,transparent)] text-[color:var(--color-accent-halo)] shadow-[inset_0_0_0_1px_color-mix(in_oklch,var(--color-accent-halo)_25%,transparent)]"
+            >
+              <ShieldCheck className="size-4" strokeWidth={2} />
+            </span>
+            <span>
+              Trusted by{" "}
+              <span className="text-[color:var(--color-accent-halo)]">800+</span>{" "}
+              HR &amp; staffing teams
+            </span>
           </p>
           <p className="eyebrow text-[color:var(--color-footer-muted)]">
             Avg. 20-min turnaround · 99.4% on-time SLA
