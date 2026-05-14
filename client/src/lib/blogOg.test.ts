@@ -46,10 +46,10 @@ describe("renderBlogOgSvg", () => {
     expect(svg).toContain('height="630"');
   });
 
-  it("renders the brand mark, the tag, and a Houston, TX trust line", () => {
+  it("renders the brand mark, the tag, and a Prosper, TX trust line", () => {
     expect(svg).toContain("RAPID HIRE SOLUTIONS");
     expect(svg).toContain("COMPLIANCE");
-    expect(svg).toContain("Houston, TX");
+    expect(svg).toContain("Prosper, TX");
     expect(svg).toContain("rapidhiresolutions.com");
   });
 

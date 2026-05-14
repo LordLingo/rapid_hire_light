@@ -190,8 +190,10 @@ export default function Contact() {
                     <p className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
                       Headquarters
                     </p>
-                    <p className="mt-1 text-[15px] text-[color:var(--color-ink)]">
-                      Houston, TX · United States
+                    <p className="mt-1 text-[15px] leading-[1.55] text-[color:var(--color-ink)]">
+                      4261 E University Dr
+                      <br />
+                      Prosper, TX 75078 · United States
                     </p>
                   </div>
                 </li>

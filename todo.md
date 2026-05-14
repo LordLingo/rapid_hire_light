@@ -216,3 +216,8 @@
 - [x] Wired hero photo into About, Services, Pricing, Integrations, Contact, Support page heroes; added the over-the-shoulder "Our story" photo into About; added the wide desk-row banner above "The desk" cards on Support
 - [x] First QA caught two CDN URLs returning 403 (integrations + contact heroes); re-uploaded those two assets via `manus-upload-file --webdev` and swapped the references — all 8 images now load (verified via DOM probe + visual screenshots)
 - [x] Vitest 76/76 still passing; checkpoint saved
+
+## 28. HQ city + street address (Houston → Prosper, TX 75078)
+- [x] Swept the codebase end-to-end (`grep -rIn Houston`) and updated 11 occurrences across Support page (HQ_CITY constant, 4 specialist `city` fields, comparison-table rapid line, hero lede via interpolation, hero alt via interpolation, desk-row banner alt), Contact Headquarters card, SupportStatusBadge "Where we are" line, `shared/support-status.json` liveLabel, OG image trust line in both `vite.config.ts` and `server/index.ts`, plus the `blogOg.test.ts` assertion
+- [x] Added the full street address `4261 E University Dr, Prosper, TX 75078` to the Contact Headquarters card (line 1: street; line 2: city/state/zip · country) and added a structured `PostalAddress` block (streetAddress, addressLocality, addressRegion, postalCode, addressCountry) to the Support JSON-LD Organization so the address is machine-readable
+- [x] Final grep confirms zero remaining "Houston" references in source; vitest 76/76 passing; dev server LSP/TS clean; checkpoint pending

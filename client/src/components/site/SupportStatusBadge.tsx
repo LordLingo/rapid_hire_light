@@ -83,7 +83,7 @@ export default function SupportStatusBadge() {
             Where we are
           </p>
           <p className="mt-2 text-[14px] text-[color:var(--color-ink)]">
-            Houston, TX
+            Prosper, TX
           </p>
           <p className="text-[14px] text-[color:var(--color-accent-ink)] inline-flex items-center gap-1">
             <ShieldCheck className="size-3.5" aria-hidden />

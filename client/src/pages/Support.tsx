@@ -46,7 +46,9 @@ const PHONE_DISPLAY = "(888) 555-0142";
 const PHONE_TEL = "+18885550142";
 const SUPPORT_EMAIL = "support@rapidhiresolutions.com";
 const CANDIDATE_EMAIL = "candidates@rapidhiresolutions.com";
-const HQ_CITY = "Houston, TX";
+const HQ_CITY = "Prosper, TX";
+const HQ_STREET = "4261 E University Dr";
+const HQ_POSTAL_CODE = "75078";
 const ANSWER_TIME = "14 sec";
 
 type Specialist = {
@@ -63,7 +65,7 @@ const TEAM: Specialist[] = [
     initials: "JM",
     name: "Jordan M.",
     role: "Senior Account Specialist",
-    city: "Houston, TX",
+    city: "Prosper, TX",
     blurb:
       "Onboards new staffing and healthcare clients and runs point on day-to-day account questions. Picks up before the second ring more often than not.",
     years: "9+ years",
@@ -72,7 +74,7 @@ const TEAM: Specialist[] = [
     initials: "MT",
     name: "Maya T.",
     role: "Compliance & Screening Lead",
-    city: "Houston, TX",
+    city: "Prosper, TX",
     blurb:
       "Handles FCRA questions, adverse-action workflows, and the trickier criminal-record dispositions. A decade-plus in CRA operations.",
     years: "12+ years",
@@ -81,7 +83,7 @@ const TEAM: Specialist[] = [
     initials: "PS",
     name: "Priya S.",
     role: "Client Success Specialist",
-    city: "Houston, TX",
+    city: "Prosper, TX",
     blurb:
       "Quarterbacks renewals, package design, and quarterly review calls. The person clients call when they want a real recommendation, not a script.",
     years: "7+ years",
@@ -90,7 +92,7 @@ const TEAM: Specialist[] = [
     initials: "TR",
     name: "Tyler R.",
     role: "Background Research Analyst",
-    city: "Houston, TX",
+    city: "Prosper, TX",
     blurb:
       "Runs the verification desk — employment, education, and professional licenses. The reason your reports clear faster than the industry average.",
     years: "4+ years",
@@ -127,7 +129,7 @@ const COMPARISON: ComparisonRow[] = [
   },
   {
     question: "Where the team sits",
-    rapid: "Houston, TX — zero offshore",
+    rapid: "Prosper, TX — zero offshore",
     typical: "Manila, Bengaluru, San Salvador (typical)",
   },
 ];
@@ -240,6 +242,14 @@ export default function Support() {
         typeof window !== "undefined"
           ? `${window.location.origin}/support`
           : "/support",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: HQ_STREET,
+        addressLocality: "Prosper",
+        addressRegion: "TX",
+        postalCode: HQ_POSTAL_CODE,
+        addressCountry: "US",
+      },
       contactPoint: [
         {
           "@type": "ContactPoint",
@@ -373,7 +383,7 @@ export default function Support() {
               <div className="mt-12 overflow-hidden rounded-[20px] border border-border paper-shadow bg-white">
                 <img
                   src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/support_desk_row-eygC86RUxGQaNX9YxnYwkZ.webp"
-                  alt="A row of light oak workstations with over-ear headsets on stands at a sunlit Houston-style office — the Rapid Hire support floor."
+                  alt="A row of light oak workstations with over-ear headsets on stands at a sunlit Prosper, TX office — the Rapid Hire support floor."
                   className="w-full h-[200px] sm:h-[240px] md:h-[280px] object-cover"
                   loading="lazy"
                   decoding="async"

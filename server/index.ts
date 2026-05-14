@@ -134,7 +134,7 @@ function renderBlogOgSvg(entry: BlogOgEntry): string {
   <text x="96" y="180" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" letter-spacing="3" fill="#3b82f6">${xmlEscapeText(tagLabel)}</text>
   <text font-family="Fraunces, Georgia, serif" font-size="64" font-weight="500" fill="#0f172a" letter-spacing="-1">${tspans}</text>
   <line x1="96" y1="540" x2="1104" y2="540" stroke="#e7e5dc" stroke-width="1" />
-  <text x="96" y="580" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">A US-based CRA · Houston, TX · FCRA certified</text>
+  <text x="96" y="580" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">A US-based CRA · Prosper, TX · FCRA certified</text>
   <text x="1104" y="580" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">rapidhiresolutions.com</text>
 </svg>
 `;
