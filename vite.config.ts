@@ -259,6 +259,104 @@ function vitePluginContactApi(): Plugin {
   };
 }
 
+// =============================================================================
+// Sitemap + robots.txt generator
+// Emits dist/public/sitemap.xml and dist/public/robots.txt at the end of
+// `vite build`. Slugs and tags come from shared/blog-meta.json so the plugin
+// stays a pure Node module (no @/ alias resolution needed). The runtime blog
+// registry (client/src/lib/blog.ts) and this JSON are kept in sync by a
+// vitest spec that fails CI if they diverge.
+//
+// SITE_BASE_URL env var lets staging vs production emit different absolute
+// URLs without a code change. Falls back to a sensible production default.
+// =============================================================================
+
+type BlogMeta = {
+  posts: { slug: string; lastmod: string }[];
+  tags: string[];
+};
+
+const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = [
+  { path: "/",             priority: 1.0,  changefreq: "weekly"  },
+  { path: "/services",     priority: 0.9,  changefreq: "monthly" },
+  { path: "/integrations", priority: 0.7,  changefreq: "monthly" },
+  { path: "/pricing",      priority: 0.9,  changefreq: "monthly" },
+  { path: "/about",        priority: 0.6,  changefreq: "yearly"  },
+  { path: "/contact",      priority: 0.7,  changefreq: "yearly"  },
+  { path: "/blog",         priority: 0.8,  changefreq: "weekly"  },
+  { path: "/privacy",      priority: 0.3,  changefreq: "yearly"  },
+  { path: "/terms",        priority: 0.3,  changefreq: "yearly"  },
+];
+
+function loadBlogMeta(): BlogMeta {
+  const metaPath = path.join(PROJECT_ROOT, "shared", "blog-meta.json");
+  const raw = JSON.parse(fs.readFileSync(metaPath, "utf-8")) as Partial<BlogMeta>;
+  return {
+    posts: Array.isArray(raw.posts) ? raw.posts : [],
+    tags: Array.isArray(raw.tags) ? raw.tags : [],
+  };
+}
+
+function xmlEscape(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function buildSitemap(baseUrl: string, meta: BlogMeta): string {
+  const today = new Date().toISOString().slice(0, 10);
+  const urls: string[] = [];
+
+  for (const r of STATIC_ROUTES) {
+    urls.push(
+      `  <url>\n    <loc>${xmlEscape(baseUrl + r.path)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority.toFixed(1)}</priority>\n  </url>`,
+    );
+  }
+
+  for (const p of meta.posts) {
+    urls.push(
+      `  <url>\n    <loc>${xmlEscape(`${baseUrl}/blog/${p.slug}`)}</loc>\n    <lastmod>${xmlEscape(p.lastmod)}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>`,
+    );
+  }
+
+  for (const t of meta.tags) {
+    urls.push(
+      `  <url>\n    <loc>${xmlEscape(`${baseUrl}/blog/tag/${t}`)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>`,
+    );
+  }
+
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
+}
+
+function buildRobots(baseUrl: string): string {
+  return `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`;
+}
+
+function vitePluginSitemap(): Plugin {
+  return {
+    name: "manus-sitemap",
+    apply: "build",
+    closeBundle() {
+      const baseUrl = (process.env.SITE_BASE_URL || "https://www.rapidhiresolutions.com").replace(/\/+$/, "");
+      const outDir = path.resolve(PROJECT_ROOT, "dist/public");
+      try {
+        if (!fs.existsSync(outDir)) fs.mkdirSync(outDir, { recursive: true });
+        const meta = loadBlogMeta();
+        fs.writeFileSync(path.join(outDir, "sitemap.xml"), buildSitemap(baseUrl, meta), "utf-8");
+        fs.writeFileSync(path.join(outDir, "robots.txt"), buildRobots(baseUrl), "utf-8");
+        // eslint-disable-next-line no-console
+        console.log(`[sitemap] wrote sitemap.xml (${STATIC_ROUTES.length + meta.posts.length + meta.tags.length} URLs) and robots.txt`);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn("[sitemap] generation failed:", e);
+      }
+    },
+  };
+}
+
 function vitePluginStorageProxy(): Plugin {
   return {
     name: "manus-storage-proxy",
@@ -312,7 +410,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginContactApi()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginContactApi(), vitePluginSitemap()];
 
 export default defineConfig({
   plugins,

@@ -6,27 +6,23 @@
   - Tag filter rail on the left so the page stays usable past 30+ posts.
   - On-page SEO: dynamic title, meta description, canonical, Blog JSON-LD.
 */
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { useSeo } from "@/hooks/useSeo";
-import { listPosts, formatPublishedDate } from "@/lib/blog";
+import {
+  listPosts,
+  getAllTags,
+  formatPublishedDate,
+  formatTag,
+} from "@/lib/blog";
 
 export default function Blog() {
   const allPosts = useMemo(() => listPosts(), []);
-  const [activeTag, setActiveTag] = useState<string | null>(null);
-
-  const allTags = useMemo(() => {
-    const set = new Set<string>();
-    for (const p of allPosts) for (const t of p.tags) set.add(t);
-    return Array.from(set).sort();
-  }, [allPosts]);
-
-  const visiblePosts = activeTag
-    ? allPosts.filter((p) => p.tags.includes(activeTag))
-    : allPosts;
+  const allTags = useMemo(() => getAllTags(), []);
+  const visiblePosts = allPosts;
 
   // ItemList JSON-LD helps Google understand the index as a structured
   // collection of articles — improves the chance of rich-result eligibility.
@@ -77,42 +73,29 @@ export default function Blog() {
             <div className="mt-3 hairline" />
             <ul className="mt-6 space-y-2">
               <li>
-                <button
-                  type="button"
-                  onClick={() => setActiveTag(null)}
-                  className={[
-                    "text-[14px] tracking-tight text-left transition-colors",
-                    activeTag === null
-                      ? "text-[color:var(--color-ink)] font-medium"
-                      : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
-                  ].join(" ")}
+                <Link
+                  href="/blog"
+                  className="text-[14px] tracking-tight text-[color:var(--color-ink)] font-medium"
                 >
                   All articles
-                  <span className="ml-2 text-[color:var(--color-ink-muted)]">
+                  <span className="ml-2 text-[color:var(--color-ink-muted)] font-normal">
                     ({allPosts.length})
                   </span>
-                </button>
+                </Link>
               </li>
               {allTags.map((t) => {
                 const count = allPosts.filter((p) => p.tags.includes(t)).length;
-                const active = activeTag === t;
                 return (
                   <li key={t}>
-                    <button
-                      type="button"
-                      onClick={() => setActiveTag(active ? null : t)}
-                      className={[
-                        "text-[14px] tracking-tight text-left transition-colors",
-                        active
-                          ? "text-[color:var(--color-ink)] font-medium"
-                          : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
-                      ].join(" ")}
+                    <Link
+                      href={`/blog/tag/${t}`}
+                      className="text-[14px] tracking-tight text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] transition-colors"
                     >
-                      {t.replace(/-/g, " ")}
+                      {formatTag(t)}
                       <span className="ml-2 text-[color:var(--color-ink-muted)]">
                         ({count})
                       </span>
-                    </button>
+                    </Link>
                   </li>
                 );
               })}

@@ -100,6 +100,37 @@ export function relatedPosts(currentSlug: string, n: number = 3): BlogPost[] {
 }
 
 /**
+ * Return every distinct tag across all posts, alphabetically sorted.
+ * Pure helper so both the index rail and the sitemap generator share one
+ * source of truth.
+ */
+export function getAllTags(): string[] {
+  const set = new Set<string>();
+  for (const p of ALL_POSTS) for (const t of p.tags) set.add(t);
+  return Array.from(set).sort();
+}
+
+/**
+ * Return all posts that carry the given tag, newest-first. Tag matching
+ * is exact and case-sensitive (tags are guaranteed lower-kebab-case by
+ * the registry test suite).
+ */
+export function listPostsByTag(tag: string): BlogPost[] {
+  return listPosts().filter((p) => p.tags.includes(tag));
+}
+
+/**
+ * Render a tag in human-readable form for headings and chips.
+ * Example: "fair-chance" -> "Fair Chance".
+ */
+export function formatTag(tag: string): string {
+  return tag
+    .split("-")
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join(" ");
+}
+
+/**
  * Format an ISO date (YYYY-MM-DD) as a long-form English dateline.
  */
 export function formatPublishedDate(iso: string): string {

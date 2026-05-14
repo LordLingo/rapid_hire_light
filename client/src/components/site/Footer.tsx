@@ -98,23 +98,35 @@ export default function Footer() {
           <FooterCol title="Company" items={COMPANY} className="col-span-6 md:col-span-2" />
           <FooterCol title="Portals" items={PORTALS} className="col-span-6 md:col-span-2" />
         </div>
+
+        {/* social-proof anchor above the bottom bar */}
+        <div className="mt-16 pt-8 border-t border-[color:var(--color-footer-border)] flex flex-wrap items-center justify-between gap-4 reveal-on-scroll">
+          <p className="font-display text-[18px] sm:text-[20px] tracking-[-0.01em] text-[color:var(--color-footer-foreground)]">
+            Trusted by{" "}
+            <span className="text-[color:var(--color-accent-halo)]">800+</span>{" "}
+            HR &amp; staffing teams
+          </p>
+          <p className="eyebrow text-[color:var(--color-footer-muted)]">
+            Avg. 20-min turnaround · 99.4% on-time SLA
+          </p>
+        </div>
       </div>
       <div className="border-t border-[color:var(--color-footer-border)]">
         <div className="container py-6 flex flex-wrap items-center justify-between gap-3 eyebrow text-[color:var(--color-footer-muted)]">
           <span>© {new Date().getFullYear()} Rapid Hire Solutions</span>
           <div className="flex items-center gap-5">
-            <button
-              onClick={() => toast("Privacy Policy — preview only")}
+            <Link
+              href="/privacy"
               className="footer-link text-[color:var(--color-footer-muted)]"
             >
               Privacy Policy
-            </button>
-            <button
-              onClick={() => toast("Terms — preview only")}
+            </Link>
+            <Link
+              href="/terms"
               className="footer-link text-[color:var(--color-footer-muted)]"
             >
               Terms &amp; Conditions
-            </button>
+            </Link>
           </div>
           <span>Made for high-volume hiring.</span>
         </div>

@@ -12,6 +12,9 @@ import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import BlogTag from "./pages/BlogTag";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 
 function Router() {
@@ -24,7 +27,10 @@ function Router() {
       <Route path={"/about"} component={About} />
       <Route path={"/contact"} component={Contact} />
       <Route path={"/blog"} component={Blog} />
+      <Route path={"/blog/tag/:tag"} component={BlogTag} />
       <Route path={"/blog/:slug"} component={BlogPost} />
+      <Route path={"/privacy"} component={Privacy} />
+      <Route path={"/terms"} component={Terms} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -171,3 +171,65 @@ describe("formatPublishedDate", () => {
     expect(formatPublishedDate("2026-12-31")).toBe("December 31, 2026");
   });
 });
+
+// ---------------------------------------------------------------------------
+// shared/blog-meta.json (consumed by the sitemap.xml generator in vite.config.ts)
+// must stay perfectly in sync with the runtime registry. Adding a post or
+// renaming a tag without updating the JSON would silently break SEO crawling,
+// so we fail CI loudly when they diverge.
+// ---------------------------------------------------------------------------
+import meta from "../../../shared/blog-meta.json";
+import { getAllTags, formatTag, listPostsByTag } from "./blog";
+
+describe("shared/blog-meta.json sync", () => {
+  it("includes every runtime slug and matches publishedAt as lastmod", () => {
+    const runtime = listPosts();
+    const metaSlugs = (meta.posts as { slug: string; lastmod: string }[]).map(
+      (p) => p.slug,
+    );
+    const runtimeSlugs = runtime.map((p) => p.slug);
+    expect(new Set(metaSlugs)).toEqual(new Set(runtimeSlugs));
+
+    const lastmodBySlug = new Map(
+      (meta.posts as { slug: string; lastmod: string }[]).map((p) => [
+        p.slug,
+        p.lastmod,
+      ]),
+    );
+    for (const p of runtime) {
+      expect(lastmodBySlug.get(p.slug), p.slug).toBe(p.publishedAt);
+    }
+  });
+
+  it("includes the exact set of tags exposed by the runtime registry", () => {
+    expect(new Set(meta.tags as string[])).toEqual(new Set(getAllTags()));
+  });
+});
+
+describe("tag helpers", () => {
+  it("getAllTags returns lower-kebab-case tags, sorted", () => {
+    const tags = getAllTags();
+    expect(tags.length).toBeGreaterThan(5);
+    const sorted = [...tags].sort();
+    expect(tags).toEqual(sorted);
+    for (const t of tags) expect(t).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+  });
+
+  it("listPostsByTag returns only posts that include the tag", () => {
+    for (const t of getAllTags()) {
+      const matches = listPostsByTag(t);
+      expect(matches.length).toBeGreaterThan(0);
+      for (const p of matches) expect(p.tags).toContain(t);
+    }
+  });
+
+  it("listPostsByTag returns [] for an unknown tag", () => {
+    expect(listPostsByTag("does-not-exist")).toEqual([]);
+  });
+
+  it("formatTag turns kebab-case into Title Case", () => {
+    expect(formatTag("fair-chance")).toBe("Fair Chance");
+    expect(formatTag("dot")).toBe("Dot");
+    expect(formatTag("ban-the-box")).toBe("Ban The Box");
+  });
+});

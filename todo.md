@@ -168,3 +168,12 @@
 - [x] DOM-probed all 8 routes (/, /services, /integrations, /pricing, /about, /contact, /blog, /blog/:slug): identical computed `oklch(0.2 0.045 258)` background, `oklch(0.98 0.005 85)` text, `oklch(0.88 0.01 260)` links
 - [x] Re-ran vitest suite (54/54 passing)
 - [x] Save checkpoint and deliver
+
+## 22. Privacy + Terms pages, blog tag archives, sitemap/robots, footer social-proof
+- [ ] Build `/privacy` and `/terms` page components with proper SEO meta and visible last-updated date
+- [ ] Wire footer "Privacy Policy" and "Terms & Conditions" buttons to real `<Link>` routes (drop the toast placeholders)
+- [ ] Build `/blog/tag/:tag` archive page; make every tag chip on the blog index link to it; add SEO meta + JSON-LD
+- [ ] Add a tiny tags helper (`getAllTags`, `listPostsByTag`) into `lib/blog.ts`; cover with vitest
+- [ ] Generate `dist/sitemap.xml` + `dist/robots.txt` at build time covering every static page, blog post, tag archive, plus `/privacy`/`/terms`
+- [ ] Add a "Trusted by 800+ HR & staffing teams" microcopy line above the footer link columns
+- [ ] Re-run vitest, QA in browser, save checkpoint and deliver

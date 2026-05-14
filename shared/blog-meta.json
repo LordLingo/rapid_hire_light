@@ -1,0 +1,26 @@
+{
+  "_comment": "Build-time mirror of the blog registry, consumed by the sitemap.xml generator in vite.config.ts. Keep in sync with client/src/lib/blog.ts and the 6 post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly — adding or renaming a post without updating this file fails CI.",
+  "posts": [
+    { "slug": "fcra-compliance-guide", "lastmod": "2026-05-12" },
+    { "slug": "background-check-turnaround-times", "lastmod": "2026-05-09" },
+    { "slug": "pre-employment-drug-testing", "lastmod": "2026-05-06" },
+    { "slug": "dot-driver-background-checks-mvr", "lastmod": "2026-05-02" },
+    { "slug": "continuous-employee-monitoring", "lastmod": "2026-04-28" },
+    { "slug": "ban-the-box-fair-chance-hiring", "lastmod": "2026-04-23" }
+  ],
+  "tags": [
+    "ban-the-box",
+    "compliance",
+    "continuous-monitoring",
+    "dot",
+    "drug-screening",
+    "fair-chance",
+    "fcra",
+    "hiring",
+    "operations",
+    "post-hire",
+    "risk",
+    "transportation",
+    "turnaround"
+  ]
+}
