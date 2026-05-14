@@ -17,7 +17,7 @@ const NAV: NavItem[] = [
   { label: "Pricing", href: "/pricing", type: "route" },
   { label: "Contact Us", href: "/contact", type: "route" },
   { label: "Client Login", href: "#login", type: "placeholder" },
-  { label: "Blog", href: "#blog", type: "placeholder" },
+  { label: "Blog", href: "/blog", type: "route" },
 ];
 
 function notImplemented(label: string) {

@@ -146,3 +146,15 @@
 - [x] Added `pnpm test` script; suite runs in 14ms, 36/36 pass
 - [x] QA in browser: URL hydration verified at `?v=250&pkg=comprehensive&adds=county,federal,mvr,drug5`; URL writing verified on input change + package switch; Reset clears state correctly
 - [x] Save checkpoint and deliver
+
+## 20. Blog reset + 6 SEO-optimized posts (~700 words each)
+- [x] Audit confirmed no prior blog content existed (no DB schema, no routes, no fixtures); built the blog from scratch on the static template
+- [x] Authored typed registry `client/src/lib/blog.ts` (BlogPost type, listPosts, getPostBySlug, relatedPosts, formatPublishedDate)
+- [x] Authored 6 ~700-word SEO-optimized posts under `client/src/content/blog/` (FCRA compliance, turnaround times, drug testing, DOT/MVR, continuous monitoring, ban-the-box) with metaTitle, metaDescription, slug, tags, internal links
+- [x] Built `/blog` index (PageHero, sticky tag rail, featured-first card grid) + `/blog/:slug` detail (hero, mini-Markdown body renderer, related-posts rail, CTA to /contact)
+- [x] Added `useSeo` hook for dynamic title/meta/OG/Twitter/canonical/JSON-LD; emits BlogPosting on detail pages and Blog with itemized blogPost entries on the index
+- [x] Wired routes in App.tsx and promoted the header Blog link from placeholder → real route to /blog
+- [x] Authored Vitest spec `client/src/lib/blog.test.ts` (18 specs): registry shape, slug uniqueness/format, sort order, ISO date format, tag format, ~700-word target band (550-900), meta description length (120-180), H2 presence, internal-link validity, lookup correctness, relatedPosts excludes self, formatPublishedDate timezone stability
+- [x] All 54 tests pass (36 pricing + 18 blog); browser QA confirmed index lists 6 posts and detail renders headings, paragraphs, bullets, internal links, tag chips, CTA, related rail; <title>/meta updates verified
+- [x] Stripped redundant brand suffix from two metaTitles to avoid double-branding in <title>
+- [x] Save checkpoint and deliver

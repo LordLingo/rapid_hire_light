@@ -1,0 +1,116 @@
+/**
+ * Static blog content registry.
+ *
+ * Posts live as typed TS modules under `client/src/content/blog/<slug>.ts`
+ * and are surfaced through this module's pure helpers. We keep the surface
+ * intentionally tiny (`listPosts`, `getPostBySlug`) so the index/detail
+ * pages remain framework-agnostic and easy to test.
+ *
+ * Why static modules instead of a database?
+ *   - This template ships as a static frontend (no DB, no tRPC).
+ *   - Content is version-controlled with the rest of the codebase.
+ *   - Build-time bundling means zero hydration cost at the edge.
+ *   - SEO meta is colocated with the body, so it can never drift.
+ */
+
+export type BlogPost = {
+  /** URL slug. Lower-kebab-case. Stable forever; do not rename. */
+  slug: string;
+  /** Human-readable post title. Also the rendered <h1>. */
+  title: string;
+  /**
+   * Title used in the browser tab + Open Graph. Optional override; falls
+   * back to `title` when omitted. Should stay <= 60 characters for SERP.
+   */
+  metaTitle?: string;
+  /**
+   * Meta description for SERP snippet + OG. Aim for 140-160 characters and
+   * include the primary keyword early.
+   */
+  metaDescription: string;
+  /** Short marketing-style excerpt rendered on the index card (~25 words). */
+  excerpt: string;
+  /** ISO date (YYYY-MM-DD) of publication. Used for sort + dateline. */
+  publishedAt: string;
+  /** Estimated reading time in minutes. Pre-computed for content stability. */
+  readingMinutes: number;
+  /** Author display name. */
+  author: string;
+  /** Topical tags. Lowercase, kebab-case. First tag becomes the eyebrow. */
+  tags: string[];
+  /** Optional cover image URL (uploaded via manus-upload-file --webdev). */
+  cover?: string;
+  /**
+   * Body in a tiny Markdown-like dialect:
+   *   - Lines starting with `## ` become <h2>.
+   *   - Lines starting with `### ` become <h3>.
+   *   - Lines starting with `- ` become <ul><li>.
+   *   - Blank lines separate paragraphs.
+   *   - Inline `[text](url)` becomes <a>.
+   *   - Inline `**text**` becomes <strong>.
+   *
+   * We avoid pulling in a markdown library to keep the bundle lean and the
+   * rendering deterministic for SEO snapshots.
+   */
+  body: string;
+};
+
+import { post as postFcraGuide } from "@/content/blog/fcra-compliance-guide";
+import { post as postTurnaround } from "@/content/blog/background-check-turnaround-times";
+import { post as postDrugTesting } from "@/content/blog/pre-employment-drug-testing";
+import { post as postDotMvr } from "@/content/blog/dot-driver-background-checks-mvr";
+import { post as postMonitoring } from "@/content/blog/continuous-employee-monitoring";
+import { post as postBanTheBox } from "@/content/blog/ban-the-box-fair-chance-hiring";
+
+const ALL_POSTS: readonly BlogPost[] = Object.freeze([
+  postFcraGuide,
+  postTurnaround,
+  postDrugTesting,
+  postDotMvr,
+  postMonitoring,
+  postBanTheBox,
+]);
+
+/**
+ * Return all published posts sorted newest-first. Pure function — safe to
+ * call from React components without memoization concerns.
+ */
+export function listPosts(): BlogPost[] {
+  return [...ALL_POSTS].sort((a, b) =>
+    a.publishedAt < b.publishedAt ? 1 : a.publishedAt > b.publishedAt ? -1 : 0,
+  );
+}
+
+/**
+ * Look up a single post by slug. Returns `undefined` for unknown slugs so
+ * callers can render a 404 cleanly.
+ */
+export function getPostBySlug(slug: string): BlogPost | undefined {
+  return ALL_POSTS.find((p) => p.slug === slug);
+}
+
+/**
+ * Return up to `n` posts excluding the supplied slug, used to power the
+ * "More from the team" rail on detail pages.
+ */
+export function relatedPosts(currentSlug: string, n: number = 3): BlogPost[] {
+  return listPosts()
+    .filter((p) => p.slug !== currentSlug)
+    .slice(0, n);
+}
+
+/**
+ * Format an ISO date (YYYY-MM-DD) as a long-form English dateline.
+ */
+export function formatPublishedDate(iso: string): string {
+  // Parse as UTC midnight to avoid the page rendering a different day in
+  // a viewer's local timezone (a classic SSR/CSR drift hazard).
+  const [y, m, d] = iso.split("-").map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d));
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
