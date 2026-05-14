@@ -54,3 +54,10 @@
 - [x] Restored `1,000+` last scale label and rendered displayed number as `1,000+` when slider value reaches max (display-only override; slider value remains exactly 1000)
 - [x] Verified live: 1→"1", 50→"50", 200→"200", 1000→"1,000+"
 - [x] Save checkpoint + deliver
+
+## 9. Slider tier tick marks
+- [ ] Render 4 tick marks behind the slider track at 50, 100, 200, 500 (% positions on the track)
+- [ ] Active state: tick turns brand-blue when current value >= threshold
+- [ ] Tooltip / label on hover shows discount % (e.g. "−10% at 100/mo")
+- [ ] Visually subtle so it doesn't compete with the thumb
+- [ ] Save checkpoint + deliver

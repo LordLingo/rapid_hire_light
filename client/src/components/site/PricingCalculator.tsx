@@ -183,23 +183,52 @@ export default function PricingCalculator() {
                 </div>
               </div>
 
-              <input
-                type="range"
-                min={1}
-                max={1000}
-                step={1}
-                value={hires}
-                onChange={(e) => {
-                  const n = Number(e.target.value);
-                  if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
-                }}
-                onInput={(e) => {
-                  const n = Number((e.target as HTMLInputElement).value);
-                  if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
-                }}
-                className="calc-range mt-6 w-full"
-                aria-label="Monthly hires"
-              />
+              <div className="relative mt-6">
+                <input
+                  type="range"
+                  min={1}
+                  max={1000}
+                  step={1}
+                  value={hires}
+                  onChange={(e) => {
+                    const n = Number(e.target.value);
+                    if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
+                  }}
+                  onInput={(e) => {
+                    const n = Number((e.target as HTMLInputElement).value);
+                    if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
+                  }}
+                  className="calc-range relative z-10 w-full"
+                  aria-label="Monthly hires"
+                />
+                {/* Discount-tier ticks behind the track */}
+                <div className="pointer-events-none absolute inset-x-0 top-1/2 z-0 -translate-y-1/2" aria-hidden="true">
+                  {[
+                    { v: 50, label: "−5%" },
+                    { v: 100, label: "−10%" },
+                    { v: 200, label: "−16%" },
+                    { v: 500, label: "−22%" },
+                  ].map(({ v, label }) => {
+                    const pct = ((v - 1) / (1000 - 1)) * 100;
+                    const reached = hires >= v;
+                    return (
+                      <span
+                        key={v}
+                        className="calc-tick pointer-events-auto absolute -translate-x-1/2 group"
+                        style={{ left: `${pct}%` }}
+                        title={`${label} per check at ${v}/mo`}
+                      >
+                        <span
+                          className={`block h-2 w-px rounded-sm transition-colors ${reached ? "bg-[color:var(--color-accent-ink)]" : "bg-[color:var(--color-ink-muted)]/40"}`}
+                        />
+                        <span className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-[color:var(--color-paper)] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[color:var(--color-ink-soft)] opacity-0 shadow-sm transition-opacity duration-150 group-hover:opacity-100">
+                          {label} at {v.toLocaleString()}/mo
+                        </span>
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
               <div className="mt-3 grid grid-cols-5 text-[11px] uppercase tracking-wider text-[color:var(--color-ink-muted)] tabular-nums">
                 <span className="text-left">1</span>
                 <span className="text-center">50</span>
