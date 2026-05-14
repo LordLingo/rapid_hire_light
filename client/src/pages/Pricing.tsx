@@ -9,13 +9,17 @@
    - FAQ short strip.
    - Closing CTA → /contact.
 */
+import { useCallback, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check, Sparkles } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import PricingCalculator from "@/components/site/PricingCalculator";
+import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
 
+type TierId = "essential" | "professional" | "comprehensive";
 type Tier = {
+  id: TierId;
   eyebrow: string;
   name: string;
   price: string;
@@ -28,10 +32,31 @@ type Tier = {
   cta: string;
   ctaHref: string;
   featured?: boolean;
+  /** Inclusive lower bound of per-check estimate (USD) that maps to this tier. */
+  matchMin: number;
+  /** Exclusive upper bound of per-check estimate (USD) that maps to this tier (Infinity for top tier). */
+  matchMax: number;
 };
+
+/**
+ * Map a live per-check estimate back to a tier id.
+ * Bands chosen to map cleanly to the calculator's likely outputs at the
+ * documented illustrative pricing model: Basic ~ $24–34, Standard ~ $35–59,
+ * Comprehensive ~ $60+. Discount tiers naturally bleed across boundaries
+ * which is desirable — a discounted Standard hitting $34.50 will correctly
+ * collapse to Essential.
+ */
+function matchTierFromPerCheck(perCheckNet: number): TierId {
+  if (perCheckNet >= 60) return "comprehensive";
+  if (perCheckNet >= 35) return "professional";
+  return "essential";
+}
 
 const TIERS: Tier[] = [
   {
+    id: "essential",
+    matchMin: 0,
+    matchMax: 35,
     eyebrow: "01 — Essential",
     name: "Essential",
     price: "$24.95",
@@ -53,6 +78,9 @@ const TIERS: Tier[] = [
     ctaHref: "/contact?tier=essential&note=Interested+in+the+Essential+package",
   },
   {
+    id: "professional",
+    matchMin: 35,
+    matchMax: 60,
     eyebrow: "02 — Professional",
     name: "Professional",
     price: "$44.95",
@@ -77,6 +105,9 @@ const TIERS: Tier[] = [
     featured: true,
   },
   {
+    id: "comprehensive",
+    matchMin: 60,
+    matchMax: Infinity,
     eyebrow: "03 — Comprehensive",
     name: "Comprehensive",
     price: "$74.95",
@@ -126,6 +157,11 @@ const PRICING_FAQ = [
 ];
 
 export default function Pricing() {
+  const [matchedTier, setMatchedTier] = useState<TierId | null>(null);
+  const handleEstimate = useCallback((e: CalculatorEstimate) => {
+    setMatchedTier(matchTierFromPerCheck(e.perCheckNet));
+  }, []);
+
   return (
     <SiteShell>
       <PageHero
@@ -148,6 +184,8 @@ export default function Pricing() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
             {TIERS.map((t) => {
               const isFeatured = !!t.featured;
+              const isMatched = matchedTier === t.id;
+              const isDimmed = matchedTier !== null && !isMatched;
               const labelClass = isFeatured
                 ? "text-[10.5px] font-medium uppercase tracking-[0.18em] text-white/85"
                 : "text-[10.5px] font-medium uppercase tracking-[0.18em] text-[color:var(--color-accent-ink)]";
@@ -157,17 +195,41 @@ export default function Pricing() {
               return (
                 <article
                   key={t.name}
+                  data-tier-id={t.id}
+                  data-matched={isMatched ? "true" : "false"}
                   className={[
                     "reveal-on-scroll relative flex flex-col rounded-[20px] border p-8 md:p-9",
+                    "transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out",
                     isFeatured
                       ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] text-white shadow-[0_24px_60px_-30px_rgba(37,99,235,0.45)] lg:scale-[1.02] lg:-mt-2"
                       : "border-border bg-[color:var(--color-paper)] text-[color:var(--color-ink)]",
+                    isMatched && !isFeatured
+                      ? "!border-[color:var(--color-accent-ink)] ring-2 ring-[color:var(--color-accent-ink)]/40 ring-offset-2 ring-offset-white shadow-[0_24px_60px_-30px_rgba(37,99,235,0.45)] lg:-translate-y-0.5"
+                      : "",
+                    isMatched && isFeatured
+                      ? "ring-2 ring-white/45 ring-offset-2 ring-offset-[color:var(--color-accent-ink)]"
+                      : "",
+                    isDimmed ? "opacity-55" : "opacity-100",
                   ].join(" ")}
                 >
                   {isFeatured && (
                     <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-accent-ink)] shadow-sm border border-[color:var(--color-accent-ink)]/20">
                       <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
                       Most Chosen
+                    </span>
+                  )}
+                  {isMatched && (
+                    <span
+                      className={[
+                        "absolute -top-3 right-5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] shadow-sm transition-opacity duration-200",
+                        isFeatured
+                          ? "bg-white/90 text-[color:var(--color-accent-ink)] border border-white"
+                          : "bg-[color:var(--color-accent-ink)] text-white border border-[color:var(--color-accent-ink)]",
+                      ].join(" ")}
+                      aria-label="Your estimate matches this tier"
+                    >
+                      <Sparkles className="size-3" strokeWidth={2.25} />
+                      Matches your estimate
                     </span>
                   )}
 
@@ -275,7 +337,7 @@ export default function Pricing() {
       </section>
 
       {/* Calculator */}
-      <PricingCalculator />
+      <PricingCalculator onEstimateChange={handleEstimate} />
 
       {/* Add-ons */}
       <section className="bg-[color:var(--color-paper)]">

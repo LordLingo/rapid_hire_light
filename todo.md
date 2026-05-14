@@ -74,3 +74,13 @@
 - [x] Kept the *current* tier-card rounded radius (20px / `rounded-[20px]`, identical to the prior 2-card section) and existing border colors
 - [x] Verified: 3 cards, brand-blue on Professional, badge present, all 3 CTAs prefilled, mobile stacking via grid-cols-1
 - [x] Save checkpoint + deliver
+
+## 11. Tier-aware Pricing Calculator
+- [x] Defined per-tier price bands: Essential <$35, Professional $35–<$60, Comprehensive ≥$60 (matchTierFromPerCheck)
+- [x] Lifted state via `onEstimateChange` callback prop emitting `{perCheckNet, perCheckList, monthly, annual, hires, selected}`
+- [x] Pricing page maintains `matchedTier` state and passes per-card `isMatched`/`isDimmed` flags
+- [x] Matched card: brand-blue 2px ring + 2px ring offset + lifted -translate-y-0.5; "Matches your estimate" pill at top-right with Sparkles icon (white-on-blue pill on Professional, blue-on-white on outer cards)
+- [x] Non-matching cards dim to opacity 0.55
+- [x] Smooth transitions: 300ms ease-out on opacity, transform, box-shadow, border-color
+- [x] Verified live: Standard@40 → Comprehensive matched; Basic → Essential matched; Comprehensive pkg → Comprehensive matched; Slider=600 → Comprehensive (post-discount); Slider=5+Standard → Comprehensive
+- [x] Save checkpoint + deliver

@@ -11,9 +11,18 @@
     Package presets are just convenient bundles of those add-ons.
     Volume discounts apply per-check above 50 hires/month thresholds.
 */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { ArrowUpRight, Check } from "lucide-react";
+
+export type CalculatorEstimate = {
+  perCheckNet: number;
+  perCheckList: number;
+  monthly: number;
+  annual: number;
+  hires: number;
+  selected: string[];
+};
 
 type Addon = { id: string; label: string; price: number };
 
@@ -80,7 +89,11 @@ function fmtMoney2(n: number) {
   });
 }
 
-export default function PricingCalculator() {
+export default function PricingCalculator({
+  onEstimateChange,
+}: {
+  onEstimateChange?: (e: CalculatorEstimate) => void;
+} = {}) {
   const [hires, setHires] = useState(40);
   const [pkg, setPkg] = useState<PackageId>("standard");
   const [selected, setSelected] = useState<string[]>(
@@ -125,6 +138,18 @@ export default function PricingCalculator() {
     () => ADDONS.filter((a) => selected.includes(a.id)),
     [selected],
   );
+
+  // Notify parent (Pricing page) of live estimate changes for tier-aware highlight.
+  useEffect(() => {
+    onEstimateChange?.({
+      perCheckNet,
+      perCheckList,
+      monthly,
+      annual,
+      hires,
+      selected,
+    });
+  }, [perCheckNet, perCheckList, monthly, annual, hires, selected, onEstimateChange]);
 
   // Build pre-filled query string for /contact
   const quoteQuery = useMemo(() => {
