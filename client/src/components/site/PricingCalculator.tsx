@@ -171,7 +171,7 @@ export default function PricingCalculator() {
                 <div>
                   <p className="eyebrow">Monthly hires</p>
                   <p className="mt-2 font-display text-[40px] leading-none tracking-[-0.02em] text-[color:var(--color-ink)]">
-                    {hires.toLocaleString()}
+                    {hires >= 1000 ? "1,000+" : hires.toLocaleString()}
                   </p>
                 </div>
                 <div className="text-right">
@@ -189,16 +189,23 @@ export default function PricingCalculator() {
                 max={1000}
                 step={1}
                 value={hires}
-                onChange={(e) => setHires(Number(e.target.value))}
+                onChange={(e) => {
+                  const n = Number(e.target.value);
+                  if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
+                }}
+                onInput={(e) => {
+                  const n = Number((e.target as HTMLInputElement).value);
+                  if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
+                }}
                 className="calc-range mt-6 w-full"
                 aria-label="Monthly hires"
               />
-              <div className="mt-2 flex items-center justify-between text-[11px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
-                <span>1</span>
-                <span>50</span>
-                <span>200</span>
-                <span>500</span>
-                <span>1,000+</span>
+              <div className="mt-3 grid grid-cols-5 text-[11px] uppercase tracking-wider text-[color:var(--color-ink-muted)] tabular-nums">
+                <span className="text-left">1</span>
+                <span className="text-center">50</span>
+                <span className="text-center">200</span>
+                <span className="text-center">500</span>
+                <span className="text-right">1,000+</span>
               </div>
             </div>
 

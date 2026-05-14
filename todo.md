@@ -45,3 +45,12 @@
 - [x] Handle empty add-on case (italic muted note)
 - [x] Subtle styling: hairline rules above and below, eyebrow + screen count, brand-blue check pips
 - [x] QA in preview (Standard package shows 4 screens correctly), save checkpoint, deliver
+
+## 8. Bug — slider value drift on Monthly Hires
+- [x] Diagnosed: displayed number was actually correct; the visual perception of "226" came from collapsed scale labels under the slider rendering as `150` `200` `500` `1,000+` with no spacing
+- [x] Reinforced controlled binding (single source of truth `hires`) with both `onChange` and `onInput`, plus `Number.isFinite` + clamp to [1,1000]
+- [x] Confirmed no `defaultValue` / animated counter present
+- [x] Fixed scale labels collision: distributed via `grid-cols-5` with text-left/center/right alignment so labels never collide
+- [x] Restored `1,000+` last scale label and rendered displayed number as `1,000+` when slider value reaches max (display-only override; slider value remains exactly 1000)
+- [x] Verified live: 1→"1", 50→"50", 200→"200", 1000→"1,000+"
+- [x] Save checkpoint + deliver
