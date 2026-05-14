@@ -224,24 +224,24 @@
 
 ## 29. Imagery V2 — superseded by V3 (product-card heroes)
 - [x] Direction was rejected on user feedback ("BETTER AI" → then "could be infographics"); replaced by V3 plan in section 30/31. No still-life photo set was shipped.
-- [x] Lock a tighter art direction: cinematic editorial documentary, single hard side-light + warm fill, 35mm look, very shallow depth (f/1.8), subtle film grain, unified palette of bone white + warm oak + ink black + a single brand-blue accent prop, no faces, no on-screen text, no laptop logos, no over-decorated desks
-- [ ] Write a per-image shot spec (subject, framing, light direction, prop list, do/don't list) for 8 images: about_hero, about_story, services_hero, pricing_hero, integrations_hero, contact_hero, support_hero, support_desk
-- [ ] Generate each image with the much tighter prompts (one batch, all 8 in parallel) — first the anchor "about_hero", then 7 in parallel with it referenced as the style anchor
-- [ ] Upload via `manus-upload-file --webdev` to get persistent URLs
-- [ ] Swap references in About / Services / Pricing / Integrations / Contact / Support, and update Support hero + desk-row alt text to "Prosper, TX"
-- [ ] QA every touched page in browser (desktop + mobile), confirm no broken images
-- [ ] Vitest 76/76, save checkpoint, deliver
+- [x] Lock a tighter art direction: cinematic editorial documentary brief was drafted, then abandoned in favor of V3 product-card visuals
+- [x] (Superseded by V3) Per-image shot spec — not needed; V3 ships code-rendered hero cards, not photos
+- [x] (Superseded by V3) Generate the 8 anchor + parallel images — not needed; V3 replaces them with HeroCard components
+- [x] (Superseded by V3) Upload via manus-upload-file — not needed; V3 has zero photo dependencies for hero slots
+- [x] (Superseded by V3) Swap photo references — V3 swap done in section 31 (visual={...} ReactNode props)
+- [x] (Superseded by V3) Browser QA of every touched page — done as part of V3 QA
+- [x] (Superseded by V3) Vitest + checkpoint + deliver — V3 vitest 76/76 + checkpoint 2d166bc1 ship the equivalent
 
 ## 30. Imagery V3 — compete with Checkr / HireRight / Sterling / First Advantage (DONE)
-- [x] Audited those four sites' hero strategies (what they show: dashboards, report cards, flow diagrams, candidate UX, motion); confirm Rapid Hire's gap is "product visualization," not "more stock photos"
-- [ ] Lock a new visual system: per-page hero is a CODE-RENDERED product card built from the existing design system (already proven on Home with the "Maya R. — Logistics Lead" report card) — no AI photos for product moments, because nothing beats a clean fake-real product UI for trust
-- [ ] Design 6 page-specific product-visual heroes:
+- [x] Audited those four sites' hero strategies (what they show: dashboards, report cards, flow diagrams, candidate UX, motion); confirmed Rapid Hire's gap is "product visualization," not "more stock photos"
+- [x] Locked the new visual system: per-page hero is a CODE-RENDERED product card built from the existing design system (proven on Home with the "Maya R. — Logistics Lead" report card) — no AI photos for product moments
+- [x] Designed 6 page-specific product-visual heroes (all built in section 31):
   - About → "Built in Prosper, TX" — small org-chart card (3 nodes: Compliance · Verifications · Support) with timestamps
   - Services → "Stack of screens, ordered" — a vertical pill list of the 6 services with status chips
   - Pricing → "What you actually pay" — a single line-item invoice card (3 lines + total) with "no setup fee" pill
   - Integrations → "Plugs into your stack" — a 6-logo-tile grid in a chrome window header (ATS / HRIS / SSO)
   - Contact → "Reach a human" — a tiny inbound-call card (Caller · Wait time · Picked up by) in our brand
-  - Support → already strong, refine the answer-time panel into the same product-card vocabulary
+  - Support → refined the answer-time panel into the same product-card vocabulary
 - [x] Reserve AI PHOTOS only for moments where a real photo earns its keep (e.g. About story, Support desk wide banner) — and make those people-with-purpose, hands on keys / mid-conversation / receipt-of-call body language, not still-life desks
 - [x] Build the product cards as small composable React components (`HeroCard*`), drop them into `PageHero` via the existing `image` slot replacement (rename to `visual` slot accepting ReactNode)
 - [x] Vitest 76/76 still passing, browser QA across viewports, checkpoint pending
