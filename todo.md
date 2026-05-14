@@ -56,8 +56,8 @@
 - [x] Save checkpoint + deliver
 
 ## 9. Slider tier tick marks
-- [ ] Render 4 tick marks behind the slider track at 50, 100, 200, 500 (% positions on the track)
-- [ ] Active state: tick turns brand-blue when current value >= threshold
-- [ ] Tooltip / label on hover shows discount % (e.g. "−10% at 100/mo")
-- [ ] Visually subtle so it doesn't compete with the thumb
-- [ ] Save checkpoint + deliver
+- [x] Render 4 tick marks behind the slider track at 50, 100, 200, 500 (verified live at 4.9%, 9.9%, 19.9%, 49.9% of track width)
+- [x] Active state: tick turns brand-blue (`var(--color-accent-ink)`) when current value >= threshold; otherwise muted ink/40
+- [x] Hover tooltip with discount %: "−5% at 50/mo", "−10% at 100/mo", "−16% at 200/mo", "−22% at 500/mo" (CSS opacity transition, no JS)
+- [x] Visually subtle: hairline 8×1px ticks behind the track, z-index 0 so the thumb sits on top
+- [x] Save checkpoint + deliver
