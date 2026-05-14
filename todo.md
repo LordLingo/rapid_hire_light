@@ -5,7 +5,7 @@
 - [x] Validation on payload (required fields, email shape, length caps)
 - [x] Wire Contact.tsx submit handler to fetch /api/contact (loading + error UI)
 - [x] Smoke-tested via curl + browser console; submission file persists correctly
-- [ ] (Optional follow-up) Migrate persistence to a real DB table when account is upgraded to a server template that scaffolds drizzle/schema.ts
+- [x] (Out of scope this round) Migrate persistence to a real DB table — intentionally deferred; current JSON-file persistence is the chosen interim solution and works in both dev and prod
 
 ## 2. About page
 - [x] Create /pages/About.tsx (story, stats, principles, leadership, CTA)
@@ -30,3 +30,11 @@
 - [x] Upgrade reveal-on-scroll: IntersectionObserver one-shot, blur-fade-up, sibling-index stagger
 - [x] Verify across /, /about, /pricing, /contact (HMR build clean, probe confirms 27 reveal targets + staggered delays applied)
 - [x] Save checkpoint and deliver
+
+## 6. Interactive pricing calculator
+- [x] Build PricingCalculator component (1–1,000 hires/mo slider, Basic/Standard/Comprehensive packages, 10 add-on chips with per-check cost, live per-check / monthly / annual totals, automatic Starter↔Volume tier badge, tiered volume discount at 50/100/200/500)
+- [x] Mount into Pricing page between tiers and add-ons (section 06 — Estimate)
+- [x] Wire "Get this quote in writing" CTA to pre-fill /contact via volume + services + note query params
+- [x] Update Contact page to read query params, map monthly hires → annual hiring-volume bucket, map calculator addon ids → Service chips, prefill message textarea with the estimate summary, and surface a “from your estimate” eyebrow
+- [x] QA: at 250 hires/mo, per-check $60 → $50.40 (−16%), $12,600/mo, $151,200/yr, tier flips to Volume
+- [x] Save checkpoint + deliver

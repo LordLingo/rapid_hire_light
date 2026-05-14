@@ -7,8 +7,8 @@
      to stay editorial. Submit shows a sonner toast (preview-only).
    - Closing strip with FAQ shortcut back to home.
 */
-import { useState } from "react";
-import { Link } from "wouter";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearch } from "wouter";
 import { ArrowUpRight, Mail, Phone, MapPin, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import SiteShell from "@/components/site/SiteShell";
@@ -31,11 +31,58 @@ const TEAM_SIZES = [
   "1,000+",
 ];
 
+/** Map monthly hires (from calculator) to the closest annual TEAM_SIZES bucket. */
+function monthlyHiresToTeamSize(monthly: number): string {
+  const yearly = monthly * 12;
+  if (yearly <= 10) return "1 — 10";
+  if (yearly <= 50) return "11 — 50";
+  if (yearly <= 200) return "51 — 200";
+  if (yearly <= 1000) return "201 — 1,000";
+  return "1,000+";
+}
+
+/** Map calculator addon ids to friendly Service chip labels used here. */
+const ADDON_TO_SERVICE: Record<string, string> = {
+  county: "Criminal Records",
+  federal: "Criminal Records",
+  mvr: "Motor Vehicle Reports",
+  drug5: "Drug & Health",
+  education: "Education Verification",
+  employment: "Employment Screening",
+  social: "Social Media Checks",
+};
+
 export default function Contact() {
-  const [interests, setInterests] = useState<string[]>([]);
+  const search = useSearch();
+  const params = useMemo(() => new URLSearchParams(search), [search]);
+  const prefillNote = params.get("note") ?? "";
+  const prefillVolumeRaw = params.get("volume");
+  const prefillVolume = prefillVolumeRaw ? Number(prefillVolumeRaw) : NaN;
+  const prefillTeamSize = Number.isFinite(prefillVolume) && prefillVolume > 0
+    ? monthlyHiresToTeamSize(prefillVolume)
+    : "";
+  const prefillServiceIds = (params.get("services") ?? "")
+    .split(",")
+    .filter(Boolean);
+  const prefillInterests = Array.from(
+    new Set(
+      prefillServiceIds
+        .map((id) => ADDON_TO_SERVICE[id])
+        .filter((s): s is string => Boolean(s)),
+    ),
+  );
+  const cameFromCalculator = Boolean(prefillNote || prefillVolumeRaw || prefillServiceIds.length);
+
+  const [interests, setInterests] = useState<string[]>(prefillInterests);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Re-sync if user navigates between calculator quotes within the SPA.
+  useEffect(() => {
+    if (prefillInterests.length) setInterests(prefillInterests);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   function toggle(v: string) {
     setInterests((cur) =>
@@ -85,7 +132,7 @@ export default function Contact() {
   return (
     <SiteShell>
       <PageHero
-        eyebrow="03 — Contact"
+        eyebrow={cameFromCalculator ? "03 — Contact · from your estimate" : "03 — Contact"}
         title={
           <>
             Let&apos;s{" "}
@@ -211,7 +258,7 @@ export default function Contact() {
                       </label>
                       <select
                         name="teamSize"
-                        defaultValue=""
+                        defaultValue={prefillTeamSize}
                         required
                         className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
                       >
@@ -260,9 +307,15 @@ export default function Contact() {
                     <textarea
                       name="message"
                       rows={5}
+                      defaultValue={prefillNote}
                       placeholder="Roles, jurisdictions, ATS in use, anything else we should know."
                       className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] leading-[1.7] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink-muted)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors resize-none"
                     />
+                    {cameFromCalculator && (
+                      <p className="mt-3 text-[12px] text-[color:var(--color-ink-muted)]">
+                        Pre-filled from your pricing estimate. Edit anything before sending.
+                      </p>
+                    )}
                   </div>
 
                   {error && (

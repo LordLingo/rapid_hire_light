@@ -12,6 +12,7 @@ import { Link } from "wouter";
 import { ArrowUpRight, Check } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
+import PricingCalculator from "@/components/site/PricingCalculator";
 
 const TIERS = [
   {
@@ -155,12 +156,15 @@ export default function Pricing() {
         </div>
       </section>
 
+      {/* Calculator */}
+      <PricingCalculator />
+
       {/* Add-ons */}
       <section className="bg-[color:var(--color-paper)]">
         <div className="container py-20 md:py-24">
           <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
             <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">06 — Add-ons</p>
+              <p className="eyebrow">07 — Add-ons</p>
               <div className="mt-3 hairline" />
             </div>
             <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
@@ -195,7 +199,7 @@ export default function Pricing() {
         <div className="container py-20 md:py-24">
           <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
             <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">07 — Pricing FAQ</p>
+              <p className="eyebrow">08 — Pricing FAQ</p>
               <div className="mt-3 hairline" />
             </div>
             <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
@@ -231,7 +235,7 @@ export default function Pricing() {
         <div className="container py-20 md:py-24">
           <div className="reveal-on-scroll grid grid-cols-12 gap-6 items-center">
             <div className="col-span-12 md:col-span-8">
-              <p className="eyebrow">08 — Get a quote</p>
+              <p className="eyebrow">09 — Get a quote</p>
               <h3 className="mt-4 font-display text-[34px] sm:text-[44px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
                 We&apos;ll send your written quote inside one business day.
               </h3>
