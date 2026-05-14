@@ -150,6 +150,115 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
+// =============================================================================
+// Contact form API plugin
+// POST /api/contact — validates payload, appends to data/contact_submissions.json
+// GET  /api/contact — returns recent submissions (preview convenience)
+// =============================================================================
+
+const CONTACT_DATA_DIR = path.join(PROJECT_ROOT, "data");
+const CONTACT_DATA_FILE = path.join(CONTACT_DATA_DIR, "contact_submissions.json");
+
+function ensureContactStore() {
+  if (!fs.existsSync(CONTACT_DATA_DIR)) fs.mkdirSync(CONTACT_DATA_DIR, { recursive: true });
+  if (!fs.existsSync(CONTACT_DATA_FILE)) fs.writeFileSync(CONTACT_DATA_FILE, "[]\n", "utf-8");
+}
+
+function readContactSubmissions(): unknown[] {
+  ensureContactStore();
+  try {
+    const raw = fs.readFileSync(CONTACT_DATA_FILE, "utf-8");
+    const arr = JSON.parse(raw);
+    return Array.isArray(arr) ? arr : [];
+  } catch {
+    return [];
+  }
+}
+
+function appendContactSubmission(entry: Record<string, unknown>) {
+  const list = readContactSubmissions();
+  list.push(entry);
+  fs.writeFileSync(CONTACT_DATA_FILE, JSON.stringify(list, null, 2) + "\n", "utf-8");
+}
+
+function validateContactPayload(payload: any):
+  | { ok: true; value: { fullName: string; email: string; company: string; volume: string; services: string[]; message: string } }
+  | { ok: false; error: string } {
+  if (!payload || typeof payload !== "object") return { ok: false, error: "Invalid payload" };
+  const fullName = String(payload.fullName ?? "").trim();
+  const email = String(payload.email ?? "").trim();
+  const company = String(payload.company ?? "").trim();
+  const volume = String(payload.volume ?? "").trim();
+  const message = String(payload.message ?? "").trim();
+  const servicesRaw = Array.isArray(payload.services) ? payload.services : [];
+  const services = servicesRaw.map((s: unknown) => String(s)).filter(Boolean);
+  if (!fullName) return { ok: false, error: "Full name is required." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { ok: false, error: "A valid work email is required." };
+  if (!company) return { ok: false, error: "Company is required." };
+  if (fullName.length > 200 || email.length > 320 || company.length > 200 || message.length > 5000) {
+    return { ok: false, error: "One or more fields are too long." };
+  }
+  return { ok: true, value: { fullName, email, company, volume, services, message } };
+}
+
+function vitePluginContactApi(): Plugin {
+  return {
+    name: "manus-contact-api",
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use("/api/contact", (req, res) => {
+        if (req.method === "GET") {
+          const list = readContactSubmissions();
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ count: list.length, submissions: list.slice(-50).reverse() }));
+          return;
+        }
+        if (req.method !== "POST") {
+          res.writeHead(405, { "Content-Type": "application/json", Allow: "GET, POST" });
+          res.end(JSON.stringify({ ok: false, error: "Method not allowed" }));
+          return;
+        }
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+          if (body.length > 1_000_000) {
+            req.destroy();
+          }
+        });
+        req.on("end", () => {
+          let payload: unknown;
+          try {
+            payload = JSON.parse(body || "{}");
+          } catch {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ ok: false, error: "Invalid JSON" }));
+            return;
+          }
+          const result = validateContactPayload(payload);
+          if (!result.ok) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ ok: false, error: result.error }));
+            return;
+          }
+          const entry = {
+            id: `cs_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
+            createdAt: new Date().toISOString(),
+            ...result.value,
+          };
+          try {
+            appendContactSubmission(entry);
+          } catch (e) {
+            res.writeHead(500, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ ok: false, error: "Could not persist submission" }));
+            return;
+          }
+          res.writeHead(201, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ ok: true, id: entry.id }));
+        });
+      });
+    },
+  };
+}
+
 function vitePluginStorageProxy(): Plugin {
   return {
     name: "manus-storage-proxy",
@@ -203,7 +312,7 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginContactApi()];
 
 export default defineConfig({
   plugins,

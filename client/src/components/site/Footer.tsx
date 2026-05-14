@@ -17,7 +17,8 @@ const SERVICES: FooterItem[] = [
   { label: "Education Checks", to: "/services" },
 ];
 const COMPANY: FooterItem[] = [
-  { label: "About Us" },
+  { label: "About Us", to: "/about" },
+  { label: "Pricing", to: "/pricing" },
   { label: "Contact", to: "/contact" },
 ];
 const PORTALS: FooterItem[] = [

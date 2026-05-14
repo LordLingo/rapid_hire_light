@@ -9,7 +9,7 @@
 */
 import { useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Mail, Phone, MapPin, Check } from "lucide-react";
+import { ArrowUpRight, Mail, Phone, MapPin, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
@@ -34,6 +34,8 @@ const TEAM_SIZES = [
 export default function Contact() {
   const [interests, setInterests] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function toggle(v: string) {
     setInterests((cur) =>
@@ -41,10 +43,43 @@ export default function Contact() {
     );
   }
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSubmitted(true);
-    toast("Thanks — your request was queued (preview only).");
+    if (submitting) return;
+    setError(null);
+    const formEl = e.currentTarget;
+    const fd = new FormData(formEl);
+    const payload = {
+      fullName: String(fd.get("name") ?? ""),
+      email: String(fd.get("email") ?? ""),
+      company: String(fd.get("company") ?? ""),
+      volume: String(fd.get("teamSize") ?? ""),
+      message: String(fd.get("message") ?? ""),
+      services: interests,
+    };
+    setSubmitting(true);
+    try {
+      const resp = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = (await resp.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (!resp.ok || !data?.ok) {
+        const msg = data?.error || `Submission failed (${resp.status}). Please try again.`;
+        setError(msg);
+        toast.error(msg);
+        return;
+      }
+      setSubmitted(true);
+      toast.success("Request received — we'll be in touch the same business day.");
+    } catch {
+      const msg = "Network error. Please try again.";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -230,6 +265,14 @@ export default function Contact() {
                     />
                   </div>
 
+                  {error && (
+                    <p
+                      role="alert"
+                      className="text-[13px] text-red-600 -mt-4"
+                    >
+                      {error}
+                    </p>
+                  )}
                   <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                     <p className="text-[12px] text-[color:var(--color-ink-muted)] max-w-md">
                       By submitting, you agree to be contacted about Rapid
@@ -237,10 +280,20 @@ export default function Contact() {
                     </p>
                     <button
                       type="submit"
-                      className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
+                      disabled={submitting}
+                      className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Send request
-                      <ArrowUpRight className="size-4" />
+                      {submitting ? (
+                        <>
+                          Sending
+                          <Loader2 className="size-4 animate-spin" />
+                        </>
+                      ) : (
+                        <>
+                          Send request
+                          <ArrowUpRight className="size-4" />
+                        </>
+                      )}
                     </button>
                   </div>
                 </form>

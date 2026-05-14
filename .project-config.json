@@ -1,15 +1,22 @@
 {
   "build_command": "pnpm run build",
-  "capabilities": [],
+  "capabilities": [
+    "db",
+    "server",
+    "user"
+  ],
   "dev_command": "pnpm run dev",
-  "env_vars": {},
+  "env_vars": {
+    "DATABASE_URL": "mysql://4EFhvJ9SJNmhD4i.root:KOS80uSJh80Iuy0lth2z@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/8y99ZZZXXUWxvnE7c5sDkk?ssl={\"rejectUnauthorized\":true}",
+    "DRIZZLE_DATABASE_URL": "mysql://4EFhvJ9SJNmhD4i.root:KOS80uSJh80Iuy0lth2z@gateway06.us-east-1.prod.aws.tidbcloud.com:4000/8y99ZZZXXUWxvnE7c5sDkk?ssl={\"rejectUnauthorized\":true}"
+  },
   "experiments": null,
   "git_remote": {
     "repo_url": "s3://vida-prod-gitrepo/webdev-git/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk",
-    "access_key_id": "ASIAZV3A2ECZLHET5IIL",
-    "secret_access_key": "Jb/T55PHJsiShyKPjpdbDDaL9a5RAAdLNrWI0pxU",
-    "session_token": "IQoJb3JpZ2luX2VjEJX//////////wEaCXVzLWVhc3QtMSJHMEUCIQCoAzeAEnl1lBig/+q1XMpwXIUAjPBlhpySKnNpT0neDgIgKMi4Rwl7zkJdt0sfU7RagZKquci5fnOxahAHqsKEabIq9gMIXhAEGgw2NjUzODYwOTg4NjYiDKuFcunc2isQ5mO6iCrTA9fn1lpZkEzhEPG87tJJe/nUe7c9EmrfCa0CJSE99NushznlZ5DUKlS412uQwNZ7HOqIqHyq0PmWa33VGxlM2wIsv5YOHZQZ167QJH4Op9ix6DXAq0mPpdjvhe8irXgao6qKH6oRaZ2I38rL1gAToOWdhbRmACLqqI+HFko/oavMQW/g2BR2zBAc3MQmlRArkiznBDPi/ntjmNlLSW9Dxk1gr5QsBHQj/hgBLJ/ruTyjeeW91ZnC7/d1J2qZGSJukMqsxEVcuytkggrQW822VBLBOFball2LI8c60qsB9rkRqo5+zPtP2Unct555Sl2Nleh3JYk5uIcPJqjFSPyrAP2Uajx6Gx10t1TZnBAz7/iyzAkJJEuwMLabdk8mTIzhlCpRKnXWfx3RPkogMv7olVR/hJzkXVictmB+AHNULudus6wHhkdYGkUVSgoOBymusMrv5yfOwZUw6GQRXDLzLqYVshVvk5eLlUs29y2v3ooJ3Jt91/URAsfeMMehqS5UuBHN+p6NwFOomOOQ4faXzS0WrPnSsaDgE0nmDRtIVmOXOim51ZcNB03DdUVAtPAjtExSJ6sEsW+xr8LyTmdYBRRTFtl7n57XNtOo1i0mS/1OZ2VoMKyJl9AGOp0B7unzdDVLB3E9AdZJoIKrD80UeSH+MN+hnNaZXH+YDAYAiwGRWlOlGtjGy4lYLPsT3C71MHb3OVMOBcCGEOFirZM0udTkXa0qz7CvWXjAzDASmgIeRO9XIhoLCUZjOjkgMdN9drPUGKYDrzotYjc0f6mCxexFTIFm+c+8g2wJ6fkokmkzaVsH3AlWdGpMiBRrkK1f0OAyJ3Qpw+4Udw==",
-    "expiration": "2026-05-15T00:48:44.000Z"
+    "access_key_id": "ASIAZV3A2ECZCN36SW26",
+    "secret_access_key": "05UVc4XIBa3drVofmuZDpSzylGNtDwq0ByW9/TKc",
+    "session_token": "IQoJb3JpZ2luX2VjEJb//////////wEaCXVzLWVhc3QtMSJGMEQCIFHOLvKN/hI06s7CAHshhmgoW1jSINELDGq6/GJeCigGAiBBw7fgTbSy7D9xqgjWmGyGvgOlLQxY19OlANhp8/aMBCr2AwheEAQaDDY2NTM4NjA5ODg2NiIMGIKmXIlL2s8et0CrKtMD+my40v00sFtJnbX+3aCd3G5752JUCIcT6MpBjliIX0MUOy4BMKVgfR9IQe0Wk9S/diji4p5yoLW2fQVeoh9w/yE1B5yQE1gn066sC2krgy3yYPDGQEHPx+SKA8bak2JyNdgFNCl0PbkLcfEIj4WrGPMlXBqfhSNL7ZmnhxzHClLlsUz+rgztWAtxFRq1zeaxGj9QYw3GZH2ixZU/OE81AYKSL+Q2MejXGLmXQfcADkylcu2HfoA3cEDVBWK+YbIfEHkI/o0evgaIgHYBm13ZoCZ+cXVNwVxXiZ5CJafv1C+pyFWaFTuuLGSb3KNmuoNxN9Dp/Opnyl5DfuwTYXris15YdSiHw90jaDszvgeARK83T7ujS6ZuMXnrozAWoNC/UOhLIFmtUagK2Zu1QbjMOx7RRyl6TF91AVeAe0YV6jSt2cj2LjMGgK3MZbY5/+CEb2I/mrhBtoSKByqg/bY6BvPynfQGiyZ3v5PRkzFNG8vf4xCJeWFPrIKhN7QYEmbc1Aa3V0y0+crqyAkm31d6QZ/ftsA+Nhos0BWchHyOlRoqo6EFb3eg/m1X3ICaq3iVPYuRB1DloNf7pGYIqgcZiMOSOBYnzS6vR4xtSuSH7Ww8f4Uw9pWX0AY6ngHgaS9EDrl/kA9jthFvt1561bBax+SwWjzvUYBz+HV4T1al9PsNWeI7AAzCH7l0s1g5fcvS90ubn8Oq6oWqQF5iReEk6FfjhK/gI4PudONPR4Tkho8QkLEW36CyX2gc17OrMKu+dJhp3BgruLA1j1BZKLzdYc77DOC477iHBZZX9hIac7YzfyHMzd3lc3SOtOaScP0HitdV0TKGcK/hLQ==",
+    "expiration": "2026-05-15T01:15:34.000Z"
   },
   "name": "rapid_hire_light",
   "path": "/home/ubuntu/rapid_hire_light",
@@ -24,7 +31,7 @@
     "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
     "VITE_ANALYTICS_WEBSITE_ID": "54f2cb8f-54e0-4dad-8a59-04239e168232",
     "VITE_APP_ID": "8y99ZZZXXUWxvnE7c5sDkk",
-    "VITE_APP_LOGO": "",
+    "VITE_APP_LOGO": "https://files.manuscdn.com/user_upload_by_module/web_dev_logo/310419663030097116/ODXATlFumcEUYfDY.png",
     "VITE_APP_TITLE": "Rapid Hire Solutions — Light Redesign",
     "VITE_FRONTEND_FORGE_API_KEY": "d7mXhLCtWkFfruEQQPyuxi",
     "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",

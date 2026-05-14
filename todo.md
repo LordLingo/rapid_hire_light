@@ -1,24 +1,24 @@
-# Polish + Inner Pages
+# Follow-up scope
 
-## Phase 1 — Polish
-- [ ] Brand-blue hover on secondary outline buttons:
-  - [ ] Hero "View Sample Report"
-  - [ ] CtaBanner "See how it works"
-  - [ ] Faq "Contact our support team"
-- [ ] Lift "Stop gambling with **compliance.**" accent to brand-blue italic
+## 1. Backend + DB (web-db-user upgrade)
+- [ ] Run webdev_add_feature web-db-user
+- [ ] Create contact_submissions table
+- [ ] Add POST /api/contact route persisting submission
+- [ ] Wire Contact.tsx submit handler to fetch /api/contact
 
-## Phase 2 — Inner pages
-- [ ] Add `SiteShell` layout (Header + Footer + scroll restoration)
-- [ ] Build `/services` — full services list w/ deeper detail per service
-- [ ] Build `/integrations` — ATS / HRIS list + how integrations work
-- [ ] Build `/contact` — contact form (name/email/company/team size/message), preview-only submit
-- [ ] Update `App.tsx` routes: `/`, `/services`, `/integrations`, `/contact`, `/404`
-- [ ] Replace home Header anchor links with real Wouter Links
-- [ ] Replace footer toast buttons with real Wouter Links
-- [ ] Make Hero "Start Screening" + WhyUs/CtaBanner CTAs go to `/contact`
-- [ ] "Learn more" on each service card → `/services`
+## 2. About page
+- [ ] Create /pages/About.tsx
+- [ ] Route /about in App.tsx
+- [ ] Header NAV: About → /about (route, not placeholder)
+- [ ] Footer Company → About wired
 
-## Phase 3 — QA
-- [ ] Click every nav, footer, and CTA across all 4 pages — no dead links
-- [ ] Verify scroll-to-top on route change
-- [ ] Verify mobile menu links route correctly
+## 3. Pricing page
+- [ ] Create /pages/Pricing.tsx (Starter / Volume / Enterprise)
+- [ ] Route /pricing in App.tsx
+- [ ] Header NAV: Pricing → /pricing (route, not placeholder)
+- [ ] Cross-link "Get a quote" CTAs to /contact
+
+## 4. QA + ship
+- [ ] Visit each new route in preview
+- [ ] Submit a test contact submission, verify DB row
+- [ ] Save checkpoint, deliver
