@@ -1,25 +1,38 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+/*
+  Editorial Calm — Home composition
+  Section order mirrors the original site exactly so users recognize the
+  content map; only the visual treatment becomes lighter and more editorial.
+*/
+import Header from "@/components/site/Header";
+import Hero from "@/components/site/Hero";
+import LogoStrip from "@/components/site/LogoStrip";
+import StopGambling from "@/components/site/StopGambling";
+import WhyUs from "@/components/site/WhyUs";
+import Workflows from "@/components/site/Workflows";
+import Services from "@/components/site/Services";
+import CtaBanner from "@/components/site/CtaBanner";
+import ModernScreening from "@/components/site/ModernScreening";
+import Faq from "@/components/site/Faq";
+import Footer from "@/components/site/Footer";
+import { useReveal } from "@/hooks/useReveal";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
 export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
-
+  useReveal();
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-background text-foreground">
+      <Header />
       <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
+        <Hero />
+        <LogoStrip />
+        <StopGambling />
+        <WhyUs />
+        <Workflows />
+        <Services />
+        <CtaBanner />
+        <ModernScreening />
+        <Faq />
       </main>
+      <Footer />
     </div>
   );
 }
