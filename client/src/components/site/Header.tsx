@@ -7,15 +7,17 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { toast } from "sonner";
+import { Link, useLocation } from "wouter";
 
-const NAV = [
-  { label: "Pricing", href: "#pricing" },
-  { label: "Services", href: "#services" },
-  { label: "Integrations", href: "#workflows" },
-  { label: "Site Info", href: "#why" },
-  { label: "Contact Us", href: "#contact" },
-  { label: "Client Login", href: "#login" },
-  { label: "Blog", href: "#blog" },
+type NavItem = { label: string; href: string; type: "route" | "placeholder" };
+
+const NAV: NavItem[] = [
+  { label: "Services", href: "/services", type: "route" },
+  { label: "Integrations", href: "/integrations", type: "route" },
+  { label: "Pricing", href: "#pricing", type: "placeholder" },
+  { label: "Contact Us", href: "/contact", type: "route" },
+  { label: "Client Login", href: "#login", type: "placeholder" },
+  { label: "Blog", href: "#blog", type: "placeholder" },
 ];
 
 function notImplemented(label: string) {
@@ -65,34 +67,40 @@ export default function Header() {
       {/* Main nav */}
       <div className="container">
         <div className="flex items-center justify-between gap-6 py-4 md:py-5">
-          <a
-            href="#top"
+          <Link
+            href="/"
             className="flex items-center gap-3"
             aria-label="Rapid Hire Solutions home"
           >
             <Logo />
-          </a>
+          </Link>
 
           <nav className="hidden lg:flex items-center gap-7">
-            {NAV.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="ink-link text-[13.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]"
-              >
-                {item.label}
-              </a>
-            ))}
+            {NAV.map((item) =>
+              item.type === "route" ? (
+                <NavLink key={item.label} href={item.href}>
+                  {item.label}
+                </NavLink>
+              ) : (
+                <button
+                  key={item.label}
+                  onClick={() => notImplemented(item.label)}
+                  className="ink-link text-[13.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]"
+                >
+                  {item.label}
+                </button>
+              )
+            )}
           </nav>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => notImplemented("Get A Quote")}
+            <Link
+              href="/contact"
               className="hidden md:inline-flex btn-press items-center gap-2 rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
             >
               Get a Quote
               <span aria-hidden>→</span>
-            </button>
+            </Link>
             <button
               className="lg:hidden grid place-items-center size-10 rounded-full border border-border"
               onClick={() => setOpen((v) => !v)}
@@ -108,29 +116,58 @@ export default function Header() {
       {open && (
         <div className="lg:hidden border-t border-border bg-[color:var(--color-paper)]">
           <div className="container py-5 grid gap-3">
-            {NAV.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="text-[15px] py-1.5 text-[color:var(--color-ink-soft)]"
-              >
-                {item.label}
-              </a>
-            ))}
-            <button
-              onClick={() => {
-                setOpen(false);
-                notImplemented("Get A Quote");
-              }}
+            {NAV.map((item) =>
+              item.type === "route" ? (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="text-[15px] py-1.5 text-[color:var(--color-ink-soft)]"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    setOpen(false);
+                    notImplemented(item.label);
+                  }}
+                  className="text-left text-[15px] py-1.5 text-[color:var(--color-ink-soft)]"
+                >
+                  {item.label}
+                </button>
+              )
+            )}
+            <Link
+              href="/contact"
+              onClick={() => setOpen(false)}
               className="mt-2 btn-press inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent-ink)] px-5 py-3 text-[14px] font-medium text-white"
             >
               Get a Quote
-            </button>
+            </Link>
           </div>
         </div>
       )}
     </header>
+  );
+}
+
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const [location] = useLocation();
+  const active = location === href;
+  return (
+    <Link
+      href={href}
+      className={[
+        "ink-link text-[13.5px] tracking-tight transition-colors",
+        active
+          ? "text-[color:var(--color-ink)]"
+          : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
+      ].join(" ")}
+    >
+      {children}
+    </Link>
   );
 }
 

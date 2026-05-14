@@ -1,0 +1,285 @@
+/*
+  Editorial Calm — Contact page
+  Layout:
+   - PageHero with eyebrow "Contact" and italic accent on "talk".
+   - Two-column form region: left rail (contact details + trust line),
+     right column (form). Inputs use hairline underlines (no boxy fields)
+     to stay editorial. Submit shows a sonner toast (preview-only).
+   - Closing strip with FAQ shortcut back to home.
+*/
+import { useState } from "react";
+import { Link } from "wouter";
+import { ArrowUpRight, Mail, Phone, MapPin, Check } from "lucide-react";
+import { toast } from "sonner";
+import SiteShell from "@/components/site/SiteShell";
+import PageHero from "@/components/site/PageHero";
+
+const SERVICES = [
+  "Employment Screening",
+  "Criminal Records",
+  "Drug & Health",
+  "Education Verification",
+  "Motor Vehicle Reports",
+  "Social Media Checks",
+];
+
+const TEAM_SIZES = [
+  "1 — 10",
+  "11 — 50",
+  "51 — 200",
+  "201 — 1,000",
+  "1,000+",
+];
+
+export default function Contact() {
+  const [interests, setInterests] = useState<string[]>([]);
+  const [submitted, setSubmitted] = useState(false);
+
+  function toggle(v: string) {
+    setInterests((cur) =>
+      cur.includes(v) ? cur.filter((x) => x !== v) : [...cur, v]
+    );
+  }
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitted(true);
+    toast("Thanks — your request was queued (preview only).");
+  }
+
+  return (
+    <SiteShell>
+      <PageHero
+        eyebrow="03 — Contact"
+        title={
+          <>
+            Let&apos;s{" "}
+            <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+              talk
+            </span>{" "}
+            screening.
+          </>
+        }
+        lede="Tell us about your hiring volume and the roles you screen for. Our U.S.-based, FCRA-certified team will respond the same business day with a tailored package."
+      />
+
+      <section className="bg-white border-y border-border">
+        <div className="container py-20 md:py-28">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-12">
+            {/* Left rail */}
+            <aside className="col-span-12 lg:col-span-4 reveal-on-scroll">
+              <p className="eyebrow">04 — Reach us directly</p>
+              <div className="mt-3 hairline" />
+
+              <ul className="mt-8 space-y-6">
+                <li className="flex items-start gap-3">
+                  <span className="grid place-items-center size-9 rounded-full border border-border text-[color:var(--color-accent-ink)] shrink-0">
+                    <Mail className="size-4" strokeWidth={1.5} />
+                  </span>
+                  <div>
+                    <p className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                      Email
+                    </p>
+                    <p className="mt-1 text-[15px] text-[color:var(--color-ink)]">
+                      hello@rapidhiresolutions.com
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="grid place-items-center size-9 rounded-full border border-border text-[color:var(--color-accent-ink)] shrink-0">
+                    <Phone className="size-4" strokeWidth={1.5} />
+                  </span>
+                  <div>
+                    <p className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                      Phone
+                    </p>
+                    <p className="mt-1 text-[15px] text-[color:var(--color-ink)]">
+                      (888) 555-0142
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="grid place-items-center size-9 rounded-full border border-border text-[color:var(--color-accent-ink)] shrink-0">
+                    <MapPin className="size-4" strokeWidth={1.5} />
+                  </span>
+                  <div>
+                    <p className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                      Headquarters
+                    </p>
+                    <p className="mt-1 text-[15px] text-[color:var(--color-ink)]">
+                      Houston, TX · United States
+                    </p>
+                  </div>
+                </li>
+              </ul>
+
+              <div className="mt-12 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6">
+                <p className="eyebrow">Why teams reach out</p>
+                <p className="mt-3 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                  We respond the same business day, share a sample report,
+                  and never put you in a queue. FCRA-certified, U.S.-based,
+                  built for high-volume hiring.
+                </p>
+              </div>
+            </aside>
+
+            {/* Form */}
+            <div className="col-span-12 lg:col-span-8 reveal-on-scroll">
+              {submitted ? (
+                <div className="rounded-[20px] border border-border bg-[color:var(--color-paper)] px-8 py-16 text-center">
+                  <div className="mx-auto grid place-items-center size-12 rounded-full bg-[color:var(--color-tint)] text-[color:var(--color-accent-ink)]">
+                    <Check className="size-5" strokeWidth={2} />
+                  </div>
+                  <h3 className="mt-6 font-display text-[32px] leading-tight text-[color:var(--color-ink)]">
+                    Request received.
+                  </h3>
+                  <p className="mt-3 max-w-md mx-auto text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                    A specialist will follow up the same business day with a
+                    tailored screening package and pricing.
+                  </p>
+                  <Link
+                    href="/"
+                    className="ink-link mt-8 inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)]"
+                  >
+                    Back to home
+                    <ArrowUpRight className="size-3.5" />
+                  </Link>
+                </div>
+              ) : (
+                <form onSubmit={onSubmit} className="grid gap-10">
+                  <div className="grid grid-cols-12 gap-x-8 gap-y-8">
+                    <Field
+                      label="Full name"
+                      name="name"
+                      required
+                      autoComplete="name"
+                      className="col-span-12 md:col-span-6"
+                    />
+                    <Field
+                      label="Work email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                      className="col-span-12 md:col-span-6"
+                    />
+                    <Field
+                      label="Company"
+                      name="company"
+                      required
+                      autoComplete="organization"
+                      className="col-span-12 md:col-span-6"
+                    />
+                    <div className="col-span-12 md:col-span-6">
+                      <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                        Hiring volume
+                      </label>
+                      <select
+                        name="teamSize"
+                        defaultValue=""
+                        required
+                        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+                      >
+                        <option value="" disabled>
+                          Select a range —
+                        </option>
+                        {TEAM_SIZES.map((s) => (
+                          <option key={s} value={s}>
+                            {s} hires / year
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                      Services you&apos;re interested in
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {SERVICES.map((s) => {
+                        const active = interests.includes(s);
+                        return (
+                          <button
+                            type="button"
+                            key={s}
+                            onClick={() => toggle(s)}
+                            className={[
+                              "btn-press text-[13px] rounded-full border px-4 py-2 transition-colors",
+                              active
+                                ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] text-white"
+                                : "border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]",
+                            ].join(" ")}
+                          >
+                            {s}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                      Tell us about your hiring
+                    </label>
+                    <textarea
+                      name="message"
+                      rows={5}
+                      placeholder="Roles, jurisdictions, ATS in use, anything else we should know."
+                      className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] leading-[1.7] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink-muted)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors resize-none"
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+                    <p className="text-[12px] text-[color:var(--color-ink-muted)] max-w-md">
+                      By submitting, you agree to be contacted about Rapid
+                      Hire Solutions services. We never share your details.
+                    </p>
+                    <button
+                      type="submit"
+                      className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
+                    >
+                      Send request
+                      <ArrowUpRight className="size-4" />
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </SiteShell>
+  );
+}
+
+function Field({
+  label,
+  name,
+  type = "text",
+  required,
+  autoComplete,
+  className,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  autoComplete?: string;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+        {label}
+      </label>
+      <input
+        type={type}
+        name={name}
+        required={required}
+        autoComplete={autoComplete}
+        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+      />
+    </div>
+  );
+}

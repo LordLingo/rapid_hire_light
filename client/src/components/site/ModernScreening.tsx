@@ -4,7 +4,7 @@
   rule above and below, single ink CTA. No box, no gradient.
 */
 import { ArrowRight } from "lucide-react";
-import { toast } from "sonner";
+import { Link } from "wouter";
 
 export default function ModernScreening() {
   return (
@@ -19,13 +19,13 @@ export default function ModernScreening() {
             </span>
           </h2>
           <div className="mt-10 flex justify-center">
-            <button
-              onClick={() => toast("Start Screening — preview only")}
+            <Link
+              href="/contact"
               className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
             >
               Start Screening
               <ArrowRight className="size-4" />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

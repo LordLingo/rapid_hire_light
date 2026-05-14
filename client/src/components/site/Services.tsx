@@ -13,7 +13,7 @@ import {
   Globe,
   ArrowUpRight,
 } from "lucide-react";
-import { toast } from "sonner";
+import { Link } from "wouter";
 
 const SERVICES = [
   {
@@ -76,13 +76,13 @@ export default function Services() {
             </p>
           </div>
           <div className="col-span-12 lg:col-span-2 lg:text-right reveal-on-scroll">
-            <button
-              onClick={() => toast("All services — coming soon in this preview")}
+            <Link
+              href="/services"
               className="ink-link inline-flex items-center gap-1.5 text-[13.5px] text-[color:var(--color-ink)]"
             >
               All services
               <ArrowUpRight className="size-4" />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -120,13 +120,13 @@ export default function Services() {
               <p className="mt-3 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                 {s.body}
               </p>
-              <button
-                onClick={() => toast(`${s.title} — preview only`)}
+              <Link
+                href="/services"
                 className="ink-link mt-6 inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)]"
               >
                 Learn more
                 <ArrowUpRight className="size-3.5" />
-              </button>
+              </Link>
             </article>
           ))}
         </div>

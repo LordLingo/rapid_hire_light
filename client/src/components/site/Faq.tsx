@@ -5,7 +5,7 @@
 */
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import { toast } from "sonner";
+import { Link } from "wouter";
 
 const QA = [
   {
@@ -50,12 +50,12 @@ export default function Faq() {
               hiring environments. Reach out and we&apos;ll get back the same
               business day.
             </p>
-            <button
-              onClick={() => toast("Contact our support team — preview only")}
-              className="btn-press mt-7 inline-flex items-center gap-2 rounded-full border border-[color:var(--color-ink)] bg-white px-5 py-3 text-[13.5px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-ink)] hover:text-white"
+            <Link
+              href="/contact"
+              className="btn-press mt-7 inline-flex items-center gap-2 rounded-full border border-[color:var(--color-accent-ink)] bg-white px-5 py-3 text-[13.5px] font-medium text-[color:var(--color-accent-ink)] hover:bg-[color:var(--color-accent-ink)] hover:text-white"
             >
               Contact our support team
-            </button>
+            </Link>
           </div>
 
           <div className="col-span-12 lg:col-span-8 reveal-on-scroll">

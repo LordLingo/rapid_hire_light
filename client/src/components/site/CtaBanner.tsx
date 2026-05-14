@@ -3,7 +3,7 @@
   Two-column horizontal banner with hairline frame and ink button.
 */
 import { ArrowRight } from "lucide-react";
-import { toast } from "sonner";
+import { Link } from "wouter";
 
 export default function CtaBanner() {
   return (
@@ -32,13 +32,13 @@ export default function CtaBanner() {
             </p>
           </div>
           <div className="col-span-12 md:col-span-4 flex md:justify-end items-end relative">
-            <button
-              onClick={() => toast("See how it works — preview only")}
-              className="btn-press inline-flex items-center gap-2 rounded-full border border-[color:var(--color-ink)] bg-white px-6 py-3.5 text-[14px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-ink)] hover:text-white"
+            <Link
+              href="/integrations"
+              className="btn-press inline-flex items-center gap-2 rounded-full border border-[color:var(--color-accent-ink)] bg-white px-6 py-3.5 text-[14px] font-medium text-[color:var(--color-accent-ink)] hover:bg-[color:var(--color-accent-ink)] hover:text-white"
             >
               See how it works
               <ArrowRight className="size-4" />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

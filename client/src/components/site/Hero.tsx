@@ -10,6 +10,7 @@
 */
 import { ArrowRight, FileText } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "wouter";
 
 export default function Hero() {
   return (
@@ -58,16 +59,16 @@ export default function Hero() {
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <button
-                onClick={() => toast("Start Screening — opens quote flow")}
+              <Link
+                href="/contact"
                 className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
               >
                 Start Screening
                 <ArrowRight className="size-4" />
-              </button>
+              </Link>
               <button
                 onClick={() => toast("Sample report — preview")}
-                className="btn-press inline-flex items-center gap-2 rounded-full border border-[color:var(--color-rule)] bg-white px-6 py-3.5 text-[14px] font-medium text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]"
+                className="btn-press inline-flex items-center gap-2 rounded-full border border-[color:var(--color-rule)] bg-white px-6 py-3.5 text-[14px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-accent-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-white"
               >
                 <FileText className="size-4" />
                 View Sample Report

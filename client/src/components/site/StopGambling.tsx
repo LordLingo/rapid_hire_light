@@ -13,9 +13,9 @@ export default function StopGambling() {
             <div className="mt-3 hairline" />
           </div>
           <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
-            <h2 className="font-display text-[40px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)] sm:text-[56px] md:text-[68px]">
+            <h2 className="font-display text-[44px] leading-[1.04] tracking-[-0.025em] text-[color:var(--color-ink)] sm:text-[60px] md:text-[76px]">
               Stop gambling with{" "}
-              <span className="italic font-light text-[color:var(--color-accent-ink)]">
+              <span className="italic font-normal text-[color:var(--color-accent-ink)]">
                 compliance.
               </span>
             </h2>

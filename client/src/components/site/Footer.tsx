@@ -1,20 +1,29 @@
 /*
   Editorial Calm — footer
   4-column hairline grid: brand mark + tagline | services | company | portals.
-  Bottom bar: privacy / terms + tagline. All ink-link styled, no boxes.
+  Items with a `to` route via Wouter Link; otherwise they show a preview toast.
 */
+import { Link } from "wouter";
 import { toast } from "sonner";
 
-const SERVICES = [
-  "Background Checks",
-  "Drug Screening",
-  "MVR",
-  "Social Background Checks",
-  "Employment Verification",
-  "Education Checks",
+type FooterItem = { label: string; to?: string };
+
+const SERVICES: FooterItem[] = [
+  { label: "Background Checks", to: "/services" },
+  { label: "Drug Screening", to: "/services" },
+  { label: "MVR", to: "/services" },
+  { label: "Social Background Checks", to: "/services" },
+  { label: "Employment Verification", to: "/services" },
+  { label: "Education Checks", to: "/services" },
 ];
-const COMPANY = ["About Us", "Contact"];
-const PORTALS = ["Client Login", "Get A Quote"];
+const COMPANY: FooterItem[] = [
+  { label: "About Us" },
+  { label: "Contact", to: "/contact" },
+];
+const PORTALS: FooterItem[] = [
+  { label: "Client Login" },
+  { label: "Get A Quote", to: "/contact" },
+];
 
 export default function Footer() {
   return (
@@ -22,7 +31,7 @@ export default function Footer() {
       <div className="container py-20">
         <div className="grid grid-cols-12 gap-x-8 gap-y-12">
           <div className="col-span-12 md:col-span-5 reveal-on-scroll">
-            <a href="#top" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
               <svg
                 width="34"
                 height="34"
@@ -56,7 +65,7 @@ export default function Footer() {
               <span className="font-display text-[20px] tracking-[-0.01em] text-[color:var(--color-ink)]">
                 Rapid Hire Solutions
               </span>
-            </a>
+            </Link>
             <p className="mt-6 max-w-md text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]">
               Scale your hiring team with a platform built for speed,
               compliance, and accurate results that don&apos;t slow you down.
@@ -89,7 +98,7 @@ export default function Footer() {
               onClick={() => toast("Terms — preview only")}
               className="ink-link text-[color:var(--color-ink-muted)]"
             >
-              Terms & Conditions
+              Terms &amp; Conditions
             </button>
           </div>
           <span>Made for high-volume hiring.</span>
@@ -105,7 +114,7 @@ function FooterCol({
   className = "",
 }: {
   title: string;
-  items: string[];
+  items: FooterItem[];
   className?: string;
 }) {
   return (
@@ -113,13 +122,22 @@ function FooterCol({
       <p className="eyebrow">{title}</p>
       <ul className="mt-5 grid gap-3">
         {items.map((it) => (
-          <li key={it}>
-            <button
-              onClick={() => toast(`${it} — preview only`)}
-              className="ink-link text-[14px] text-[color:var(--color-ink-soft)]"
-            >
-              {it}
-            </button>
+          <li key={it.label}>
+            {it.to ? (
+              <Link
+                href={it.to}
+                className="ink-link text-[14px] text-[color:var(--color-ink-soft)]"
+              >
+                {it.label}
+              </Link>
+            ) : (
+              <button
+                onClick={() => toast(`${it.label} — preview only`)}
+                className="ink-link text-[14px] text-[color:var(--color-ink-soft)]"
+              >
+                {it.label}
+              </button>
+            )}
           </li>
         ))}
       </ul>
