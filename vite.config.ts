@@ -283,6 +283,7 @@ const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = 
   { path: "/pricing",      priority: 0.9,  changefreq: "monthly" },
   { path: "/about",        priority: 0.6,  changefreq: "yearly"  },
   { path: "/contact",      priority: 0.7,  changefreq: "yearly"  },
+  { path: "/support",      priority: 0.8,  changefreq: "monthly" },
   { path: "/blog",         priority: 0.8,  changefreq: "weekly"  },
   { path: "/privacy",      priority: 0.3,  changefreq: "yearly"  },
   { path: "/terms",        priority: 0.3,  changefreq: "yearly"  },

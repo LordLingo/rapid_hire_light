@@ -179,3 +179,11 @@
 - [x] Created `shared/blog-meta.json` (slugs + tags + lastmod) consumed by the sitemap plugin; added a vitest spec that fails CI loudly if the JSON drifts from the runtime registry
 - [x] Re-ran vitest: 60/60 passing (36 pricing + 24 blog); browser QA confirmed /privacy, /terms, /blog/tag/compliance render with proper SEO + footer
 - [x] Save checkpoint and deliver
+
+## 23. Support page (US-based humans, zero offshore)
+- [ ] Inspect precisehire.com/support for structure + tone (no copy-paste)
+- [ ] Outline the page: hero with US-based positioning, support channels (phone/email/chat/portal), live SLAs, hours by time zone, candidate vs. client routing, support-specific FAQ, accessibility statement, escalation path, CTA
+- [ ] Build `client/src/pages/Support.tsx` using SiteShell + PageHero, fitting the existing design system
+- [ ] Wire `/support` route in App.tsx; add Support to header nav + footer Company column
+- [ ] Emit JSON-LD ContactPoint schema via useSeo so the US phone number is machine-readable
+- [ ] Vitest where applicable, browser QA across viewports, save checkpoint, deliver

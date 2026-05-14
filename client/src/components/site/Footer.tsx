@@ -20,6 +20,7 @@ const COMPANY: FooterItem[] = [
   { label: "About Us", to: "/about" },
   { label: "Blog", to: "/blog" },
   { label: "Pricing", to: "/pricing" },
+  { label: "Support", to: "/support" },
   { label: "Contact", to: "/contact" },
 ];
 const PORTALS: FooterItem[] = [
