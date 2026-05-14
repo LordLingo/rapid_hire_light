@@ -38,3 +38,10 @@
 - [x] Update Contact page to read query params, map monthly hires → annual hiring-volume bucket, map calculator addon ids → Service chips, prefill message textarea with the estimate summary, and surface a “from your estimate” eyebrow
 - [x] QA: at 250 hires/mo, per-check $60 → $50.40 (−16%), $12,600/mo, $151,200/yr, tier flips to Volume
 - [x] Save checkpoint + deliver
+
+## 7. Live "Included in this quote" preview inside estimate card
+- [x] Render base SSN trace + nationwide criminal line as the always-on item with `Base` tag and $24 price
+- [x] Render a row per selected add-on with its per-check price (sorted to ADDONS display order)
+- [x] Handle empty add-on case (italic muted note)
+- [x] Subtle styling: hairline rules above and below, eyebrow + screen count, brand-blue check pips
+- [x] QA in preview (Standard package shows 4 screens correctly), save checkpoint, deliver

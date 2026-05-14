@@ -120,6 +120,12 @@ export default function PricingCalculator() {
     };
   }, [hires, selected]);
 
+  // Selected add-on objects, sorted to ADDONS display order
+  const selectedAddons = useMemo(
+    () => ADDONS.filter((a) => selected.includes(a.id)),
+    [selected],
+  );
+
   // Build pre-filled query string for /contact
   const quoteQuery = useMemo(() => {
     const params = new URLSearchParams();
@@ -298,6 +304,60 @@ export default function PricingCalculator() {
                     Volume discount applied · −{discountPct.toFixed(0)}%
                   </p>
                 )}
+              </div>
+
+              <div className="mt-6 hairline" />
+
+              {/* Live “Included in this quote” preview */}
+              <div className="mt-6">
+                <div className="flex items-baseline justify-between">
+                  <p className="eyebrow">Included in this quote</p>
+                  <p className="text-[11.5px] text-[color:var(--color-ink-muted)] tabular-nums">
+                    {1 + selectedAddons.length} {1 + selectedAddons.length === 1 ? "screen" : "screens"}
+                  </p>
+                </div>
+                <ul className="mt-4 space-y-2.5">
+                  {/* Always-on base */}
+                  <li className="flex items-start justify-between gap-3 text-[13px]">
+                    <span className="flex items-start gap-2.5 text-[color:var(--color-ink)]">
+                      <span className="mt-[5px] grid place-items-center size-4 shrink-0 rounded-full border border-[color:var(--color-accent-ink)] text-[color:var(--color-accent-ink)]">
+                        <Check className="size-2.5" strokeWidth={2.4} />
+                      </span>
+                      <span className="leading-snug">
+                        SSN trace + nationwide criminal
+                        <span className="ml-1.5 text-[11px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                          Base
+                        </span>
+                      </span>
+                    </span>
+                    <span className="shrink-0 tabular-nums text-[color:var(--color-ink-muted)]">
+                      ${BASE_PER_CHECK}
+                    </span>
+                  </li>
+
+                  {selectedAddons.map((a) => (
+                    <li
+                      key={a.id}
+                      className="flex items-start justify-between gap-3 text-[13px] reveal-on-scroll"
+                    >
+                      <span className="flex items-start gap-2.5 text-[color:var(--color-ink)]">
+                        <span className="mt-[5px] grid place-items-center size-4 shrink-0 rounded-full border border-[color:var(--color-accent-ink)] text-[color:var(--color-accent-ink)]">
+                          <Check className="size-2.5" strokeWidth={2.4} />
+                        </span>
+                        <span className="leading-snug">{a.label}</span>
+                      </span>
+                      <span className="shrink-0 tabular-nums text-[color:var(--color-ink-muted)]">
+                        +${a.price}
+                      </span>
+                    </li>
+                  ))}
+
+                  {selectedAddons.length === 0 && (
+                    <li className="text-[12.5px] italic text-[color:var(--color-ink-muted)] pl-6">
+                      No add-ons selected — just the base check.
+                    </li>
+                  )}
+                </ul>
               </div>
 
               <div className="mt-6 hairline" />
