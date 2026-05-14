@@ -60,7 +60,7 @@ export default function Hero() {
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <button
                 onClick={() => toast("Start Screening — opens quote flow")}
-                className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-ink)]"
+                className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
               >
                 Start Screening
                 <ArrowRight className="size-4" />

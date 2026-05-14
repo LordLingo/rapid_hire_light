@@ -88,7 +88,7 @@ export default function Header() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => notImplemented("Get A Quote")}
-              className="hidden md:inline-flex btn-press items-center gap-2 rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]"
+              className="hidden md:inline-flex btn-press items-center gap-2 rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
             >
               Get a Quote
               <span aria-hidden>→</span>

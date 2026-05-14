@@ -21,7 +21,7 @@ export default function ModernScreening() {
           <div className="mt-10 flex justify-center">
             <button
               onClick={() => toast("Start Screening — preview only")}
-              className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-ink)]"
+              className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
             >
               Start Screening
               <ArrowRight className="size-4" />
