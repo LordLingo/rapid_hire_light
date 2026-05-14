@@ -137,3 +137,12 @@
 - [x] LS hydration clamp bumped to 10000 to match the new ceiling
 - [x] QA: cards never blur; numeric input drives all live figures; LS persistence verified (200 hires restored from previous session)
 - [x] Save checkpoint and deliver
+
+## 19. Pricing follow-ups (reset link + URL sync + tests)
+- [x] Lifted pricing math (BASE_PER_CHECK, ADDONS, PACKAGES, volumeDiscount, computeEstimate, clampHires, normalizePackage, normalizeAddons, parseEstimateFromQuery, buildEstimateQuery, isDefaultState) into `client/src/lib/pricing.ts`; PricingCalculator now imports them directly
+- [x] Added URL-state sync: `?v=&pkg=&adds=` parsed on mount (URL > localStorage > defaults); written via `history.replaceState` on every state change; default state suppresses params for a clean `/pricing` URL after a Reset
+- [x] Added "Reset to defaults" link under the calculator card; clears LS, strips URL params, and restores Standard @ 40 hires/mo with default add-ons
+- [x] Authored `client/src/lib/pricing.test.ts` (36 specs): volumeDiscount thresholds (49/50, 99/100, 199/200, 499/500), perCheckList/Net math, monthly = net*hires, annual = 12*monthly, preset totals (Standard $60 list, Comprehensive $123 list at 200/mo → $103.32 net), URL parse/build round-trip, default-state suppression, unknown-id silent drop, input clamping, package/add-on integrity
+- [x] Added `pnpm test` script; suite runs in 14ms, 36/36 pass
+- [x] QA in browser: URL hydration verified at `?v=250&pkg=comprehensive&adds=county,federal,mvr,drug5`; URL writing verified on input change + package switch; Reset clears state correctly
+- [x] Save checkpoint and deliver

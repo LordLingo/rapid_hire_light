@@ -13,7 +13,24 @@
 */
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check, RotateCcw } from "lucide-react";
+import {
+  ADDONS,
+  BASE_PER_CHECK,
+  DEFAULT_HIRES,
+  DEFAULT_PACKAGE,
+  MAX_HIRES,
+  MIN_HIRES,
+  PACKAGES,
+  type PackageId,
+  buildEstimateQuery,
+  clampHires,
+  computeEstimate,
+  isDefaultState,
+  normalizeAddons,
+  normalizePackage,
+  parseEstimateFromQuery,
+} from "@/lib/pricing";
 
 /**
  * localStorage persistence for the calculator. Versioned key keeps us safe
@@ -23,7 +40,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 const LS_KEY = "rh:calc:v1";
 type PersistedState = {
   hires: number;
-  pkg: "basic" | "standard" | "comprehensive" | null;
+  pkg: PackageId | null;
   selected: string[];
 };
 function loadPersisted(): PersistedState | null {
@@ -32,19 +49,14 @@ function loadPersisted(): PersistedState | null {
     const raw = window.localStorage.getItem(LS_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<PersistedState>;
-    if (
-      typeof parsed.hires !== "number" ||
-      !Array.isArray(parsed.selected) ||
-      (parsed.pkg !== null &&
-        parsed.pkg !== "basic" &&
-        parsed.pkg !== "standard" &&
-        parsed.pkg !== "comprehensive")
-    ) {
+    if (typeof parsed.hires !== "number" || !Array.isArray(parsed.selected)) {
       return null;
     }
-    const hires = Math.min(10000, Math.max(1, Math.round(parsed.hires)));
-    const selected = parsed.selected.filter((s): s is string => typeof s === "string");
-    return { hires, pkg: parsed.pkg ?? null, selected };
+    return {
+      hires: clampHires(parsed.hires),
+      pkg: normalizePackage(parsed.pkg),
+      selected: normalizeAddons(parsed.selected),
+    };
   } catch {
     return null;
   }
@@ -58,55 +70,36 @@ export type CalculatorEstimate = {
   hires: number;
   selected: string[];
   /** Currently active package preset (or null when the user has manually edited add-ons). */
-  pkg: "basic" | "standard" | "comprehensive" | null;
+  pkg: PackageId | null;
 };
 
-type Addon = { id: string; label: string; price: number };
-
-const ADDONS: Addon[] = [
-  { id: "county", label: "Additional county criminal (per jurisdiction)", price: 8 },
-  { id: "federal", label: "Federal criminal", price: 10 },
-  { id: "mvr", label: "Motor Vehicle Report (MVR)", price: 9 },
-  { id: "drug5", label: "Drug screen — 5 panel", price: 38 },
-  { id: "education", label: "Education verification", price: 14 },
-  { id: "employment", label: "Employment verification (per employer)", price: 14 },
-  { id: "intl", label: "International criminal", price: 55 },
-  { id: "credit", label: "Credit report (FCRA)", price: 16 },
-  { id: "social", label: "Social media screening", price: 12 },
-  { id: "monitoring", label: "Continuous monitoring (annualized)", price: 6 },
-];
-
-type PackageId = "basic" | "standard" | "comprehensive";
-const PACKAGES: { id: PackageId; label: string; sub: string; addons: string[] }[] = [
-  {
-    id: "basic",
-    label: "Basic",
-    sub: "Identity + nationwide criminal",
-    addons: [],
-  },
-  {
-    id: "standard",
-    label: "Standard",
-    sub: "Adds county + employment + education",
-    addons: ["county", "employment", "education"],
-  },
-  {
-    id: "comprehensive",
-    label: "Comprehensive",
-    sub: "Adds federal, MVR, drug, monitoring",
-    addons: ["county", "federal", "employment", "education", "mvr", "drug5", "monitoring"],
-  },
-];
-
-const BASE_PER_CHECK = 24; // SSN trace + nationwide criminal — Starter base
-
-/** Tiered volume discount applied to per-check total. */
-function volumeDiscount(hiresPerMonth: number) {
-  if (hiresPerMonth >= 500) return 0.22;
-  if (hiresPerMonth >= 200) return 0.16;
-  if (hiresPerMonth >= 100) return 0.1;
-  if (hiresPerMonth >= 50) return 0.05;
-  return 0;
+/**
+ * Initial-state resolver with explicit precedence:
+ *   1. URL query string (?v= / ?pkg= / ?adds=)  — sharable links win
+ *   2. localStorage                              — returning visitor's last config
+ *   3. Hard-coded defaults                       — first-time visitor
+ *
+ * Kept outside the component so the resolution rules are obvious and unit-
+ * testable from one place.
+ */
+function resolveInitialState(): {
+  hires: number;
+  pkg: PackageId | null;
+  selected: string[];
+  source: "url" | "ls" | "defaults";
+} {
+  if (typeof window !== "undefined") {
+    const fromUrl = parseEstimateFromQuery(window.location.search);
+    if (fromUrl) return { ...fromUrl, source: "url" };
+  }
+  const fromLs = loadPersisted();
+  if (fromLs) return { ...fromLs, source: "ls" };
+  return {
+    hires: DEFAULT_HIRES,
+    pkg: DEFAULT_PACKAGE,
+    selected: PACKAGES.find((p) => p.id === DEFAULT_PACKAGE)!.addons,
+    source: "defaults",
+  };
 }
 
 function fmtMoney(n: number) {
@@ -131,27 +124,45 @@ export default function PricingCalculator({
 }: {
   onEstimateChange?: (e: CalculatorEstimate) => void;
 } = {}) {
-  // Hydrate from localStorage on first render so a returning visitor sees their
-  // last configuration immediately (no flash of default state).
-  const persisted = useMemo(() => loadPersisted(), []);
-  const [hires, setHires] = useState<number>(persisted?.hires ?? 40);
-  const [pkg, setPkg] = useState<PackageId | null>(
-    persisted ? persisted.pkg : "standard",
-  );
-  const [selected, setSelected] = useState<string[]>(
-    persisted ? persisted.selected : PACKAGES.find((p) => p.id === "standard")!.addons,
-  );
+  // Resolve initial state once. Precedence: URL > localStorage > defaults.
+  const initial = useMemo(() => resolveInitialState(), []);
+  const [hires, setHires] = useState<number>(initial.hires);
+  const [pkg, setPkg] = useState<PackageId | null>(initial.pkg);
+  const [selected, setSelected] = useState<string[]>(initial.selected);
 
-  // Persist any change back to localStorage. Errors are intentionally swallowed
-  // (private mode / quota / disabled storage) — the calculator must keep working.
+  // Persist any change back to localStorage. Mirror of the URL-sync rule:
+  // the default state writes *nothing* and removes any stale blob, so a
+  // visitor who clicks Reset doesn't carry a synthetic "defaults" payload
+  // around in storage. Errors are intentionally swallowed (private mode /
+  // quota / disabled storage) — the calculator must keep working.
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
+      if (isDefaultState({ hires, pkg, selected })) {
+        window.localStorage.removeItem(LS_KEY);
+        return;
+      }
       const payload: PersistedState = { hires, pkg, selected };
       window.localStorage.setItem(LS_KEY, JSON.stringify(payload));
     } catch {
       /* ignore */
     }
+  }, [hires, pkg, selected]);
+
+  // URL sync. Mirrors current state into the URL with replaceState (no history
+  // entries) so the visible URL is always shareable. Skips writes when the
+  // resulting query is identical to what's already there to avoid pointless
+  // history churn during fast-typed input. When the state matches defaults,
+  // `buildEstimateQuery` returns "" and we render a paramless URL.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const next = buildEstimateQuery({ hires, pkg, selected });
+    const current = window.location.search.replace(/^\?/, "");
+    if (next === current) return;
+    const url = next === ""
+      ? `${window.location.pathname}${window.location.hash}`
+      : `${window.location.pathname}?${next}${window.location.hash}`;
+    window.history.replaceState(null, "", url);
   }, [hires, pkg, selected]);
 
   function applyPackage(id: PackageId) {
@@ -166,26 +177,19 @@ export default function PricingCalculator({
     setPkg(null); // any manual change escapes the preset (null = no exact match)
   }
 
-  const { perCheckList, perCheckNet, monthly, annual, discountPct, tier } = useMemo(() => {
-    const addonTotal = selected.reduce(
-      (sum, id) => sum + (ADDONS.find((a) => a.id === id)?.price ?? 0),
-      0,
-    );
-    const list = BASE_PER_CHECK + addonTotal;
-    const d = volumeDiscount(hires);
-    const net = list * (1 - d);
-    const m = net * hires;
-    const a = m * 12;
-    const t = hires < 50 ? "Starter" : "Volume";
-    return {
-      perCheckList: list,
-      perCheckNet: net,
-      monthly: m,
-      annual: a,
-      discountPct: d * 100,
-      tier: t,
-    };
-  }, [hires, selected]);
+  /**
+   * Reset to first-visit defaults. The LS and URL effects both treat the
+   * default state as "no payload," so simply rewinding state is enough —
+   * the visible URL collapses to `/pricing` and the LS blob is removed.
+   */
+  function resetToDefaults() {
+    setHires(DEFAULT_HIRES);
+    setPkg(DEFAULT_PACKAGE);
+    setSelected(PACKAGES.find((p) => p.id === DEFAULT_PACKAGE)!.addons);
+  }
+
+  const { perCheckList, perCheckNet, monthly, annual, discountPct, tier } =
+    useMemo(() => computeEstimate(hires, selected), [hires, selected]);
 
   // Selected add-on objects, sorted to ADDONS display order
   const selectedAddons = useMemo(
@@ -272,7 +276,7 @@ export default function PricingCalculator({
                 <button
                   type="button"
                   onClick={() =>
-                    setHires((h) => Math.max(1, Math.min(10000, h - 1)))
+                    setHires((h) => Math.max(MIN_HIRES, Math.min(MAX_HIRES, h - 1)))
                   }
                   aria-label="Decrease monthly searches by 1"
                   className="btn-press grid place-items-center size-12 shrink-0 rounded-[12px] border border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]"
@@ -283,30 +287,23 @@ export default function PricingCalculator({
                   id="calc-monthly-searches"
                   type="number"
                   inputMode="numeric"
-                  min={1}
-                  max={10000}
+                  min={MIN_HIRES}
+                  max={MAX_HIRES}
                   step={1}
                   value={hires}
                   onChange={(e) => {
                     const raw = e.target.value;
                     if (raw === "") return;
                     const n = Number(raw);
-                    if (Number.isFinite(n)) {
-                      setHires(Math.max(1, Math.min(10000, Math.round(n))));
-                    }
+                    if (Number.isFinite(n)) setHires(clampHires(n));
                   }}
-                  onBlur={(e) => {
-                    const n = Number(e.target.value);
-                    if (!Number.isFinite(n) || n < 1) setHires(1);
-                    else if (n > 10000) setHires(10000);
-                    else setHires(Math.round(n));
-                  }}
+                  onBlur={(e) => setHires(clampHires(e.target.value))}
                   className="w-full flex-1 rounded-[12px] border border-border bg-white px-4 py-3 font-display text-[28px] leading-none tracking-[-0.01em] text-[color:var(--color-ink)] tabular-nums focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent-ink)]/40 focus:border-[color:var(--color-accent-ink)]"
                 />
                 <button
                   type="button"
                   onClick={() =>
-                    setHires((h) => Math.max(1, Math.min(10000, h + 1)))
+                    setHires((h) => Math.max(MIN_HIRES, Math.min(MAX_HIRES, h + 1)))
                   }
                   aria-label="Increase monthly searches by 1"
                   className="btn-press grid place-items-center size-12 shrink-0 rounded-[12px] border border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]"
@@ -347,9 +344,21 @@ export default function PricingCalculator({
                   );
                 })}
               </div>
-              <p className="mt-3 text-[11.5px] text-[color:var(--color-ink-muted)]">
-                Volume discounts kick in at 50, 100, 200, and 500 searches per month.
-              </p>
+              <div className="mt-3 flex items-center justify-between gap-3">
+                <p className="text-[11.5px] text-[color:var(--color-ink-muted)]">
+                  Volume discounts kick in at 50, 100, 200, and 500 searches per month.
+                </p>
+                <button
+                  type="button"
+                  onClick={resetToDefaults}
+                  className="btn-press inline-flex items-center gap-1.5 rounded-full border border-transparent px-2.5 py-1 text-[11.5px] text-[color:var(--color-ink-soft)] hover:border-border hover:text-[color:var(--color-accent-ink)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent-ink)]/40"
+                  aria-label="Reset estimate to defaults"
+                  title="Restore the default Standard package at 40 monthly searches"
+                >
+                  <RotateCcw className="size-3.5" aria-hidden="true" />
+                  Reset to defaults
+                </button>
+              </div>
             </div>
 
             {/* Package picker */}
