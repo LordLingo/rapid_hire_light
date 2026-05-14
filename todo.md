@@ -117,3 +117,14 @@
 - [x] Remove the `<Services />` render and its import from Home.tsx
 - [x] Renumber remaining home-page eyebrows: CtaBanner 06→05, ModernScreening 07→06, FAQ 08→07
 - [x] Save checkpoint and deliver
+
+## 16. Pricing follow-ups (UX polish)
+- [x] StickyEstimateBar: "Jump to estimator" anchor link (`#estimate`) added; calculator section gets `id="estimate"` + `scroll-mt-24`; on >=sm shows full label, <sm collapses to compact "Edit"
+- [x] PricingCalculator: persists `{hires, pkg, selected}` to `localStorage` under versioned key `rh:calc:v1`; lazily hydrates on mount; corrupt blobs fall back to defaults silently
+- [x] StickyEstimateBar: under 480px (`xs` breakpoint at 30rem) hides the monthly secondary text and the jump-to-estimator chip to keep the CTA from wrapping
+- [x] QA: live verified package switch → tier highlight, slider → LS → hard reload restores state; jump-link href is `#estimate`
+
+## 17. Package the redesign workflow as a reusable skill
+- [ ] Read /home/ubuntu/skills/skill-creator/SKILL.md and follow its workflow
+- [ ] Author skill: redesign-with-content-preservation (audit → tokens → component-swap → preserve content → preview → deploy)
+- [ ] Validate skill structure and deliver

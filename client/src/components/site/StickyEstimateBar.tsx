@@ -22,7 +22,7 @@
 */
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Sparkles, X } from "lucide-react";
+import { ArrowUpRight, ArrowUp, Sparkles, X } from "lucide-react";
 import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
 
 const SESSION_DISMISS_KEY = "rh:sticky-estimate-dismissed";
@@ -152,11 +152,14 @@ export default function StickyEstimateBar({
                 {fmtMoney2(estimate.perCheckNet)}
               </span>
               <span className="text-[color:var(--color-ink-muted)]"> / check</span>
-              <span className="mx-2 text-[color:var(--color-ink-muted)]">·</span>
-              <span className="font-display text-[15px] tabular-nums text-[color:var(--color-ink)]">
-                {fmtMoney(estimate.monthly)}
+              {/* Monthly is hidden on tiny viewports (<480px) to keep the row from wrapping. */}
+              <span className="hidden xs:inline">
+                <span className="mx-2 text-[color:var(--color-ink-muted)]">·</span>
+                <span className="font-display text-[15px] tabular-nums text-[color:var(--color-ink)]">
+                  {fmtMoney(estimate.monthly)}
+                </span>
+                <span className="text-[color:var(--color-ink-muted)]"> / mo</span>
               </span>
-              <span className="text-[color:var(--color-ink-muted)]"> / mo</span>
               {matchedTierLabel && (
                 <>
                   <span className="mx-2 text-[color:var(--color-ink-muted)]">·</span>
@@ -172,6 +175,18 @@ export default function StickyEstimateBar({
             </p>
           )}
         </div>
+
+        {/* Jump back to estimator — small icon-only on mobile, label on >=sm */}
+        <a
+          href="#estimate"
+          className="btn-press hidden xs:inline-flex items-center gap-1.5 rounded-full border border-[color:var(--color-border)] bg-white px-3 py-2 text-[12px] font-medium text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-accent-ink)] hover:border-[color:var(--color-accent-ink)] shrink-0"
+          aria-label="Jump to the estimator"
+          title="Jump to the estimator"
+        >
+          <ArrowUp className="size-3.5" />
+          <span className="hidden sm:inline">Jump to estimator</span>
+          <span className="sm:hidden">Edit</span>
+        </a>
 
         {/* Right — CTA + dismiss */}
         {estimate && (

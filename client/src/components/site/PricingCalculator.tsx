@@ -15,6 +15,41 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { ArrowUpRight, Check } from "lucide-react";
 
+/**
+ * localStorage persistence for the calculator. Versioned key keeps us safe
+ * against future schema changes — if the shape evolves, bump V to invalidate
+ * older saved blobs gracefully (no migration logic, just fall back to defaults).
+ */
+const LS_KEY = "rh:calc:v1";
+type PersistedState = {
+  hires: number;
+  pkg: "basic" | "standard" | "comprehensive" | null;
+  selected: string[];
+};
+function loadPersisted(): PersistedState | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<PersistedState>;
+    if (
+      typeof parsed.hires !== "number" ||
+      !Array.isArray(parsed.selected) ||
+      (parsed.pkg !== null &&
+        parsed.pkg !== "basic" &&
+        parsed.pkg !== "standard" &&
+        parsed.pkg !== "comprehensive")
+    ) {
+      return null;
+    }
+    const hires = Math.min(1000, Math.max(1, Math.round(parsed.hires)));
+    const selected = parsed.selected.filter((s): s is string => typeof s === "string");
+    return { hires, pkg: parsed.pkg ?? null, selected };
+  } catch {
+    return null;
+  }
+}
+
 export type CalculatorEstimate = {
   perCheckNet: number;
   perCheckList: number;
@@ -96,11 +131,28 @@ export default function PricingCalculator({
 }: {
   onEstimateChange?: (e: CalculatorEstimate) => void;
 } = {}) {
-  const [hires, setHires] = useState(40);
-  const [pkg, setPkg] = useState<PackageId | null>("standard");
-  const [selected, setSelected] = useState<string[]>(
-    PACKAGES.find((p) => p.id === "standard")!.addons,
+  // Hydrate from localStorage on first render so a returning visitor sees their
+  // last configuration immediately (no flash of default state).
+  const persisted = useMemo(() => loadPersisted(), []);
+  const [hires, setHires] = useState<number>(persisted?.hires ?? 40);
+  const [pkg, setPkg] = useState<PackageId | null>(
+    persisted ? persisted.pkg : "standard",
   );
+  const [selected, setSelected] = useState<string[]>(
+    persisted ? persisted.selected : PACKAGES.find((p) => p.id === "standard")!.addons,
+  );
+
+  // Persist any change back to localStorage. Errors are intentionally swallowed
+  // (private mode / quota / disabled storage) — the calculator must keep working.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const payload: PersistedState = { hires, pkg, selected };
+      window.localStorage.setItem(LS_KEY, JSON.stringify(payload));
+    } catch {
+      /* ignore */
+    }
+  }, [hires, pkg, selected]);
 
   function applyPackage(id: PackageId) {
     setPkg(id);
@@ -165,7 +217,7 @@ export default function PricingCalculator({
   }, [hires, selected, perCheckNet, monthly, annual, tier]);
 
   return (
-    <section className="bg-white border-y border-border">
+    <section id="estimate" className="bg-white border-y border-border scroll-mt-24">
       <div className="container py-20 md:py-28">
         {/* Eyebrow + title row */}
         <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
