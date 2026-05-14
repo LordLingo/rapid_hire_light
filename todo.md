@@ -203,3 +203,8 @@
 - [x] Dynamic Open Graph image per post: `/api/og/blog/:slug.svg` (1200×630 SVG, brand mark + tag + wrapped title + Houston/FCRA trust line) reading from `shared/blog-og.json`; wired into BlogPost `useSeo` (`og:image`, `twitter:image`) and JSON-LD `image`
 - [x] Fixed-top `ReadingProgressBar` on /blog/:slug — rAF-throttled scroll listener, brand-accent fill on hairline track, hides under 2% / over 99.5%, `prefers-reduced-motion` safe, `data-reading-progress` attribute for testability
 - [x] Vitest: 76/76 passing (added `blogOg.test.ts` for SVG rendering + `candidateContact.test.ts` for the validator + a `shared/blog-og.json` sync block in `blog.test.ts`); browser QA confirmed status badge, candidate-form submit success, OG endpoint live, reading-progress bar fills on scroll; checkpoint pending
+
+## 26. /services bullet copy tightening
+- [x] Located /services bullet copy in `client/src/pages/Services.tsx` (the SERVICES array's `includes` field)
+- [x] Shortened wrapping bullets across all six service blocks (Employment, Criminal, Drug & Health, Education, MVR, Social) so each line fits on a single row at the column width — same meaning, no truncation
+- [x] DOM probe verified 27/27 bullets render on a single line; vitest 76/76 still passing; checkpoint pending

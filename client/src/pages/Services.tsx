@@ -29,10 +29,10 @@ const SERVICES = [
     body:
       "Effortlessly streamline your hiring with verified employment history, gap analysis, and reference checks — turned around faster than a recruiter can finish their morning standup.",
     includes: [
-      "Past employer verification (last 7 years)",
-      "Job title, dates of employment, and reason for separation",
-      "Gap analysis with candidate self-explanation prompts",
-      "Up to 5 professional reference interviews",
+      "Past employer verification (7 years)",
+      "Job title, dates, and reason for leaving",
+      "Gap analysis with candidate prompts",
+      "Up to 5 reference interviews",
     ],
     sla: "Avg. 18h turnaround",
   },
@@ -43,11 +43,11 @@ const SERVICES = [
     body:
       "Comprehensive federal, state, and county criminal history searches — built for every U.S. jurisdiction, with adverse action workflow baked in.",
     includes: [
-      "Federal criminal search (all 94 districts)",
-      "State + county criminal search (last 7 years)",
+      "Federal criminal search (94 districts)",
+      "State + county criminal (7 years)",
       "Sex offender registry (national)",
-      "Global watch list / OFAC / Interpol",
-      "Pre-adverse + adverse action notice automation",
+      "OFAC / Interpol watch list",
+      "Pre-adverse + adverse action workflow",
     ],
     sla: "85% complete < 24h",
   },
@@ -59,10 +59,10 @@ const SERVICES = [
       "Fast, reliable 5-, 10-, and 12-panel drug testing plus occupational health screens — at over 12,000 collection sites nationwide.",
     includes: [
       "5 / 10 / 12-panel urine drug tests",
-      "Hair, oral fluid, and ETG alcohol options",
-      "Occupational health (TB, vaccinations, vision, audiograms)",
+      "Hair, oral fluid, and ETG alcohol",
+      "Occupational health (TB, vision)",
       "DOT and non-DOT testing programs",
-      "MRO-reviewed results delivered electronically",
+      "MRO-reviewed electronic results",
     ],
     sla: "Negative results in 24h",
   },
@@ -73,10 +73,10 @@ const SERVICES = [
     body:
       "Instantly verify degrees, diplomas, and technical certifications directly with institutions — including international credentials.",
     includes: [
-      "Degree, major, dates, and graduation status",
-      "Vocational and technical certifications",
+      "Degree, major, and graduation status",
+      "Vocational + technical certifications",
       "Foreign credential evaluation",
-      "Direct National Student Clearinghouse access",
+      "Direct Student Clearinghouse access",
     ],
     sla: "Avg. 2 business days",
   },
@@ -88,7 +88,7 @@ const SERVICES = [
       "Real-time driving records across all 50 states for any role involving a company vehicle — paired with continuous monitoring for fleet teams.",
     includes: [
       "3-, 5-, or 7-year driving history",
-      "License status, class, endorsements, restrictions",
+      "License status, class, endorsements",
       "Violations, accidents, and DUIs",
       "CDL clearinghouse query (FMCSA)",
       "Continuous MVR monitoring (optional)",
@@ -103,7 +103,7 @@ const SERVICES = [
       "FCRA-compliant screening of public online behavior — flagging only the categories you opt in to, never protected-class data.",
     includes: [
       "Public posts across the major platforms",
-      "Hate speech, violence, intolerance, illegal activity flags",
+      "Hate speech and illegal-activity flags",
       "Human-reviewed evidence packets",
       "Configurable category opt-ins",
     ],
