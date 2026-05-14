@@ -254,8 +254,8 @@
 - [x] Vitest 76/76 still passing; LSP/TS clean; browser QA verified About / Services / Pricing / Integrations / Contact / Support heroes; checkpoint pending
 
 ## 32. Hero cards feel "live" (mini-stats + real integrations + entrance motion)
-- [ ] Create `shared/hero-stats.json` — single source of truth for the live mini-stats shown under each page's hero card (last-7-day reports cleared, avg TAT, FCRA pass rate, calls answered, etc.); add a vitest sync spec so it stays in sync with the runtime defaults
-- [ ] Locate the existing source of truth for the /integrations page list (or create one in `shared/integrations.json`); rebuild `IntegrationsGrid` hero card to read from that source so the 6 tiles always match the rest of the page
-- [ ] Build a small `HeroMiniStats` row component (compact, 2–3 cells, fits under the hero card frame); wire one variant per page (About, Services, Pricing, Integrations, Contact, Support) with page-specific stats
-- [ ] Add a reusable `useHeroEntrance` hook (or pure CSS class) that staggers fade-up on hero-card rows (60–80ms each); gate behind `@media (prefers-reduced-motion: no-preference)`; respect intersection observer so it doesn't re-fire on scroll
-- [ ] Vitest where applicable (hero-stats sync + integrations grid logic), browser QA at desktop + mobile + reduced-motion preference, save checkpoint, deliver
+- [x] Create `shared/hero-stats.json` — single source of truth for the live mini-stats shown under each page's hero card (last-7-day reports cleared, avg TAT, FCRA pass rate, calls answered, etc.); add a vitest sync spec so it stays in sync with the runtime defaults
+- [x] Locate the existing source of truth for the /integrations page list (or create one in `shared/integrations.json`); rebuild `IntegrationsGrid` hero card to read from that source so the 6 tiles always match the rest of the page
+- [x] Build a small `HeroMiniStats` row component (compact, 2–3 cells, fits under the hero card frame); wire one variant per page (About, Services, Pricing, Integrations, Contact, Support) with page-specific stats
+- [x] Add a reusable `useHeroEntrance` hook (or pure CSS class) that staggers fade-up on hero-card rows (60–80ms each); gate behind `@media (prefers-reduced-motion: no-preference)`; respect intersection observer so it doesn't re-fire on scroll
+- [x] Vitest where applicable (hero-stats sync + integrations grid logic), browser QA at desktop + mobile + reduced-motion preference, save checkpoint, deliver
