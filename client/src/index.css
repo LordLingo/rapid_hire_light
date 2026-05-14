@@ -345,3 +345,15 @@
     background: color-mix(in oklab, var(--color-accent-ink) 24%, transparent);
   }
 }
+
+
+/* Upsell hint smooth fade-in when matched tier card surfaces it */
+@media (prefers-reduced-motion: no-preference) {
+  .upsell-hint {
+    animation: upsellFadeIn 240ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+  @keyframes upsellFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}

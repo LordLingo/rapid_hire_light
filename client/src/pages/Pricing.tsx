@@ -11,7 +11,7 @@
 */
 import { useCallback, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Check, Sparkles } from "lucide-react";
+import { ArrowUpRight, Check, Sparkles, TrendingUp } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import PricingCalculator from "@/components/site/PricingCalculator";
@@ -51,6 +51,26 @@ function matchTierFromPerCheck(perCheckNet: number): TierId {
   if (perCheckNet >= 35) return "professional";
   return "essential";
 }
+
+/**
+ * Per-tier contextual upsell shown only when that tier is matched.
+ * `delta` is the additional per-check cost vs. the matched tier's headline price
+ * (Essential $24.95 → Professional $44.95 → Comprehensive $74.95).
+ * Comprehensive has no upsell (it's the top tier).
+ */
+const UPSELL: Record<TierId, { nextLabel: string; delta: string; benefits: string } | null> = {
+  essential: {
+    nextLabel: "Professional",
+    delta: "+$20.00/check",
+    benefits: "unlocks federal criminal + employment & education verification",
+  },
+  professional: {
+    nextLabel: "Comprehensive",
+    delta: "+$30.00/check",
+    benefits: "unlocks 3 county searches, MVR or 5-panel drug screen, and civil records",
+  },
+  comprehensive: null,
+};
 
 const TIERS: Tier[] = [
   {
@@ -329,6 +349,42 @@ export default function Pricing() {
                       <ArrowUpRight className="size-4" />
                     </Link>
                   </div>
+                  {isMatched && UPSELL[t.id] && (
+                    <div
+                      className={[
+                        "upsell-hint mt-4 flex items-start gap-3 rounded-[12px] border px-4 py-3 text-[12.5px] leading-[1.55]",
+                        isFeatured
+                          ? "border-white/30 bg-white/10 text-white"
+                          : "border-[color:var(--color-accent-ink)]/30 bg-[color:var(--color-accent-ink)]/[0.06] text-[color:var(--color-ink)]",
+                      ].join(" ")}
+                      role="note"
+                      aria-label={`Upsell: upgrade to ${UPSELL[t.id]!.nextLabel}`}
+                    >
+                      <span
+                        className={[
+                          "mt-[1px] grid place-items-center size-5 shrink-0 rounded-full",
+                          isFeatured
+                            ? "bg-white/20 text-white"
+                            : "bg-[color:var(--color-accent-ink)] text-white",
+                        ].join(" ")}
+                      >
+                        <TrendingUp className="size-3" strokeWidth={2.25} />
+                      </span>
+                      <span>
+                        <span
+                          className={[
+                            "font-semibold",
+                            isFeatured ? "text-white" : "text-[color:var(--color-accent-ink-strong,var(--color-accent-ink))]",
+                          ].join(" ")}
+                        >
+                          {UPSELL[t.id]!.delta} → {UPSELL[t.id]!.nextLabel}
+                        </span>{" "}
+                        <span className={isFeatured ? "text-white/85" : "text-[color:var(--color-ink-soft)]"}>
+                          {UPSELL[t.id]!.benefits}.
+                        </span>
+                      </span>
+                    </div>
+                  )}
                 </article>
               );
             })}
