@@ -47,10 +47,29 @@ type Tier = {
  * which is desirable — a discounted Standard hitting $34.50 will correctly
  * collapse to Essential.
  */
+/**
+ * Map calculator state -> tier id. Prefer the explicit package preset (1:1
+ * mapping users intuitively expect — Basic ↦ Essential, Standard ↦ Professional,
+ * Comprehensive ↦ Comprehensive). Fall back to the per-check price band only
+ * when the user has manually edited add-ons (no exact preset match).
+ */
+function matchTierFromPackage(
+  pkg: CalculatorEstimate["pkg"],
+): TierId | null {
+  if (pkg === "basic") return "essential";
+  if (pkg === "standard") return "professional";
+  if (pkg === "comprehensive") return "comprehensive";
+  return null;
+}
+
 function matchTierFromPerCheck(perCheckNet: number): TierId {
   if (perCheckNet >= 60) return "comprehensive";
   if (perCheckNet >= 35) return "professional";
   return "essential";
+}
+
+function matchTierFromEstimate(e: CalculatorEstimate): TierId {
+  return matchTierFromPackage(e.pkg) ?? matchTierFromPerCheck(e.perCheckNet);
 }
 
 /**
@@ -183,7 +202,7 @@ export default function Pricing() {
   const calculatorEndRef = useRef<HTMLDivElement | null>(null);
   const handleEstimate = useCallback((e: CalculatorEstimate) => {
     setEstimate(e);
-    setMatchedTier(matchTierFromPerCheck(e.perCheckNet));
+    setMatchedTier(matchTierFromEstimate(e));
   }, []);
   const matchedTierLabel =
     matchedTier && TIERS.find((t) => t.id === matchedTier)?.name

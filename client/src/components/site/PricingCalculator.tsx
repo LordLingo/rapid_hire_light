@@ -22,6 +22,8 @@ export type CalculatorEstimate = {
   annual: number;
   hires: number;
   selected: string[];
+  /** Currently active package preset (or null when the user has manually edited add-ons). */
+  pkg: "basic" | "standard" | "comprehensive" | null;
 };
 
 type Addon = { id: string; label: string; price: number };
@@ -95,7 +97,7 @@ export default function PricingCalculator({
   onEstimateChange?: (e: CalculatorEstimate) => void;
 } = {}) {
   const [hires, setHires] = useState(40);
-  const [pkg, setPkg] = useState<PackageId>("standard");
+  const [pkg, setPkg] = useState<PackageId | null>("standard");
   const [selected, setSelected] = useState<string[]>(
     PACKAGES.find((p) => p.id === "standard")!.addons,
   );
@@ -109,7 +111,7 @@ export default function PricingCalculator({
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
-    setPkg("basic"); // any manual change escapes the preset; left as Basic visually
+    setPkg(null); // any manual change escapes the preset (null = no exact match)
   }
 
   const { perCheckList, perCheckNet, monthly, annual, discountPct, tier } = useMemo(() => {
@@ -148,8 +150,9 @@ export default function PricingCalculator({
       annual,
       hires,
       selected,
+      pkg,
     });
-  }, [perCheckNet, perCheckList, monthly, annual, hires, selected, onEstimateChange]);
+  }, [perCheckNet, perCheckList, monthly, annual, hires, selected, pkg, onEstimateChange]);
 
   // Build pre-filled query string for /contact
   const quoteQuery = useMemo(() => {
