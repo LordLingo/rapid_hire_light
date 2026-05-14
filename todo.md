@@ -170,10 +170,12 @@
 - [x] Save checkpoint and deliver
 
 ## 22. Privacy + Terms pages, blog tag archives, sitemap/robots, footer social-proof
-- [ ] Build `/privacy` and `/terms` page components with proper SEO meta and visible last-updated date
-- [ ] Wire footer "Privacy Policy" and "Terms & Conditions" buttons to real `<Link>` routes (drop the toast placeholders)
-- [ ] Build `/blog/tag/:tag` archive page; make every tag chip on the blog index link to it; add SEO meta + JSON-LD
-- [ ] Add a tiny tags helper (`getAllTags`, `listPostsByTag`) into `lib/blog.ts`; cover with vitest
-- [ ] Generate `dist/sitemap.xml` + `dist/robots.txt` at build time covering every static page, blog post, tag archive, plus `/privacy`/`/terms`
-- [ ] Add a "Trusted by 800+ HR & staffing teams" microcopy line above the footer link columns
-- [ ] Re-run vitest, QA in browser, save checkpoint and deliver
+- [x] Built `/privacy` and `/terms` page components: PageHero, sticky in-page TOC, 11 (privacy) / 12 (terms) numbered sections, last-updated stamp, contact email, dynamic <title> + meta description via useSeo
+- [x] Wired footer "Privacy Policy" and "Terms & Conditions" to real wouter <Link> routes; toast placeholders removed
+- [x] Built `/blog/tag/:tag` archive page (PageHero with topic eyebrow + article count, sibling-tags rail, post list, back-to-blog link); JSON-LD CollectionPage emitted via useSeo
+- [x] Added `getAllTags`, `listPostsByTag`, `formatTag`, `tagToSlug`, `tagFromSlug`, and `siteUrl` helpers in `lib/blog.ts`; covered with 4 new vitest specs
+- [x] Added a Vite plugin in `vite.config.ts` (`generateSitemap`) that writes `dist/public/sitemap.xml` + `dist/public/robots.txt` on `closeBundle`; verified via `pnpm build`: 28 URLs (9 static + 6 posts + 13 tag archives) with per-post lastmod = publishedAt
+- [x] Added the social-proof line above the footer bottom bar: "Trusted by 800+ HR & staffing teams · Avg. 20-min turnaround · 99.4% on-time SLA"
+- [x] Created `shared/blog-meta.json` (slugs + tags + lastmod) consumed by the sitemap plugin; added a vitest spec that fails CI loudly if the JSON drifts from the runtime registry
+- [x] Re-ran vitest: 60/60 passing (36 pricing + 24 blog); browser QA confirmed /privacy, /terms, /blog/tag/compliance render with proper SEO + footer
+- [x] Save checkpoint and deliver
