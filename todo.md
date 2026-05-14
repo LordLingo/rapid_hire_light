@@ -181,9 +181,9 @@
 - [x] Save checkpoint and deliver
 
 ## 23. Support page (US-based humans, zero offshore)
-- [ ] Inspect precisehire.com/support for structure + tone (no copy-paste)
-- [ ] Outline the page: hero with US-based positioning, support channels (phone/email/chat/portal), live SLAs, hours by time zone, candidate vs. client routing, support-specific FAQ, accessibility statement, escalation path, CTA
-- [ ] Build `client/src/pages/Support.tsx` using SiteShell + PageHero, fitting the existing design system
-- [ ] Wire `/support` route in App.tsx; add Support to header nav + footer Company column
-- [ ] Emit JSON-LD ContactPoint schema via useSeo so the US phone number is machine-readable
-- [ ] Vitest where applicable, browser QA across viewports, save checkpoint, deliver
+- [x] Inspected precisehire.com/support for structure + tone (no copy-paste); modeled the trust positioning rather than the layout
+- [x] Outlined the page: hero w/ US-based positioning + 14-sec answer-time panel, 4 named US-based specialists (placeholders disclosed), coverage hours grid, big-four CRA comparison table (6 rows), phone CTA band, candidate-vs-client routing pair, 7-question Support FAQ, accessibility/escalation note, final CTA
+- [x] Built `client/src/pages/Support.tsx` using SiteShell + PageHero, in the existing Fraunces serif + Inter sans + accent-ink design system
+- [x] Wired `/support` route in App.tsx; added Support to header nav (between Pricing and Contact Us) and to the footer Company column
+- [x] Emitted JSON-LD Organization + ContactPoint schema via useSeo (toll-free phone, opening hours M–F 7–19 CT + Sat 9–13 CT, support@/candidates@ email contact points) — verified live via DOM probe
+- [x] Re-ran vitest 60/60 still passing; browser QA verified hero, comparison table, candidate/client cards, and FAQ accordion expand/collapse on the live preview; added `/support` to the build sitemap STATIC_ROUTES; checkpoint saved
