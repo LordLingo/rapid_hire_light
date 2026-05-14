@@ -23,3 +23,10 @@
 - [x] Visit each new route in preview (/, /services, /integrations, /pricing, /about, /contact)
 - [x] Submit a test contact submission and verify the JSON store grew
 - [x] Save checkpoint
+
+## 5. Polish — page transitions + reveals
+- [x] Add a route-aware PageTransition wrapper (CSS keyframe crossfade + soft lift, keyed by location)
+- [x] Respect prefers-reduced-motion (transition + reveal disabled when user prefers reduced motion)
+- [x] Upgrade reveal-on-scroll: IntersectionObserver one-shot, blur-fade-up, sibling-index stagger
+- [x] Verify across /, /about, /pricing, /contact (HMR build clean, probe confirms 27 reveal targets + staggered delays applied)
+- [x] Save checkpoint and deliver

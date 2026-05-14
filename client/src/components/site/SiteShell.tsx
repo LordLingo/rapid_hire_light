@@ -1,8 +1,11 @@
 /*
   Editorial Calm — site shell
-  Wraps every page with the shared Header + Footer and resets scroll on
-  route change. Keeps the reveal-on-scroll observer live for any reveal
-  classes used inside child pages.
+  Wraps every page with the shared Header + Footer.
+  - Smooth page-transition crossfade + lift on route change (CSS keyframe via
+    .page-transition class, keyed by location so it replays per page).
+  - Re-runs the reveal-on-scroll observer when the route changes so newly-
+    mounted sections get observed.
+  - Resets scroll to top on route change.
 */
 import { useEffect } from "react";
 import { useLocation } from "wouter";
@@ -12,7 +15,7 @@ import { useReveal } from "@/hooks/useReveal";
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
-  useReveal();
+  useReveal(location);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -21,7 +24,13 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <main>{children}</main>
+      <main>
+        {/* `key` forces React to remount the wrapper on every route change,
+            which restarts the .page-transition keyframe animation. */}
+        <div key={location} className="page-transition">
+          {children}
+        </div>
+      </main>
       <Footer />
     </div>
   );
