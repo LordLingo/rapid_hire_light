@@ -158,3 +158,13 @@
 - [x] All 54 tests pass (36 pricing + 18 blog); browser QA confirmed index lists 6 posts and detail renders headings, paragraphs, bullets, internal links, tag chips, CTA, related rail; <title>/meta updates verified
 - [x] Stripped redundant brand suffix from two metaTitles to avoid double-branding in <title>
 - [x] Save checkpoint and deliver
+
+## 21. Footer color (site-wide)
+- [x] Audited Footer + tokens; chose deep ink-cobalt (same hue family as `--color-accent-ink`, dramatically darker) so it reinforces the brand without inventing a new hue
+- [x] Added 6 footer surface tokens to the @theme block: `--color-footer`, `--color-footer-soft`, `--color-footer-foreground`, `--color-footer-muted`, `--color-footer-soft-text`, `--color-footer-border`
+- [x] Rewrote Footer.tsx to use the new tokens; added a brand-cobalt hairline accent at the top edge for a clean light→dark transition; brand wordmark uses warm white; logo now uses `--color-accent-halo` for visibility on dark; added a Blog link to the Company column
+- [x] Authored a `.footer-link` utility in index.css that brightens to warm white on hover with the same animated underline as `.ink-link`, plus a brand-cobalt focus-visible ring for keyboard a11y
+- [x] Footer is mounted once via `SiteShell` so the change is consistent across every page with no per-page edits
+- [x] DOM-probed all 8 routes (/, /services, /integrations, /pricing, /about, /contact, /blog, /blog/:slug): identical computed `oklch(0.2 0.045 258)` background, `oklch(0.98 0.005 85)` text, `oklch(0.88 0.01 260)` links
+- [x] Re-ran vitest suite (54/54 passing)
+- [x] Save checkpoint and deliver
