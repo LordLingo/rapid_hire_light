@@ -73,6 +73,8 @@ export default function About() {
           </>
         }
         lede="Rapid Hire Solutions is a U.S.-based, FCRA-certified background screening platform built for hiring teams that need speed without giving up compliance."
+        image="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/about_hero_team-T6vkABXTyDhWAhfCXQTDGf.webp"
+        imageAlt="Three Rapid Hire teammates at a sunlit workspace, mid-conversation around a laptop and a stack of folders."
       />
 
       {/* Story */}
@@ -81,6 +83,15 @@ export default function About() {
           <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
             <p className="eyebrow">05 — Our story</p>
             <div className="mt-3 hairline" />
+            <div className="mt-8 hidden lg:block overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/about_story_review-hJLCChvhRPA2HRMo6kGQVH.webp"
+                alt="A specialist reviews a printed multi-page background check report at a sunlit oak desk."
+                className="w-full h-[320px] object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
           <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
             <p className="font-display text-[28px] sm:text-[34px] md:text-[40px] leading-[1.2] tracking-[-0.015em] text-[color:var(--color-ink)]">

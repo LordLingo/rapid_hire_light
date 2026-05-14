@@ -73,6 +73,8 @@ export default function Integrations() {
           </>
         }
         lede="From day-one ATS triggers to writing adjudication decisions back into your HRIS, our integrations turn the screening step from a manual hand-off into a quiet background process."
+        image="/manus-storage/integrations_hero_laptop_9f1f4dd9.png"
+        imageAlt="An open laptop on a sunlit oak desk shown at a slight angle, displaying an abstract ATS dashboard with a closed cobalt-blue notebook beside it."
       />
 
       {/* How it works */}

@@ -143,6 +143,8 @@ export default function Contact() {
           </>
         }
         lede="Tell us about your hiring volume and the roles you screen for. Our U.S.-based, FCRA-certified team will respond the same business day with a tailored package."
+        image="/manus-storage/contact_hero_headset_b8f58a27.png"
+        imageAlt="An over-ear headset rests on a sunlit oak desk beside an open notepad and a ceramic mug, suggesting a real human ready to take a call."
       />
 
       <section className="bg-white border-y border-border">

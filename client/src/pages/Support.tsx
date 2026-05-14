@@ -308,6 +308,8 @@ export default function Support() {
           </>
         }
         lede={`No phone tree. No offshore call center. No "your ticket is important to us" loop. When you call Rapid Hire, a named US-based specialist in ${HQ_CITY} picks up — usually in seconds. They know your account, they know FCRA, and they have the authority to actually fix things.`}
+        image="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/support_hero_specialist-HEXgPhZR4JWHwtvLhhnH7x.webp"
+        imageAlt={`Over-the-shoulder view of a US-based Rapid Hire specialist on a headset at a sunlit oak desk in ${HQ_CITY}.`}
       />
 
       {/* Hero CTAs + live answer-time panel */}
@@ -368,7 +370,17 @@ export default function Support() {
                 you skip the queue entirely.
               </p>
 
-              <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="mt-12 overflow-hidden rounded-[20px] border border-border paper-shadow bg-white">
+                <img
+                  src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/support_desk_row-eygC86RUxGQaNX9YxnYwkZ.webp"
+                  alt="A row of light oak workstations with over-ear headsets on stands at a sunlit Houston-style office — the Rapid Hire support floor."
+                  className="w-full h-[200px] sm:h-[240px] md:h-[280px] object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {TEAM.map((person) => (
                   <article
                     key={person.name}

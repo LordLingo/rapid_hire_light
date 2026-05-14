@@ -125,6 +125,8 @@ export default function Services() {
           </>
         }
         lede="Comprehensive background screening services tailored to elevate your hiring process and boost your team's success — with the SLAs and inclusions written down where you can see them."
+        image="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services_hero_folders-UrWMceXtFupKReouVLbmWW.webp"
+        imageAlt="Hands organizing a numbered stack of manila folders, the top folder marked with a single cobalt-blue stripe, on a sunlit oak desk."
       />
 
       <section className="bg-white border-y border-border">

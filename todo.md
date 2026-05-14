@@ -208,3 +208,11 @@
 - [x] Located /services bullet copy in `client/src/pages/Services.tsx` (the SERVICES array's `includes` field)
 - [x] Shortened wrapping bullets across all six service blocks (Employment, Criminal, Drug & Health, Education, MVR, Social) so each line fits on a single row at the column width — same meaning, no truncation
 - [x] DOM probe verified 27/27 bullets render on a single line; vitest 76/76 still passing; checkpoint pending
+
+## 27. Editorial imagery sweep (text-heavy site → real photography)
+- [x] Audit pages, decide style brief: editorial documentary photography, sunlit warm-neutral palette, anonymous gestures (no identifiable faces), brand-blue accent props only, framed in WhyUs-style rounded card with paper-shadow + hairline border
+- [x] Generated 8 on-brief images: about_hero_team, about_story_review, services_hero_folders, pricing_hero_notebook, integrations_hero_laptop, contact_hero_headset, support_hero_specialist, support_desk_row
+- [x] Extended `PageHero` with optional `image` + `imageAlt` props — when present, title/lede shift to a 7-col layout and the right column gets the editorial photo frame; falls back to the original text-only layout otherwise (no breakage on Privacy/Terms/Blog/etc.)
+- [x] Wired hero photo into About, Services, Pricing, Integrations, Contact, Support page heroes; added the over-the-shoulder "Our story" photo into About; added the wide desk-row banner above "The desk" cards on Support
+- [x] First QA caught two CDN URLs returning 403 (integrations + contact heroes); re-uploaded those two assets via `manus-upload-file --webdev` and swapped the references — all 8 images now load (verified via DOM probe + visual screenshots)
+- [x] Vitest 76/76 still passing; checkpoint saved
