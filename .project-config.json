@@ -1,0 +1,35 @@
+{
+  "build_command": "pnpm run build",
+  "capabilities": [],
+  "dev_command": "pnpm run dev",
+  "env_vars": {},
+  "experiments": null,
+  "git_remote": {
+    "repo_url": "s3://vida-prod-gitrepo/webdev-git/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk",
+    "access_key_id": "ASIAZV3A2ECZLHET5IIL",
+    "secret_access_key": "Jb/T55PHJsiShyKPjpdbDDaL9a5RAAdLNrWI0pxU",
+    "session_token": "IQoJb3JpZ2luX2VjEJX//////////wEaCXVzLWVhc3QtMSJHMEUCIQCoAzeAEnl1lBig/+q1XMpwXIUAjPBlhpySKnNpT0neDgIgKMi4Rwl7zkJdt0sfU7RagZKquci5fnOxahAHqsKEabIq9gMIXhAEGgw2NjUzODYwOTg4NjYiDKuFcunc2isQ5mO6iCrTA9fn1lpZkEzhEPG87tJJe/nUe7c9EmrfCa0CJSE99NushznlZ5DUKlS412uQwNZ7HOqIqHyq0PmWa33VGxlM2wIsv5YOHZQZ167QJH4Op9ix6DXAq0mPpdjvhe8irXgao6qKH6oRaZ2I38rL1gAToOWdhbRmACLqqI+HFko/oavMQW/g2BR2zBAc3MQmlRArkiznBDPi/ntjmNlLSW9Dxk1gr5QsBHQj/hgBLJ/ruTyjeeW91ZnC7/d1J2qZGSJukMqsxEVcuytkggrQW822VBLBOFball2LI8c60qsB9rkRqo5+zPtP2Unct555Sl2Nleh3JYk5uIcPJqjFSPyrAP2Uajx6Gx10t1TZnBAz7/iyzAkJJEuwMLabdk8mTIzhlCpRKnXWfx3RPkogMv7olVR/hJzkXVictmB+AHNULudus6wHhkdYGkUVSgoOBymusMrv5yfOwZUw6GQRXDLzLqYVshVvk5eLlUs29y2v3ooJ3Jt91/URAsfeMMehqS5UuBHN+p6NwFOomOOQ4faXzS0WrPnSsaDgE0nmDRtIVmOXOim51ZcNB03DdUVAtPAjtExSJ6sEsW+xr8LyTmdYBRRTFtl7n57XNtOo1i0mS/1OZ2VoMKyJl9AGOp0B7unzdDVLB3E9AdZJoIKrD80UeSH+MN+hnNaZXH+YDAYAiwGRWlOlGtjGy4lYLPsT3C71MHb3OVMOBcCGEOFirZM0udTkXa0qz7CvWXjAzDASmgIeRO9XIhoLCUZjOjkgMdN9drPUGKYDrzotYjc0f6mCxexFTIFm+c+8g2wJ6fkokmkzaVsH3AlWdGpMiBRrkK1f0OAyJ3Qpw+4Udw==",
+    "expiration": "2026-05-15T00:48:44.000Z"
+  },
+  "name": "rapid_hire_light",
+  "path": "/home/ubuntu/rapid_hire_light",
+  "port": 3000,
+  "secrets": {
+    "BUILT_IN_FORGE_API_KEY": "dSqAAv73TgTmTRaEca5sti",
+    "BUILT_IN_FORGE_API_URL": "https://forge.manus.ai",
+    "JWT_SECRET": "ZRNsY88khS7LmygWURty4V",
+    "OAUTH_SERVER_URL": "https://api.manus.im",
+    "OWNER_NAME": "Mark Lingo",
+    "OWNER_OPEN_ID": "niZWB7EdPftVrV6ypHAbSE",
+    "VITE_ANALYTICS_ENDPOINT": "https://manus-analytics.com",
+    "VITE_ANALYTICS_WEBSITE_ID": "54f2cb8f-54e0-4dad-8a59-04239e168232",
+    "VITE_APP_ID": "8y99ZZZXXUWxvnE7c5sDkk",
+    "VITE_APP_LOGO": "",
+    "VITE_APP_TITLE": "Rapid Hire Solutions — Light Redesign",
+    "VITE_FRONTEND_FORGE_API_KEY": "d7mXhLCtWkFfruEQQPyuxi",
+    "VITE_FRONTEND_FORGE_API_URL": "https://forge.manus.ai",
+    "VITE_OAUTH_PORTAL_URL": "https://manus.im"
+  },
+  "template_id": "web-static",
+  "test_command": "pnpm test"
+}
