@@ -11,7 +11,7 @@ export default function ModernScreening() {
     <section className="bg-white border-y border-border">
       <div className="container py-24 md:py-32 grain">
         <div className="reveal-on-scroll relative">
-          <p className="eyebrow text-center">07 — In summary</p>
+          <p className="eyebrow text-center">06 — In summary</p>
           <h2 className="mt-6 font-display text-center text-[44px] sm:text-[64px] md:text-[88px] lg:text-[104px] leading-[0.98] tracking-[-0.025em] text-[color:var(--color-ink)]">
             Modern screening,{" "}
             <span className="italic font-light text-[color:var(--color-accent-ink)] block md:inline">

@@ -38,7 +38,7 @@ export default function Faq() {
       <div className="container py-24 md:py-32">
         <div className="grid grid-cols-12 gap-x-8 gap-y-10">
           <div className="col-span-12 lg:col-span-4 reveal-on-scroll">
-            <p className="eyebrow">08 — Common questions</p>
+            <p className="eyebrow">07 — Common questions</p>
             <h2 className="mt-5 font-display text-[34px] sm:text-[42px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
               Need specifics on packages or{" "}
               <span className="italic font-light text-[color:var(--color-accent-ink)]">

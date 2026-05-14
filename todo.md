@@ -111,3 +111,9 @@
 - [x] Fix mapping by routing through package id directly (Basic→Essential, Standard→Professional, Comprehensive→Comprehensive); price-band remains as fallback only when the user manually edits add-ons
 - [x] Re-tested all three packages programmatically: {Basic→essential, Standard→professional, Comprehensive→comprehensive}
 - [x] Save checkpoint and deliver
+
+## 15. Remove Services section from Home page
+- [x] Locate the Services section import + render in Home.tsx
+- [x] Remove the `<Services />` render and its import from Home.tsx
+- [x] Renumber remaining home-page eyebrows: CtaBanner 06→05, ModernScreening 07→06, FAQ 08→07
+- [x] Save checkpoint and deliver

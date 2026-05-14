@@ -19,7 +19,7 @@ export default function CtaBanner() {
             }}
           />
           <div className="col-span-12 md:col-span-8 relative">
-            <p className="eyebrow">06 — Switch</p>
+            <p className="eyebrow">05 — Switch</p>
             <h2 className="mt-4 font-display text-[34px] sm:text-[42px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
               Ready to switch to{" "}
               <span className="italic font-light text-[color:var(--color-accent-ink)]">
