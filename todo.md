@@ -125,6 +125,15 @@
 - [x] QA: live verified package switch → tier highlight, slider → LS → hard reload restores state; jump-link href is `#estimate`
 
 ## 17. Package the redesign workflow as a reusable skill
-- [ ] Read /home/ubuntu/skills/skill-creator/SKILL.md and follow its workflow
-- [ ] Author skill: redesign-with-content-preservation (audit → tokens → component-swap → preserve content → preview → deploy)
-- [ ] Validate skill structure and deliver
+- [x] Read /home/ubuntu/skills/skill-creator/SKILL.md and follow its workflow
+- [x] Iterate existing skill `website-redesign-with-seo-preservation` with new lessons-learned: tier-mapping pitfall, calculator localStorage pattern, sticky-bar mobile compactness, jump-to-anchor UX, section-removal renumbering hazard
+- [x] Validate skill structure (`quick_validate.py` → valid) and deliver via attachment
+
+## 18. Remove tier-highlight effect + replace slider with input
+- [x] Removed the "Matches your estimate" pill, ring/highlight, dim/blur effect, AND the upsell-hint block from Pricing.tsx; cards now render in their normal style at all times
+- [x] Pricing cards keep their featured "Most Chosen" treatment for Professional only — unrelated to calculator activity
+- [x] Replaced the range slider in PricingCalculator with a labeled numeric input (`Monthly searches`) plus −/+ steppers, range 1–10000, blur-clamping, plus a row of quick-set chips (25 / 50 / 100 / 200 / 500) that surface the discount tiers
+- [x] StickyEstimateBar `matchedTierLabel` prop is now optional; Pricing.tsx no longer passes it; sticky bar shows per-check + monthly + jump-to-estimator + CTA only
+- [x] LS hydration clamp bumped to 10000 to match the new ceiling
+- [x] QA: cards never blur; numeric input drives all live figures; LS persistence verified (200 hires restored from previous session)
+- [x] Save checkpoint and deliver

@@ -11,7 +11,7 @@
 */
 import { useCallback, useRef, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Check, Sparkles, TrendingUp } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import PricingCalculator from "@/components/site/PricingCalculator";
@@ -33,70 +33,17 @@ type Tier = {
   cta: string;
   ctaHref: string;
   featured?: boolean;
-  /** Inclusive lower bound of per-check estimate (USD) that maps to this tier. */
-  matchMin: number;
-  /** Exclusive upper bound of per-check estimate (USD) that maps to this tier (Infinity for top tier). */
-  matchMax: number;
 };
 
-/**
- * Map a live per-check estimate back to a tier id.
- * Bands chosen to map cleanly to the calculator's likely outputs at the
- * documented illustrative pricing model: Basic ~ $24–34, Standard ~ $35–59,
- * Comprehensive ~ $60+. Discount tiers naturally bleed across boundaries
- * which is desirable — a discounted Standard hitting $34.50 will correctly
- * collapse to Essential.
- */
-/**
- * Map calculator state -> tier id. Prefer the explicit package preset (1:1
- * mapping users intuitively expect — Basic ↦ Essential, Standard ↦ Professional,
- * Comprehensive ↦ Comprehensive). Fall back to the per-check price band only
- * when the user has manually edited add-ons (no exact preset match).
- */
-function matchTierFromPackage(
-  pkg: CalculatorEstimate["pkg"],
-): TierId | null {
-  if (pkg === "basic") return "essential";
-  if (pkg === "standard") return "professional";
-  if (pkg === "comprehensive") return "comprehensive";
-  return null;
-}
-
-function matchTierFromPerCheck(perCheckNet: number): TierId {
-  if (perCheckNet >= 60) return "comprehensive";
-  if (perCheckNet >= 35) return "professional";
-  return "essential";
-}
-
-function matchTierFromEstimate(e: CalculatorEstimate): TierId {
-  return matchTierFromPackage(e.pkg) ?? matchTierFromPerCheck(e.perCheckNet);
-}
-
-/**
- * Per-tier contextual upsell shown only when that tier is matched.
- * `delta` is the additional per-check cost vs. the matched tier's headline price
- * (Essential $24.95 → Professional $44.95 → Comprehensive $74.95).
- * Comprehensive has no upsell (it's the top tier).
- */
-const UPSELL: Record<TierId, { nextLabel: string; delta: string; benefits: string } | null> = {
-  essential: {
-    nextLabel: "Professional",
-    delta: "+$20.00/check",
-    benefits: "unlocks federal criminal + employment & education verification",
-  },
-  professional: {
-    nextLabel: "Comprehensive",
-    delta: "+$30.00/check",
-    benefits: "unlocks 3 county searches, MVR or 5-panel drug screen, and civil records",
-  },
-  comprehensive: null,
-};
+// Tier-matching highlight effect was removed per user feedback (the dim/blur on
+// non-matched cards made the surrounding tiers unreadable). Cards now render in
+// their normal, fully-readable state regardless of calculator activity. The
+// sticky estimate bar at the bottom still surfaces the live per-check + monthly
+// figures while the calculator is in use.
 
 const TIERS: Tier[] = [
   {
     id: "essential",
-    matchMin: 0,
-    matchMax: 35,
     eyebrow: "01 — Essential",
     name: "Essential",
     price: "$24.95",
@@ -119,8 +66,6 @@ const TIERS: Tier[] = [
   },
   {
     id: "professional",
-    matchMin: 35,
-    matchMax: 60,
     eyebrow: "02 — Professional",
     name: "Professional",
     price: "$44.95",
@@ -146,8 +91,6 @@ const TIERS: Tier[] = [
   },
   {
     id: "comprehensive",
-    matchMin: 60,
-    matchMax: Infinity,
     eyebrow: "03 — Comprehensive",
     name: "Comprehensive",
     price: "$74.95",
@@ -197,17 +140,11 @@ const PRICING_FAQ = [
 ];
 
 export default function Pricing() {
-  const [matchedTier, setMatchedTier] = useState<TierId | null>(null);
   const [estimate, setEstimate] = useState<CalculatorEstimate | null>(null);
   const calculatorEndRef = useRef<HTMLDivElement | null>(null);
   const handleEstimate = useCallback((e: CalculatorEstimate) => {
     setEstimate(e);
-    setMatchedTier(matchTierFromEstimate(e));
   }, []);
-  const matchedTierLabel =
-    matchedTier && TIERS.find((t) => t.id === matchedTier)?.name
-      ? (TIERS.find((t) => t.id === matchedTier)!.name as string)
-      : null;
 
   return (
     <SiteShell>
@@ -231,8 +168,6 @@ export default function Pricing() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
             {TIERS.map((t) => {
               const isFeatured = !!t.featured;
-              const isMatched = matchedTier === t.id;
-              const isDimmed = matchedTier !== null && !isMatched;
               const labelClass = isFeatured
                 ? "text-[10.5px] font-medium uppercase tracking-[0.18em] text-white/85"
                 : "text-[10.5px] font-medium uppercase tracking-[0.18em] text-[color:var(--color-accent-ink)]";
@@ -243,20 +178,12 @@ export default function Pricing() {
                 <article
                   key={t.name}
                   data-tier-id={t.id}
-                  data-matched={isMatched ? "true" : "false"}
                   className={[
                     "reveal-on-scroll relative flex flex-col rounded-[20px] border p-8 md:p-9",
                     "transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out",
                     isFeatured
                       ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] text-white shadow-[0_24px_60px_-30px_rgba(37,99,235,0.45)] lg:scale-[1.02] lg:-mt-2"
                       : "border-border bg-[color:var(--color-paper)] text-[color:var(--color-ink)]",
-                    isMatched && !isFeatured
-                      ? "!border-[color:var(--color-accent-ink)] ring-2 ring-[color:var(--color-accent-ink)]/40 ring-offset-2 ring-offset-white shadow-[0_24px_60px_-30px_rgba(37,99,235,0.45)] lg:-translate-y-0.5"
-                      : "",
-                    isMatched && isFeatured
-                      ? "ring-2 ring-white/45 ring-offset-2 ring-offset-[color:var(--color-accent-ink)]"
-                      : "",
-                    isDimmed ? "opacity-55" : "opacity-100",
                   ].join(" ")}
                 >
                   {isFeatured && (
@@ -265,21 +192,6 @@ export default function Pricing() {
                       Most Chosen
                     </span>
                   )}
-                  {isMatched && (
-                    <span
-                      className={[
-                        "absolute -top-3 right-5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] shadow-sm transition-opacity duration-200",
-                        isFeatured
-                          ? "bg-white/90 text-[color:var(--color-accent-ink)] border border-white"
-                          : "bg-[color:var(--color-accent-ink)] text-white border border-[color:var(--color-accent-ink)]",
-                      ].join(" ")}
-                      aria-label="Your estimate matches this tier"
-                    >
-                      <Sparkles className="size-3" strokeWidth={2.25} />
-                      Matches your estimate
-                    </span>
-                  )}
-
                   <p className={isFeatured ? "text-[10.5px] font-medium uppercase tracking-[0.2em] text-white/70" : "eyebrow"}>{t.eyebrow}</p>
                   <h3 className={[
                     "mt-4 font-display text-[34px] md:text-[40px] leading-none tracking-[-0.02em]",
@@ -376,42 +288,6 @@ export default function Pricing() {
                       <ArrowUpRight className="size-4" />
                     </Link>
                   </div>
-                  {isMatched && UPSELL[t.id] && (
-                    <div
-                      className={[
-                        "upsell-hint mt-4 flex items-start gap-3 rounded-[12px] border px-4 py-3 text-[12.5px] leading-[1.55]",
-                        isFeatured
-                          ? "border-white/30 bg-white/10 text-white"
-                          : "border-[color:var(--color-accent-ink)]/30 bg-[color:var(--color-accent-ink)]/[0.06] text-[color:var(--color-ink)]",
-                      ].join(" ")}
-                      role="note"
-                      aria-label={`Upsell: upgrade to ${UPSELL[t.id]!.nextLabel}`}
-                    >
-                      <span
-                        className={[
-                          "mt-[1px] grid place-items-center size-5 shrink-0 rounded-full",
-                          isFeatured
-                            ? "bg-white/20 text-white"
-                            : "bg-[color:var(--color-accent-ink)] text-white",
-                        ].join(" ")}
-                      >
-                        <TrendingUp className="size-3" strokeWidth={2.25} />
-                      </span>
-                      <span>
-                        <span
-                          className={[
-                            "font-semibold",
-                            isFeatured ? "text-white" : "text-[color:var(--color-accent-ink-strong,var(--color-accent-ink))]",
-                          ].join(" ")}
-                        >
-                          {UPSELL[t.id]!.delta} → {UPSELL[t.id]!.nextLabel}
-                        </span>{" "}
-                        <span className={isFeatured ? "text-white/85" : "text-[color:var(--color-ink-soft)]"}>
-                          {UPSELL[t.id]!.benefits}.
-                        </span>
-                      </span>
-                    </div>
-                  )}
                 </article>
               );
             })}
@@ -522,7 +398,6 @@ export default function Pricing() {
       {/* Sticky estimate mini-bar — anchored to bottom, only after user scrolls past the calculator. */}
       <StickyEstimateBar
         estimate={estimate}
-        matchedTierLabel={matchedTierLabel}
         sentinelRef={calculatorEndRef}
       />
     </SiteShell>

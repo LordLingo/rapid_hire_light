@@ -54,11 +54,16 @@ function buildQuery(e: CalculatorEstimate, tierLabel: string) {
 
 export default function StickyEstimateBar({
   estimate,
-  matchedTierLabel,
+  matchedTierLabel = null,
   sentinelRef,
 }: {
   estimate: CalculatorEstimate | null;
-  matchedTierLabel: string | null;
+  /**
+   * Optional. The Pricing page used to drive this with a matched tier id; the
+   * highlight effect was removed per user feedback (it dimmed the surrounding
+   * cards). Kept optional so future surfaces can still pass a label.
+   */
+  matchedTierLabel?: string | null;
   sentinelRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const [pastCalculator, setPastCalculator] = useState(false);

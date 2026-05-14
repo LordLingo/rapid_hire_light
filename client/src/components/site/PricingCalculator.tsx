@@ -42,7 +42,7 @@ function loadPersisted(): PersistedState | null {
     ) {
       return null;
     }
-    const hires = Math.min(1000, Math.max(1, Math.round(parsed.hires)));
+    const hires = Math.min(10000, Math.max(1, Math.round(parsed.hires)));
     const selected = parsed.selected.filter((s): s is string => typeof s === "string");
     return { hires, pkg: parsed.pkg ?? null, selected };
   } catch {
@@ -245,13 +245,18 @@ export default function PricingCalculator({
         <div className="mt-14 grid grid-cols-12 gap-x-10 gap-y-10">
           {/* LEFT — controls */}
           <div className="col-span-12 lg:col-span-7 reveal-on-scroll">
-            {/* Volume slider */}
+            {/* Monthly searches input. Replaces the prior range slider per user
+                feedback ("the slider numbers don't match what you select; just
+                let me type the number"). The +/- steppers cover quick fine
+                adjustments without needing to focus the field. */}
             <div className="rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6 md:p-8">
               <div className="flex items-end justify-between gap-6">
                 <div>
-                  <p className="eyebrow">Monthly hires</p>
-                  <p className="mt-2 font-display text-[40px] leading-none tracking-[-0.02em] text-[color:var(--color-ink)]">
-                    {hires >= 1000 ? "1,000+" : hires.toLocaleString()}
+                  <label htmlFor="calc-monthly-searches" className="eyebrow">
+                    Monthly searches
+                  </label>
+                  <p className="mt-1 text-[13px] text-[color:var(--color-ink-soft)]">
+                    How many background checks you run per month.
                   </p>
                 </div>
                 <div className="text-right">
@@ -263,59 +268,88 @@ export default function PricingCalculator({
                 </div>
               </div>
 
-              <div className="relative mt-6">
+              <div className="mt-5 flex items-stretch gap-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setHires((h) => Math.max(1, Math.min(10000, h - 1)))
+                  }
+                  aria-label="Decrease monthly searches by 1"
+                  className="btn-press grid place-items-center size-12 shrink-0 rounded-[12px] border border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]"
+                >
+                  <span aria-hidden="true" className="text-[20px] leading-none">−</span>
+                </button>
                 <input
-                  type="range"
+                  id="calc-monthly-searches"
+                  type="number"
+                  inputMode="numeric"
                   min={1}
-                  max={1000}
+                  max={10000}
                   step={1}
                   value={hires}
                   onChange={(e) => {
+                    const raw = e.target.value;
+                    if (raw === "") return;
+                    const n = Number(raw);
+                    if (Number.isFinite(n)) {
+                      setHires(Math.max(1, Math.min(10000, Math.round(n))));
+                    }
+                  }}
+                  onBlur={(e) => {
                     const n = Number(e.target.value);
-                    if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
+                    if (!Number.isFinite(n) || n < 1) setHires(1);
+                    else if (n > 10000) setHires(10000);
+                    else setHires(Math.round(n));
                   }}
-                  onInput={(e) => {
-                    const n = Number((e.target as HTMLInputElement).value);
-                    if (Number.isFinite(n)) setHires(Math.max(1, Math.min(1000, Math.round(n))));
-                  }}
-                  className="calc-range relative z-10 w-full"
-                  aria-label="Monthly hires"
+                  className="w-full flex-1 rounded-[12px] border border-border bg-white px-4 py-3 font-display text-[28px] leading-none tracking-[-0.01em] text-[color:var(--color-ink)] tabular-nums focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent-ink)]/40 focus:border-[color:var(--color-accent-ink)]"
                 />
-                {/* Discount-tier ticks behind the track */}
-                <div className="pointer-events-none absolute inset-x-0 top-1/2 z-0 -translate-y-1/2" aria-hidden="true">
-                  {[
-                    { v: 50, label: "−5%" },
-                    { v: 100, label: "−10%" },
-                    { v: 200, label: "−16%" },
-                    { v: 500, label: "−22%" },
-                  ].map(({ v, label }) => {
-                    const pct = ((v - 1) / (1000 - 1)) * 100;
-                    const reached = hires >= v;
-                    return (
-                      <span
-                        key={v}
-                        className="calc-tick pointer-events-auto absolute -translate-x-1/2 group"
-                        style={{ left: `${pct}%` }}
-                        title={`${label} per check at ${v}/mo`}
-                      >
-                        <span
-                          className={`block h-2 w-px rounded-sm transition-colors ${reached ? "bg-[color:var(--color-accent-ink)]" : "bg-[color:var(--color-ink-muted)]/40"}`}
-                        />
-                        <span className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-[color:var(--color-paper)] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-[color:var(--color-ink-soft)] opacity-0 shadow-sm transition-opacity duration-150 group-hover:opacity-100">
-                          {label} at {v.toLocaleString()}/mo
-                        </span>
-                      </span>
-                    );
-                  })}
-                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setHires((h) => Math.max(1, Math.min(10000, h + 1)))
+                  }
+                  aria-label="Increase monthly searches by 1"
+                  className="btn-press grid place-items-center size-12 shrink-0 rounded-[12px] border border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]"
+                >
+                  <span aria-hidden="true" className="text-[20px] leading-none">+</span>
+                </button>
               </div>
-              <div className="mt-3 grid grid-cols-5 text-[11px] uppercase tracking-wider text-[color:var(--color-ink-muted)] tabular-nums">
-                <span className="text-left">1</span>
-                <span className="text-center">50</span>
-                <span className="text-center">200</span>
-                <span className="text-center">500</span>
-                <span className="text-right">1,000+</span>
+
+              {/* Quick volume jumps + discount hints. Static buttons replace the
+                  earlier slider tick marks; they make the discount tiers easy
+                  to compare without dragging. */}
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="text-[11px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                  Quick set
+                </span>
+                {[
+                  { v: 25, label: "25" },
+                  { v: 50, label: "50 (−5%)" },
+                  { v: 100, label: "100 (−10%)" },
+                  { v: 200, label: "200 (−16%)" },
+                  { v: 500, label: "500 (−22%)" },
+                ].map(({ v, label }) => {
+                  const active = hires === v;
+                  return (
+                    <button
+                      key={v}
+                      type="button"
+                      onClick={() => setHires(v)}
+                      className={[
+                        "btn-press rounded-full border px-3 py-1.5 text-[12px] tabular-nums transition-colors",
+                        active
+                          ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] text-white"
+                          : "border-border bg-white text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]",
+                      ].join(" ")}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
               </div>
+              <p className="mt-3 text-[11.5px] text-[color:var(--color-ink-muted)]">
+                Volume discounts kick in at 50, 100, 200, and 500 searches per month.
+              </p>
             </div>
 
             {/* Package picker */}
