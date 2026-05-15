@@ -108,4 +108,31 @@ describe("StopGambling dark gradient (mirrored)", () => {
     expect(SRC).toMatch(/no chatbots/);
     expect(SRC).toMatch(/no scripts/);
   });
+
+  it("renders a sky-halo radial halo behind the headline column (§43)", () => {
+    // Section 43 follow-up. Matches the halo treatment on CtaBanner so
+    // the homepage's two dark surfaces read as one continuous family.
+    // Marker class `stop-gambling-halo` is the test pin.
+    expect(SRC).toMatch(/stop-gambling-halo/);
+    // The halo must use the sky-halo accent token, not a hardcoded
+    // hex or a different accent.
+    expect(SRC).toMatch(
+      /radial-gradient\(closest-side,\s*var\(--color-accent-halo\)/
+    );
+  });
+
+  it("renders a bottom wedge transitioning into the warm WhyUs paper (§43)", () => {
+    // Section 43 follow-up. SVG wedge with the section's deepest
+    // gradient stop as fill, painted into the bottom of the section.
+    // Marker class `stop-gambling-wedge` is the test pin.
+    expect(SRC).toMatch(/stop-gambling-wedge/);
+    // The wedge must be filled with --color-footer (the deeper-ink
+    // endpoint of the gradient) so it blends into the section's
+    // right-edge color, not a hardcoded hex.
+    expect(SRC).toMatch(/fill="var\(--color-footer\)"/);
+    // Anti-regression: the section's container must keep the bumped
+    // bottom padding so the wedge can't overlap the closing italic
+    // pull-quote.
+    expect(SRC).toMatch(/md:pb-44/);
+  });
 });

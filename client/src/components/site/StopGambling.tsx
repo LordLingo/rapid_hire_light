@@ -43,7 +43,7 @@
 export default function StopGambling() {
   return (
     <section
-      className="relative text-[color:var(--color-footer-foreground)]"
+      className="relative overflow-hidden text-[color:var(--color-footer-foreground)]"
       style={{
         // Mirrored gradient: lighter on the LEFT, deeper ink on the
         // RIGHT. Pinned in the test file so a future copy-edit can't
@@ -68,16 +68,10 @@ export default function StopGambling() {
             "linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 30%, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 70%, transparent)",
         }}
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 30%, transparent) 30%, color-mix(in oklch, var(--color-accent-halo) 30%, transparent) 70%, transparent)",
-        }}
-      />
+      {/* Bottom hairline glow removed in section 43 — the wedge below
+          replaces the clean bottom edge with a soft diagonal cut. */}
 
-      <div className="container py-24 md:py-32 relative">
+      <div className="container py-24 md:pt-32 md:pb-44 relative">
         <div className="grid grid-cols-12 gap-x-8 gap-y-10">
           <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
             <p className="eyebrow text-[color:var(--color-footer-muted)]">
@@ -91,8 +85,26 @@ export default function StopGambling() {
               }}
             />
           </div>
-          <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
-            <h2 className="font-display text-[44px] leading-[1.04] tracking-[-0.025em] text-[color:var(--color-footer-foreground)] sm:text-[60px] md:text-[76px]">
+          <div className="col-span-12 lg:col-span-9 reveal-on-scroll relative">
+            {/*
+              Sky-halo radial halo behind the headline. Mirrors the
+              halo treatment on CtaBanner so the two dark surfaces
+              read as one continuous family. Painted via an absolute
+              aria-hidden div positioned roughly behind the first
+              line of the headline; the radial gradient fades to
+              transparent at ~70% so it blooms against the gradient
+              surface rather than punching a circle into it.
+              Marker class `stop-gambling-halo` is the test pin.
+            */}
+            <div
+              aria-hidden
+              className="stop-gambling-halo pointer-events-none absolute -left-32 -top-24 h-[520px] w-[520px] rounded-full opacity-30 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(closest-side, var(--color-accent-halo), transparent 70%)",
+              }}
+            />
+            <h2 className="relative font-display text-[44px] leading-[1.04] tracking-[-0.025em] text-[color:var(--color-footer-foreground)] sm:text-[60px] md:text-[76px]">
               Turnaround time &amp; customer support,{" "}
               <span className="italic font-normal text-[color:var(--color-accent-halo)]">
                 done right.
@@ -117,6 +129,37 @@ export default function StopGambling() {
           </div>
         </div>
       </div>
+
+      {/*
+        Bottom wedge — visually transitions the dark band into the
+        warm WhyUs paper that follows. Implemented as an SVG path with
+        the section's deepest gradient stop (--color-footer) as fill,
+        painted into the bottom 96px of the section. The path leans
+        from upper-left to lower-right so the wedge mirrors the
+        gradient's direction (light → deep). The padding-bottom on
+        the inner container above is bumped to md:pb-44 so the wedge
+        height (96px) cannot overlap the closing italic pull-quote.
+        Marker class `stop-gambling-wedge` is the test pin.
+      */}
+      <svg
+        aria-hidden
+        className="stop-gambling-wedge pointer-events-none absolute inset-x-0 bottom-0 h-[72px] w-full md:h-[96px]"
+        viewBox="0 0 1440 96"
+        preserveAspectRatio="none"
+        focusable="false"
+      >
+        {/*
+          Path coordinates: top-left (0,32) → top-right (1440,72)
+          → bottom-right (1440,96) → bottom-left (0,96) → close.
+          The asymmetric top edge gives a shallow diagonal cubic
+          curve rather than a straight cut, so the transition reads
+          editorial rather than mechanical.
+        */}
+        <path
+          d="M0,32 C 360,8 1080,88 1440,72 L 1440,96 L 0,96 Z"
+          fill="var(--color-footer)"
+        />
+      </svg>
     </section>
   );
 }

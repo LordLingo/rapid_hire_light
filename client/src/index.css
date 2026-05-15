@@ -581,4 +581,38 @@
       transition-duration: 110ms;
     }
   }
+
+  /* Hero primary CTA — same lift/glow choreography as .cta-banner-cta,
+     tuned for a light surface (brand-blue button on warm paper).
+     Box-shadow uses the same sky-halo accent so the homepage's two
+     primary motion moments — the hero CTA at the top and the Switch
+     CTA near the bottom — feel like the same gesture. */
+  .hero-primary-cta {
+    transition:
+      background-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      color 180ms cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform, box-shadow;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-primary-cta {
+      transition:
+        background-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        border-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        transform 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .hero-primary-cta:hover {
+      transform: translateY(-6px);
+      box-shadow:
+        0 14px 30px -10px color-mix(in oklch, var(--color-accent-halo) 55%, transparent),
+        0 0 0 6px color-mix(in oklch, var(--color-accent-halo) 18%, transparent);
+    }
+    .hero-primary-cta:active {
+      transform: translateY(-2px);
+      transition-duration: 110ms;
+    }
+  }
 }

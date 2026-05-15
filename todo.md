@@ -344,10 +344,23 @@
 
 ## 42. Rewrite StopGambling section copy: TAT + U.S.-based support
 
-- [ ] Replace the "Stop gambling with compliance." headline with "Turnaround time & customer support, done right." (italic accent on the second clause so the sky-halo italic still anchors the dark surface)
-- [ ] Replace the eyebrow "02 — The problem" with "02 — How we're different" so the section still reads as a deliberate beat in the homepage flow
-- [ ] Replace the left body paragraph with a turnaround-time line that highlights "fastest, most accurate background checks in the industry"; commit to a concrete claim (e.g. 24-hour median, 85%+ within 24 hours) rather than a vague superlative
-- [ ] Replace the right body paragraph with a U.S.-based support line that explicitly says "no offshore", "no chatbots", "real humans, your timezone"
-- [ ] Replace the closing italic pull-quote ("There's got to be a better way…") with a line that lands the new topic (e.g. "…it should be this simple.")
-- [ ] Update `client/src/lib/stopGamblingDark.test.ts` so the editorial-copy assertions match the new strings; keep all gradient + token assertions exactly as they are (only copy changes, not design)
-- [ ] Run vitest, browser QA at desktop, save checkpoint, deliver
+- [x] Replace the "Stop gambling with compliance." headline with "Turnaround time & customer support, done right." (italic accent on the second clause so the sky-halo italic still anchors the dark surface)
+- [x] Replace the eyebrow "02 — The problem" with "02 — How we're different" so the section still reads as a deliberate beat in the homepage flow
+- [x] Replace the left body paragraph with a turnaround-time line that highlights "fastest, most accurate background checks in the industry"; commit to a concrete claim (e.g. 24-hour median, 85%+ within 24 hours) rather than a vague superlative
+- [x] Replace the right body paragraph with a U.S.-based support line that explicitly says "no offshore", "no chatbots", "real humans, your timezone"
+- [x] Replace the closing italic pull-quote ("There's got to be a better way…") with a line that lands the new topic (e.g. "…it should be this simple.")
+- [x] Update `client/src/lib/stopGamblingDark.test.ts` so the editorial-copy assertions match the new strings; keep all gradient + token assertions exactly as they are (only copy changes, not design)
+- [x] Run vitest, browser QA at desktop, save checkpoint, deliver
+
+## 43. Suggested follow-ups: dark-band rhythm polish
+
+These three items were suggested in the prior result message after the
+StopGambling rewrite landed. They tighten the visual continuity
+between the homepage's two dark surfaces (StopGambling + CtaBanner)
+and make the hero CTA feel intentional rather than a default button.
+
+- [x] Add a sky-halo radial halo behind the StopGambling headline (matches the hairline pattern on CtaBanner; soft 520px-wide radial-gradient, ~30% opacity behind the headline, fading to 0; absolute aria-hidden div with pointer-events-none so headline z-index stays above)
+- [x] Wire the hero "Start Screening" button hover treatment to mirror CtaBanner's CTA hover (6px translateY lift + sky-halo box-shadow glow + 180ms snappy ease-out, gated behind prefers-reduced-motion). Implemented as new `.hero-primary-cta` utility in index.css, applied to the Start Screening Link
+- [x] Add a section divider/wedge underneath StopGambling that transitions from the dark band into the warm WhyUs section. Implemented as a 96px-tall SVG path with a shallow diagonal cubic curve (top edge from y=32 left → y=72 right), filled with `var(--color-footer)` so it blends into the section's right-edge color. Section padding-bottom bumped to md:pb-44 so the wedge can't overlap content. Old bottom hairline glow removed since the wedge replaces the clean bottom edge
+- [x] Extend `client/src/lib/stopGamblingDark.test.ts` (now 11 tests; +2 new pins for halo + wedge) and add `client/src/lib/heroCtaLift.test.ts` (6 new tests pinning the .hero-primary-cta utility's translate, glow, easing, and reduced-motion gating)
+- [x] Run vitest (154/154 passing), browser QA at desktop confirmed halo + wedge + headline all rendering cleanly, ready to checkpoint and deliver
