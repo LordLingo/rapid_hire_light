@@ -54,6 +54,15 @@ const ANSWER_TIME = "14 sec";
 
 type Specialist = {
   initials: string;
+  /**
+   * §56 — Portrait avatar URL. Replaces the previous tinted initial
+   * badge so the four Desk cards read as a real team. Images are
+   * AI-generated headshots stored on the webdev CDN; see
+   * `webdev-static-assets/desk-*.png` for the originals. Each entry
+   * uses the compressed `.webp` URL for fast loads while preserving
+   * the high-resolution `.png` originals on disk.
+   */
+  avatar: string;
   name: string;
   role: string;
   city: string;
@@ -64,6 +73,8 @@ type Specialist = {
 const TEAM: Specialist[] = [
   {
     initials: "JM",
+    avatar:
+      "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/desk-jordan-9hzphcpBGGUU5taydoaSso.webp",
     name: "Jordan M.",
     role: "Senior Account Specialist",
     city: "Prosper, TX",
@@ -73,6 +84,8 @@ const TEAM: Specialist[] = [
   },
   {
     initials: "MT",
+    avatar:
+      "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/desk-maya-aFXqWmwYnTfHTWHE6TcvG7.webp",
     name: "Maya T.",
     role: "Compliance & Screening Lead",
     city: "Prosper, TX",
@@ -82,6 +95,8 @@ const TEAM: Specialist[] = [
   },
   {
     initials: "PS",
+    avatar:
+      "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/desk-priya-QBBHBJNgndy6UYXrjdnWYV.webp",
     name: "Priya S.",
     role: "Client Success Specialist",
     city: "Prosper, TX",
@@ -91,6 +106,8 @@ const TEAM: Specialist[] = [
   },
   {
     initials: "TR",
+    avatar:
+      "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/desk-tyler-fZgYYYD5x9pXfi5SMzfZLW.webp",
     name: "Tyler R.",
     role: "Background Research Analyst",
     city: "Prosper, TX",
@@ -387,11 +404,28 @@ export default function Support() {
                     className="hover-lift-card reveal-on-scroll rounded-[20px] border border-border bg-white p-6"
                   >
                     <div className="flex items-center gap-4">
+                      {/*
+                        §56 — Portrait avatar (replaces the previous tinted
+                        initial badge). Image is decorative; the visible <h3>
+                        announces the same name immediately to its right, so
+                        the <img> carries an empty alt + aria-hidden. The
+                        outer div keeps the same `size-14 rounded-full` envelope
+                        so the card layout doesn't shift, and a 1px ring in
+                        accent-halo draws the soft halo treatment we used to
+                        get from the tinted background.
+                      */}
                       <div
                         aria-hidden
-                        className="grid place-items-center size-14 rounded-full bg-[color:var(--color-accent-ink)]/8 text-[color:var(--color-accent-ink)] font-display text-[18px] tracking-tight"
+                        className="size-14 shrink-0 overflow-hidden rounded-full bg-[color:var(--color-accent-ink)]/8 ring-1 ring-[color:var(--color-accent-halo)]/40"
                       >
-                        {person.initials}
+                        <img
+                          src={person.avatar}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="block h-full w-full object-cover"
+                          data-testid="desk-avatar"
+                        />
                       </div>
                       <div>
                         <p className="eyebrow text-[10.5px] text-[color:var(--color-ink-muted)] inline-flex items-center gap-1.5">
@@ -418,9 +452,9 @@ export default function Support() {
               </div>
 
               <p className="mt-8 max-w-2xl text-[12.5px] italic leading-[1.7] text-[color:var(--color-ink-muted)]">
-                Names shown are placeholders for this preview and will be
-                replaced with the live team roster on launch. The roles,
-                coverage, and main line are real.
+                Names and photos shown are placeholders for this preview and
+                will be replaced with the live team roster on launch. The
+                roles, coverage, and main line are real.
               </p>
             </div>
           </div>
