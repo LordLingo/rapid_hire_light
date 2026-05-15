@@ -1,5 +1,5 @@
 {
-  "_comment": "Build-time mirror of (slug, title, tag) for the dynamic /api/og/blog/<slug>.svg endpoint. The endpoint is a pure Node module (vite plugin + Express server) and so cannot import the @/ runtime registry; this JSON is its source of truth. Kept in sync with client/src/lib/blog.ts and the 6 post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly — adding, renaming, or retitling a post without updating this file fails CI.",
+  "_comment": "Build-time mirror of (slug, title, tag) for the dynamic /api/og/blog/<slug>.svg endpoint. The endpoint is a pure Node module (vite plugin + Express server) and so cannot import the @/ runtime registry; this JSON is its source of truth. Kept in sync with client/src/lib/blog.ts and the post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly — adding, renaming, or retitling a post without updating this file fails CI.",
   "posts": [
     {
       "slug": "fcra-compliance-guide",
@@ -30,6 +30,56 @@
       "slug": "ban-the-box-fair-chance-hiring",
       "title": "Ban-the-Box and Fair Chance Hiring: A State-by-State 2026 Compliance Brief",
       "tag": "fair-chance"
+    },
+    {
+      "slug": "how-to-run-a-background-check-on-an-employee",
+      "title": "How to Run a Background Check on an Employee in 2026",
+      "tag": "hiring"
+    },
+    {
+      "slug": "best-background-check-service-small-business",
+      "title": "Best Background Check Service for Small Business: A Buyer's Guide",
+      "tag": "small-business"
+    },
+    {
+      "slug": "county-vs-national-criminal-background-check",
+      "title": "County vs National Criminal Background Check: Which One You Actually Need",
+      "tag": "criminal"
+    },
+    {
+      "slug": "eeoc-ban-the-box-compliance",
+      "title": "EEOC Ban-the-Box Compliance: What Employers Get Wrong in 2026",
+      "tag": "eeoc"
+    },
+    {
+      "slug": "california-icraa-disclosure-requirements",
+      "title": "California ICRAA Disclosure Requirements for Background Checks",
+      "tag": "california"
+    },
+    {
+      "slug": "how-long-does-background-check-take",
+      "title": "How Long Does a Background Check Take to Come Back?",
+      "tag": "turnaround"
+    },
+    {
+      "slug": "education-verification-process",
+      "title": "Education Verification: How It Works and Why It Matters in Hiring",
+      "tag": "verification"
+    },
+    {
+      "slug": "healthcare-background-check-requirements",
+      "title": "Healthcare Background Checks: Sanctions, Licensing, and Patient Safety",
+      "tag": "healthcare"
+    },
+    {
+      "slug": "continuous-monitoring-vs-annual-rescreening",
+      "title": "Continuous Criminal Monitoring vs Annual Rescreening: Which Wins?",
+      "tag": "monitoring"
+    },
+    {
+      "slug": "adverse-action-letter-fcra-template",
+      "title": "The FCRA Adverse Action Letter: What It Must Say and When",
+      "tag": "fcra"
     }
   ]
 }

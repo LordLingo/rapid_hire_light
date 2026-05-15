@@ -788,3 +788,14 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Apply the fixes
 - [x] Add anti-regression vitest pins where structural choices were made
 - [x] Run full vitest suite and save checkpoint
+
+
+## 72. Publish 10 SEO blog posts targeting high-intent background-check keywords
+- [x] Inspect existing blog system (BlogIndex, BlogPost, posts source, schema)
+- [x] Pick 10 high-intent keywords (mix of informational, commercial-investigation, comparison, regulatory)
+- [x] Draft titles + slugs + meta descriptions for all 10
+- [x] Write 10 original posts (~750 words each, original copy, statute citations, internal links)
+- [x] Wire posts into the blog system (registry + shared/blog-meta.json + shared/blog-og.json)
+- [x] Confirm each post renders at /blog/<slug>, lists in /blog index, and has working SEO meta
+- [x] Update vitest pins (toHaveLength(16), add /industries to VALID_INTERNAL_PREFIXES)
+- [x] Save checkpoint and deliver

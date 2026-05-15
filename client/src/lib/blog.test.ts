@@ -25,6 +25,7 @@ const VALID_INTERNAL_PREFIXES = [
   "/contact",
   "/about",
   "/integrations",
+  "/industries",
   "/blog/",
 ];
 
@@ -35,8 +36,8 @@ function wordCount(s: string): number {
 describe("listPosts", () => {
   const posts = listPosts();
 
-  it("returns exactly six posts", () => {
-    expect(posts).toHaveLength(6);
+  it("returns exactly sixteen posts", () => {
+    expect(posts).toHaveLength(16);
   });
 
   it("is sorted newest-first by publishedAt", () => {
@@ -155,7 +156,7 @@ describe("relatedPosts", () => {
 
   it("returns at most n posts", () => {
     expect(relatedPosts("fcra-compliance-guide", 2)).toHaveLength(2);
-    expect(relatedPosts("fcra-compliance-guide", 10)).toHaveLength(5);
+    expect(relatedPosts("fcra-compliance-guide", 10)).toHaveLength(10);
   });
 });
 

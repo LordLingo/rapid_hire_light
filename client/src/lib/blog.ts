@@ -61,6 +61,16 @@ import { post as postDrugTesting } from "@/content/blog/pre-employment-drug-test
 import { post as postDotMvr } from "@/content/blog/dot-driver-background-checks-mvr";
 import { post as postMonitoring } from "@/content/blog/continuous-employee-monitoring";
 import { post as postBanTheBox } from "@/content/blog/ban-the-box-fair-chance-hiring";
+import { post as postHowToRun } from "@/content/blog/how-to-run-a-background-check-on-an-employee";
+import { post as postSmallBiz } from "@/content/blog/best-background-check-service-small-business";
+import { post as postCountyVsNational } from "@/content/blog/county-vs-national-criminal-background-check";
+import { post as postEeocBtb } from "@/content/blog/eeoc-ban-the-box-compliance";
+import { post as postIcraa } from "@/content/blog/california-icraa-disclosure-requirements";
+import { post as postHowLong } from "@/content/blog/how-long-does-background-check-take";
+import { post as postEduVerify } from "@/content/blog/education-verification-process";
+import { post as postHealthcare } from "@/content/blog/healthcare-background-check-requirements";
+import { post as postContinuousVsAnnual } from "@/content/blog/continuous-monitoring-vs-annual-rescreening";
+import { post as postAdverseAction } from "@/content/blog/adverse-action-letter-fcra-template";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -69,6 +79,16 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postDotMvr,
   postMonitoring,
   postBanTheBox,
+  postHowToRun,
+  postSmallBiz,
+  postCountyVsNational,
+  postEeocBtb,
+  postIcraa,
+  postHowLong,
+  postEduVerify,
+  postHealthcare,
+  postContinuousVsAnnual,
+  postAdverseAction,
 ]);
 
 /**
