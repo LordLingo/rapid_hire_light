@@ -6,12 +6,7 @@
 import { Link } from "wouter";
 import { toast } from "sonner";
 import { ShieldCheck } from "lucide-react";
-
-// Brand mark for the dark footer surface. White-on-dark logo provided by the
-// brand owner. Hosted on the webdev static host so it doesn't bloat the bundle
-// and survives across deploys; if it ever changes, just re-upload and update
-// the URL constant below (and the contactInfo / footer test that pins it).
-const FOOTER_LOGO_URL = "/manus-storage/rhs-white-logo_ba46549d.png";
+import { BRAND_NAME, FOOTER_LOGO_URL } from "@shared/brand";
 
 type FooterItem = { label: string; to?: string };
 
@@ -56,12 +51,12 @@ export default function Footer() {
           <div className="col-span-12 md:col-span-5 reveal-on-scroll">
             <Link
               href="/"
-              aria-label="Rapid Hire Solutions — home"
+              aria-label={`${BRAND_NAME} — home`}
               className="inline-flex items-center"
             >
               <img
                 src={FOOTER_LOGO_URL}
-                alt="Rapid Hire Solutions"
+                alt={BRAND_NAME}
                 width={180}
                 height={180}
                 loading="lazy"
@@ -110,7 +105,7 @@ export default function Footer() {
       </div>
       <div className="border-t border-[color:var(--color-footer-border)]">
         <div className="container py-6 flex flex-wrap items-center justify-between gap-3 eyebrow text-[color:var(--color-footer-muted)]">
-          <span>© {new Date().getFullYear()} Rapid Hire Solutions</span>
+          <span>© {new Date().getFullYear()} {BRAND_NAME}</span>
           <div className="flex items-center gap-5">
             <Link
               href="/privacy"

@@ -289,3 +289,9 @@
 - [x] Replace the placeholder ring + text wordmark in `client/src/components/site/Header.tsx` with an `<img>` tag using the returned static URL; preserve the link to `/`, alt text, and dimensions — sized h-14 (mobile) / h-16 (sm) / h-20 (lg) so wordmark stays legible
 - [x] Add / update vitest assertion that pins the new asset reference (header renders the supplied logo URL) — added `client/src/lib/headerLogo.test.ts` (4 assertions, all green)
 - [x] Browser QA on the homepage header; save checkpoint and deliver — verified at desktop viewport, 99/99 vitest passing, LSP/TS clean
+
+## 36. Brand follow-ups: shared constants, mobile sheet, favicon + OG card
+- [x] Create `shared/brand.ts` exporting `HEADER_LOGO_URL`, `FOOTER_LOGO_URL`, `BRAND_NAME`, plus the new favicon/OG/PWA URL constants; refactored Header.tsx + Footer.tsx to import from it; refactored `headerLogo.test.ts` and `footerLogo.test.ts` to import + assert against the same source of truth
+- [x] Updated `client/src/components/site/Header.tsx` mobile sheet so the open menu shows the brand mark (h-12 lockup) above a hairline divider, with a tap-to-close link back to `/`; pinned by `headerLogo.test.ts` mobile-sheet assertion
+- [x] Generated favicon set (16/32/48/64 ICO + 180/192/512 PNGs) and a 1200×630 social preview card from the color logo via PIL (`webdev-static-assets/build_og_card.py`); uploaded all five assets to the webdev static host; wired `<link rel="icon">`, `<link rel="apple-touch-icon">`, `<meta property="og:image">`, `<meta name="twitter:image">`, `og:type`, `twitter:card`, and `theme-color` into `client/index.html`
+- [x] Added `client/src/lib/brandHeadMeta.test.ts` (6 assertions) pinning each URL constant to `/manus-storage/...` AND verifying `index.html` references the exact same URLs in the right tag; 108/108 vitest passing, LSP/TS clean; verified header, footer, and tab favicon visually

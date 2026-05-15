@@ -8,12 +8,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import { Link, useLocation } from "wouter";
-
-// Header brand mark for the light surface. Color logo provided by the brand
-// owner. Hosted on the webdev static host so it doesn't bloat the bundle and
-// survives across deploys; if it ever changes, just re-upload and update the
-// URL constant below (and the headerLogo test that pins it).
-const HEADER_LOGO_URL = "/manus-storage/rhs-color-logo_038dbc01.png";
+import { BRAND_NAME, HEADER_LOGO_URL } from "@shared/brand";
 
 type NavItem = { label: string; href: string; type: "route" | "placeholder" };
 
@@ -77,7 +72,7 @@ export default function Header() {
           <Link
             href="/"
             className="flex items-center gap-3"
-            aria-label="Rapid Hire Solutions home"
+            aria-label={`${BRAND_NAME} home`}
           >
             <Logo />
           </Link>
@@ -123,6 +118,27 @@ export default function Header() {
       {open && (
         <div className="lg:hidden border-t border-border bg-[color:var(--color-paper)]">
           <div className="container py-5 grid gap-3">
+            {/* Brand mark stays visible inside the open sheet so users
+                always know whose nav they're inside on small screens.
+                Smaller than the desktop lockup so it doesn't crowd the
+                stacked links below. */}
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              aria-label={`${BRAND_NAME} home`}
+              className="-mt-1 mb-1 inline-flex items-center self-start"
+            >
+              <img
+                src={HEADER_LOGO_URL}
+                alt={BRAND_NAME}
+                width={210}
+                height={140}
+                decoding="async"
+                draggable={false}
+                className="block h-12 w-auto select-none"
+              />
+            </Link>
+            <div className="hairline" aria-hidden />
             {NAV.map((item) =>
               item.type === "route" ? (
                 <Link
@@ -186,7 +202,7 @@ function Logo() {
   return (
     <img
       src={HEADER_LOGO_URL}
-      alt="Rapid Hire Solutions"
+      alt={BRAND_NAME}
       width={210}
       height={140}
       decoding="async"
