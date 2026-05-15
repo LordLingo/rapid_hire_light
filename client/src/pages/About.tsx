@@ -74,7 +74,7 @@ export default function About() {
             background-check company.
           </>
         }
-        lede="Rapid Hire Solutions is a U.S.-based, FCRA-certified background screening platform built for hiring teams that need speed without giving up compliance."
+        lede="Founded in 2011, Rapid Hire Solutions is a U.S.-based, FCRA-certified background screening company built for hiring teams that need speed without giving up compliance. Privately held, owner-operated, and answering to the same operating principle for fourteen years: pick up the phone, verify the source, treat candidates like people."
         visual={<AboutOrgChart />}
         belowVisual={<HeroMiniStats page="about" />}
       />
@@ -139,12 +139,103 @@ export default function About() {
         </div>
       </section>
 
-      {/* Principles */}
+      {/* Milestones — fourteen years on the page */}
       <section className="bg-white border-y border-border">
         <div className="container py-24 md:py-32">
           <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
             <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">06 — Principles</p>
+              <p className="eyebrow">06 — Milestones</p>
+              <div className="mt-3 hairline" />
+            </div>
+            <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
+              <h2 className="font-display text-[40px] sm:text-[52px] md:text-[64px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
+                Fourteen years{" "}
+                <span className="italic font-light text-[color:var(--color-accent-ink)]">
+                  on the page.
+                </span>
+              </h2>
+              <p className="mt-6 text-[15.5px] leading-[1.8] text-[color:var(--color-ink-soft)] max-w-[640px]">
+                A short history of the moments that shaped the company we are
+                now &mdash; from a single-account staffing build in 2011 to the
+                FCRA-aligned, SOC&nbsp;2 + HIPAA-compliant operation that ships
+                today.
+              </p>
+            </div>
+          </div>
+
+          <ol className="mt-14 grid grid-cols-12 gap-x-10 gap-y-10">
+            {[
+              {
+                year: "2011",
+                title: "Founded for staffing operators",
+                body:
+                  "Rapid Hire Solutions opens with a single account: a regional staffing firm that needed FCRA-aligned screening it couldn't get from a legacy CRA. The product roadmap is set by what staffing operators actually run.",
+              },
+              {
+                year: "2014",
+                title: "Healthcare practice opens",
+                body:
+                  "Dedicated OIG LEIE + GSA SAM monitoring workflow ships for the first regional health-system client. HIPAA posture is hardened across the platform the same year.",
+              },
+              {
+                year: "2017",
+                title: "DOT / MVR program",
+                body:
+                  "49&nbsp;CFR Part&nbsp;40-aligned drug & alcohol workflow and a 50-state MVR pipeline launch for transportation and logistics customers.",
+              },
+              {
+                year: "2020",
+                title: "Mobile-first candidate intake",
+                body:
+                  "Plain-language disclosures, e-sign authorizations, and real-time status pages roll out so candidates aren't navigating PDFs at 11pm. Drop-off rates fall sharply.",
+              },
+              {
+                year: "2022",
+                title: "24-hour SLA hits 85%",
+                body:
+                  "Operations build-out lands the median turnaround on a single business day, with over 85% of reports closed inside 24 hours and a U.S.-based specialist on every escalation.",
+              },
+              {
+                year: "2024",
+                title: "Native ATS integrations",
+                body:
+                  "Direct integrations with the major ATS and HRIS platforms ship; SFTP for everyone else. Compliance and adverse-action workflows are wired into the same lane as ordering.",
+              },
+              {
+                year: "2026",
+                title: "Where we are today",
+                body:
+                  "Privately held, owner-operated, U.S.-based. FCRA-certified, SOC&nbsp;2 and HIPAA compliant. Same operating principle as day one: pick up the phone, verify at the source, treat candidates like people.",
+              },
+            ].map((m, i) => (
+              <li
+                key={m.year}
+                className={[
+                  "reveal-on-scroll col-span-12 md:col-span-6 lg:col-span-4 pt-6",
+                  "border-t border-border",
+                ].join(" ")}
+              >
+                <p className="eyebrow">{m.year}</p>
+                <h3 className="mt-3 font-display text-[22px] leading-snug text-[color:var(--color-ink)]">
+                  {m.title}
+                </h3>
+                <p
+                  className="mt-3 text-[14.5px] leading-[1.75] text-[color:var(--color-ink-soft)]"
+                  dangerouslySetInnerHTML={{ __html: m.body }}
+                />
+                {i === 6 ? null : null}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* Principles */}
+      <section className="bg-[color:var(--color-paper)] border-b border-border">
+        <div className="container py-24 md:py-32">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
+            <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
+              <p className="eyebrow">07 &mdash; Principles</p>
               <div className="mt-3 hairline" />
             </div>
             <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
@@ -183,11 +274,11 @@ export default function About() {
       </section>
 
       {/* Team */}
-      <section className="bg-[color:var(--color-paper)]">
+      <section className="bg-white border-b border-border">
         <div className="container py-24 md:py-28">
           <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
             <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">07 — Leadership</p>
+              <p className="eyebrow">08 — Leadership</p>
               <div className="mt-3 hairline" />
             </div>
             <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
@@ -229,11 +320,11 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="bg-white border-t border-border">
+      <section className="bg-[color:var(--color-paper)] border-t border-border">
         <div className="container py-20 md:py-24">
           <div className="reveal-on-scroll grid grid-cols-12 gap-6 items-center">
             <div className="col-span-12 md:col-span-8">
-              <p className="eyebrow">08 — Talk to us</p>
+              <p className="eyebrow">09 — Talk to us</p>
               <h3 className="mt-4 font-display text-[34px] sm:text-[44px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
                 Hiring at scale and tired of gambling on a vendor?
               </h3>

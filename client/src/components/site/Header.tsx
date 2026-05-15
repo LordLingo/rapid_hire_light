@@ -19,6 +19,7 @@ const NAV: NavItem[] = [
   { label: "Pricing", href: "/pricing", type: "route" },
   { label: "Support", href: "/support", type: "route" },
   { label: "Compliance", href: "/compliance", type: "route" },
+  { label: "About", href: "/about", type: "route" },
   { label: "Contact Us", href: "/contact", type: "route" },
   { label: "Blog", href: "/blog", type: "route" },
 ];

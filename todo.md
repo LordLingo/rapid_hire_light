@@ -799,3 +799,32 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Confirm each post renders at /blog/<slug>, lists in /blog index, and has working SEO meta
 - [x] Update vitest pins (toHaveLength(16), add /industries to VALID_INTERNAL_PREFIXES)
 - [x] Save checkpoint and deliver
+
+
+## 73. Schedule daily auto-published blog posts (2/day, 7am + 1pm Central)
+- [x] Read manus-config skill and confirm cron format
+- [x] Add §73 entry to todo.md
+- [x] Create the recurring schedule via `manus-config schedule create` with cron `0 0 7,13 * * *` (timezone America/Chicago)
+- [x] Schedule prompt instructs: pick 1 fresh keyword, write 1 post matching the §72 quality bar, run the audit script, save checkpoint
+- [x] Verify with `manus-config schedule status` (status: active, repeats forever)
+- [x] Deliver schedule details to user
+
+
+## 74. Reduce blog schedule to 1 post/day at 9 AM Central
+- [x] Update the existing schedule cron from `0 0 7,13 * * *` to `0 0 9 * * *`
+- [x] Update the schedule title to reflect 1x/day cadence
+- [x] Verify with `manus-config schedule status` (active, daily 9am Central)
+- [x] Deliver confirmation to user
+
+
+## 75. Add About Us page (referenced from precisehire.com/about)
+- [x] Read https://www.precisehire.com/about for tone/sections to mirror or reinterpret
+- [x] Audit Header/Footer/App.tsx (About.tsx + /about route + footer link already existed; only header nav was missing)
+- [x] Augment client/src/pages/About.tsx — strengthened hero lede with founding-year anchor + inserted Milestones timeline (2011–2026)
+- [x] /about already wired in App.tsx (no change needed)
+- [x] Added About to Header primary nav between Compliance and Contact Us
+- [x] About Us already in Footer Company column (no change needed)
+- [x] /about already in vite.config.ts STATIC_ROUTES (sitemap)
+- [x] Existing headerActiveRoute / footerActiveRoute / hover-polish pins remained green
+- [x] Added new client/src/lib/aboutPage.test.ts (9 pins) guarding nav wiring + content
+- [x] Full vitest suite green (478 passed), pnpm tsc --noEmit clean, checkpoint saved
