@@ -217,22 +217,68 @@ export default function Services() {
         </div>
       </section>
 
+      {/*
+        §45: Services bottom CTA band — dark footer-family gradient.
+
+        Previously a thin white card on warm paper. Restyled to share
+        the same dark gradient surface as the homepage Switch CTA
+        band (`CtaBanner`) and the homepage StopGambling section, so
+        all three branded surfaces on the marketing site read as one
+        family. Mirrors CtaBanner's pattern exactly:
+          • 90deg gradient from --color-footer → --color-footer-soft
+          • top-edge sky-halo hairline glow
+          • soft halo behind the headline column
+          • inverted footer-foreground/footer-soft-text/footer-muted text
+          • italic accent on "in minutes." swaps to --color-accent-halo
+          • Get a quote button keeps the site's brand-blue --color-accent-ink
+            fill (per user request) but picks up `.cta-banner-cta` so it
+            inherits the same 6px hover-lift + sky-halo glow gesture
+            already used by the Switch CTA and Hero Start Screening.
+      */}
       <section className="bg-[color:var(--color-paper)]">
         <div className="container py-20">
-          <div className="reveal-on-scroll grid grid-cols-12 gap-6 rounded-[20px] border border-border bg-white px-6 md:px-10 py-10 md:py-14 paper-shadow">
-            <div className="col-span-12 md:col-span-8">
-              <p className="eyebrow">Ready when you are</p>
-              <h2 className="mt-3 font-display text-[32px] md:text-[44px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
+          <div
+            data-testid="services-cta-band"
+            className="reveal-on-scroll cta-banner-dark relative grid grid-cols-12 gap-6 rounded-[20px] border border-[color:var(--color-footer-border)] px-6 md:px-10 py-10 md:py-14 paper-shadow overflow-hidden text-[color:var(--color-footer-foreground)]"
+            style={{
+              backgroundImage:
+                "linear-gradient(90deg, var(--color-footer) 0%, var(--color-footer) 35%, var(--color-footer-soft) 100%)",
+              colorScheme: "dark",
+            }}
+          >
+            {/* Top-edge sky-halo hairline (matches CtaBanner). */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-6 right-6 top-0 h-px"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 60%, transparent) 25%, color-mix(in oklch, var(--color-accent-halo) 60%, transparent) 75%, transparent)",
+              }}
+            />
+            {/* Soft halo behind the headline column. */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full opacity-25 blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(closest-side, var(--color-accent-halo), transparent 70%)",
+              }}
+            />
+            <div className="col-span-12 md:col-span-8 relative">
+              <p className="eyebrow text-[color:var(--color-footer-muted)]">
+                Ready when you are
+              </p>
+              <h2 className="mt-3 font-display text-[32px] md:text-[44px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-footer-foreground)]">
                 Build a package that fits the role —{" "}
-                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+                <span className="italic font-normal text-[color:var(--color-accent-halo)]">
                   in minutes.
                 </span>
               </h2>
             </div>
-            <div className="col-span-12 md:col-span-4 flex md:justify-end items-end">
+            <div className="col-span-12 md:col-span-4 flex md:justify-end items-end relative">
               <Link
                 href="/contact"
-                className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
+                className="cta-banner-cta btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
               >
                 Get a quote
                 <ArrowUpRight className="size-4" />

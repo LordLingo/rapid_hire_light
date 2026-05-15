@@ -383,3 +383,16 @@ Notes from screenshot: the *image's* surface is light/cream, not brand-blue. The
 - [x] Verified visually: arrow connectors between System Integrations → Platform → Outputs still render in the desktop layout
 - [x] Added `client/src/lib/workflowsCenterCard.test.ts` (9 tests): pins brand-blue surface token, the eight labels in their locked order, the icon mapping, the 2-column grid layout, NO `<button>`/`<a>`/cursor-pointer/hover inside the card, anti-regression on the old `PLATFORM_CHIPS` and rounded-full pill markup, and stable `data-testid` hooks
 - [x] Ran vitest (163/163 passing), browser QA confirmed the new card rendering correctly between the two white flanking cards, ready to checkpoint and deliver
+
+
+## 45. Services page — restyle bottom "Build a package that fits the role" CTA band (user-requested)
+
+User feedback: the bottom CTA strip on `/services` is currently a thin white card on warm paper, which reads as low-priority. The user wants it to share the same dark footer-family gradient as the homepage's StopGambling section and the Switch CTA band, while keeping the headline + eyebrow + Get a quote CTA fully legible on the dark surface.
+
+- [x] Located the band: inline JSX block in `client/src/pages/Services.tsx` (lines 220–243 in the previous version), not a reused component
+- [x] Replaced the white surface with the exact 90deg `var(--color-footer) 0%` → `35%` → `var(--color-footer-soft) 100%` gradient used by `CtaBanner.tsx`, so the band reads as one family with the homepage Switch CTA
+- [x] Inverted the text tokens: eyebrow → footer-muted, headline → footer-foreground (white), italic accent "in minutes." → accent-halo (sky blue, legibility verified visually)
+- [x] Kept the brand-blue accent-ink Get a quote pill (per user request); attached `.cta-banner-cta` so it inherits the 6px hover-lift + sky-halo glow gesture already used by Switch CTA and Hero Start Screening
+- [x] Container rhythm preserved: kept the `container py-20` outer wrapper and the same grid-cols-12 inner layout; col-span-12 on mobile so the band stacks gracefully
+- [x] Added `client/src/lib/servicesCtaBand.test.ts` (9 tests): pins the test-id, the cta-banner-dark marker class, the exact 90deg footer→footer-soft gradient, the inverted footer-muted/footer-foreground text tokens, the sky-halo italic accent (anti-regression on accent-ink for the italic), the brand-blue CTA + `.cta-banner-cta` lift attachment, the top-edge sky-halo hairline, the soft headline halo, and the anti-regression on bg-white + ink-color text
+- [x] Ran vitest (172/172 passing), browser QA at desktop confirmed dark gradient + sky-halo italic + brand-blue CTA + sky-halo top hairline rendering cleanly; ready to checkpoint and deliver
