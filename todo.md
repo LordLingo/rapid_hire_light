@@ -641,16 +641,16 @@ Nav wiring:
 
 Tasks:
 
-- [ ] Read Header, Footer, App.tsx, and the active-route tests to confirm the exact insertion points.
-- [ ] Generate ONE original hero photo via AI (compliance specialist with laptop, warm-paper studio background, brand-aligned).
-- [ ] Build `client/src/pages/Compliance.tsx` with the 9 sections + CTA banner + 5 original visuals as described.
-- [ ] Register the lazy route in `client/src/App.tsx`.
-- [ ] Add "Compliance" to the Header primary nav between Pricing and Support.
-- [ ] Add "Compliance" to the Footer "Company" or "Product" column (whichever Pricing currently sits in, for adjacency).
-- [ ] Extend `headerActiveRoute.test.ts` + `footerActiveRoute.test.ts` to assert the new Compliance entry + active-state behavior on `/compliance`.
-- [ ] New `client/src/lib/compliancePage.test.ts`: pin presence of all 9 section eyebrows, the page title in `<head>`, the dark-band gradient on sections 03/06/09, the CtaBanner at the foot, the hero image element with the new asset URL, and the route registration in App.tsx.
-- [ ] Add "Compliance" to the structured-data sitemap if there is one (search for any sitemap.ts / sitemap.xml).
-- [ ] Run vitest, LSP/TS check, save checkpoint, deliver.
+- [x] Read Header, Footer, App.tsx, and the active-route tests to confirm the exact insertion points.
+- [x] Generate ONE original hero photo via AI (compliance specialist with laptop, warm-paper studio background, brand-aligned).
+- [x] Build `client/src/pages/Compliance.tsx` with the 9 sections + CTA banner + 5 original visuals as described.
+- [x] Register the lazy route in `client/src/App.tsx`.
+- [x] Add "Compliance" to the Header primary nav between Pricing and Support.
+- [x] Add "Compliance" to the Footer "Company" or "Product" column (whichever Pricing currently sits in, for adjacency).
+- [x] Extend `headerActiveRoute.test.ts` + `footerActiveRoute.test.ts` to assert the new Compliance entry + active-state behavior on `/compliance`.
+- [x] New `client/src/lib/compliancePage.test.ts`: pin presence of all 9 section eyebrows, the page title in `<head>`, the dark-band gradient on sections 03/06/09, the CtaBanner at the foot, the hero image element with the new asset URL, and the route registration in App.tsx.
+- [x] Add "Compliance" to the structured-data sitemap if there is one (search for any sitemap.ts / sitemap.xml).
+- [x] Run vitest, LSP/TS check, save checkpoint, deliver.
 
 
 ## 59. New /compliance page (delivered)
@@ -706,13 +706,13 @@ Tasks:
 
 ## 64. /compliance/audit booking page
 
-- [ ] Reference https://www.precisehire.com/compliance/audit to understand the structure (hero copy, what's included, form fields, FAQ etc.) — only as inspiration; keep all copy original to Rapid Hire and on our existing design system (warm-paper / dark-navy band rhythm, Fraunces display, sky-halo accents).
-- [ ] Build `client/src/pages/ComplianceAudit.tsx` with: a PageHero (eyebrow `00 — Free Audit`, headline + italic accent, lede); a "What's included" 4-card grid (sections of the audit — e.g. policy review, adverse-action workflow, state/local overlay coverage, vendor + data security); a structured booking form with name, work email, company, role, monthly hire volume (select), current vendor (optional), states/cities of operation (optional textarea), preferred 15-min window (date + time-of-day select), and "anything else we should review" textarea; a "What you get" 3-step result block (24-point checklist PDF + 15-min call + written follow-up); a small FAQ (5 Q&A); a final dark-navy CTA band linking back to /contact for non-audit questions.
-- [ ] Form submits to the existing `/api/contact` endpoint with `topic = "compliance-audit"` and the audit-specific payload merged into the message field, plus a structured `metadata` object so the JSON store keeps the audit details separately. Reuse existing validation patterns (required name, valid email shape, etc.). On success show an inline success card replacing the form, with "We'll confirm within one business day" copy + a calendar-style note. On failure show an inline error.
-- [ ] Wire route `/compliance/audit` in `client/src/App.tsx`. Add the route to the `useSeo` doc-title flow if applicable. Update the Compliance hero CTA `href` from `/contact?topic=compliance-audit` → `/compliance/audit`.
-- [ ] Footer COMPANY column gets a sub-link `Free audit` → `/compliance/audit` directly under `Compliance`. Header NAV stays unchanged (no need to crowd it).
-- [ ] Add `client/src/lib/complianceAuditPage.test.ts` (~14–18 pins): page exists, route registered, hero eyebrow + headline + italic accent, all required form fields present with correct names/types, `topic="compliance-audit"` posted, success-state markup pinned, the four "What's included" cards in order, the FAQ count + first/last question text, the dark-navy CTA band gradient pattern, anti-regression that Compliance hero CTA `href` updated.
-- [ ] Run vitest, save checkpoint, deliver.
+- [x] Reference https://www.precisehire.com/compliance/audit to understand the structure (hero copy, what's included, form fields, FAQ etc.) — only as inspiration; keep all copy original to Rapid Hire and on our existing design system (warm-paper / dark-navy band rhythm, Fraunces display, sky-halo accents).
+- [x] Build `client/src/pages/ComplianceAudit.tsx` with: a PageHero (eyebrow `00 — Free Audit`, headline + italic accent, lede); a "What's included" 4-card grid (sections of the audit — e.g. policy review, adverse-action workflow, state/local overlay coverage, vendor + data security); a structured booking form with name, work email, company, role, monthly hire volume (select), current vendor (optional), states/cities of operation (optional textarea), preferred 15-min window (date + time-of-day select), and "anything else we should review" textarea; a "What you get" 3-step result block (24-point checklist PDF + 15-min call + written follow-up); a small FAQ (5 Q&A); a final dark-navy CTA band linking back to /contact for non-audit questions.
+- [x] Form submits to the existing `/api/contact` endpoint with `topic = "compliance-audit"` and the audit-specific payload merged into the message field, plus a structured `metadata` object so the JSON store keeps the audit details separately. Reuse existing validation patterns (required name, valid email shape, etc.). On success show an inline success card replacing the form, with "We'll confirm within one business day" copy + a calendar-style note. On failure show an inline error.
+- [x] Wire route `/compliance/audit` in `client/src/App.tsx`. Add the route to the `useSeo` doc-title flow if applicable. Update the Compliance hero CTA `href` from `/contact?topic=compliance-audit` → `/compliance/audit`.
+- [x] Footer COMPANY column gets a sub-link `Free audit` → `/compliance/audit` directly under `Compliance`. Header NAV stays unchanged (no need to crowd it).
+- [x] Add `client/src/lib/complianceAuditPage.test.ts` (~14–18 pins): page exists, route registered, hero eyebrow + headline + italic accent, all required form fields present with correct names/types, `topic="compliance-audit"` posted, success-state markup pinned, the four "What's included" cards in order, the FAQ count + first/last question text, the dark-navy CTA band gradient pattern, anti-regression that Compliance hero CTA `href` updated.
+- [x] Run vitest, save checkpoint, deliver.
 
 ## 64. /compliance/audit dedicated booking page
 
@@ -738,3 +738,12 @@ Tasks:
 - [x] Generate the downloadable PDF asset for the 24-point compliance checklist (rendered server-side from canonical SURFACES content) and host it under client/public for direct download.
 - [x] Wire a "Download the PDF" affordance on /compliance/checklist next to the existing "Print this page" button, pointing at the new asset.
 - [x] Add vitest pins covering the two new Footer entries + the PDF link presence/href, and run the full suite green.
+
+## 67. /trust dedicated trust page
+
+- [x] Reference precisehire.com/trust for structure inspiration; pull the three badge images (SOC 2 Type II, PBSA Member, FCRA Aligned) from there or use the user-attached PNG.
+- [x] Save the badge assets into webdev-static-assets and upload to manus-storage.
+- [x] Build client/src/pages/Trust.tsx on our design system: hero (eyebrow 00 — Trust, italic-accented headline, lede), the three badges in a trio with verified-by lines, three pillars (data security · regulatory alignment · operational rigor), certifications detail (SOC 2 Type II + PBSA + FCRA + insurance + privacy), data-handling commitments, closing dark CTA band.
+- [x] Register /trust route in App.tsx.
+- [x] Add Trust to the Footer Company column (after Compliance), and optionally add anti-regression on the new href.
+- [x] Add vitest pins covering route registration, three badge images present, three pillars, footer link, and the closing CTA band. Run full suite green.
