@@ -167,7 +167,20 @@ export default function Contact() {
                       Email
                     </p>
                     <p className="mt-1 text-[15px] text-[color:var(--color-ink)]">
-                      hello@rapidhiresolutions.com
+                      <a className="ink-link" href="mailto:sales@rapidhiresolutions.com">
+                        sales@rapidhiresolutions.com
+                      </a>
+                    </p>
+                    <p className="mt-0.5 text-[13px] text-[color:var(--color-ink-muted)]">
+                      Quotes & new accounts
+                    </p>
+                    <p className="mt-2 text-[15px] text-[color:var(--color-ink)]">
+                      <a className="ink-link" href="mailto:info@rapidhiresolutions.com">
+                        info@rapidhiresolutions.com
+                      </a>
+                    </p>
+                    <p className="mt-0.5 text-[13px] text-[color:var(--color-ink-muted)]">
+                      Existing accounts & general
                     </p>
                   </div>
                 </li>
@@ -180,7 +193,9 @@ export default function Contact() {
                       Phone
                     </p>
                     <p className="mt-1 text-[15px] text-[color:var(--color-ink)]">
-                      (888) 555-0142
+                      <a className="ink-link" href="tel:+18884453047">
+                        (888) 445-3047
+                      </a>
                     </p>
                   </div>
                 </li>

@@ -301,7 +301,7 @@ export function ContactCallCard() {
         <>
           <span>Direct extension · no IVR</span>
           <span className="inline-flex items-center gap-1">
-            <Phone className="size-3.5" aria-hidden /> (888) 555-0142
+            <Phone className="size-3.5" aria-hidden /> (888) 445-3047
           </span>
         </>
       }

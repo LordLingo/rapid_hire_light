@@ -259,3 +259,21 @@
 - [x] Build a small `HeroMiniStats` row component (compact, 2–3 cells, fits under the hero card frame); wire one variant per page (About, Services, Pricing, Integrations, Contact, Support) with page-specific stats
 - [x] Add a reusable `useHeroEntrance` hook (or pure CSS class) that staggers fade-up on hero-card rows (60–80ms each); gate behind `@media (prefers-reduced-motion: no-preference)`; respect intersection observer so it doesn't re-fire on scroll
 - [x] Vitest where applicable (hero-stats sync + integrations grid logic), browser QA at desktop + mobile + reduced-motion preference, save checkpoint, deliver
+
+## 33. Real contact info sweep (replace placeholders)
+- [ ] Replace placeholder phone `(888) 555-0142` with real `(888) 445-3047` everywhere (UI labels, `tel:` hrefs, JSON-LD telephone, og-image SVG, vitest specs)
+- [ ] Replace placeholder support email `support@rapidhiresolutions.com` with real `info@rapidhiresolutions.com` everywhere (mailto:, UI text, JSON-LD email, vitest specs)
+- [ ] Add new sales / quote email `sales@rapidhiresolutions.com` to "Get a Quote" + sales-oriented CTAs and JSON-LD ContactPoint(sales)
+- [ ] Remove all references to `candidates@rapidhiresolutions.com` (Support page, Contact page, JSON-LD ContactPoint, FAQ answers, footer/header) — re-route candidate flows to the structured form + phone + info@ fallback
+- [ ] Update relevant vitest specs and shared JSON (support-status.json) to reflect the new numbers/emails
+- [ ] Browser QA across Home, Services, Pricing, Integrations, Contact, Support, blog OG image; vitest green; save checkpoint and deliver
+
+## 33. Real contact info sweep (placeholders → live values)
+- [x] Replace placeholder phone `(888) 555-0142` / `+18885550142` with real `(888) 445-3047` / `+18884453047` across Support page constants, Contact page details, ContactCallCard hero footer
+- [x] Replace placeholder support email `support@rapidhiresolutions.com` with `info@rapidhiresolutions.com` site-wide
+- [x] Add new sales email `sales@rapidhiresolutions.com` to the Contact page details and to the Support page email rail; surface it as a separate "Quotes & new accounts" line
+- [x] Remove retired `candidates@rapidhiresolutions.com` everywhere; rewire candidate FAQ to phone + on-page candidate inquiry form, and re-anchor the candidate-card "two doors" CTAs to call + form
+- [x] Update Support JSON-LD `contactPoint[]` block: drop `candidate care`, add `sales`, keep `customer support` on `info@`
+- [x] Refactor `CandidateContactForm`: drop required `candidateEmail` prop, replace with optional `fallbackEmail`; update Support page caller
+- [x] Add `client/src/lib/contactInfo.test.ts` vitest spec that pins the new phone/email values and bans the retired placeholders
+- [x] Vitest green (91/91), TS/LSP clean, browser QA on /support and /contact, save checkpoint, deliver

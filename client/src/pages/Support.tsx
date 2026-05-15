@@ -43,10 +43,10 @@ import { useSeo } from "@/hooks/useSeo";
 
 /* ---------- content ---------- */
 
-const PHONE_DISPLAY = "(888) 555-0142";
-const PHONE_TEL = "+18885550142";
-const SUPPORT_EMAIL = "support@rapidhiresolutions.com";
-const CANDIDATE_EMAIL = "candidates@rapidhiresolutions.com";
+const PHONE_DISPLAY = "(888) 445-3047";
+const PHONE_TEL = "+18884453047";
+const SUPPORT_EMAIL = "info@rapidhiresolutions.com";
+const SALES_EMAIL = "sales@rapidhiresolutions.com";
 const HQ_CITY = "Prosper, TX";
 const HQ_STREET = "4261 E University Dr";
 const HQ_POSTAL_CODE = "75078";
@@ -152,15 +152,18 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     q: "I'm a candidate and have a question about my background check. Where do I go?",
     a: (
       <>
-        Email{" "}
-        <a className="ink-link" href={`mailto:${CANDIDATE_EMAIL}`}>
-          {CANDIDATE_EMAIL}
-        </a>{" "}
-        with your full name, the employer who ordered the report, and the date
-        you completed your authorization. A US-based candidate-care specialist
-        will reach out — usually the same business day. You also have the
-        right under the FCRA to request a free copy of any report we've
-        compiled about you.
+        Use the candidate inquiry form lower on this page, or call{" "}
+        <a className="ink-link" href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>{" "}
+        and ask for candidate care. Include your full name, the employer who
+        ordered the report, and the date you completed your authorization. A
+        US-based candidate-care specialist will reach out — usually the same
+        business day. You also have the right under the FCRA to request a
+        free copy of any report we've compiled about you. Non-urgent
+        questions can also reach us at{" "}
+        <a className="ink-link" href={`mailto:${SUPPORT_EMAIL}`}>
+          {SUPPORT_EMAIL}
+        </a>
+        .
       </>
     ),
   },
@@ -168,10 +171,8 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     q: "Something on my report looks wrong. How do disputes work?",
     a: (
       <>
-        File a dispute by emailing{" "}
-        <a className="ink-link" href={`mailto:${CANDIDATE_EMAIL}`}>
-          {CANDIDATE_EMAIL}
-        </a>{" "}
+        File a dispute via the candidate inquiry form below or by calling{" "}
+        <a className="ink-link" href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>{" "}
         and including the report ID and the specific item you're disputing.
         Federal law gives us 30 days to reinvestigate; in practice we close
         most disputes within 5–9 business days. We'll send you a written
@@ -289,8 +290,8 @@ export default function Support() {
         },
         {
           "@type": "ContactPoint",
-          email: CANDIDATE_EMAIL,
-          contactType: "candidate care",
+          email: SALES_EMAIL,
+          contactType: "sales",
           areaServed: "US",
           availableLanguage: ["English"],
         },
@@ -627,15 +628,15 @@ export default function Support() {
                   <div className="mt-6 hairline" />
                   <ul className="mt-5 grid gap-3 text-[14px] text-[color:var(--color-ink)]">
                     <li className="inline-flex items-start gap-2">
-                      <Mail className="mt-0.5 size-4 text-[color:var(--color-accent-ink)] shrink-0" aria-hidden />
-                      <a className="ink-link" href={`mailto:${CANDIDATE_EMAIL}`}>
-                        {CANDIDATE_EMAIL}
+                      <Phone className="mt-0.5 size-4 text-[color:var(--color-accent-ink)] shrink-0" aria-hidden />
+                      <a className="ink-link" href={`tel:${PHONE_TEL}`}>
+                        {PHONE_DISPLAY} · ask for candidate care
                       </a>
                     </li>
                     <li className="inline-flex items-start gap-2">
-                      <Phone className="mt-0.5 size-4 text-[color:var(--color-accent-ink)] shrink-0" aria-hidden />
-                      <a className="ink-link" href={`tel:${PHONE_TEL}`}>
-                        {PHONE_DISPLAY} (option 2)
+                      <MessageSquare className="mt-0.5 size-4 text-[color:var(--color-accent-ink)] shrink-0" aria-hidden />
+                      <a href="#candidate-inquiry" className="ink-link">
+                        Send a message via the candidate form
                       </a>
                     </li>
                     <li className="inline-flex items-start gap-2">
@@ -664,13 +665,19 @@ export default function Support() {
                     <li className="inline-flex items-start gap-2">
                       <Phone className="mt-0.5 size-4 text-[color:var(--color-accent-ink)] shrink-0" aria-hidden />
                       <a className="ink-link" href={`tel:${PHONE_TEL}`}>
-                        {PHONE_DISPLAY} (option 1)
+                        {PHONE_DISPLAY}
                       </a>
                     </li>
                     <li className="inline-flex items-start gap-2">
                       <Mail className="mt-0.5 size-4 text-[color:var(--color-accent-ink)] shrink-0" aria-hidden />
                       <a className="ink-link" href={`mailto:${SUPPORT_EMAIL}`}>
                         {SUPPORT_EMAIL}
+                      </a>
+                    </li>
+                    <li className="inline-flex items-start gap-2">
+                      <Mail className="mt-0.5 size-4 text-[color:var(--color-accent-ink)] shrink-0" aria-hidden />
+                      <a className="ink-link" href={`mailto:${SALES_EMAIL}`}>
+                        {SALES_EMAIL} · quotes & new accounts
                       </a>
                     </li>
                     <li className="inline-flex items-start gap-2">
@@ -705,8 +712,8 @@ export default function Support() {
                 day. Your inquiry is routed away from the employer/sales desk
                 automatically.
               </p>
-              <div className="mt-10 rounded-[20px] border border-border bg-white p-6 sm:p-9">
-                <CandidateContactForm candidateEmail={CANDIDATE_EMAIL} />
+              <div id="candidate-inquiry" className="mt-10 rounded-[20px] border border-border bg-white p-6 sm:p-9 scroll-mt-24">
+                <CandidateContactForm fallbackEmail={SUPPORT_EMAIL} />
               </div>
             </div>
           </div>

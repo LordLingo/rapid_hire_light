@@ -19,9 +19,10 @@ import { Check, Loader2, ArrowUpRight, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
 export default function CandidateContactForm({
-  candidateEmail,
+  fallbackEmail,
 }: {
-  candidateEmail: string;
+  /** Optional fallback inbox shown after a successful submission. */
+  fallbackEmail?: string;
 }) {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -78,11 +79,16 @@ export default function CandidateContactForm({
         </h3>
         <p className="mx-auto mt-3 max-w-md text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
           A US-based candidate-care specialist will reach out the same business
-          day. If your question is time-sensitive, you can also email{" "}
-          <a className="ink-link" href={`mailto:${candidateEmail}`}>
-            {candidateEmail}
-          </a>{" "}
-          directly.
+          day.
+          {fallbackEmail ? (
+            <>
+              {" "}If your question is time-sensitive, you can also email{" "}
+              <a className="ink-link" href={`mailto:${fallbackEmail}`}>
+                {fallbackEmail}
+              </a>{" "}
+              directly.
+            </>
+          ) : null}
         </p>
       </div>
     );
