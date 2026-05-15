@@ -673,7 +673,7 @@ export default function Compliance() {
           <>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href="/contact?topic=compliance-audit"
+                href="/compliance/audit"
                 data-testid="compliance-cta-audit"
                 className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-3 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
               >

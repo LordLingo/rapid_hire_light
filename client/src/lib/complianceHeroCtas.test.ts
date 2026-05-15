@@ -39,14 +39,17 @@ describe("§61 — PageHero gains an afterLede slot", () => {
 });
 
 describe("§61 — Compliance hero CTA pair", () => {
-  it("primary CTA \"Book a free 15-min audit\" is a brand-blue Link to /contact", () => {
+  it("primary CTA \"Book a free 15-min audit\" is a brand-blue Link to the dedicated /compliance/audit booking page", () => {
+    // §64: re-pointed from /contact?topic=compliance-audit to /compliance/audit.
     expect(COMPLIANCE_SRC).toMatch(/data-testid="compliance-cta-audit"/);
     const block = COMPLIANCE_SRC.match(
       /<Link[\s\S]*?data-testid="compliance-cta-audit"[\s\S]*?Book a free 15-min audit/
     );
     expect(block).toBeTruthy();
     const text = block![0];
-    expect(text).toMatch(/href="\/contact\?topic=compliance-audit"/);
+    expect(text).toMatch(/href="\/compliance\/audit"/);
+    // Anti-regression: the old /contact target must NOT come back.
+    expect(text).not.toMatch(/href="\/contact\?topic=compliance-audit"/);
     expect(text).toMatch(/bg-\[color:var\(--color-accent-ink\)\]/);
     expect(text).toMatch(/text-white/);
     expect(text).toMatch(/CalendarCheck2/);

@@ -17,6 +17,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Support from "./pages/Support";
 import Compliance from "./pages/Compliance";
+import ComplianceAudit from "./pages/ComplianceAudit";
 
 
 function Router() {
@@ -34,6 +35,7 @@ function Router() {
       <Route path={"/privacy"} component={Privacy} />
       <Route path={"/terms"} component={Terms} />
       <Route path={"/support"} component={Support} />
+      <Route path={"/compliance/audit"} component={ComplianceAudit} />
       <Route path={"/compliance"} component={Compliance} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
