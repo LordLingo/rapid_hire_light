@@ -134,9 +134,14 @@ describe("§50 — Site-wide card/image applications", () => {
     expect(src).toMatch(
       /"hover-lift-card reveal-on-scroll rounded-\[20px\] border border-border bg-white p-6"/
     );
-    // Coverage hours cards (rounded-[18px])
+    // Coverage hours cards (rounded-[18px]) — §58 lifted these onto
+    // the dark navy gradient, so the resting class string dropped
+    // `border-border bg-white` in favor of an inline-styled
+    // low-alpha warm-white border + a 4% color-mix surface tint. The
+    // `hover-lift-card` lift gesture is preserved (the utility only
+    // animates transform/box-shadow/border-color).
     expect(src).toMatch(
-      /"hover-lift-card reveal-on-scroll rounded-\[18px\] border border-border bg-white p-6"/
+      /"hover-lift-card reveal-on-scroll rounded-\[18px\] border p-6 bg-\[color:color-mix\(in_oklch,var\(--color-footer-foreground\)_4%,transparent\)\]"/
     );
     // Routing cards (Candidate vs Client articles)
     expect(src).toMatch(

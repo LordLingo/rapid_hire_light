@@ -461,25 +461,78 @@ export default function Support() {
         </div>
       </section>
 
-      {/* Coverage */}
-      <section className="border-t border-border bg-[color:var(--color-paper-soft)]">
-        <div className="container py-20 md:py-24">
+      {/*
+        Coverage — §58 dark gradient pass.
+
+        Lifted onto the same footer-family dark gradient used by
+        StopGambling, Pricing FAQ §54, and Support phone CTA §57 so
+        the inner-page dark beats read as one continuous treatment.
+        Direction matches the rest: light cobalt LEFT → deep cobalt
+        RIGHT. Inner cards drop their `bg-white` paper treatment and
+        get a low-alpha warm-white border + tint so they read on dark.
+      */}
+      <section
+        className="relative overflow-hidden text-[color:var(--color-footer-foreground)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, var(--color-footer-soft) 0%, var(--color-footer) 65%, var(--color-footer) 100%)",
+          colorScheme: "dark",
+        }}
+      >
+        {/* Top sky-halo hairline glow (matches StopGambling). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 30%, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 70%, transparent)",
+          }}
+        />
+        <div className="container py-20 md:py-24 relative">
           <div className="grid grid-cols-12 gap-8">
             <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">03 — Coverage</p>
-              <div className="mt-3 hairline" />
+              <p className="eyebrow text-[color:var(--color-footer-muted)]">
+                03 — Coverage
+              </p>
+              {/*
+                Eyebrow divider — default `.hairline` is a paper-surface
+                affordance and would disappear into navy. Replace with
+                the same low-alpha sky-halo gradient used by Pricing
+                FAQ §54 + Support phone CTA §57 so the eyebrow rule
+                stays visible on dark.
+              */}
+              <div
+                className="mt-3 h-px"
+                style={{
+                  background:
+                    "linear-gradient(90deg, color-mix(in oklch, var(--color-accent-halo) 50%, transparent), transparent)",
+                }}
+              />
             </div>
-            <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
-              <h2 className="font-display text-[40px] sm:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)] max-w-3xl">
+            <div className="col-span-12 lg:col-span-9 reveal-on-scroll relative">
+              {/*
+                Sky-halo radial halo behind the headline. Same treatment
+                as the other dark beats. Marker class
+                `support-coverage-halo` is the vitest pin.
+              */}
+              <div
+                aria-hidden
+                className="support-coverage-halo pointer-events-none absolute -left-24 -top-20 h-[480px] w-[480px] rounded-full opacity-30 blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(closest-side, var(--color-accent-halo), transparent 70%)",
+                }}
+              />
+              <h2 className="relative font-display text-[40px] sm:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-footer-foreground)] max-w-3xl">
                 When the team is on the desk.
               </h2>
-              <p className="mt-6 max-w-2xl text-[16px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+              <p className="relative mt-6 max-w-2xl text-[16px] leading-[1.7] text-[color:var(--color-footer-soft-text)]">
                 One Central-time desk, no offshore handoff after hours. If you
                 leave a voicemail, you'll hear back from a real person — not a
                 ticket robot.
               </p>
 
-              <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="relative mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {[
                   {
                     label: "Monday – Friday",
@@ -499,16 +552,20 @@ export default function Support() {
                 ].map((row) => (
                   <div
                     key={row.label}
-                    className="hover-lift-card reveal-on-scroll rounded-[18px] border border-border bg-white p-6"
+                    className="hover-lift-card reveal-on-scroll rounded-[18px] border p-6 bg-[color:color-mix(in_oklch,var(--color-footer-foreground)_4%,transparent)]"
+                    style={{
+                      borderColor:
+                        "color-mix(in oklch, var(--color-footer-foreground) 15%, transparent)",
+                    }}
                   >
-                    <p className="eyebrow text-[10.5px] text-[color:var(--color-ink-muted)] inline-flex items-center gap-1.5">
+                    <p className="eyebrow text-[10.5px] text-[color:var(--color-footer-muted)] inline-flex items-center gap-1.5">
                       <Clock className="size-3" aria-hidden />
                       {row.label}
                     </p>
-                    <p className="mt-3 font-display text-[22px] leading-[1.2] tracking-[-0.01em] text-[color:var(--color-ink)]">
+                    <p className="mt-3 font-display text-[22px] leading-[1.2] tracking-[-0.01em] text-[color:var(--color-footer-foreground)]">
                       {row.value}
                     </p>
-                    <p className="mt-2 text-[13.5px] text-[color:var(--color-ink-soft)]">
+                    <p className="mt-2 text-[13.5px] text-[color:var(--color-footer-soft-text)]">
                       {row.detail}
                     </p>
                   </div>
