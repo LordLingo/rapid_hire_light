@@ -730,3 +730,11 @@ Tasks:
 - [x] Register /compliance/checklist route in App.tsx BEFORE /compliance.
 - [x] Re-point the Compliance hero secondary CTA "Get the 24-point checklist" from #certifications anchor → /compliance/checklist.
 - [x] Add vitest pins covering route registration, hero, exact 24-item count, category structure, CTA + closing band, and the §61 anti-regression on the new href. Run full suite green.
+
+## 66. §64/§65 follow-ups — Footer surfacing + downloadable checklist PDF
+
+- [x] Add "Free 15-min audit" link to the Footer (Compliance column) → /compliance/audit
+- [x] Add "24-point checklist" link to the Footer (Compliance column) → /compliance/checklist
+- [x] Generate the downloadable PDF asset for the 24-point compliance checklist (rendered server-side from canonical SURFACES content) and host it under client/public for direct download.
+- [x] Wire a "Download the PDF" affordance on /compliance/checklist next to the existing "Print this page" button, pointing at the new asset.
+- [x] Add vitest pins covering the two new Footer entries + the PDF link presence/href, and run the full suite green.

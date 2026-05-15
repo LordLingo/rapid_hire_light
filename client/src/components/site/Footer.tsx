@@ -24,7 +24,12 @@ const COMPANY: FooterItem[] = [
   { label: "Blog", to: "/blog" },
   { label: "Pricing", to: "/pricing" },
   { label: "Support", to: "/support" },
+  // §66: surface the dedicated compliance funnel from every page so the
+  // 24-point checklist (§65) and the free 15-minute audit (§64) are
+  // reachable from the global footer, not only the Compliance hero.
   { label: "Compliance", to: "/compliance" },
+  { label: "24-point checklist", to: "/compliance/checklist" },
+  { label: "Free 15-min audit", to: "/compliance/audit" },
   { label: "Contact", to: "/contact" },
 ];
 const PORTALS: FooterItem[] = [

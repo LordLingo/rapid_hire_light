@@ -34,6 +34,7 @@ import {
   ArrowUpRight,
   CalendarCheck2,
   Check,
+  Download,
   Printer,
   RotateCcw,
 } from "lucide-react";
@@ -255,6 +256,16 @@ const SURFACES: ReadonlyArray<ChecklistSurface> = [
 const TOTAL_ITEMS = SURFACES.reduce((acc, s) => acc + s.items.length, 0);
 const STORAGE_KEY = "rhs.compliance-checklist.progress.v1";
 
+/*
+  §66: real downloadable PDF asset URL. Built locally by
+  scripts/build-checklist-pdf.mjs and uploaded via
+  `manus-upload-file --webdev`. The file is the 8-page, Letter-format,
+  Fraunces+Inter-typeset version of this same checklist (mirrors
+  SURFACES). When the content changes, re-run the script and re-upload.
+*/
+const CHECKLIST_PDF_URL =
+  "/manus-storage/RapidHire-24-Point-Compliance-Checklist_d9526aba.pdf";
+
 /* ---------- progress hook ---------- */
 
 function useChecklistProgress() {
@@ -346,6 +357,20 @@ export default function ComplianceChecklist() {
               >
                 <Check aria-hidden className="size-4" strokeWidth={2.5} />
                 Start the self-audit
+              </a>
+              {/* §66: real downloadable PDF asset (8-page Letter, hosted on
+                  manus-storage). Built by scripts/build-checklist-pdf.mjs. */}
+              <a
+                href={CHECKLIST_PDF_URL}
+                download
+                data-testid="checklist-cta-download"
+                className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)]"
+              >
+                <Download
+                  aria-hidden
+                  className="size-4 text-[color:var(--color-accent-ink)]"
+                />
+                Download the PDF
               </a>
               <button
                 type="button"
