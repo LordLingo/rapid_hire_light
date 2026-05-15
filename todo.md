@@ -601,3 +601,65 @@ Plan:
 7. [x] Section padding stays at `py-20 md:py-24` (no bottom wedge — next section "Why this matters" pivots to warm paper, mirroring the §54 + §57 hard-surface pivot pattern).
 8. [x] Added new `client/src/lib/supportCoverageDark.test.ts` (13 tests) mirroring the §57 test shape: pin gradient direction, `colorScheme: "dark"`, top hairline glow, `support-coverage-halo` class, eyebrow + headline + body inverted tokens, the eyebrow divider replacement (no `.hairline` token, sky-halo gradient instead), each of the three cards has the inverted dark card classes (no `bg-white`, no plain `border-border`), and anti-regression on the old `bg-[color:var(--color-paper-soft)]` wrapper + `bg-white` inner cards + `text-[color:var(--color-ink)]`/`text-[color:var(--color-ink-soft)]` text tokens.
 9. [x] Ran vitest: 299/299 passing (286 → 299, +13 new §58 pins, +0 net regressions; updated the existing §51 hoverPolish coverage-cards pin to match the new dark-card class string). LSP/TS clean.
+
+
+## 59. New /compliance page + nav wiring
+
+User feedback: add a Compliance entry to the nav and build a Compliance page. User originally asked to copy precisehire.com's compliance page verbatim with only color changes; that's a copyright + duplicate-content problem, so the agreed plan is to cover the SAME topic structure as a typical CRA compliance page (FCRA, state-by-state laws, adverse action, EEOC guidance, drug testing, data security, candidate rights, certifications) but in original voice, using the existing design system, with original imagery instead of borrowed assets. User confirmed "yes proceed but please add the same images or something similar".
+
+Topic outline (each becomes a numbered section, mirroring the eyebrow-numbered pattern used across the site):
+
+- 01 — How we run a compliant program (overview: FCRA Certified, SOC 2 Type II, HIPAA, U.S.-based ops, FCRA-trained analysts; trust-signal grid)
+- 02 — Fair Credit Reporting Act (FCRA) (what the FCRA requires of CRAs and employers; the disclosure/authorization stack we provide; permissible purpose; accuracy + reinvestigation duties)
+- 03 — Adverse action workflow (the two-step pre-adverse / final-adverse cadence; the specific documents we send to the candidate; the waiting-period default we recommend; the dispute escalation path)
+- 04 — State + local "ban-the-box" and reporting laws (how we adapt the report scope by jurisdiction; explicit callouts for CA ICRAA, NYC FCA, Cook County, Seattle, etc.; how we keep the matrix current)
+- 05 — EEOC guidance + individualized assessment (Green factors; how we surface conviction details + dates; how we support the candidate-response window an employer must offer)
+- 06 — Drug + health screening (DOT vs non-DOT panels; chain-of-custody; MRO review; HIPAA boundaries when results are touched)
+- 07 — Data security + candidate privacy (SOC 2 Type II controls, encryption in transit + at rest, role-based access, retention + purge schedule, vendor management)
+- 08 — Candidate rights + dispute resolution (Summary of Rights delivery cadence, how a candidate disputes a record, Rapid Hire's reinvestigation timeline, free annual consumer file disclosure)
+- 09 — Certifications + audits (PBSA accreditation pathway, SOC 2 attestation, HIPAA, state CRA registrations, annual training cadence)
+- CTA banner — same dark-band CtaBanner already used elsewhere ("Talk to compliance" → /contact, primary phone)
+
+Section-by-section design rhythm: alternate warm-paper sections with one footer-family dark band roughly every 3 sections so the page has the same visual breathing room as /pricing and /support. Specifically: 01 paper-soft, 02 paper, 03 dark gradient, 04 paper, 05 paper-soft, 06 dark gradient, 07 paper, 08 paper-soft, 09 dark gradient, then CtaBanner. Eyebrow + number on the left in a `lg:col-span-3` rail; headline + body + supporting card grid in `lg:col-span-9`. Reuse existing utilities: `.eyebrow`, `.hairline`, `.font-display`, `.hover-lift-card`, `paper-shadow`, plus the dark-band tokens we've already standardized.
+
+Imagery plan (original, brand-aligned):
+
+1. Hero key-visual (right column, paper section): an editorial corporate photo similar to the homepage Hero — a screening specialist reviewing a compliance-themed dashboard on a laptop, warm paper background, brand-blue accent overlay. Treat with `.hover-zoom-image` like the existing hero.
+2. Adverse-action workflow illustration: a custom 3-step diagram (Notify → Wait → Decide) built in JSX/SVG, no external image. Mirror the Workflows DiagramCard treatment so it feels native.
+3. State-laws map placeholder: a US silhouette SVG with the strict-jurisdiction states tinted in sky-halo. Hand-drawn in code, no external image.
+4. Data-security infographic: a layered shield diagram with the SOC 2 / HIPAA / FCRA badges. Code-built.
+5. Certifications strip: brand-mark badges for SOC 2 Type II, HIPAA, PBSA, FCRA — code-built circular badges using the brand palette.
+
+Imagery generation: only the hero photo needs the AI image tool. Everything else is code-built so the page stays fast and the assets stay editable.
+
+Nav wiring:
+
+- Header: insert "Compliance" between "Pricing" and "Support" so the order is Services / Integrations / Pricing / Compliance / Support / Contact Us / Client Login / Blog. Header active-route guard already covers active state via the existing `headerActiveRoute.test.ts` pattern; add Compliance to the route list.
+- Footer: add Compliance to the same column where Pricing / Support live. Footer active-route guard mirrors the header.
+- Active-route tests: extend `headerActiveRoute.test.ts` and `footerActiveRoute.test.ts` to include Compliance.
+- App.tsx: register `/compliance` route lazy-loaded like the others.
+
+Tasks:
+
+- [ ] Read Header, Footer, App.tsx, and the active-route tests to confirm the exact insertion points.
+- [ ] Generate ONE original hero photo via AI (compliance specialist with laptop, warm-paper studio background, brand-aligned).
+- [ ] Build `client/src/pages/Compliance.tsx` with the 9 sections + CTA banner + 5 original visuals as described.
+- [ ] Register the lazy route in `client/src/App.tsx`.
+- [ ] Add "Compliance" to the Header primary nav between Pricing and Support.
+- [ ] Add "Compliance" to the Footer "Company" or "Product" column (whichever Pricing currently sits in, for adjacency).
+- [ ] Extend `headerActiveRoute.test.ts` + `footerActiveRoute.test.ts` to assert the new Compliance entry + active-state behavior on `/compliance`.
+- [ ] New `client/src/lib/compliancePage.test.ts`: pin presence of all 9 section eyebrows, the page title in `<head>`, the dark-band gradient on sections 03/06/09, the CtaBanner at the foot, the hero image element with the new asset URL, and the route registration in App.tsx.
+- [ ] Add "Compliance" to the structured-data sitemap if there is one (search for any sitemap.ts / sitemap.xml).
+- [ ] Run vitest, LSP/TS check, save checkpoint, deliver.
+
+
+## 59. New /compliance page (delivered)
+
+- [x] Built a brand-new `/compliance` page at `client/src/pages/Compliance.tsx` covering FCRA, state + local laws, adverse action, EEOC individualized assessment, drug + health screening, data security, candidate rights, and certifications. **All copy is original, written from scratch in Rapid Hire's voice** — no third-party CRA copy was reproduced. (Word-for-word duplication of another vendor's compliance page would create both a copyright issue and a duplicate-content SEO issue, so the page covers the same topical ground in original language.)
+- [x] Imagery: one AI-generated editorial hero photo (compliance specialist at desk, warm-paper studio, cobalt accent on the laptop screen, hosted on the webdev CDN), plus 8 code-built section infographics.
+- [x] Visual rhythm matches the rest of the site: warm paper / paper-soft sections alternate with three footer-family dark navy gradient bands (Adverse action, Drug + health, Certifications).
+- [x] Page closes with the shared `<CtaBanner />` so the dark-band rhythm resolves into the footer cleanly.
+- [x] Registered `/compliance` route in `App.tsx`. Added "Compliance" to the Header NAV between Support and Contact Us, and to the Footer COMPANY column. Active-route highlighting uses the existing `isActivePath` helper.
+- [x] SEO: `useSeo` hook wired with a Compliance-specific title + description.
+- [x] Added `client/src/lib/compliancePage.test.ts` (24 pins): route registration, header/footer wiring + ordering, SEO, hero, 9 sections in order, dark-band alternation, certifications content, adverse-action 3-step workflow, four FCRA candidate rights, candidate dispute phone + email, anti-regression on third-party CRA brand names.
+- [x] vitest: 323/323 passing (299 → 323, +24 new §59 pins, +0 regressions). LSP/TS clean.

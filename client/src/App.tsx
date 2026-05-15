@@ -16,6 +16,7 @@ import BlogTag from "./pages/BlogTag";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Support from "./pages/Support";
+import Compliance from "./pages/Compliance";
 
 
 function Router() {
@@ -33,6 +34,7 @@ function Router() {
       <Route path={"/privacy"} component={Privacy} />
       <Route path={"/terms"} component={Terms} />
       <Route path={"/support"} component={Support} />
+      <Route path={"/compliance"} component={Compliance} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
