@@ -164,7 +164,7 @@ function DiagramCard({
   return (
     <div
       className={[
-        "rounded-[16px] border border-border p-5 md:p-6",
+        "hover-lift-card rounded-[16px] border border-border p-5 md:p-6",
         featured
           ? "bg-white paper-shadow"
           : "bg-white/70 backdrop-blur-[2px]",

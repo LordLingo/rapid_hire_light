@@ -120,7 +120,7 @@ function HeroKeyVisual() {
   // mirrors the editorial palette without competing with the photo.
   return (
     <div className="relative">
-      <div className="relative overflow-hidden rounded-[20px] border border-border bg-white paper-shadow">
+      <div className="hover-zoom-image relative rounded-[20px] border border-border bg-white paper-shadow">
         {/*
           <picture> swaps source at the Tailwind `sm` breakpoint (640px) and
           negotiates format inside each breakpoint. Browsers walk the

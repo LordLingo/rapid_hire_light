@@ -455,3 +455,24 @@ Implementation plan:
 - [x] Active footer links bump to `font-medium text-[color:var(--color-footer-foreground)]` + `aria-current="page"` + `data-active="true"`. No underline or left rail — weight + color shift only, deliberate to avoid competing with column rhythm
 - [x] Anti-regression preserved: the active state only changes className + aria attribute. Routed links remain wouter `<Link>` components, no event handlers added, navigation behavior unchanged
 - [x] Added `client/src/lib/footerActiveRoute.test.ts` (8 tests): pins the import of isActivePath from Header (single source of truth), the useLocation wiring, the location prop threaded into all 3 FooterCol invocations, the `isActivePath(location, it.to)` call, the `aria-current="page"` attribute, the medium-weight + footer-foreground active state, the resting footer-soft-text state, and an anti-regression that the column does NOT add a brand-blue 2px stripe (which would compete with the column rhythm)
+
+
+## 50. Hover polish — Integrations trio + site-wide cards/images
+
+The Integrations page renders a 3-step Connect / Trigger / Sync trio that's currently a flat off-white card with a 1px low-contrast border and zero hover affordance. The user wants:
+
+1. A sky-halo (brand-blue family) thin border ring around those three cards so they read as related to the rest of the brand-blue surfaces (Get a Quote, Switch CTA, Workflows center card, header active underline).
+2. A smooth hover animation on those cards (lift + glow).
+3. The same hover treatment applied across the rest of the site to cards and images.
+
+Plan:
+
+- [x] Surveyed every site card/image surface. Inventory: Integrations 3-step trio + Integrations grid tiles, homepage Workflows DiagramCard (System Integrations + Outputs), homepage Services service cards, homepage Hero key visual, homepage WhyUs photo, Support team/coverage/article cards, About team cards, Contact aside info card. Skipped intentionally: Pricing tier cards (own bespoke treatment), Blog index post cards (editorial typography, not card-shaped), homepage StopGambling/CtaBanner/Services bottom CTA (own dark-band identity), PageHero rightSlot (variable content).
+- [x] Added `.hover-lift-card` to index.css: 220ms cubic-bezier(0.23, 1, 0.32, 1) transition on transform/box-shadow/border-color; resting state preserves `paper-shadow`; hover shifts border-color to `--color-accent-halo` and stacks a softer lifted shadow with a sky-halo bloom; the 3px lift transform is gated behind `prefers-reduced-motion: no-preference`.
+- [x] Added `.hover-zoom-image` to index.css: applies `overflow: hidden` on the parent itself (so authors don't have to remember it), targets `> img`, `> picture > img`, and `.hover-zoom-target` children with a 350ms cubic-bezier transition; `scale(1.04)` gated behind `prefers-reduced-motion: no-preference`.
+- [x] Added `.hover-lift-card-strong` (layers on top of `.hover-lift-card`): resting border-color uses a color-mix of accent-halo + accent-ink for a visible sky-blue line, plus a 1px ring shadow; hover intensifies to a 2px ring with a deeper brand-blue glow. This is the surface used by the user's primary ask (the 3 Integrations step cards).
+- [x] Applied `.hover-lift-card hover-lift-card-strong` to the Connect / Trigger / Sync trio in `client/src/pages/Integrations.tsx`. Sky-halo line visible in the resting state per the user's "light blue line" request, lift+glow on hover.
+- [x] Applied `.hover-lift-card` site-wide: Integrations grid ATS/HRIS tiles (replacing the bespoke `transition-colors hover:border-accent-ink` one-off), homepage Workflows DiagramCard (flanking System Integrations + Outputs), homepage Services service cards (replacing the bespoke `hover:border-ink` one-off), Support page team/coverage/routing cards (4 surfaces), About team cards, Contact aside info card.
+- [x] Applied `.hover-zoom-image` to homepage Hero key visual wrapper and homepage WhyUs photo wrapper. Skipped PageHero rightSlot (variable content, not always an image) and SampleReportCard (layered mockup, not a photographic image). Blog index posts use editorial typography rather than featured image cards, so they keep their existing icon-translate hover gesture instead.
+- [x] Added `client/src/lib/hoverPolish.test.ts` (16 tests): pins the three utilities in index.css with their exact tokens (cubic-bezier easing, accent-halo border on hover, prefers-reduced-motion gating, scale 1.04, overflow-hidden), pins the Integrations trio carrying both classes + the data-testid hooks, pins each site application by exact className, anti-regression that Pricing tier cards don't pick up `.hover-lift-card` (they have an intentional bespoke treatment), anti-regression that Blog index posts stay editorial.
+- [x] Ran vitest (230/230 passing). Browser QA on Integrations confirmed the sky-halo ring around all 3 step cards in their resting state. TS/LSP clean. Ready to checkpoint and deliver.

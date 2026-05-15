@@ -384,7 +384,7 @@ export default function Support() {
                 {TEAM.map((person) => (
                   <article
                     key={person.name}
-                    className="reveal-on-scroll rounded-[20px] border border-border bg-white p-6"
+                    className="hover-lift-card reveal-on-scroll rounded-[20px] border border-border bg-white p-6"
                   >
                     <div className="flex items-center gap-4">
                       <div
@@ -465,7 +465,7 @@ export default function Support() {
                 ].map((row) => (
                   <div
                     key={row.label}
-                    className="reveal-on-scroll rounded-[18px] border border-border bg-white p-6"
+                    className="hover-lift-card reveal-on-scroll rounded-[18px] border border-border bg-white p-6"
                   >
                     <p className="eyebrow text-[10.5px] text-[color:var(--color-ink-muted)] inline-flex items-center gap-1.5">
                       <Clock className="size-3" aria-hidden />
@@ -610,7 +610,7 @@ export default function Support() {
               </p>
 
               <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <article className="rounded-[20px] border border-border bg-white p-7 reveal-on-scroll">
+                <article className="hover-lift-card rounded-[20px] border border-border bg-white p-7 reveal-on-scroll">
                   <div className="flex items-center gap-3">
                     <div className="grid place-items-center size-10 rounded-full bg-[color:var(--color-accent-ink)]/8 text-[color:var(--color-accent-ink)]">
                       <UserCheck className="size-5" aria-hidden />
@@ -646,7 +646,7 @@ export default function Support() {
                   </ul>
                 </article>
 
-                <article className="rounded-[20px] border border-border bg-white p-7 reveal-on-scroll">
+                <article className="hover-lift-card rounded-[20px] border border-border bg-white p-7 reveal-on-scroll">
                   <div className="flex items-center gap-3">
                     <div className="grid place-items-center size-10 rounded-full bg-[color:var(--color-accent-ink)]/8 text-[color:var(--color-accent-ink)]">
                       <Users className="size-5" aria-hidden />

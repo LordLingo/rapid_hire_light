@@ -91,7 +91,7 @@ export default function Services() {
             <article
               key={s.title}
               className={[
-                "reveal-on-scroll group relative rounded-[16px] border border-border bg-white p-6 md:p-7 transition-colors duration-300 hover:border-[color:var(--color-ink)]",
+                "hover-lift-card reveal-on-scroll group relative rounded-[16px] border border-border bg-white p-6 md:p-7",
                 // varying widths to break grid monotony
                 i % 5 === 0
                   ? "col-span-12 md:col-span-6 lg:col-span-5"

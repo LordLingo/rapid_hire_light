@@ -95,7 +95,8 @@ export default function Integrations() {
             {STEPS.map((s) => (
               <div
                 key={s.number}
-                className="col-span-12 md:col-span-4 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6 md:p-7"
+                data-testid={`integrations-step-${s.number}`}
+                className="hover-lift-card hover-lift-card-strong col-span-12 md:col-span-4 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6 md:p-7"
               >
                 <div className="flex items-center gap-3">
                   <span className="grid place-items-center size-8 rounded-full border border-border text-[color:var(--color-accent-ink)] bg-white">
@@ -150,7 +151,7 @@ export default function Integrations() {
               <article
                 key={it.name}
                 className={[
-                  "reveal-on-scroll group rounded-[16px] border border-border bg-white p-6 transition-colors duration-300 hover:border-[color:var(--color-accent-ink)]",
+                  "hover-lift-card reveal-on-scroll group rounded-[16px] border border-border bg-white p-6",
                   i % 6 === 0
                     ? "col-span-12 md:col-span-6 lg:col-span-4"
                     : "col-span-12 md:col-span-6 lg:col-span-4",

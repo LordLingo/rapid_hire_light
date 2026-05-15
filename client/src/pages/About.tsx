@@ -206,7 +206,7 @@ export default function About() {
                 key={p.name}
                 className="reveal-on-scroll col-span-6 md:col-span-3"
               >
-                <div className="aspect-[4/5] rounded-[16px] border border-border bg-white flex items-end p-5">
+                <div className="hover-lift-card aspect-[4/5] rounded-[16px] border border-border bg-white flex items-end p-5">
                   <div className="w-full">
                     <span
                       aria-hidden

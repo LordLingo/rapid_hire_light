@@ -35,7 +35,7 @@ export default function WhyUs() {
           {/* Image with badge */}
           <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
             <div className="relative">
-              <div className="overflow-hidden rounded-[18px] border border-border paper-shadow">
+              <div className="hover-zoom-image rounded-[18px] border border-border paper-shadow">
                 <img
                   src="/manus-storage/why_us_interview_940f946b.png"
                   alt="A hiring manager shaking hands with a candidate at a sunlit office, with a HIRED sign on the desk."

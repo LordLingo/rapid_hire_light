@@ -216,7 +216,7 @@ export default function Contact() {
                 </li>
               </ul>
 
-              <div className="mt-12 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6">
+              <div className="hover-lift-card mt-12 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6">
                 <p className="eyebrow">Why teams reach out</p>
                 <p className="mt-3 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                   We respond the same business day, share a sample report,
