@@ -11,7 +11,7 @@
 */
 import { useCallback, useRef, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { PricingLineItem } from "@/components/heroes/HeroCards";
@@ -330,9 +330,13 @@ export default function Pricing() {
                 {ADDONS.map((a) => (
                   <span
                     key={a}
-                    className="text-[13px] rounded-full border border-border bg-white px-4 py-2 text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-accent-halo)] hover:bg-[color:var(--color-tint)]"
+                    className="group inline-flex items-center gap-1.5 text-[13px] rounded-full border border-border bg-white px-4 py-2 text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-accent-halo)] hover:bg-[color:var(--color-tint)]"
                   >
                     {a}
+                    <ChevronRight
+                      aria-hidden="true"
+                      className="size-3 text-[color:var(--color-ink-muted)] opacity-0 transition-[opacity,transform] duration-200 ease-out group-hover:opacity-100 group-hover:translate-x-0.5"
+                    />
                   </span>
                 ))}
               </div>

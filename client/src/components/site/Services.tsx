@@ -109,7 +109,7 @@ export default function Services() {
               }}
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="grid place-items-center size-10 rounded-full border border-border text-[color:var(--color-accent-ink)] group-hover:bg-[color:var(--color-tint)] transition-colors duration-300">
+                <div className="grid place-items-center size-10 rounded-full border border-border text-[color:var(--color-accent-ink)] transition-colors duration-300 ease-out group-hover:bg-[color:var(--color-tint)] group-hover:border-[color:var(--color-accent-halo)]">
                   <s.icon className="size-4" strokeWidth={1.4} />
                 </div>
                 <span className="eyebrow text-[10px]">0{i + 1}</span>

@@ -297,8 +297,105 @@ describe("§52 — Workflows DiagramCard icon-well glow + Pricing chip hover", (
     expect(block).not.toMatch(/<button/);
     expect(block).not.toMatch(/<a /);
     expect(block).not.toMatch(/btn-press/);
-    expect(block).not.toMatch(/\bgroup\b/);
+    // §53 update: `group` is now intentionally present on the chip
+    // so the tiny ChevronRight glyph inside can animate on hover. The
+    // chip itself must remain a presentational <span> with no <button>,
+    // no <a>, no btn-press, no cursor-pointer, no hover-lift-card. The
+    // `group` class alone (without those interactive markers) does not
+    // make the chip read clickable — it just enables the child icon's
+    // group-hover: animation.
     expect(block).not.toMatch(/cursor-pointer/);
     expect(block).not.toMatch(/hover-lift-card/);
+  });
+});
+
+describe("§53 — Services icon-well glow + Pricing chip chevron + parked hero-zoom", () => {
+  // §53 closes the loop on three follow-ups from §52:
+  //   1. Mirror the icon-well group-hover wash onto homepage Services
+  //      cards so all three site-wide card stacks (Workflows /
+  //      Integrations / Services) share one motion vocabulary.
+  //   2. Add a tiny ChevronRight glyph to Pricing add-on chips that
+  //      fades + translates 2px on hover, signalling "this is alive"
+  //      without making the chip read clickable.
+  //   3. Park the .hover-zoom-image follow-up on /about and /support
+  //      because both pages currently render code-rendered infographic
+  //      cards (AboutOrgChart / SupportAnswerTimeCard), not real photos.
+  //      When real photography lands, the parking-lot guards below
+  //      should be lifted and .hover-zoom-image applied to the wrapper.
+
+  it("Homepage Services icon well washes to tint AND deepens border on group-hover (parity with Workflows + Integrations)", () => {
+    const src = read("client/src/components/site/Services.tsx");
+    expect(src).toMatch(
+      /grid place-items-center size-10 rounded-full border border-border text-\[color:var\(--color-accent-ink\)\] transition-colors duration-300 ease-out group-hover:bg-\[color:var\(--color-tint\)\] group-hover:border-\[color:var\(--color-accent-halo\)\]/
+    );
+  });
+
+  it("Services + Workflows + Integrations all share the SAME icon-well wash class string (single source of truth)", () => {
+    // Cross-file consistency: drift on this string would split the
+    // gesture across surfaces for no good reason. Pin all three.
+    const services = read("client/src/components/site/Services.tsx");
+    const wf = read("client/src/components/site/Workflows.tsx");
+    const integ = read("client/src/pages/Integrations.tsx");
+    const expected =
+      /transition-colors duration-300 ease-out group-hover:bg-\[color:var\(--color-tint\)\] group-hover:border-\[color:var\(--color-accent-halo\)\]/;
+    expect(services).toMatch(expected);
+    expect(wf).toMatch(expected);
+    expect(integ).toMatch(expected);
+  });
+
+  it("Pricing add-on chip carries `group` so its child ChevronRight can animate on hover", () => {
+    // Pin the exact prefix of the chip className so a future edit
+    // can't drop the `group` class and silently break the chevron.
+    const src = read("client/src/pages/Pricing.tsx");
+    expect(src).toMatch(
+      /className="group inline-flex items-center gap-1\.5 text-\[13px\] rounded-full border border-border bg-white px-4 py-2 text-\[color:var\(--color-ink\)\] transition-colors duration-200 ease-out hover:border-\[color:var\(--color-accent-halo\)\] hover:bg-\[color:var\(--color-tint\)\]"/
+    );
+  });
+
+  it("Pricing imports ChevronRight from lucide-react", () => {
+    const src = read("client/src/pages/Pricing.tsx");
+    expect(src).toMatch(/import \{[^}]*\bChevronRight\b[^}]*\} from "lucide-react"/);
+  });
+
+  it("Pricing chip ChevronRight is hidden at rest and fades + translates 2px on group-hover", () => {
+    // The chevron must be opacity-0 by default (so a resting chip
+    // looks like a plain pill, not a button), and animate both
+    // opacity and transform on group-hover. Pin all four tokens.
+    const src = read("client/src/pages/Pricing.tsx");
+    expect(src).toMatch(
+      /<ChevronRight\s+aria-hidden="true"\s+className="size-3 text-\[color:var\(--color-ink-muted\)\] opacity-0 transition-\[opacity,transform\] duration-200 ease-out group-hover:opacity-100 group-hover:translate-x-0\.5"/
+    );
+  });
+
+  it("Pricing chip remains presentational — ChevronRight is aria-hidden and the chip stays a <span> (no <button>, <a>, btn-press, cursor-pointer, hover-lift-card)", () => {
+    // Updated §52 guard. `group` is now allowed (it powers the
+    // chevron's group-hover: animation), but the other markers that
+    // would make the chip read clickable must remain forbidden.
+    const src = read("client/src/pages/Pricing.tsx");
+    const start = src.indexOf("ADDONS.map((a) =>");
+    expect(start).toBeGreaterThan(-1);
+    const block = src.slice(start, start + 1000);
+    expect(block).not.toMatch(/<button/);
+    expect(block).not.toMatch(/<a /);
+    expect(block).not.toMatch(/btn-press/);
+    expect(block).not.toMatch(/cursor-pointer/);
+    expect(block).not.toMatch(/hover-lift-card/);
+    // The chevron MUST be aria-hidden so screen readers don't announce
+    // it as content (the chip's text label IS the content).
+    expect(block).toMatch(/<ChevronRight\s+aria-hidden="true"/);
+  });
+
+  it("parked: /about does NOT yet carry .hover-zoom-image (uses AboutOrgChart visual, not real photography)", () => {
+    // Anti-regression: blindly applying .hover-zoom-image to the hero
+    // visual slot would zoom an infographic card, which is a different
+    // (and worse) gesture. Lift this guard ONLY when real photography
+    // is swapped into the page.
+    const src = read("client/src/pages/About.tsx");
+    expect(src).not.toMatch(/hover-zoom-image/);
+  });
+
+  it("parked: /support does NOT yet carry .hover-zoom-image (uses SupportAnswerTimeCard visual, not real photography)", () => {
+    const src = read("client/src/pages/Support.tsx");
+    expect(src).not.toMatch(/hover-zoom-image/);
   });
 });

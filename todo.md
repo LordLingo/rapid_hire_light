@@ -511,3 +511,20 @@ Plan:
 - [x] Added a `§52` describe block to `client/src/lib/hoverPolish.test.ts` (6 new tests): pins the `group` class on DiagramCard, the exact icon-well wash class string, cross-file consistency between Workflows and Integrations (single source of truth check), the PlatformCenterCard NOT picking up the wash (function-body slice + negative match), the chip's new exact hover className, and the chip presentational-only guard. Also fixed two §50/§44 pins that were too generic and caught the new (correct) DiagramCard markup as a false positive: the §50 hover-lift-card pin now allows the new `group` prefix, and the §44 anti-regression on rounded-full-with-tint now uses a negative lookbehind to ignore `group-hover:` prefixes (which are HOVER states on non-chip surfaces, not the OLD resting chip pattern).
 
 - [x] Ran vitest: 242/242 passing (236 → 242, 6 new §52 pins, 0 regressions). TS/LSP clean. Ready to checkpoint and deliver.
+
+
+## 53. Hover polish — Services icon-well glow + Pricing chip chevron + parked hero-zoom
+
+Three follow-ups from §52: two ship, one parks.
+
+Plan:
+
+- [x] **Follow-up 1 shipped.** Updated the Services service-card icon well in `client/src/components/site/Services.tsx` (line 112) to match the EXACT class string used on Workflows DiagramCard + Integrations step cards: `transition-colors duration-300 ease-out group-hover:bg-[color:var(--color-tint)] group-hover:border-[color:var(--color-accent-halo)]`. Added the `ease-out` token + the missing `group-hover:border-[color:var(--color-accent-halo)]` deepen leg. Three site-wide card stacks (Workflows / Integrations / Services) now share one motion vocabulary.
+
+- [x] **Follow-up 2 shipped.** Imported `ChevronRight` from lucide-react. Chip outer span (`client/src/pages/Pricing.tsx` line 333) became `group inline-flex items-center gap-1.5 ...` (still a `<span>`, no `<button>`/`<a>`/`href`/`cursor-pointer`). Added a 12px `<ChevronRight aria-hidden="true" className="size-3 text-[color:var(--color-ink-muted)] opacity-0 transition-[opacity,transform] duration-200 ease-out group-hover:opacity-100 group-hover:translate-x-0.5" />` inside each chip. At rest the chevron is invisible so the chip reads as a plain pill; on hover it fades in and translates 2px right. The chevron is `aria-hidden` so screen readers ignore it (the chip's text label IS the content).
+
+- [x] **Follow-up 3 parked.** Confirmed via inspection: both `/about` (uses `visual={<AboutOrgChart />}`) and `/support` (uses `visual={<SupportAnswerTimeCard />}`) currently render code-built infographic cards in the hero, not photography. Support's own copy explicitly calls out "names and photos in The Desk are placeholders for this preview and will be replaced with the live roster on launch". Blindly applying `.hover-zoom-image` would zoom an infographic card, which is a different (and worse) gesture. Pinned this as anti-regression in vitest: `pages/About.tsx` and `pages/Support.tsx` MUST NOT carry `.hover-zoom-image` until real photography lands. When that swap happens, the two parked-guard tests should be lifted and `.hover-zoom-image` applied to the new photo wrapper.
+
+- [x] Added a `§53` describe block to `client/src/lib/hoverPolish.test.ts` (8 new tests): Services icon-well exact class string, cross-file three-way consistency with Workflows + Integrations, chip outer className with `group`, ChevronRight import pin, chevron exact className with `opacity-0` + `group-hover:opacity-100 group-hover:translate-x-0.5`, chip presentational-only re-guard with `aria-hidden="true"` requirement on the chevron, and the two parked-page guards (About + Support do NOT yet carry `.hover-zoom-image`). Also updated the §52 chip-presentational guard at line 300 to drop the `\bgroup\b` forbidden token (since `group` is now intentionally present for the chevron) while keeping the other five guards (`<button>`, `<a>`, `btn-press`, `cursor-pointer`, `hover-lift-card`) intact.
+
+- [x] Ran vitest: 250/250 passing (242 → 250, 8 new §53 pins, 0 regressions). LSP/TS clean. Ready to checkpoint and deliver.
