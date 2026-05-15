@@ -663,3 +663,13 @@ Tasks:
 - [x] SEO: `useSeo` hook wired with a Compliance-specific title + description.
 - [x] Added `client/src/lib/compliancePage.test.ts` (24 pins): route registration, header/footer wiring + ordering, SEO, hero, 9 sections in order, dark-band alternation, certifications content, adverse-action 3-step workflow, four FCRA candidate rights, candidate dispute phone + email, anti-regression on third-party CRA brand names.
 - [x] vitest: 323/323 passing (299 → 323, +24 new §59 pins, +0 regressions). LSP/TS clean.
+
+
+## 60. Header — remove Client Login, add outlined "Sign in" button next to Get a Quote (delivered)
+
+- [x] Removed the `Client Login` placeholder NAV entry from `client/src/components/site/Header.tsx`. Kept the generic `notImplemented` toast helper + the `placeholder` branch in NAV map so the next placeholder slot can drop in without re-plumbing.
+- [x] Added the outlined Sign in pill in the desktop CTA cluster, immediately before Get a Quote: `rounded-full`, `bg-transparent`, `border-[color:var(--color-border)]`, ink text, 13px font-size, `btn-press` shared with Get a Quote. Hover deepens the border to `--color-ink-soft`. Both pills got `whitespace-nowrap` so they hold to a single line at standard desktop widths (a pre-§60 latent issue the new sibling exposed).
+- [x] Sign in routes to a `notImplemented("Sign in")` toast for now ("Sign in — coming soon in this preview"), inheriting the existing placeholder pattern. When a real auth surface lands, swap the `<button>` for a `<Link>` with the auth href.
+- [x] Mobile drawer mirrors the change: Client Login line is gone; below the Get a Quote primary button there's a stacked outlined Sign in button with the same toast pattern, full-width to match the primary above.
+- [x] Added `client/src/lib/headerSignIn.test.ts` (9 pins): Client Login NAV entry gone, `#login` href gone, desktop Sign in renders with outlined pill class string and order BEFORE the desktop Get a Quote pill, mobile Sign in counterpart renders inside the open drawer with `setOpen(false)` + toast on tap, anti-regression that Get a Quote stays brand-blue + routes to `/contact`.
+- [x] Ran vitest: 332/332 passing (323 → 332, +9 new §60 pins, +0 regressions). LSP/TS clean. Header now lays out cleanly without wrapping at standard desktop widths.

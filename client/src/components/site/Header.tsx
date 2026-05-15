@@ -19,7 +19,6 @@ const NAV: NavItem[] = [
   { label: "Support", href: "/support", type: "route" },
   { label: "Compliance", href: "/compliance", type: "route" },
   { label: "Contact Us", href: "/contact", type: "route" },
-  { label: "Client Login", href: "#login", type: "placeholder" },
   { label: "Blog", href: "/blog", type: "route" },
 ];
 
@@ -115,9 +114,24 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-3">
+            {/*
+              §60: outlined "Sign in" pill, sibling of Get a Quote.
+              Transparent background + hairline ink border so it reads as
+              a true outline counterpart to the filled brand-blue CTA.
+              Routes to #login + toast for now (no auth surface yet);
+              when a real auth route lands this becomes a one-line href.
+            */}
+            <button
+              type="button"
+              data-testid="header-signin"
+              onClick={() => notImplemented("Sign in")}
+              className="hidden md:inline-flex btn-press items-center whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-2.5 text-[13px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)]"
+            >
+              Sign in
+            </button>
             <Link
               href="/contact"
-              className="hidden md:inline-flex btn-press items-center gap-2 rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
+              className="hidden md:inline-flex btn-press items-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
             >
               Get a Quote
               <span aria-hidden>→</span>
@@ -187,6 +201,18 @@ export default function Header() {
             >
               Get a Quote
             </Link>
+            {/* §60: mobile counterpart to the desktop outlined Sign in pill. */}
+            <button
+              type="button"
+              data-testid="header-signin-mobile"
+              onClick={() => {
+                setOpen(false);
+                notImplemented("Sign in");
+              }}
+              className="btn-press inline-flex items-center justify-center rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] hover:border-[color:var(--color-ink-soft)]"
+            >
+              Sign in
+            </button>
           </div>
         </div>
       )}
@@ -219,7 +245,7 @@ function NavLink({
       aria-current={active ? "page" : undefined}
       data-active={active ? "true" : undefined}
       className={[
-        "ink-link relative text-[13.5px] tracking-tight transition-colors",
+        "ink-link relative whitespace-nowrap text-[13.5px] tracking-tight transition-colors",
         active
           ? "font-medium text-[color:var(--color-ink)]"
           : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
