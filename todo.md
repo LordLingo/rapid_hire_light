@@ -304,11 +304,11 @@
 - [x] Browser QA verified at desktop; 114/114 vitest passing, LSP/TS clean; checkpoint 4b9a5569 saved
 
 ## 38. Hero image follow-ups: balanced crop, mobile variant, ReportCard reuse
-- [ ] Generate a 5:4 desktop crop (e.g. 1240x992) of the supplied home-hero photo so its vertical footprint matches the headline; preserve the baked-in headline + tagline in the crop window
-- [ ] Generate a mobile crop variant (square or 4:5) that keeps the baked-in copy readable at <640px viewports
-- [ ] Upload both via `manus-upload-file --webdev`, add `HOME_HERO_IMAGE_URL_DESKTOP` and `HOME_HERO_IMAGE_URL_MOBILE` to `shared/brand.ts` (keep the original constant name pointing at the desktop crop for backward compatibility, or migrate)
-- [ ] Replace the `<img>` in Hero.tsx's `HeroKeyVisual` with a `<picture>` element that swaps source at the `sm` breakpoint
-- [ ] Re-introduce the retired structured ReportCard as a new homepage section between hero and the next existing section ("What a Rapid Hire report looks like" — eyebrow + heading + 1-2 sentence intro + ReportCard centered or paired with a short bullet rail). Keep the same five rows (Identity, Criminal, Employment, MVR, Drug) so it still reads as a real product preview
-- [ ] Move the ReportCard JSX into a reusable `client/src/components/site/SampleReportCard.tsx` so it can be embedded by future pages too
-- [ ] Add / update vitest: `homeHeroImage.test.ts` updated for the new constants + `<picture>` markup; new `sampleReportCard.test.tsx` (or a small assertion in `homeHeroImage.test.ts`) verifying the structured card is on the homepage
-- [ ] Browser QA at desktop + mobile breakpoints, run vitest, save checkpoint and deliver
+- [x] Generated a 5:4 desktop crop (1254x1003) via `webdev-static-assets/build_hero_crops.py`; both baked-in copy regions intact, vertical dead space below the laptop trimmed
+- [x] Decided against a programmatic mobile crop (the square+lateral crop clipped both copy regions); reused the original 1:1 source as the mobile variant so all baked-in copy stays inside the frame at narrow viewports
+- [x] Uploaded the desktop crop via `manus-upload-file --webdev` (`/manus-storage/rhs-home-hero-desktop_463c89fa.png`); kept the original square at `/manus-storage/rhs-home-hero_16a035cf.png`. Updated `shared/brand.ts`: `HOME_HERO_IMAGE_URL` now points at the desktop crop and `HOME_HERO_IMAGE_URL_MOBILE` points at the original square
+- [x] Replaced the `<img>` in Hero.tsx's `HeroKeyVisual` with a `<picture>` element using two `<source>` rules at the `sm` (640px) breakpoint and an `<img>` fallback declaring desktop dimensions
+- [x] Created `SampleReportSection.tsx`: editorial 02 — Proof rail + heading "A clean, audit-ready report — not a wall of legalese." + 4-bullet rail + CTA, paired with the structured card on the right; mounted between LogoStrip and StopGambling on Home
+- [x] Lifted the original ReportCard JSX (status pill, candidate, time-to-clear, five row labels, audit + FCRA footer) into a reusable `client/src/components/site/SampleReportCard.tsx`
+- [x] Expanded `homeHeroImage.test.ts` to 10 assertions: pin both URL constants, ensure they're distinct, pin `<picture>` shape with both `<source>` media rules, pin the `<img>` fallback + alt, ensure the inline ReportCard is gone from Hero.tsx, ensure SampleReportCard.tsx still carries the canonical labels, and assert the section ordering on Home.tsx
+- [x] Verified the new layout at desktop in browser (#sample-report anchor); 118/118 vitest passing, LSP/TS clean; checkpoint e32dba1d saved
