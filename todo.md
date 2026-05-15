@@ -396,3 +396,24 @@ User feedback: the bottom CTA strip on `/services` is currently a thin white car
 - [x] Container rhythm preserved: kept the `container py-20` outer wrapper and the same grid-cols-12 inner layout; col-span-12 on mobile so the band stacks gracefully
 - [x] Added `client/src/lib/servicesCtaBand.test.ts` (9 tests): pins the test-id, the cta-banner-dark marker class, the exact 90deg footer→footer-soft gradient, the inverted footer-muted/footer-foreground text tokens, the sky-halo italic accent (anti-regression on accent-ink for the italic), the brand-blue CTA + `.cta-banner-cta` lift attachment, the top-edge sky-halo hairline, the soft headline halo, and the anti-regression on bg-white + ink-color text
 - [x] Ran vitest (172/172 passing), browser QA at desktop confirmed dark gradient + sky-halo italic + brand-blue CTA + sky-halo top hairline rendering cleanly; ready to checkpoint and deliver
+
+
+## 46. Header — active-route indicator on the main nav (user-requested)
+
+User feedback: clicking a top-nav link (Services, Integrations, Pricing, Support, Contact Us, Blog) currently leaves no visual indication of which page is active. The user wants the nav to communicate the current page once a link has been clicked.
+
+Design intent: lean editorial, not a heavy "tab" treatment. Use the wouter `useLocation` hook to read the current pathname; on the active link, switch the link from the muted ink-soft color to the deeper ink color, set its weight to medium, and underline it with a thin brand-blue 2px hairline that sits a few pixels under the text baseline. The active hairline must NOT be a `border-bottom` on the link (would shift its height) — render it as an absolutely-positioned `::after`-equivalent inside the link via a child `<span>` so the hover state and the active state both work without layout shift. Match the active color to `--color-accent-ink` so the rule reads as one family with the rest of the brand-blue tokens (Get a Quote button, etc.).
+
+Routes that count as "active":
+- `/services` matches when `useLocation()` starts with `/services` (so deep links like `/services/criminal` would still highlight Services).
+- `/integrations` likewise.
+- `/pricing`, `/support`, `/contact`, `/blog` likewise (all deep paths under `/blog/*` should highlight Blog).
+- The home `/` route does NOT have a corresponding link in the desktop nav, but the logo already points home; no behavior change there.
+
+- [x] Located the nav: `client/src/components/site/Header.tsx` — single shared component with a `NavLink` helper that previously used an exact-match check (`location === href`)
+- [x] Added an exported `isActivePath(location, href)` helper at the top of Header.tsx that handles exact match, deep-child match (via `startsWith(href + "/")`), and the home-route edge case where `/` should not claim every page
+- [x] Desktop NavLink now applies medium weight + ink color when active and renders a brand-blue 2px underline as an absolutely-positioned `<span>` at `-bottom-1.5` so the link's vertical metrics don't change between active and inactive states. Also sets `aria-current="page"` for screen readers
+- [x] Underline only renders when `active === true` (gated on the helper), so hover continues to use the existing color-shift treatment without competing with the underline
+- [x] Mobile drawer now uses a new `MobileNavLink` component that renders a brand-blue 2px LEFT-EDGE rail when active (stacked links don't read well with an underline), plus the same medium-weight + ink-color treatment for parity with desktop
+- [x] Added `client/src/lib/headerActiveRoute.test.ts` (11 tests): pins the helper logic for exact match, deep children, sibling-prefix non-match, the home-route edge case, and pins the markup — anti-regression on the old `location === href` pattern, presence of `aria-current="page"` in both render branches, the brand-blue 2px underline (desktop) and 2px left rail (mobile), and the medium-weight + ink-color active state
+- [x] Ran vitest (183/183 passing). Browser QA confirmed Pricing lights up on `/pricing`, Contact Us on `/contact`, Blog on `/blog`, and Blog stays lit on the deep `/blog/fcra-compliance-guide` route via the prefix match. Ready to checkpoint and deliver

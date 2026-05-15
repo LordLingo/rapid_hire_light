@@ -26,6 +26,19 @@ function notImplemented(label: string) {
   toast(`${label} — coming soon in this preview`, { duration: 2400 });
 }
 
+/*
+  §46: active-route helper.
+
+  Returns true when the current pathname matches `href` exactly or
+  is a deep child of `href` (e.g. /blog/some-post should still mark
+  the Blog nav item as active). Exported for vitest pinning.
+*/
+export function isActivePath(location: string, href: string): boolean {
+  if (location === href) return true;
+  if (href === "/") return location === "/";
+  return location.startsWith(href + "/");
+}
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -141,14 +154,13 @@ export default function Header() {
             <div className="hairline" aria-hidden />
             {NAV.map((item) =>
               item.type === "route" ? (
-                <Link
+                <MobileNavLink
                   key={item.label}
                   href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="text-[15px] py-1.5 text-[color:var(--color-ink-soft)]"
+                  onNavigate={() => setOpen(false)}
                 >
                   {item.label}
-                </Link>
+                </MobileNavLink>
               ) : (
                 <button
                   key={item.label}
@@ -176,19 +188,86 @@ export default function Header() {
   );
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+/*
+  §46: desktop NavLink with active-route indicator.
+
+  When active, the link bumps to medium weight + ink color and gets
+  a brand-blue 2px hairline underline rendered as an absolutely
+  positioned span 6px below the baseline. Rendering the underline
+  as an absolute child instead of a `border-bottom` keeps the link's
+  vertical metrics identical between active and inactive states, so
+  the nav row never shifts when the user navigates.
+*/
+function NavLink({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) {
   const [location] = useLocation();
-  const active = location === href;
+  const active = isActivePath(location, href);
   return (
     <Link
       href={href}
+      aria-current={active ? "page" : undefined}
+      data-active={active ? "true" : undefined}
       className={[
-        "ink-link text-[13.5px] tracking-tight transition-colors",
+        "ink-link relative text-[13.5px] tracking-tight transition-colors",
         active
-          ? "text-[color:var(--color-ink)]"
+          ? "font-medium text-[color:var(--color-ink)]"
           : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
       ].join(" ")}
     >
+      {children}
+      {active && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-0 right-0 -bottom-1.5 h-[2px] rounded-full bg-[color:var(--color-accent-ink)]"
+        />
+      )}
+    </Link>
+  );
+}
+
+/*
+  §46: mobile drawer nav link with active-route indicator.
+
+  On mobile the underline pattern doesn't read well because the
+  links are stacked vertically and full-width. Use a left-edge
+  brand-blue rail instead, plus medium weight + ink color, to
+  communicate the active page without changing vertical metrics.
+*/
+function MobileNavLink({
+  href,
+  children,
+  onNavigate,
+}: {
+  href: string;
+  children: React.ReactNode;
+  onNavigate: () => void;
+}) {
+  const [location] = useLocation();
+  const active = isActivePath(location, href);
+  return (
+    <Link
+      href={href}
+      onClick={onNavigate}
+      aria-current={active ? "page" : undefined}
+      data-active={active ? "true" : undefined}
+      className={[
+        "relative text-[15px] py-1.5 pl-3 -ml-3 transition-colors",
+        active
+          ? "font-medium text-[color:var(--color-ink)]"
+          : "text-[color:var(--color-ink-soft)]",
+      ].join(" ")}
+    >
+      {active && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-0 top-1.5 bottom-1.5 w-[2px] rounded-full bg-[color:var(--color-accent-ink)]"
+        />
+      )}
       {children}
     </Link>
   );
