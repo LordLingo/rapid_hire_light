@@ -5,12 +5,14 @@
   - "Related articles" rail at the bottom + back link to /blog.
   - On-page SEO: dynamic title, meta description, canonical, BlogPosting JSON-LD.
 */
+import { useMemo } from "react";
 import { Link, useRoute } from "wouter";
 import { ArrowUpRight, ArrowLeft } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import NotFound from "@/pages/NotFound";
 import { useSeo } from "@/hooks/useSeo";
-import { PostBody } from "@/components/site/PostBody";
+import { PostBody, getHeadings } from "@/components/site/PostBody";
+import PostToc from "@/components/site/PostToc";
 import ShareButtons from "@/components/site/ShareButtons";
 import ReadingProgressBar from "@/components/site/ReadingProgressBar";
 import {
@@ -75,6 +77,10 @@ export default function BlogPost() {
   });
 
   const related = relatedPosts(post.slug, 3);
+  // §47: derive the on-page TOC from the same parsed body that
+  // PostBody renders. Memoized because the markdown body is stable
+  // for the lifetime of this component but parsing isn't free.
+  const headings = useMemo(() => getHeadings(post.body), [post.body]);
 
   return (
     <SiteShell>
@@ -126,7 +132,13 @@ export default function BlogPost() {
       {/* Body */}
       <section className="bg-white border-y border-border">
         <div className="container py-16 md:py-24 grid grid-cols-12 gap-x-10">
-          <div className="hidden lg:block lg:col-span-3" />
+          {/* §47: on-page TOC occupies the previously-empty left rail
+              on desktop. PostToc itself returns null for short posts
+              (< 3 H2s), and is hidden on < lg breakpoints, so this
+              wrapper is safe to render unconditionally. */}
+          <div className="hidden lg:block lg:col-span-3">
+            <PostToc headings={headings} />
+          </div>
           <div className="col-span-12 lg:col-span-9 max-w-3xl">
             <PostBody markdown={post.body} />
 

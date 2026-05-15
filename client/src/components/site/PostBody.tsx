@@ -82,6 +82,43 @@ type Block =
   | { type: "ul"; items: string[] }
   | { type: "p"; text: string };
 
+/*
+  §47: slugify a heading title into a stable, URL-safe id used as
+  both the H2's `id` attribute and the TOC anchor target. Lowercase,
+  ASCII-letters/numbers/hyphens only. Multiple identical headings
+  get suffixed with -2, -3, ... by `getHeadings` below.
+*/
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "") // strip accents
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+/*
+  §47: walk the parsed blocks and return the list of H2 headings
+  with deduplicated slug ids. Used by BlogPost.tsx to build the TOC
+  in lockstep with what PostBody will render.
+*/
+export function getHeadings(markdown: string): { id: string; text: string }[] {
+  const blocks = parse(markdown);
+  const seen = new Map<string, number>();
+  const out: { id: string; text: string }[] = [];
+  for (const b of blocks) {
+    if (b.type !== "h2") continue;
+    const base = slugify(b.text) || "section";
+    const count = (seen.get(base) ?? 0) + 1;
+    seen.set(base, count);
+    const id = count === 1 ? base : `${base}-${count}`;
+    out.push({ id, text: b.text });
+  }
+  return out;
+}
+
 function parse(body: string): Block[] {
   const lines = body.replace(/\r\n/g, "\n").split("\n");
   const blocks: Block[] = [];
@@ -129,13 +166,23 @@ function parse(body: string): Block[] {
 
 export function PostBody({ markdown }: { markdown: string }) {
   const blocks = React.useMemo(() => parse(markdown), [markdown]);
+  // §47: track slug counts in render order so the H2 ids stamped here
+  // match exactly the ids returned by `getHeadings(markdown)` — a
+  // dedupe collision (two H2s with identical text) is suffixed with
+  // -2, -3, ... in both places, in lockstep.
+  const slugCounts = new Map<string, number>();
   return (
     <div className="space-y-7 text-[17px] leading-[1.8] text-[color:var(--color-ink-soft)]">
       {blocks.map((b, idx) => {
         if (b.type === "h2") {
+          const base = slugify(b.text) || "section";
+          const count = (slugCounts.get(base) ?? 0) + 1;
+          slugCounts.set(base, count);
+          const id = count === 1 ? base : `${base}-${count}`;
           return (
             <h2
               key={idx}
+              id={id}
               className="font-display text-[28px] sm:text-[32px] leading-snug tracking-[-0.015em] text-[color:var(--color-ink)] mt-12 mb-1 scroll-mt-24"
             >
               {b.text}

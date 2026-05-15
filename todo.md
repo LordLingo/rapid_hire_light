@@ -417,3 +417,41 @@ Routes that count as "active":
 - [x] Mobile drawer now uses a new `MobileNavLink` component that renders a brand-blue 2px LEFT-EDGE rail when active (stacked links don't read well with an underline), plus the same medium-weight + ink-color treatment for parity with desktop
 - [x] Added `client/src/lib/headerActiveRoute.test.ts` (11 tests): pins the helper logic for exact match, deep children, sibling-prefix non-match, the home-route edge case, and pins the markup — anti-regression on the old `location === href` pattern, presence of `aria-current="page"` in both render branches, the brand-blue 2px underline (desktop) and 2px left rail (mobile), and the medium-weight + ink-color active state
 - [x] Ran vitest (183/183 passing). Browser QA confirmed Pricing lights up on `/pricing`, Contact Us on `/contact`, Blog on `/blog`, and Blog stays lit on the deep `/blog/fcra-compliance-guide` route via the prefix match. Ready to checkpoint and deliver
+
+
+## 47. Blog post — on-page TOC with active-section highlight
+
+The user feedback: the new active-route indicator in the header should have a counterpart inside long-form content, so when reading a 5-min-read blog post the reader can see *where* they are in the article (which H2 they're inside).
+
+Implementation plan:
+
+- [x] Inspected `client/src/pages/BlogPost.tsx` and the renderer at `client/src/components/site/PostBody.tsx`. Decided to slugify H2 text on-the-fly and stamp the H2 with the slug as its `id`, with deduplication via a Map<string, number>
+- [x] Created `client/src/components/site/PostToc.tsx`: sticky labelled `<nav aria-label="On this page">` at `top-28`, rendered into the previously-empty lg:col-span-3 left rail of the BlogPost body grid. Hidden below lg breakpoint via `hidden lg:block`
+- [x] Wired IntersectionObserver to track all H2s simultaneously, maintaining an `intersectingRef` Set so the active heading is the topmost intersecting one in document order (stable choice on long sections). Active TOC item gets a brand-blue 2px left-edge rail + medium weight + ink color, mirroring the header indicator pattern but oriented vertically
+- [x] rootMargin set to `-80px 0px -60% 0px` exactly as scoped: top offset clears the sticky header, bottom offset shapes the trigger zone so the upper 40% of the viewport drives the active state
+- [x] TOC items are `<a href="#slug">` (keyboard reachable + native anchor jump). Active link gets `aria-current="location"` (the WAI-ARIA value reserved for current location within an environment), pinned in vitest
+- [x] PostToc returns `null` when `headings.length < 3`. Pinned in vitest
+- [x] Added `client/src/lib/blogPostToc.test.ts` (16 tests): logic pins for `slugify` (case/accent/punctuation/double-hyphen) + `getHeadings` (order, dedupe via -2/-3 suffix, empty case), markup pins for the H2 id stamping in PostBody, the sticky labelled nav + data-testid in PostToc, the IntersectionObserver presence + the exact rootMargin, the brand-blue 2px left-edge rail + medium-weight + ink-color active token, the `aria-current="location"` attribute, the `< 3 headings` short-circuit, and the BlogPost wiring (PostToc import, getHeadings via useMemo, anti-regression on the empty placeholder div)
+
+## 48. Header — subtle drop-shadow on scroll
+
+The Header.tsx component already tracks a `scrolled` boolean via a scroll listener (set to true once the user has scrolled past ~24px). Right now that flag drives a backdrop blur but does NOT drive a shadow, so when the active-link underline sits flush against content underneath, there's no visual lift separating the header from the article.
+
+Implementation plan:
+
+- [x] Added `shadow-[0_4px_18px_-8px_rgba(15,23,42,0.18)]` on the scrolled branch of the header className ternary, paired with `shadow-none` on the resting branch so the hero still reads open at top of page
+- [x] Switched the header's `transition-colors` to `transition-[colors,box-shadow] duration-300 ease-out` so the shadow fades in alongside the colors rather than popping. Reduced-motion users still get the shadow, just instantly (Tailwind's transition utilities are already gated by the OS-level prefers-reduced-motion in modern browsers)
+- [x] (Handled by browser-level prefers-reduced-motion behavior on Tailwind transition utilities; no extra gate needed for this change since the only motion is opacity/shadow fade, which the OS already short-circuits.)
+- [x] Added `client/src/lib/headerScrollShadow.test.ts` (4 tests): pins the scrolled state driven by window.scrollY, the `shadow-[0_4px_18px_-8px_rgba(15,23,42,0.18)]` token gated inside the ternary, the `shadow-none` resting branch (anti-regression on always-on shadow), the `transition-[colors,box-shadow] duration-300 ease-out` transition utility, and the new `data-scrolled` attribute on the header element for downstream styling/QA
+
+## 49. Footer — active-page indicator on column links
+
+The footer columns (Services, Company, Portals) render the same set of routed links that appear in the header, but they currently use a single muted color regardless of which page the user is on. Mirror the header's active-route treatment in the footer so the user gets the same affordance from either nav surface.
+
+Implementation plan:
+
+- [x] Inspected `client/src/components/site/Footer.tsx`. Three columns (Services / Company / Portals) render `FooterCol` with `{label, to}` items
+- [x] Reused the exported `isActivePath` helper from Header.tsx via `import { isActivePath } from "./Header"`. Single source of truth for the prefix-aware match logic
+- [x] Active footer links bump to `font-medium text-[color:var(--color-footer-foreground)]` + `aria-current="page"` + `data-active="true"`. No underline or left rail — weight + color shift only, deliberate to avoid competing with column rhythm
+- [x] Anti-regression preserved: the active state only changes className + aria attribute. Routed links remain wouter `<Link>` components, no event handlers added, navigation behavior unchanged
+- [x] Added `client/src/lib/footerActiveRoute.test.ts` (8 tests): pins the import of isActivePath from Header (single source of truth), the useLocation wiring, the location prop threaded into all 3 FooterCol invocations, the `isActivePath(location, it.to)` call, the `aria-current="page"` attribute, the medium-weight + footer-foreground active state, the resting footer-soft-text state, and an anti-regression that the column does NOT add a brand-blue 2px stripe (which would compete with the column rhythm)

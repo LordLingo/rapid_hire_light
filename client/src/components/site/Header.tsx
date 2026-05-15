@@ -52,11 +52,16 @@ export default function Header() {
 
   return (
     <header
+      data-scrolled={scrolled ? "true" : undefined}
       className={[
-        "sticky top-0 z-40 w-full transition-colors duration-300",
+        "sticky top-0 z-40 w-full transition-[colors,box-shadow] duration-300 ease-out",
+        // §48: once the page is scrolled past ~12px the header floats with a
+        // soft downward shadow so the active-link underline reads against
+        // content underneath. The shadow is intentionally subtle so it
+        // never competes with the page's editorial calm at rest.
         scrolled
-          ? "bg-[color:var(--color-paper)]/85 backdrop-blur-md border-b border-border"
-          : "bg-transparent border-b border-transparent",
+          ? "bg-[color:var(--color-paper)]/85 backdrop-blur-md border-b border-border shadow-[0_4px_18px_-8px_rgba(15,23,42,0.18)]"
+          : "bg-transparent border-b border-transparent shadow-none",
       ].join(" ")}
     >
       {/* Trust strip */}

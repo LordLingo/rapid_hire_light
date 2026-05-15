@@ -3,10 +3,11 @@
   4-column hairline grid: brand mark + tagline | services | company | portals.
   Surface: deep ink-cobalt (--color-footer), warm-white text. Site-wide via SiteShell.
 */
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
 import { ShieldCheck } from "lucide-react";
 import { BRAND_NAME, FOOTER_LOGO_URL } from "@shared/brand";
+import { isActivePath } from "./Header";
 
 type FooterItem = { label: string; to?: string };
 
@@ -31,6 +32,12 @@ const PORTALS: FooterItem[] = [
 ];
 
 export default function Footer() {
+  // §49: read the current pathname so footer column links can mirror
+  // the header's active-route indicator. We reuse the exact same
+  // `isActivePath` helper from Header.tsx so the prefix-aware match
+  // logic stays in one place — a deep /blog/some-post path will
+  // light up Blog in both header AND footer.
+  const [location] = useLocation();
   return (
     <footer
       className="relative bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)]"
@@ -78,9 +85,9 @@ export default function Footer() {
             </div>
           </div>
 
-          <FooterCol title="Services" items={SERVICES} className="col-span-6 md:col-span-3" />
-          <FooterCol title="Company" items={COMPANY} className="col-span-6 md:col-span-2" />
-          <FooterCol title="Portals" items={PORTALS} className="col-span-6 md:col-span-2" />
+          <FooterCol title="Services" items={SERVICES} location={location} className="col-span-6 md:col-span-3" />
+          <FooterCol title="Company" items={COMPANY} location={location} className="col-span-6 md:col-span-2" />
+          <FooterCol title="Portals" items={PORTALS} location={location} className="col-span-6 md:col-span-2" />
         </div>
 
         {/* social-proof anchor above the bottom bar */}
@@ -130,35 +137,53 @@ export default function Footer() {
 function FooterCol({
   title,
   items,
+  location,
   className = "",
 }: {
   title: string;
   items: FooterItem[];
+  location: string;
   className?: string;
 }) {
   return (
     <div className={["reveal-on-scroll", className].join(" ")}>
       <p className="eyebrow text-[color:var(--color-footer-muted)]">{title}</p>
       <ul className="mt-5 grid gap-3">
-        {items.map((it) => (
-          <li key={it.label}>
-            {it.to ? (
-              <Link
-                href={it.to}
-                className="footer-link text-[14px] text-[color:var(--color-footer-soft-text)]"
-              >
-                {it.label}
-              </Link>
-            ) : (
-              <button
-                onClick={() => toast(`${it.label} — preview only`)}
-                className="footer-link text-[14px] text-[color:var(--color-footer-soft-text)] text-left"
-              >
-                {it.label}
-              </button>
-            )}
-          </li>
-        ))}
+        {items.map((it) => {
+          // §49: mark a routed footer link as active when the current
+          // page matches its href (or is a deep child via the shared
+          // helper). On the dark footer surface we lift the active item
+          // by font-weight and color only — no underline/rail — because
+          // a brand-blue stripe would compete with the column rhythm,
+          // and the weight + color shift is enough at footer scale.
+          const active = it.to ? isActivePath(location, it.to) : false;
+          return (
+            <li key={it.label}>
+              {it.to ? (
+                <Link
+                  href={it.to}
+                  aria-current={active ? "page" : undefined}
+                  data-active={active ? "true" : undefined}
+                  className={[
+                    "footer-link text-[14px]",
+                    active
+                      ? "font-medium text-[color:var(--color-footer-foreground)]"
+                      : "text-[color:var(--color-footer-soft-text)]",
+                  ].join(" ")}
+                >
+                  {it.label}
+                </Link>
+              ) : (
+                <button
+                  onClick={() => toast(`${it.label} — preview only`)}
+                  className="footer-link text-[14px] text-[color:var(--color-footer-soft-text)] text-left"
+                >
+                  {it.label}
+                </button>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
