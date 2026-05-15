@@ -15,7 +15,7 @@ import { ArrowUpRight, Check, ChevronRight } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { PricingLineItem } from "@/components/heroes/HeroCards";
-import SampleReportCard from "@/components/site/SampleReportCard";
+import SampleReportImage from "@/components/site/SampleReportImage";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
@@ -456,7 +456,7 @@ export default function Pricing() {
               </p>
             </div>
             <div className="col-span-12 lg:col-span-5">
-              <SampleReportCard />
+              <SampleReportImage />
             </div>
           </div>
         </div>

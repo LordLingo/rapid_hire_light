@@ -544,3 +544,15 @@ Plan:
 - [x] Padding stays at `py-20 md:py-24`. No bottom wedge: the next section "08 — What you receive" sits on warm paper and pivots cleanly off the dark band, which is the intended hard surface change.
 - [x] Added new `client/src/lib/pricingFaqDark.test.ts` (13 tests): gradient direction, `colorScheme: "dark"`, base inverted text token, top hairline glow, `pricing-faq-halo` headline halo (class + dimensions + radial gradient), eyebrow `footer-muted`, eyebrow divider sky-halo gradient, `<dt>` `footer-foreground`, `<dd>` `footer-soft-text`, FAQ row sky-halo border, anti-regression on accent-ink italic, anti-regression on `border-t border-border` rows, anti-regression on the old `bg-white border-y border-border` section wrapper.
 - [x] Ran vitest: 263/263 passing (250 → 263, 13 new §54 pins, 0 regressions). LSP/TS clean. Ready to checkpoint and deliver.
+
+
+## 55. Real sample report image + click-to-enlarge lightbox
+
+User feedback: replace the synthetic "Report 24a-08821" mockup with their actual Rapid Hire sample report PNG across the site, and have it enlarge to full size when clicked. Make sure every "View Sample Report" CTA leads to that new report.
+
+- [x] Uploaded `samplereport.png` via `manus-upload-file --webdev`. Canonical URL: `/manus-storage/samplereport_08051bd9.png`. Mirrored a copy into `/home/ubuntu/webdev-static-assets/`.
+- [x] Built new `client/src/components/site/SampleReportImage.tsx`: native `<button>` trigger (Enter/Space activation, focus ring), resting card with `paper-shadow + hover-lift-card + accent-halo border on hover`, "Expand" affordance chip in the top-right that fades in on hover/focus, Radix `Dialog` lightbox at `sm:max-w-[920px]` showing the full-resolution PNG with a "Download" CTA in the footer. SR-only DialogTitle/DialogDescription satisfy a11y. Single source of truth via the exported `SAMPLE_REPORT_IMAGE_URL` constant.
+- [x] Replaced `SampleReportCard` with `SampleReportImage` on all three pages that mount it: `client/src/components/site/SampleReportSection.tsx` (homepage proof column), `client/src/pages/Services.tsx` (#sample-report block), `client/src/pages/Pricing.tsx` (#sample-report block).
+- [x] Confirmed every "View Sample Report" CTA already deep-links to `#sample-report` (Hero.tsx button, Pricing hero secondary CTA inherit-pattern), so all of them now converge on the new image + lightbox.
+- [x] Updated the existing "Sample report card reuse across pages" describe block in `client/src/lib/homeHeroImage.test.ts` (now `§55`): pinned the asset URL constant, two `src={SAMPLE_REPORT_IMAGE_URL}` references, the `<button>` trigger + Dialog wiring, the Download anchor, and anti-regression that the synthetic Report 24a-08821 / Maya R. labels are gone from the new component and that no page still mounts `SampleReportCard`.
+- [x] Ran vitest: 266/266 passing (263 → 266, +3 new pins, +0 regressions). LSP/TS clean.

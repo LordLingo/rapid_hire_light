@@ -14,7 +14,7 @@
 */
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
-import SampleReportCard from "./SampleReportCard";
+import SampleReportImage from "./SampleReportImage";
 
 export default function SampleReportSection() {
   return (
@@ -93,9 +93,9 @@ export default function SampleReportSection() {
             </div>
           </div>
 
-          {/* Sample card */}
+          {/* Sample report (real PNG) — §55. Click-to-enlarge lightbox. */}
           <div className="col-span-12 lg:col-span-4">
-            <SampleReportCard />
+            <SampleReportImage />
           </div>
         </div>
       </div>

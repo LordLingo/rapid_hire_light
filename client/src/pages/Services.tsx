@@ -22,7 +22,7 @@ import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { ServicesStack } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
-import SampleReportCard from "@/components/site/SampleReportCard";
+import SampleReportImage from "@/components/site/SampleReportImage";
 
 const SERVICES = [
   {
@@ -181,10 +181,10 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Sample of what every service returns. The same SampleReportCard
-          used on /home and /pricing renders here too — reused so the
-          deliverable looks identical wherever a prospect sees it. Lives
-          between the long-form list and the closing CTA. */}
+      {/* Sample of what every service returns. The real Rapid Hire
+          sample report PNG (§55) renders here too — same image used
+          on /home and /pricing, with the same click-to-enlarge
+          lightbox. Lives between the long-form list and the closing CTA. */}
       <section
         id="sample-report"
         aria-labelledby="services-sample-heading"
@@ -193,7 +193,7 @@ export default function Services() {
         <div className="container py-20 md:py-24">
           <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-center">
             <div className="col-span-12 lg:col-span-5">
-              <SampleReportCard />
+              <SampleReportImage />
             </div>
             <div className="col-span-12 lg:col-span-7">
               <p className="eyebrow">07 — What lands in your inbox</p>

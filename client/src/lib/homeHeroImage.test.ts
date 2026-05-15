@@ -41,8 +41,15 @@ const heroSrc = fs.readFileSync(
   path.join(ROOT, "client/src/components/site/Hero.tsx"),
   "utf8",
 );
-const sampleCardSrc = fs.readFileSync(
-  path.join(ROOT, "client/src/components/site/SampleReportCard.tsx"),
+// §55 — The synthetic SampleReportCard mockup has been replaced by
+// SampleReportImage, which renders the real Rapid Hire sample report
+// PNG with a click-to-enlarge lightbox. The old card file still
+// exists in the repo (kept as a reference / fallback for now) but
+// it's no longer mounted on any page. The pins below assert the
+// new SampleReportImage component is the canonical sample-report
+// surface across Home / Services / Pricing.
+const sampleImageSrc = fs.readFileSync(
+  path.join(ROOT, "client/src/components/site/SampleReportImage.tsx"),
   "utf8",
 );
 const sampleSectionSrc = fs.readFileSync(
@@ -191,26 +198,59 @@ describe("Hero CTA: View Sample Report deep-link", () => {
   });
 });
 
-describe("Sample report card reuse across pages", () => {
-  it("SampleReportCard.tsx is the canonical home for the structured card", () => {
-    expect(sampleCardSrc).toContain("Report · 24a-08821");
-    expect(sampleCardSrc).toContain("Maya R. — Logistics Lead");
-    for (const label of [
-      "Identity",
-      "Criminal — Federal & County",
-      "Employment History",
-      "MVR — Texas",
-      "Drug — 5 Panel",
-    ]) {
-      expect(sampleCardSrc).toContain(label);
-    }
+describe("Sample report image reuse across pages (§55)", () => {
+  it("SampleReportImage.tsx exposes the canonical asset URL constant", () => {
+    // Single source of truth for the asset URL. Pinned so a future
+    // re-upload only has to change the SAMPLE_REPORT_IMAGE_URL
+    // constant; every consumer reads it from there.
+    expect(sampleImageSrc).toMatch(
+      /export const SAMPLE_REPORT_IMAGE_URL = "\/manus-storage\/samplereport_08051bd9\.png"/,
+    );
   });
 
-  it("SampleReportSection.tsx renders the SampleReportCard", () => {
-    expect(sampleSectionSrc).toMatch(
-      /import\s+SampleReportCard\s+from\s+"\.\/SampleReportCard"/,
+  it("SampleReportImage renders the real PNG (not the old synthetic mockup)", () => {
+    // The image is rendered twice: once as the resting card, once
+    // inside the lightbox at full size. Both reference the same
+    // SAMPLE_REPORT_IMAGE_URL constant so they cannot drift.
+    const refs = sampleImageSrc.match(/src=\{SAMPLE_REPORT_IMAGE_URL\}/g) ?? [];
+    expect(refs.length).toBeGreaterThanOrEqual(2);
+    // Anti-regression: the file does NOT contain the old synthetic
+    // labels from SampleReportCard. If a copy edit reverts to that
+    // mockup, this guard fires.
+    expect(sampleImageSrc).not.toContain("Report · 24a-08821");
+    expect(sampleImageSrc).not.toContain("Maya R. — Logistics Lead");
+  });
+
+  it("SampleReportImage is a real <button> with a Radix Dialog lightbox", () => {
+    // The trigger MUST be a native <button> (not a role-button div)
+    // so it picks up native Enter/Space activation + focus ring.
+    expect(sampleImageSrc).toMatch(
+      /<button\s+type="button"\s+onClick=\{\(\) => setOpen\(true\)\}/,
     );
-    expect(sampleSectionSrc).toMatch(/<SampleReportCard\s*\/>/);
+    // Dialog import + open state are the two halves of the lightbox.
+    expect(sampleImageSrc).toMatch(
+      /from\s+"@\/components\/ui\/dialog"/,
+    );
+    expect(sampleImageSrc).toMatch(/<Dialog\s+open=\{open\}\s+onOpenChange=\{setOpen\}>/);
+    expect(sampleImageSrc).toMatch(/data-testid="sample-report-image-trigger"/);
+    expect(sampleImageSrc).toMatch(/data-testid="sample-report-image-dialog"/);
+  });
+
+  it("SampleReportImage exposes a Download CTA inside the lightbox footer", () => {
+    // The lightbox footer carries a download anchor so users can
+    // keep a copy of the report. The href is the canonical asset URL.
+    expect(sampleImageSrc).toMatch(
+      /href=\{SAMPLE_REPORT_IMAGE_URL\}\s+download="rapid-hire-sample-report\.png"/,
+    );
+  });
+
+  it("SampleReportSection.tsx renders SampleReportImage (not the old card)", () => {
+    expect(sampleSectionSrc).toMatch(
+      /import\s+SampleReportImage\s+from\s+"\.\/SampleReportImage"/,
+    );
+    expect(sampleSectionSrc).toMatch(/<SampleReportImage\s*\/>/);
+    // Anti-regression: the section no longer imports the old card.
+    expect(sampleSectionSrc).not.toMatch(/from\s+"\.\/SampleReportCard"/);
   });
 
   it("Home.tsx mounts SampleReportSection between LogoStrip and StopGambling", () => {
@@ -224,19 +264,22 @@ describe("Sample report card reuse across pages", () => {
     expect(sampleIdx).toBeLessThan(stopIdx);
   });
 
-  it("Services.tsx imports + renders SampleReportCard", () => {
+  it("Services.tsx imports + renders SampleReportImage on the #sample-report block", () => {
     expect(servicesSrc).toMatch(
-      /import\s+SampleReportCard\s+from\s+"@\/components\/site\/SampleReportCard"/,
+      /import\s+SampleReportImage\s+from\s+"@\/components\/site\/SampleReportImage"/,
     );
-    expect(servicesSrc).toMatch(/<SampleReportCard\s*\/>/);
+    expect(servicesSrc).toMatch(/<SampleReportImage\s*\/>/);
     expect(servicesSrc).toMatch(/id="sample-report"/);
+    // Anti-regression: no leftover SampleReportCard usage.
+    expect(servicesSrc).not.toMatch(/<SampleReportCard\s*\/>/);
   });
 
-  it("Pricing.tsx imports + renders SampleReportCard", () => {
+  it("Pricing.tsx imports + renders SampleReportImage on the #sample-report block", () => {
     expect(pricingSrc).toMatch(
-      /import\s+SampleReportCard\s+from\s+"@\/components\/site\/SampleReportCard"/,
+      /import\s+SampleReportImage\s+from\s+"@\/components\/site\/SampleReportImage"/,
     );
-    expect(pricingSrc).toMatch(/<SampleReportCard\s*\/>/);
+    expect(pricingSrc).toMatch(/<SampleReportImage\s*\/>/);
     expect(pricingSrc).toMatch(/id="sample-report"/);
+    expect(pricingSrc).not.toMatch(/<SampleReportCard\s*\/>/);
   });
 });
