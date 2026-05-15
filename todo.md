@@ -341,3 +341,13 @@
 - [x] Rewrote `StopGambling.tsx`: full-bleed dark band with mirrored gradient `linear-gradient(90deg, var(--color-footer-soft) 0%, var(--color-footer) 65%, var(--color-footer) 100%)`, `colorScheme: dark`, eyebrow on `--color-footer-muted`, headline on `--color-footer-foreground`, italic accent on `--color-accent-halo`, body copy on `--color-footer-soft-text`. "There's got to be a better way…" pull-quote now in sky-halo italic so it reads as a deliberate quieter beat below the headline. Added top + bottom hairline boundary glows so the band sits cleanly against the warm paper above and below.
 - [x] Extended `ctaBannerDark.test.ts` to 13 assertions across 3 describe blocks, covering hairline gradient + class marker + position, the `.cta-banner-cta` marker, the 6px translate gated behind `prefers-reduced-motion`, the sky-halo box-shadow glow, and the snappy ease-out + 180ms duration. Added new `stopGamblingDark.test.ts` (7 assertions) pinning the mirrored gradient direction, footer-family tokens, sky-halo italic accent, and explicit anti-regression checks for the old paper-surface tokens.
 - [x] 144/144 vitest passing, LSP/TS clean. Captured a dev-server preview screenshot showing the homepage hero unaffected; the dark surfaces sit further down in the section flow.
+
+## 42. Rewrite StopGambling section copy: TAT + U.S.-based support
+
+- [ ] Replace the "Stop gambling with compliance." headline with "Turnaround time & customer support, done right." (italic accent on the second clause so the sky-halo italic still anchors the dark surface)
+- [ ] Replace the eyebrow "02 — The problem" with "02 — How we're different" so the section still reads as a deliberate beat in the homepage flow
+- [ ] Replace the left body paragraph with a turnaround-time line that highlights "fastest, most accurate background checks in the industry"; commit to a concrete claim (e.g. 24-hour median, 85%+ within 24 hours) rather than a vague superlative
+- [ ] Replace the right body paragraph with a U.S.-based support line that explicitly says "no offshore", "no chatbots", "real humans, your timezone"
+- [ ] Replace the closing italic pull-quote ("There's got to be a better way…") with a line that lands the new topic (e.g. "…it should be this simple.")
+- [ ] Update `client/src/lib/stopGamblingDark.test.ts` so the editorial-copy assertions match the new strings; keep all gradient + token assertions exactly as they are (only copy changes, not design)
+- [ ] Run vitest, browser QA at desktop, save checkpoint, deliver

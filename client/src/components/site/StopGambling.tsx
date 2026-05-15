@@ -1,22 +1,36 @@
 /*
-  Editorial Calm — Stop Gambling (dark gradient variant, mirrored).
+  How We're Different (dark gradient variant, mirrored).
 
-  Design intent
+  This block is the homepage's positive differentiator beat:
+  turnaround time + U.S.-based customer support, on the dark band.
+  (Earlier revisions framed the same slot as a problem-statement;
+  the section now leads with the differentiator instead. See the
+  project changelog / todo.md §42 for context.)
+
+  Editorial copy
+    - Eyebrow: 02 — How we're different
+    - Headline: "Turnaround time & customer support, done right."
+      with the italic accent on the second clause so the sky-halo
+      italic still carries the dark surface.
+    - Left body paragraph: TAT claim with concrete numbers
+      (24-hour median, 85%+ within 24 hours).
+    - Right body paragraph: U.S.-based support, explicit disclaimers
+      (no offshore queues / chatbots / scripts).
+    - Closing italic pull-quote: "…it should be this simple."
+
+  Design intent (unchanged from the dark-band rhythm pass)
     - Reuses the same dark gradient family as the Switch CTA banner so
       the homepage carries a deliberate "dark band" rhythm: this block
       mid-page (lighter on the LEFT, deeper ink on the RIGHT) and the
       Switch CTA near the bottom (deeper ink on the LEFT, lighter on
       the RIGHT). The two darks bracket the SampleReport / WhyUs /
       Workflows proof block in between.
-    - Reversing the gradient direction here is what keeps the rhythm
-      from feeling like two stacked copy/paste slabs: the "weight"
-      shifts across the page instead of stacking on the same side.
+    - Reversing the gradient direction here keeps the rhythm from
+      feeling like two stacked copy/paste slabs: the "weight" shifts
+      across the page instead of stacking on the same side.
     - Body copy + headline italic accent invert to the same warm-white
       / sky-halo tokens the footer + Switch CTA already use, so all
       three dark surfaces read as one continuous treatment.
-    - The "There's got to be a better way…" pull-quote is now an
-      italic typography moment in sky-halo, deliberately lighter than
-      the headline so the eye reads heading first, body, then quote.
 
   Tokens (defined in client/src/index.css)
       --color-footer            deep ink-cobalt
@@ -67,7 +81,7 @@ export default function StopGambling() {
         <div className="grid grid-cols-12 gap-x-8 gap-y-10">
           <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
             <p className="eyebrow text-[color:var(--color-footer-muted)]">
-              02 — The problem
+              02 — How we&apos;re different
             </p>
             <div
               className="mt-3 h-px"
@@ -79,25 +93,26 @@ export default function StopGambling() {
           </div>
           <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
             <h2 className="font-display text-[44px] leading-[1.04] tracking-[-0.025em] text-[color:var(--color-footer-foreground)] sm:text-[60px] md:text-[76px]">
-              Stop gambling with{" "}
+              Turnaround time &amp; customer support,{" "}
               <span className="italic font-normal text-[color:var(--color-accent-halo)]">
-                compliance.
+                done right.
               </span>
             </h2>
             <div className="mt-10 grid gap-6 md:grid-cols-2 max-w-4xl">
               <p className="text-[16.5px] leading-[1.75] text-[color:var(--color-footer-soft-text)]">
-                If you&apos;re hiring at scale, you&apos;re probably spending
-                too much time chasing candidate consent forms and deciphering
-                court records.
+                Most reports clear in under 24 hours — among the fastest,
+                most accurate background checks in the industry. We don&apos;t
+                pad SLAs to look good on paper; we publish a 24-hour median
+                and beat it on 85%+ of orders.
               </p>
               <p className="text-[16.5px] leading-[1.75] text-[color:var(--color-footer-soft-text)]">
-                This manual work leaves you vulnerable to costly errors and
-                lawsuits, not to mention slow turnaround times that cost you
-                talent.
+                Every call is answered by a U.S.-based screening specialist
+                — no offshore queues, no chatbots, no scripts. Real humans,
+                in your timezone, on the same continent as your candidates.
               </p>
             </div>
             <p className="mt-10 font-display italic text-[24px] md:text-[28px] text-[color:var(--color-accent-halo)]">
-              There&apos;s got to be a better way…
+              …it should be this simple.
             </p>
           </div>
         </div>

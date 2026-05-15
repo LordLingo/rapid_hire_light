@@ -74,10 +74,38 @@ describe("StopGambling dark gradient (mirrored)", () => {
     expect(SRC).not.toMatch(/bg-\[color:var\(--color-paper\)\]/);
   });
 
-  it("preserves the editorial copy intact", () => {
-    expect(SRC).toMatch(/02\s*—\s*The problem/);
-    expect(SRC).toMatch(/Stop gambling with/);
-    expect(SRC).toMatch(/compliance\./);
-    expect(SRC).toMatch(/There.{1,3}s got to be a better way/);
+  it("carries the new editorial copy: TAT + U.S.-based support", () => {
+    // Eyebrow flipped from "The problem" to "How we're different"
+    // when the section was repurposed from a problem-statement to a
+    // differentiator. The italic accent moved to "done right." so
+    // the sky-halo italic still anchors the dark surface.
+    expect(SRC).toMatch(/02\s*—\s*How we&apos;re different/);
+    expect(SRC).toMatch(/Turnaround time &amp; customer support,/);
+    expect(SRC).toMatch(/done right\./);
+    // Closing italic pull-quote replaces "There's got to be a better way…"
+    expect(SRC).toMatch(/…it should be this simple\./);
+    // Belt-and-braces: explicitly assert the previous topic strings
+    // are gone, so a global find/replace can't silently roll us back.
+    expect(SRC).not.toMatch(/Stop gambling with/);
+    expect(SRC).not.toMatch(/There.{1,3}s got to be a better way/);
+    expect(SRC).not.toMatch(/02\s*—\s*The problem/);
+  });
+
+  it("makes a concrete TAT claim (24-hour median, 85%+) instead of a vague superlative", () => {
+    // The differentiator only earns its real estate if it commits to
+    // a number. Pin both halves of the claim so a future copy edit
+    // doesn't soften them into marketing fluff.
+    expect(SRC).toMatch(/24[-\s]hour/);
+    expect(SRC).toMatch(/85%/);
+    expect(SRC).toMatch(/fastest,\s+most accurate/);
+  });
+
+  it("explicitly disclaims offshore support / chatbots / scripts", () => {
+    // The U.S.-based-support claim is the second leg. Pin the three
+    // disqualifiers so the line stays unambiguous.
+    expect(SRC).toMatch(/U\.S\.[-\s]based/);
+    expect(SRC).toMatch(/no offshore/);
+    expect(SRC).toMatch(/no chatbots/);
+    expect(SRC).toMatch(/no scripts/);
   });
 });
