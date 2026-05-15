@@ -57,6 +57,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --color-paper: oklch(0.985 0.005 85);            /* #FAFAF7 warm paper */
+  --color-paper-soft: oklch(0.97 0.006 85);         /* one step softer than paper for tile / row stripes */
   --color-ink: oklch(0.18 0.012 260);               /* deep ink slate */
   --color-ink-soft: oklch(0.36 0.013 260);
   --color-ink-muted: oklch(0.56 0.012 260);
@@ -65,6 +66,7 @@
   --color-accent-ink: oklch(0.62 0.205 256);        /* original brand bright blue ~ #3b82f6 */
   --color-accent-ink-strong: oklch(0.55 0.225 258); /* hover/active deeper variant ~ #2563eb */
   --color-accent-halo: oklch(0.85 0.12 250);        /* brighter sky halo (#93c5fd family) */
+  --color-accent-on-dark: oklch(0.85 0.12 250);     /* italic-accent / link colour over dark surfaces */
 
   /* Footer surface: deep ink-cobalt (same hue family as --color-accent-ink, much darker) */
   --color-footer:           oklch(0.20 0.045 258);  /* near-black with cobalt undertone */

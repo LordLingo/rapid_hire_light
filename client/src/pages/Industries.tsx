@@ -329,7 +329,7 @@ export default function Industries() {
               handful of international jurisdictions — not the desk.
             </p>
             <ul className="mt-6 grid grid-cols-3 gap-3 text-center">
-              <li className="rounded-2xl border border-border bg-[color:var(--color-paper-soft)] py-3">
+              <li className="rounded-2xl border border-border bg-[color:var(--color-paper)] py-3">
                 <p className="font-display text-[18px] leading-none text-[color:var(--color-ink)]">
                   6
                 </p>
@@ -337,7 +337,7 @@ export default function Industries() {
                   Verticals
                 </p>
               </li>
-              <li className="rounded-2xl border border-border bg-[color:var(--color-paper-soft)] py-3">
+              <li className="rounded-2xl border border-border bg-[color:var(--color-paper)] py-3">
                 <p className="font-display text-[18px] leading-none text-[color:var(--color-ink)]">
                   800+
                 </p>
@@ -345,7 +345,7 @@ export default function Industries() {
                   HR teams
                 </p>
               </li>
-              <li className="rounded-2xl border border-border bg-[color:var(--color-paper-soft)] py-3">
+              <li className="rounded-2xl border border-border bg-[color:var(--color-paper)] py-3">
                 <p className="font-display text-[18px] leading-none text-[color:var(--color-ink)]">
                   99.4%
                 </p>
@@ -362,7 +362,7 @@ export default function Industries() {
       <section
         id="sectors"
         data-testid="industries-grid"
-        className="bg-[color:var(--color-paper-soft)] scroll-mt-24"
+        className="bg-[color:var(--color-paper)] scroll-mt-24"
       >
         <div className="container py-20 md:py-28">
           <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end mb-12 md:mb-16">
@@ -399,7 +399,7 @@ export default function Industries() {
                   <div className="flex items-center gap-3 text-[color:var(--color-accent-ink)]">
                     <span
                       aria-hidden
-                      className="grid place-items-center size-10 rounded-full border border-border bg-[color:var(--color-paper-soft)]"
+                      className="grid place-items-center size-10 rounded-full border border-border bg-[color:var(--color-paper)]"
                     >
                       <v.Icon aria-hidden className="size-5" />
                     </span>
@@ -430,7 +430,7 @@ export default function Industries() {
       <section
         id="faq"
         data-testid="industries-faq"
-        className="bg-[color:var(--color-paper-soft)] scroll-mt-24"
+        className="bg-[color:var(--color-paper)] scroll-mt-24"
       >
         <div className="container py-20 md:py-28">
           <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end mb-12 md:mb-16">
@@ -470,7 +470,7 @@ export default function Industries() {
       {/* Closing dark CTA band */}
       <section
         data-testid="industries-cta-band"
-        className="bg-[color:var(--color-footer-bg)] text-[color:var(--color-footer-foreground)]"
+        className="bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)]"
       >
         <div className="container py-20 md:py-28">
           <div className="grid grid-cols-12 gap-x-10 gap-y-10 items-end">
@@ -485,7 +485,7 @@ export default function Industries() {
                 Tell us your sector and your volume.{" "}
                 <span
                   className="italic font-light"
-                  style={{ color: "var(--color-accent-on-dark)" }}
+                  style={{ color: "color-mix(in oklch, var(--color-accent-ink) 35%, white)" }}
                 >
                   We'll quote it inside the day.
                 </span>
@@ -541,7 +541,7 @@ function VerticalSection({ v }: { v: Vertical }) {
       data-testid={`industries-section-${v.slug}`}
       className={`scroll-mt-24 ${
         dark
-          ? "bg-[color:var(--color-footer-bg)] text-[color:var(--color-footer-foreground)]"
+          ? "bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)]"
           : "bg-[color:var(--color-paper)]"
       }`}
     >
@@ -566,9 +566,14 @@ function VerticalSection({ v }: { v: Vertical }) {
               aria-hidden
               className={`mt-8 inline-grid place-items-center size-12 rounded-full border ${
                 dark
-                  ? "border-[color:color-mix(in_oklch,var(--color-footer-foreground)_28%,transparent)] text-[color:var(--color-accent-on-dark)]"
-                  : "border-border text-[color:var(--color-accent-ink)] bg-[color:var(--color-paper-soft)]"
+                  ? "border-[color:color-mix(in_oklch,var(--color-footer-foreground)_28%,transparent)]"
+                  : "border-border text-[color:var(--color-accent-ink)] bg-[color:var(--color-paper)]"
               }`}
+              style={
+                dark
+                  ? { color: "color-mix(in oklch, var(--color-accent-ink) 35%, white)" }
+                  : undefined
+              }
             >
               <v.Icon aria-hidden className="size-5" />
             </span>
@@ -586,7 +591,7 @@ function VerticalSection({ v }: { v: Vertical }) {
                 className="italic font-light"
                 style={{
                   color: dark
-                    ? "var(--color-accent-on-dark)"
+                    ? "color-mix(in oklch, var(--color-accent-ink) 35%, white)"
                     : "var(--color-accent-ink)",
                 }}
               >
@@ -631,7 +636,7 @@ function VerticalSection({ v }: { v: Vertical }) {
                         className="mt-1 size-4 shrink-0"
                         style={{
                           color: dark
-                            ? "var(--color-accent-on-dark)"
+                            ? "color-mix(in oklch, var(--color-accent-ink) 35%, white)"
                             : "var(--color-accent-ink)",
                         }}
                         strokeWidth={2.25}
@@ -648,7 +653,7 @@ function VerticalSection({ v }: { v: Vertical }) {
                 className={`lg:col-span-5 rounded-[18px] p-6 md:p-7 ${
                   dark
                     ? "border border-[color:color-mix(in_oklch,var(--color-footer-foreground)_18%,transparent)] bg-[color:color-mix(in_oklch,var(--color-footer-foreground)_4%,transparent)]"
-                    : "border border-border bg-[color:var(--color-paper-soft)]"
+                    : "border border-border bg-[color:var(--color-paper)]"
                 }`}
               >
                 <div
@@ -664,7 +669,7 @@ function VerticalSection({ v }: { v: Vertical }) {
                     className="size-3.5"
                     style={{
                       color: dark
-                        ? "var(--color-accent-on-dark)"
+                        ? "color-mix(in oklch, var(--color-accent-ink) 35%, white)"
                         : "var(--color-accent-ink)",
                     }}
                     strokeWidth={2.25}

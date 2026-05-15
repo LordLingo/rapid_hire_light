@@ -764,3 +764,18 @@ Tasks:
 - [x] Wire route in App.tsx and add "Industries" to the header nav between Services and Pricing (mirroring precisehire's order).
 - [x] Add a "Industries" entry to Footer Company column.
 - [x] Add vitest pins for the page, the route, the nav entry, and the anti-regression "no third-party CRA brand" guard.
+
+## 70. /industries dark-band section contrast fix
+
+User reported the §03 Transportation & Logistics section's text is barely
+legible because the dark-band variant inherits warm-paper light-mode colours.
+
+- [x] Inspect the `dark` branch of the per-vertical Section in Industries.tsx
+- [x] Apply proper dark-surface text colours to: section title, lede paragraph,
+      "What we run by default" eyebrow + list items + check-icons,
+      "Regulatory posture" callout box (eyebrow + body), CTA pair, and any
+      hairline rules so all 6 surfaces of the dark-band section pass WCAG-AA
+- [x] Verify the same pattern works on any other dark-band sections used elsewhere
+- [x] Add a vitest anti-regression pin so a future regression doesn't bring back
+      the bleed-through
+- [x] Run full vitest suite and save checkpoint
