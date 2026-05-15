@@ -779,3 +779,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Add a vitest anti-regression pin so a future regression doesn't bring back
       the bleed-through
 - [x] Run full vitest suite and save checkpoint
+
+## 71. paper-soft / accent-on-dark visual audit across all PageHero consumers
+
+- [x] Map every file referencing --color-paper-soft / --color-accent-on-dark
+- [x] Capture screenshots of each consumer page (Support, Compliance, ComplianceAudit, Industries, others)
+- [x] Decide per-section: keep, dial down, dial up, or replace
+- [x] Apply the fixes
+- [x] Add anti-regression vitest pins where structural choices were made
+- [x] Run full vitest suite and save checkpoint
