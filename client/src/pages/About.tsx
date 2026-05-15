@@ -5,7 +5,6 @@
    - Section: "Built for hiring teams that can't afford a bad hire" — story column.
    - Stats strip (FCRA, U.S.-based, 24h SLA) on hairline grid.
    - Principles: 4 numbered principles with eyebrow + body, no boxes.
-   - Leadership / team — small ink portraits placeholder grid.
    - Closing CTA → /contact.
 */
 import { Link } from "wouter";
@@ -51,13 +50,6 @@ const PRINCIPLES = [
     body:
       "Over 85% of background checks return within 24 hours, and our U.S.-based specialists answer the same business day. If a search is going to take longer, you'll hear it from a human, not a status page.",
   },
-];
-
-const TEAM = [
-  { name: "M. Alvarez", role: "Founder & CEO", initials: "MA" },
-  { name: "S. Chen", role: "Head of Compliance", initials: "SC" },
-  { name: "J. Patel", role: "Head of Operations", initials: "JP" },
-  { name: "R. Okafor", role: "Head of Customer Success", initials: "RO" },
 ];
 
 export default function About() {
@@ -273,58 +265,12 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="bg-white border-b border-border">
-        <div className="container py-24 md:py-28">
-          <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
-            <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">08 — Leadership</p>
-              <div className="mt-3 hairline" />
-            </div>
-            <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
-              <h2 className="font-display text-[34px] sm:text-[44px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
-                People who&apos;ve actually{" "}
-                <span className="italic font-light text-[color:var(--color-accent-ink)]">
-                  hired at scale.
-                </span>
-              </h2>
-            </div>
-          </div>
-
-          <div className="mt-14 grid grid-cols-12 gap-6">
-            {TEAM.map((p) => (
-              <div
-                key={p.name}
-                className="reveal-on-scroll col-span-6 md:col-span-3"
-              >
-                <div className="hover-lift-card aspect-[4/5] rounded-[16px] border border-border bg-white flex items-end p-5">
-                  <div className="w-full">
-                    <span
-                      aria-hidden
-                      className="block size-12 rounded-full border border-border grid place-items-center font-display text-[18px] text-[color:var(--color-ink)]"
-                    >
-                      {p.initials}
-                    </span>
-                    <p className="mt-5 font-display text-[18px] text-[color:var(--color-ink)]">
-                      {p.name}
-                    </p>
-                    <p className="mt-1 text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
-                      {p.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="bg-[color:var(--color-paper)] border-t border-border">
         <div className="container py-20 md:py-24">
           <div className="reveal-on-scroll grid grid-cols-12 gap-6 items-center">
             <div className="col-span-12 md:col-span-8">
-              <p className="eyebrow">09 — Talk to us</p>
+              <p className="eyebrow">08 — Talk to us</p>
               <h3 className="mt-4 font-display text-[34px] sm:text-[44px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
                 Hiring at scale and tired of gambling on a vendor?
               </h3>

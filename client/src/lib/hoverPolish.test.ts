@@ -149,11 +149,15 @@ describe("§50 — Site-wide card/image applications", () => {
     );
   });
 
-  it("About page team member cards carry .hover-lift-card", () => {
+  it("parked (§76): About page no longer ships the leadership/team card grid; .hover-lift-card on About is intentionally absent", () => {
+    // The 08 — Leadership section was removed in §76 at user request.
+    // This pin is intentionally inverted to lock the absence so a
+    // future refactor can't silently re-add unverified team cards.
     const src = read("client/src/pages/About.tsx");
-    expect(src).toMatch(
+    expect(src).not.toMatch(
       /"hover-lift-card aspect-\[4\/5\] rounded-\[16px\] border border-border bg-white flex items-end p-5"/
     );
+    expect(src).not.toMatch(/eyebrow">08 — Leadership/);
   });
 
   it("Contact page aside info card carries .hover-lift-card", () => {

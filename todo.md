@@ -828,3 +828,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Existing headerActiveRoute / footerActiveRoute / hover-polish pins remained green
 - [x] Added new client/src/lib/aboutPage.test.ts (9 pins) guarding nav wiring + content
 - [x] Full vitest suite green (478 passed), pnpm tsc --noEmit clean, checkpoint saved
+
+
+## 76. Remove the 08 — Leadership section from About page
+- [x] Deleted the entire `{/* Team */}` <section> block from About.tsx
+- [x] Removed the unused TEAM array
+- [x] Renumbered CTA eyebrow back to `08 — Talk to us`
+- [x] Updated layout doc-comment to drop the leadership row
+- [x] Inverted the §50 hoverPolish pin to lock the absence (parked §76)
+- [x] Full vitest suite green (478/478), tsc clean, checkpoint saved
