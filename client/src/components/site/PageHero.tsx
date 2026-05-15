@@ -22,6 +22,8 @@ type Props = {
   visual?: React.ReactNode;
   /** Optional second slot rendered DIRECTLY UNDER the framed card in the same right column. Used by `HeroMiniStats`. */
   belowVisual?: React.ReactNode;
+  /** Optional slot rendered DIRECTLY UNDER the lede paragraph in the headline column. Used for hero CTA + trust-strip clusters. */
+  afterLede?: React.ReactNode;
   /** Legacy fallback: an image URL. Ignored when `visual` is provided. */
   image?: string;
   imageAlt?: string;
@@ -33,6 +35,7 @@ export default function PageHero({
   lede,
   visual,
   belowVisual,
+  afterLede,
   image,
   imageAlt,
 }: Props) {
@@ -76,6 +79,11 @@ export default function PageHero({
                 <p className="mt-6 max-w-xl text-[16px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                   {lede}
                 </p>
+                {afterLede ? (
+                  <div data-testid="page-hero-after-lede" className="mt-7 max-w-xl">
+                    {afterLede}
+                  </div>
+                ) : null}
               </div>
               <div className="col-span-12 lg:col-span-4">
                 <div className="reveal-on-scroll overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
@@ -92,6 +100,11 @@ export default function PageHero({
               <p className="mt-7 max-w-2xl text-[16.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                 {lede}
               </p>
+              {afterLede ? (
+                <div data-testid="page-hero-after-lede" className="mt-7 max-w-2xl">
+                  {afterLede}
+                </div>
+              ) : null}
             </div>
           )}
         </div>

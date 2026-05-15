@@ -40,6 +40,9 @@ import {
   ScrollText,
   Scale,
   Phone,
+  CalendarCheck2,
+  FileDown,
+  CheckCircle2,
 } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
@@ -616,6 +619,47 @@ export default function Compliance() {
             decoding="async"
             className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
           />
+        }
+        afterLede={
+          <>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/contact?topic=compliance-audit"
+                data-testid="compliance-cta-audit"
+                className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-3 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
+              >
+                <CalendarCheck2 aria-hidden className="size-4" />
+                Book a free 15-min audit
+              </Link>
+              <a
+                href="#certifications"
+                data-testid="compliance-cta-checklist"
+                className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)]"
+              >
+                <FileDown aria-hidden className="size-4 text-[color:var(--color-accent-ink)]" />
+                Get the 24-point checklist
+              </a>
+            </div>
+            <ul
+              data-testid="compliance-trust-strip"
+              className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-[13.5px] text-[color:var(--color-ink-soft)]"
+            >
+              {[
+                "FCRA §§604, 611, 613, 615 workflow",
+                "EEOC 2012 individualized assessment",
+                "35+ state & city overlays tracked",
+                "SOC 2 Type II + HIPAA aligned",
+              ].map((label) => (
+                <li key={label} className="flex items-center gap-2">
+                  <CheckCircle2
+                    aria-hidden
+                    className="size-4 shrink-0 text-[color:var(--color-accent-ink)]"
+                  />
+                  <span>{label}</span>
+                </li>
+              ))}
+            </ul>
+          </>
         }
       />
 
