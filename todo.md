@@ -277,3 +277,9 @@
 - [x] Refactor `CandidateContactForm`: drop required `candidateEmail` prop, replace with optional `fallbackEmail`; update Support page caller
 - [x] Add `client/src/lib/contactInfo.test.ts` vitest spec that pins the new phone/email values and bans the retired placeholders
 - [x] Vitest green (91/91), TS/LSP clean, browser QA on /support and /contact, save checkpoint, deliver
+
+## 34. Swap footer logo to user-supplied white mark
+- [x] Move `/home/ubuntu/upload/rhswhiteLogo.png` into `/home/ubuntu/webdev-static-assets/rhs-white-logo.png` and upload via `manus-upload-file --webdev` — hosted at `/manus-storage/rhs-white-logo_ba46549d.png`
+- [x] Replace the placeholder text-and-icon brand block in `client/src/components/site/Footer.tsx` with an `<img>` tag using the returned static URL; preserve the link to `/`, alt text, and dimensions — logo now sized at 160px (mobile) / 180px (sm+), `aria-label`d, lazy-loaded
+- [x] Update / add a small vitest assertion that pins the new asset reference (footer renders the supplied logo URL) — added `client/src/lib/footerLogo.test.ts` (4 assertions, all green)
+- [x] Browser QA on the homepage footer; save checkpoint and deliver — verified white logo renders crisply on dark footer surface across `/` and `/about`; all 95/95 vitest passing

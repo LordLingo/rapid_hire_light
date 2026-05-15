@@ -7,6 +7,12 @@ import { Link } from "wouter";
 import { toast } from "sonner";
 import { ShieldCheck } from "lucide-react";
 
+// Brand mark for the dark footer surface. White-on-dark logo provided by the
+// brand owner. Hosted on the webdev static host so it doesn't bloat the bundle
+// and survives across deploys; if it ever changes, just re-upload and update
+// the URL constant below (and the contactInfo / footer test that pins it).
+const FOOTER_LOGO_URL = "/manus-storage/rhs-white-logo_ba46549d.png";
+
 type FooterItem = { label: string; to?: string };
 
 const SERVICES: FooterItem[] = [
@@ -48,40 +54,21 @@ export default function Footer() {
       <div className="container py-20">
         <div className="grid grid-cols-12 gap-x-8 gap-y-12">
           <div className="col-span-12 md:col-span-5 reveal-on-scroll">
-            <Link href="/" className="flex items-center gap-3">
-              <svg
-                width="34"
-                height="34"
-                viewBox="0 0 34 34"
-                fill="none"
-                aria-hidden
-                className="text-[color:var(--color-accent-halo)]"
-              >
-                <circle
-                  cx="17"
-                  cy="17"
-                  r="16.25"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  opacity="0.5"
-                />
-                <path
-                  d="M9 21c2.5-3 4.5-4.5 8-4.5s5.5 1.5 8 4.5"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M11 16c1.7-2 3.4-3 6-3s4.3 1 6 3"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  opacity="0.75"
-                />
-              </svg>
-              <span className="font-display text-[20px] tracking-[-0.01em] text-[color:var(--color-footer-foreground)]">
-                Rapid Hire Solutions
-              </span>
+            <Link
+              href="/"
+              aria-label="Rapid Hire Solutions — home"
+              className="inline-flex items-center"
+            >
+              <img
+                src={FOOTER_LOGO_URL}
+                alt="Rapid Hire Solutions"
+                width={180}
+                height={180}
+                loading="lazy"
+                decoding="async"
+                className="block h-auto w-[160px] sm:w-[180px] select-none"
+                draggable={false}
+              />
             </Link>
             <p className="mt-6 max-w-md text-[15px] leading-[1.7] text-[color:var(--color-footer-soft-text)]">
               Scale your hiring team with a platform built for speed,
