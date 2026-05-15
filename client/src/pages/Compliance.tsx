@@ -612,13 +612,52 @@ export default function Compliance() {
         }
         lede="Every screen Rapid Hire Solutions runs is governed by the same standards you'd want applied to your own employment record — the federal FCRA, the state and local laws that ride on top of it, the EEOC's individualized-assessment guidance, and a SOC 2 Type II / HIPAA-aligned data envelope. Here's how that works in practice."
         visual={
-          <img
-            src={COMPLIANCE_HERO_URL}
-            alt=""
-            loading="eager"
-            decoding="async"
-            className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
-          />
+          <div className="relative w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px]">
+            <img
+              src={COMPLIANCE_HERO_URL}
+              alt=""
+              loading="eager"
+              decoding="async"
+              className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
+            />
+            {/* Top-right credibility badge — SOC 2 Type II */}
+            <div
+              data-testid="compliance-hero-badge-soc2"
+              className="hidden sm:block absolute top-4 right-4 md:top-5 md:right-5 w-[200px] md:w-[214px] rounded-[14px] paper-shadow bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)] px-4 py-3 ring-1 ring-[color:var(--color-accent-halo)]/15"
+              style={{ colorScheme: "dark" }}
+            >
+              <p className="text-[10px] tracking-[0.18em] uppercase text-[color:var(--color-footer-muted)]">
+                SOC 2 Type II
+              </p>
+              <p className="mt-1 font-display text-[16px] leading-[1.2] text-[color:var(--color-footer-foreground)]">
+                Re-attested every 12 months
+              </p>
+              <p className="mt-1.5 text-[11px] leading-[1.45] text-[color:var(--color-footer-soft-text)]">
+                Report available under NDA
+              </p>
+            </div>
+            {/* Bottom-left credibility badge — Dispute rate */}
+            <div
+              data-testid="compliance-hero-badge-dispute"
+              className="hidden sm:block absolute bottom-4 left-4 md:bottom-5 md:left-5 w-[220px] md:w-[232px] rounded-[14px] paper-shadow bg-white px-4 py-3 ring-1 ring-[color:var(--color-border)]"
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  data-testid="compliance-hero-badge-dispute-dot"
+                  className="size-2 rounded-full bg-[color:var(--color-accent-ink)] support-status-dot-live"
+                />
+                <p className="text-[10px] tracking-[0.18em] uppercase text-[color:var(--color-ink-muted)]">
+                  Trailing 12 months
+                </p>
+              </div>
+              <p className="mt-1 font-display text-[16px] leading-[1.2] text-[color:var(--color-ink)]">
+                Dispute rate under 0.4%
+              </p>
+              <p className="mt-1.5 text-[11px] leading-[1.45] text-[color:var(--color-ink-muted)]">
+                FCRA §611 reinvestigations resolved on time
+              </p>
+            </div>
+          </div>
         }
         afterLede={
           <>
