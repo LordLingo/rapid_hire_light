@@ -364,3 +364,22 @@ and make the hero CTA feel intentional rather than a default button.
 - [x] Add a section divider/wedge underneath StopGambling that transitions from the dark band into the warm WhyUs section. Implemented as a 96px-tall SVG path with a shallow diagonal cubic curve (top edge from y=32 left → y=72 right), filled with `var(--color-footer)` so it blends into the section's right-edge color. Section padding-bottom bumped to md:pb-44 so the wedge can't overlap content. Old bottom hairline glow removed since the wedge replaces the clean bottom edge
 - [x] Extend `client/src/lib/stopGamblingDark.test.ts` (now 11 tests; +2 new pins for halo + wedge) and add `client/src/lib/heroCtaLift.test.ts` (6 new tests pinning the .hero-primary-cta utility's translate, glow, easing, and reduced-motion gating)
 - [x] Run vitest (154/154 passing), browser QA at desktop confirmed halo + wedge + headline all rendering cleanly, ready to checkpoint and deliver
+
+
+## 44. Workflows section — redesign the center "02 · Layer" card (user-requested)
+
+User feedback: the eight tokens currently render as a 2×4 grid of pill-shaped chips inside the center card, which read like clickable buttons. They are NOT links — they are static descriptors. The user wants the center card to: (a) drop the "fake button" feel entirely, and (b) become the visual hero of the three-card stack by adopting the brand-blue surface used on the site's CTAs and brand mark, so it stands out from the two flanking white cards.
+
+Inspiration reference (provided by user): a card with the eyebrow "02 · LAYER", a serif headline split between deep navy ("Rapid Hire") and brand-blue ("Solutions Platform"), the orchestration paragraph, a speedometer-and-lightning illustration on the right, and an 8-cell 2×4 grid of soft-blue rounded pills, each with a brand-blue icon + label (Speed, Comprehensive, Compliant, Accurate, Scalable, Integrated, Trusted, Efficient).
+
+Notes from screenshot: the *image's* surface is light/cream, not brand-blue. The user explicitly asked for the *center card* (their site) to be brand-blue so it pops against the two flanking white cards. So we're taking the *layout* from the inspiration but inverting the *surface* to brand-blue, with light/translucent badge cells inside.
+
+- [x] Inspect `client/src/components/site/Workflows.tsx` to find the current "02 · Layer / Rapid Hire Solutions Platform" card and the eight token chips
+- [x] Replace the center card surface with `bg-[color:var(--color-accent-ink)]` (the brand-blue used on Get a Quote, Start Screening, Switch CTA buttons) so it visually anchors the three-card stack
+- [x] Invert the card's text tokens to white/foreground-on-blue — eyebrow, headline, body paragraph
+- [x] Replace the eight pill-shaped chips with a 2×4 grid of static `<li>` badges: each cell is a soft-translucent-white rounded rectangle with a brand-blue icon on the left and a white-on-blue label on the right; cells are NOT `<button>`/`<a>`, NOT `cursor-pointer`, no hover state — purely presentational
+- [x] Picked lucide-react icons: Speed→Rocket, Comprehensive→ClipboardCheck, Compliant→ShieldCheck, Accurate→Target, Scalable→TrendingUp, Integrated→Puzzle, Trusted→Handshake, Efficient→RefreshCw
+- [x] Matched the visual rhythm of the flanking cards — same `rounded-[16px]`, same `p-5 md:p-6`, same `paper-shadow`; only the surface color and internal grid differ
+- [x] Verified visually: arrow connectors between System Integrations → Platform → Outputs still render in the desktop layout
+- [x] Added `client/src/lib/workflowsCenterCard.test.ts` (9 tests): pins brand-blue surface token, the eight labels in their locked order, the icon mapping, the 2-column grid layout, NO `<button>`/`<a>`/cursor-pointer/hover inside the card, anti-regression on the old `PLATFORM_CHIPS` and rounded-full pill markup, and stable `data-testid` hooks
+- [x] Ran vitest (163/163 passing), browser QA confirmed the new card rendering correctly between the two white flanking cards, ready to checkpoint and deliver
