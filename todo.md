@@ -261,12 +261,12 @@
 - [x] Vitest where applicable (hero-stats sync + integrations grid logic), browser QA at desktop + mobile + reduced-motion preference, save checkpoint, deliver
 
 ## 33. Real contact info sweep (replace placeholders)
-- [ ] Replace placeholder phone `(888) 555-0142` with real `(888) 445-3047` everywhere (UI labels, `tel:` hrefs, JSON-LD telephone, og-image SVG, vitest specs)
-- [ ] Replace placeholder support email `support@rapidhiresolutions.com` with real `info@rapidhiresolutions.com` everywhere (mailto:, UI text, JSON-LD email, vitest specs)
-- [ ] Add new sales / quote email `sales@rapidhiresolutions.com` to "Get a Quote" + sales-oriented CTAs and JSON-LD ContactPoint(sales)
-- [ ] Remove all references to `candidates@rapidhiresolutions.com` (Support page, Contact page, JSON-LD ContactPoint, FAQ answers, footer/header) — re-route candidate flows to the structured form + phone + info@ fallback
-- [ ] Update relevant vitest specs and shared JSON (support-status.json) to reflect the new numbers/emails
-- [ ] Browser QA across Home, Services, Pricing, Integrations, Contact, Support, blog OG image; vitest green; save checkpoint and deliver
+- [x] Replace placeholder phone `(888) 555-0142` with real `(888) 445-3047` everywhere (UI labels, `tel:` hrefs, JSON-LD telephone, og-image SVG, vitest specs) — swept across Support, Contact, ContactCallCard hero footer; OG SVG never embedded the phone, only the domain text
+- [x] Replace placeholder support email `support@rapidhiresolutions.com` with real `info@rapidhiresolutions.com` everywhere (mailto:, UI text, JSON-LD email, vitest specs)
+- [x] Add new sales / quote email `sales@rapidhiresolutions.com` to "Get a Quote" + sales-oriented CTAs and JSON-LD ContactPoint(sales) — surfaced on Contact + Support and as a `contactType: sales` ContactPoint in the Support JSON-LD
+- [x] Remove all references to `candidates@rapidhiresolutions.com` (Support page, Contact page, JSON-LD ContactPoint, FAQ answers, footer/header) — re-route candidate flows to the structured form + phone + info@ fallback (CandidateContactForm `candidateEmail` prop dropped in favor of optional `fallbackEmail`)
+- [x] Update relevant vitest specs and shared JSON (support-status.json) to reflect the new numbers/emails — added `client/src/lib/contactInfo.test.ts`; support-status.json had no phone/email values to update
+- [x] Browser QA across Home, Services, Pricing, Integrations, Contact, Support, blog OG image; vitest green; save checkpoint and deliver — 91/91 vitest passing, /support and /contact verified in browser, checkpoint bba57ecd saved
 
 ## 33. Real contact info sweep (placeholders → live values)
 - [x] Replace placeholder phone `(888) 555-0142` / `+18885550142` with real `(888) 445-3047` / `+18884453047` across Support page constants, Contact page details, ContactCallCard hero footer
