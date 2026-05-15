@@ -5,6 +5,7 @@
    - Section: "Built for hiring teams that can't afford a bad hire" — story column.
    - Stats strip (FCRA, U.S.-based, 24h SLA) on hairline grid.
    - Principles: 4 numbered principles with eyebrow + body, no boxes.
+   - By the numbers: 6-stat ledger band (§77, replaces removed Leadership row).
    - Closing CTA → /contact.
 */
 import { Link } from "wouter";
@@ -19,6 +20,45 @@ const STATS = [
   { k: "U.S.", v: "based support team — same-day response" },
   { k: "FCRA", v: "certified, SOC 2 + HIPAA compliant" },
   { k: "12,000+", v: "drug & health collection sites nationwide" },
+];
+
+const BY_THE_NUMBERS = [
+  {
+    eyebrow: "01",
+    k: "14",
+    unit: "years",
+    label: "Operating since 2011 — same operating principle, same owner.",
+  },
+  {
+    eyebrow: "02",
+    k: "24",
+    unit: "hr",
+    label: "Median turnaround on a single business day, with a U.S. specialist on every escalation.",
+  },
+  {
+    eyebrow: "03",
+    k: "50",
+    unit: "states + DC",
+    label: "Criminal, MVR, and education coverage across every U.S. jurisdiction we ship reports for.",
+  },
+  {
+    eyebrow: "04",
+    k: "3,200+",
+    unit: "county courts",
+    label: "Sourced live for criminal records — not pulled from a stale national-only database.",
+  },
+  {
+    eyebrow: "05",
+    k: "HIPAA",
+    unit: "+ SOC 2",
+    label: "Compliance posture audited annually; encryption at rest and in transit across the platform.",
+  },
+  {
+    eyebrow: "06",
+    k: "<2%",
+    unit: "dispute rate",
+    label: "Typical candidate dispute rate, well below industry averages reported by CRA peers.",
+  },
 ];
 
 const PRINCIPLES = [
@@ -265,12 +305,58 @@ export default function About() {
         </div>
       </section>
 
+      {/* By the numbers — §77 ledger band, replaces removed leadership grid */}
+      <section className="bg-[color:var(--color-paper)] border-y border-border">
+        <div className="container py-24 md:py-32">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
+            <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
+              <p className="eyebrow">08 — By the numbers</p>
+              <div className="mt-3 hairline" />
+            </div>
+            <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
+              <h2 className="font-display text-[40px] sm:text-[52px] md:text-[64px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
+                The story{" "}
+                <span className="italic font-light text-[color:var(--color-accent-ink)]">
+                  in numbers.
+                </span>
+              </h2>
+              <p className="mt-6 text-[15.5px] leading-[1.8] text-[color:var(--color-ink-soft)] max-w-[640px]">
+                Six measurements we use internally to know whether the company
+                is doing the job it set out to do. No vanity metrics, no
+                rounded-up case studies &mdash; just what we actually report on
+                in the operations review every Monday.
+              </p>
+            </div>
+          </div>
+
+          <dl className="mt-16 grid grid-cols-12 gap-x-10 gap-y-12 border-t border-border">
+            {BY_THE_NUMBERS.map((s) => (
+              <div
+                key={s.eyebrow}
+                className="reveal-on-scroll col-span-12 md:col-span-6 lg:col-span-4 pt-8 border-b border-border pb-10 md:border-b-0 md:pb-0"
+              >
+                <p className="eyebrow">{s.eyebrow}</p>
+                <dt className="mt-4 font-display text-[64px] sm:text-[72px] md:text-[80px] leading-[0.95] tracking-[-0.03em] text-[color:var(--color-ink)]">
+                  {s.k}
+                  <span className="ml-3 align-baseline text-[18px] font-light tracking-normal text-[color:var(--color-ink-soft)]">
+                    {s.unit}
+                  </span>
+                </dt>
+                <dd className="mt-5 text-[14.5px] leading-[1.75] text-[color:var(--color-ink-soft)] max-w-[420px]">
+                  {s.label}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="bg-[color:var(--color-paper)] border-t border-border">
+      <section className="bg-white border-t border-border">
         <div className="container py-20 md:py-24">
           <div className="reveal-on-scroll grid grid-cols-12 gap-6 items-center">
             <div className="col-span-12 md:col-span-8">
-              <p className="eyebrow">08 — Talk to us</p>
+              <p className="eyebrow">09 — Talk to us</p>
               <h3 className="mt-4 font-display text-[34px] sm:text-[44px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
                 Hiring at scale and tired of gambling on a vendor?
               </h3>

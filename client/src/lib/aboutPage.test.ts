@@ -92,3 +92,49 @@ describe("§75 — About page content guarantees", () => {
     expect(ABOUT_SRC).toMatch(/href=\{?"\/contact"\}?/);
   });
 });
+
+describe("§77 — By the numbers ledger band (replaces removed Leadership)", () => {
+  it("section eyebrow '08 — By the numbers' is present", () => {
+    expect(ABOUT_SRC).toMatch(/eyebrow["'][^"]*>08 — By the numbers/);
+  });
+
+  it("section headline 'The story in numbers.' is present", () => {
+    expect(ABOUT_SRC).toMatch(/The story/);
+    expect(ABOUT_SRC).toMatch(/in numbers\./);
+  });
+
+  it("the BY_THE_NUMBERS array exists and contains six entries", () => {
+    const blockMatch = ABOUT_SRC.match(/const BY_THE_NUMBERS = \[([\s\S]*?)\];/);
+    expect(blockMatch, "BY_THE_NUMBERS array must exist").not.toBeNull();
+    const entries = (blockMatch?.[1].match(/eyebrow:\s*"\d+"/g) ?? []);
+    expect(entries.length).toBe(6);
+  });
+
+  it("all six headline metrics appear in the source", () => {
+    expect(ABOUT_SRC).toMatch(/k:\s*"14"/);
+    expect(ABOUT_SRC).toMatch(/k:\s*"24"/);
+    expect(ABOUT_SRC).toMatch(/k:\s*"50"/);
+    expect(ABOUT_SRC).toMatch(/k:\s*"3,200\+"/);
+    expect(ABOUT_SRC).toMatch(/k:\s*"HIPAA"/);
+    expect(ABOUT_SRC).toMatch(/k:\s*"<2%"/);
+  });
+
+  it("renders as a <dl> ledger so the metrics map to <dt>/<dd> for accessibility", () => {
+    expect(ABOUT_SRC).toMatch(/<dl[^>]*>/);
+    expect(ABOUT_SRC).toMatch(/<dt[^>]*>/);
+    expect(ABOUT_SRC).toMatch(/<dd[^>]*>/);
+  });
+
+  it("the band sits BEFORE the closing CTA section", () => {
+    const numbersIdx = ABOUT_SRC.indexOf("08 — By the numbers");
+    const ctaIdx = ABOUT_SRC.indexOf("09 — Talk to us");
+    expect(numbersIdx).toBeGreaterThan(0);
+    expect(ctaIdx).toBeGreaterThan(numbersIdx);
+  });
+
+  it("closing CTA eyebrow renumbered to '09 — Talk to us'", () => {
+    expect(ABOUT_SRC).toMatch(/eyebrow["'][^"]*>09 — Talk to us/);
+    // anti-regression: the old §76 "08 — Talk to us" string must be gone
+    expect(ABOUT_SRC).not.toMatch(/eyebrow["'][^"]*>08 — Talk to us/);
+  });
+});

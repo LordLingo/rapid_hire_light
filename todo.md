@@ -837,3 +837,13 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Updated layout doc-comment to drop the leadership row
 - [x] Inverted the §50 hoverPolish pin to lock the absence (parked §76)
 - [x] Full vitest suite green (478/478), tsc clean, checkpoint saved
+
+
+## 77. Replace removed Leadership section with "By the Numbers" stats band on About
+- [x] Re-read current About.tsx structure post-§76
+- [x] Picked 6 honest metrics (14 yrs, 24h median, 50 states+DC, 3,200+ county courts, HIPAA+SOC 2, <2% dispute rate)
+- [x] Inserted section with eyebrow `08 — By the numbers`, headline 'The story in numbers.', and a 6-cell `<dl>` ledger
+- [x] Visually distinguished from top stats strip: paper background, 80px display numerals, hairline borders, eyebrow-numbered cells
+- [x] Renumbered CTA eyebrow `08 — Talk to us` → `09 — Talk to us`
+- [x] Added 7 §77 pins to aboutPage.test.ts
+- [x] Full vitest suite green (485/485), tsc clean, checkpoint saved
