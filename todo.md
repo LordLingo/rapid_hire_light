@@ -295,3 +295,10 @@
 - [x] Updated `client/src/components/site/Header.tsx` mobile sheet so the open menu shows the brand mark (h-12 lockup) above a hairline divider, with a tap-to-close link back to `/`; pinned by `headerLogo.test.ts` mobile-sheet assertion
 - [x] Generated favicon set (16/32/48/64 ICO + 180/192/512 PNGs) and a 1200×630 social preview card from the color logo via PIL (`webdev-static-assets/build_og_card.py`); uploaded all five assets to the webdev static host; wired `<link rel="icon">`, `<link rel="apple-touch-icon">`, `<meta property="og:image">`, `<meta name="twitter:image">`, `og:type`, `twitter:card`, and `theme-color` into `client/index.html`
 - [x] Added `client/src/lib/brandHeadMeta.test.ts` (6 assertions) pinning each URL constant to `/manus-storage/...` AND verifying `index.html` references the exact same URLs in the right tag; 108/108 vitest passing, LSP/TS clean; verified header, footer, and tab favicon visually
+
+## 37. Swap homepage hero report-card for supplied marketing photo
+- [ ] Copy `/home/ubuntu/upload/HeroPage1image.png` into `/home/ubuntu/webdev-static-assets/rhs-home-hero.png` and upload via `manus-upload-file --webdev`
+- [ ] Add `HOME_HERO_IMAGE_URL` to `shared/brand.ts`
+- [ ] Edit `client/src/components/site/Hero.tsx`: replace the structured Report card in the right column with an `<img>` using the new constant; drop the eyebrow row ("01 — PLATFORM / THE INTELLIGENT HIRING PLATFORM") above the headline so it doesn't compete with the photo's baked-in copy
+- [ ] Add `client/src/lib/homeHeroImage.test.ts` pinning the URL constant + asserting Hero.tsx imports it and renders an <img> with the right src/alt
+- [ ] Browser QA at desktop + mobile, run vitest, save checkpoint and deliver

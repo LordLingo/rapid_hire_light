@@ -1,16 +1,21 @@
 /*
   Editorial Calm — hero
   Asymmetric two-column on desktop:
-   - Left rail: section index "01 / Platform" + small eyebrow.
+   - Left rail: section index "01 / Platform".
    - Main column: large Fraunces 300 headline with italic accent word
      "trusted", subhead in Inter, twin CTAs (ink primary + ghost),
      and a tiny meta line of trust signals.
-   - Right column on desktop: a soft "report card" snapshot SVG that
-     hints at the product without screenshotting it.
+   - Right column on desktop: a supplied marketing photograph
+     (HOME_HERO_IMAGE_URL) that already includes its own composed
+     headline ("TRUSTED RESULTS. FAST.") and tagline. Because the photo
+     carries that copy, we intentionally drop the on-page eyebrow row
+     ("THE INTELLIGENT HIRING PLATFORM") so the page doesn't compete
+     with the image's baked-in headline.
 */
 import { ArrowRight, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
+import { HOME_HERO_IMAGE_URL } from "@shared/brand";
 
 export default function Hero() {
   return (
@@ -34,7 +39,7 @@ export default function Hero() {
       />
 
       <div className="container relative pt-12 pb-20 md:pt-20 md:pb-28">
-        <div className="grid grid-cols-12 gap-x-8 gap-y-16">
+        <div className="grid grid-cols-12 gap-x-8 gap-y-16 items-center">
           {/* Left rail */}
           <div className="col-span-12 lg:col-span-2 reveal-on-scroll">
             <div className="flex lg:block items-center gap-4">
@@ -44,21 +49,20 @@ export default function Hero() {
           </div>
 
           {/* Main column */}
-          <div className="col-span-12 lg:col-span-7 reveal-on-scroll">
-            <p className="eyebrow mb-6">The intelligent hiring platform</p>
-            <h1 className="font-display text-[44px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)] sm:text-[60px] md:text-[76px] lg:text-[88px]">
+          <div className="col-span-12 lg:col-span-6 reveal-on-scroll">
+            <h1 className="font-display text-[40px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)] sm:text-[48px] md:text-[56px] lg:text-[58px] xl:text-[64px]">
               The{" "}
               <span className="italic font-light text-[color:var(--color-accent-ink)]">
                 trusted
               </span>{" "}
               standard in&nbsp;background checks.
             </h1>
-            <p className="mt-7 max-w-2xl text-[17px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+            <p className="mt-6 max-w-xl text-[17px] leading-[1.7] text-[color:var(--color-ink-soft)]">
               Scale your hiring team with a platform built for speed,
               compliance, and accurate results that don&apos;t slow you down.
             </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-3">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/contact"
                 className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
@@ -84,9 +88,9 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Right report card */}
-          <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-            <ReportCard />
+          {/* Right key visual */}
+          <div className="col-span-12 lg:col-span-4 reveal-on-scroll">
+            <HeroKeyVisual />
           </div>
         </div>
       </div>
@@ -94,54 +98,24 @@ export default function Hero() {
   );
 }
 
-function ReportCard() {
+function HeroKeyVisual() {
+  // Marketing photograph supplied by the brand owner. The image already
+  // contains a composed headline ("TRUSTED RESULTS. FAST.") and tagline,
+  // so we don't overlay any additional text here. The soft halo behind it
+  // mirrors the editorial palette without competing with the photo.
   return (
     <div className="relative">
-      <div className="relative rounded-[18px] border border-border bg-white paper-shadow">
-        <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3.5">
-          <div className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-[color:var(--color-accent-ink)]" />
-            <span className="eyebrow">Report · 24a-08821</span>
-          </div>
-          <span className="text-[10px] text-[color:var(--color-ink-muted)] tracking-wider uppercase">
-            Cleared
-          </span>
-        </div>
-        <div className="px-5 py-5">
-          <p className="font-display text-[20px] leading-tight text-[color:var(--color-ink)]">
-            Maya R. — Logistics Lead
-          </p>
-          <p className="mt-1 text-[12.5px] text-[color:var(--color-ink-muted)]">
-            Returned in 06h 12m
-          </p>
-
-          <div className="mt-5 grid gap-3">
-            {[
-              { label: "Identity", state: "Verified" },
-              { label: "Criminal — Federal & County", state: "Clear" },
-              { label: "Employment History", state: "3 / 3 Verified" },
-              { label: "MVR — Texas", state: "No incidents" },
-              { label: "Drug — 5 Panel", state: "Negative" },
-            ].map((row) => (
-              <div
-                key={row.label}
-                className="flex items-center justify-between gap-3 border-b border-border last:border-0 py-2"
-              >
-                <span className="text-[13px] text-[color:var(--color-ink-soft)]">
-                  {row.label}
-                </span>
-                <span className="text-[12.5px] font-medium text-[color:var(--color-accent-ink)]">
-                  {row.state}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-5 flex items-center justify-between text-[11px] text-[color:var(--color-ink-muted)]">
-            <span>Audit trail · 14 events</span>
-            <span>FCRA ✓</span>
-          </div>
-        </div>
+      <div className="relative overflow-hidden rounded-[20px] border border-border bg-white paper-shadow">
+        <img
+          src={HOME_HERO_IMAGE_URL}
+          alt="Hiring leader reviewing a Rapid Hire Solutions background check report on her laptop, with a pull-quote that reads: Trusted Results. Fast. Right People. Safe Choices. Stronger Teams."
+          width={1240}
+          height={1240}
+          decoding="async"
+          fetchPriority="high"
+          draggable={false}
+          className="block h-auto w-full select-none"
+        />
       </div>
       <div
         aria-hidden

@@ -25,6 +25,11 @@
 export const HEADER_LOGO_URL = "/manus-storage/rhs-color-logo_038dbc01.png";
 export const FOOTER_LOGO_URL = "/manus-storage/rhs-white-logo_ba46549d.png";
 
+// Homepage hero key visual. Marketing photograph supplied by the brand owner
+// (woman + laptop showing a sample report). Replaces the inline structured
+// "Report 24A-08821" card that used to occupy the hero's right column.
+export const HOME_HERO_IMAGE_URL = "/manus-storage/rhs-home-hero_16a035cf.png";
+
 // Social/share preview card. 1200x630 PNG that composes the color mark on a
 // branded background. Wired into <head> via index.html.
 export const SOCIAL_OG_IMAGE_URL = "/manus-storage/rhs-og-card_22bd2542.png";
