@@ -33,6 +33,23 @@ describe("§62 — Compliance hero credibility badges", () => {
     expect(imgIdx).toBeGreaterThan(relativeIdx);
   });
 
+  it("opts into PageHero's visualBleed mode so badges can overhang the frame", () => {
+    // The Compliance page must pass `visualBleed` so PageHero drops its
+    // default rounded `overflow-hidden` wrapper, otherwise negatively-offset
+    // badges would be clipped by the frame.
+    expect(compliance).toMatch(/visualBleed/);
+  });
+
+  it("frames the hero photo inside its own rounded overflow-hidden wrapper", () => {
+    // With visualBleed enabled, PageHero no longer frames the visual, so
+    // the visual node must own its own rounded frame around the <img>.
+    const slice = visualSlice();
+    const frameIdx = slice.indexOf("overflow-hidden rounded-[18px]");
+    const imgIdx = slice.indexOf("<img");
+    expect(frameIdx, "inner rounded frame present").toBeGreaterThan(-1);
+    expect(imgIdx).toBeGreaterThan(frameIdx);
+  });
+
   it("renders the SOC 2 top-right badge with all three text rows in order", () => {
     const slice = visualSlice();
     const soc2Idx = slice.indexOf('data-testid="compliance-hero-badge-soc2"');
@@ -54,15 +71,19 @@ describe("§62 — Compliance hero credibility badges", () => {
     expect(card).toMatch(/colorScheme: "dark"/);
   });
 
-  it("SOC 2 badge is positioned absolutely top-right and pinned at sm: and up", () => {
+  it("SOC 2 badge is positioned absolutely overhanging the top-right corner at sm: and up", () => {
     const slice = visualSlice();
     const soc2Idx = slice.indexOf('data-testid="compliance-hero-badge-soc2"');
     const card = slice.slice(soc2Idx, soc2Idx + 1500);
     // Hidden on mobile (xs), shown sm: and up:
     expect(card).toMatch(/hidden sm:block/);
     expect(card).toMatch(/absolute/);
-    expect(card).toMatch(/top-4/);
-    expect(card).toMatch(/right-4/);
+    // Negative top + right offsets push the badge OFF the frame so it
+    // overhangs the corner instead of covering the subject's face.
+    expect(card).toMatch(/-top-6/);
+    expect(card).toMatch(/-right-4/);
+    expect(card).toMatch(/md:-top-7/);
+    expect(card).toMatch(/md:-right-6/);
   });
 
   it("renders the Dispute-rate bottom-left badge with all three text rows in order", () => {
@@ -86,14 +107,18 @@ describe("§62 — Compliance hero credibility badges", () => {
     expect(card).not.toMatch(/bg-\[color:var\(--color-footer\)\]/);
   });
 
-  it("Dispute badge is positioned absolutely bottom-left and pinned at sm: and up", () => {
+  it("Dispute badge is positioned absolutely overhanging the bottom-left corner at sm: and up", () => {
     const slice = visualSlice();
     const dispIdx = slice.indexOf('data-testid="compliance-hero-badge-dispute"');
     const card = slice.slice(dispIdx, dispIdx + 1500);
     expect(card).toMatch(/hidden sm:block/);
     expect(card).toMatch(/absolute/);
-    expect(card).toMatch(/bottom-4/);
-    expect(card).toMatch(/left-4/);
+    // Negative bottom + left offsets mirror the SOC 2 overhang across the
+    // diagonal so the pair reads as a balanced floating-card composition.
+    expect(card).toMatch(/-bottom-6/);
+    expect(card).toMatch(/-left-4/);
+    expect(card).toMatch(/md:-bottom-7/);
+    expect(card).toMatch(/md:-left-6/);
   });
 
   it("Dispute badge includes a live-pulse dot using the existing support-status-dot-live treatment", () => {

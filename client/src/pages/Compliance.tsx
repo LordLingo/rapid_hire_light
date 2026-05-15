@@ -611,19 +611,27 @@ export default function Compliance() {
           </>
         }
         lede="Every screen Rapid Hire Solutions runs is governed by the same standards you'd want applied to your own employment record — the federal FCRA, the state and local laws that ride on top of it, the EEOC's individualized-assessment guidance, and a SOC 2 Type II / HIPAA-aligned data envelope. Here's how that works in practice."
+        visualBleed
         visual={
-          <div className="relative w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px]">
-            <img
-              src={COMPLIANCE_HERO_URL}
-              alt=""
-              loading="eager"
-              decoding="async"
-              className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
-            />
-            {/* Top-right credibility badge — SOC 2 Type II */}
+          <div className="relative w-full">
+            {/* Framed hero photo — owns its own rounded clip so the badges outside
+                this wrapper can overhang the frame edges without being clipped. */}
+            <div className="overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
+              <img
+                src={COMPLIANCE_HERO_URL}
+                alt=""
+                loading="eager"
+                decoding="async"
+                className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
+              />
+            </div>
+            {/* Top-right credibility badge — SOC 2 Type II.
+                Overhangs the frame by ~28px (top) and ~24px (right) at md+.
+                Sits OUTSIDE the rounded-frame's overflow-hidden wrapper so it
+                visually floats off the corner instead of covering the subject. */}
             <div
               data-testid="compliance-hero-badge-soc2"
-              className="hidden sm:block absolute top-4 right-4 md:top-5 md:right-5 w-[200px] md:w-[214px] rounded-[14px] paper-shadow bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)] px-4 py-3 ring-1 ring-[color:var(--color-accent-halo)]/15"
+              className="hidden sm:block absolute -top-6 -right-4 md:-top-7 md:-right-6 w-[200px] md:w-[214px] rounded-[14px] paper-shadow bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)] px-4 py-3 ring-1 ring-[color:var(--color-accent-halo)]/15"
               style={{ colorScheme: "dark" }}
             >
               <p className="text-[10px] tracking-[0.18em] uppercase text-[color:var(--color-footer-muted)]">
@@ -636,10 +644,12 @@ export default function Compliance() {
                 Report available under NDA
               </p>
             </div>
-            {/* Bottom-left credibility badge — Dispute rate */}
+            {/* Bottom-left credibility badge — Dispute rate.
+                Overhangs the frame by ~24px (bottom) and ~24px (left) at md+,
+                mirroring the SOC 2 badge across the diagonal. */}
             <div
               data-testid="compliance-hero-badge-dispute"
-              className="hidden sm:block absolute bottom-4 left-4 md:bottom-5 md:left-5 w-[220px] md:w-[232px] rounded-[14px] paper-shadow bg-white px-4 py-3 ring-1 ring-[color:var(--color-border)]"
+              className="hidden sm:block absolute -bottom-6 -left-4 md:-bottom-7 md:-left-6 w-[220px] md:w-[232px] rounded-[14px] paper-shadow bg-white px-4 py-3 ring-1 ring-[color:var(--color-border)]"
             >
               <div className="flex items-center gap-2">
                 <span

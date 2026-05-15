@@ -24,6 +24,14 @@ type Props = {
   belowVisual?: React.ReactNode;
   /** Optional slot rendered DIRECTLY UNDER the lede paragraph in the headline column. Used for hero CTA + trust-strip clusters. */
   afterLede?: React.ReactNode;
+  /**
+   * When `true`, PageHero renders `visual` WITHOUT its default rounded
+   * `overflow-hidden` frame. The visual node is then responsible for its
+   * own framing, and may contain absolutely-positioned children that
+   * overhang the frame edges (e.g. floating credibility badges).
+   * Defaults to `false` to preserve every existing page's framed visual.
+   */
+  visualBleed?: boolean;
   /** Legacy fallback: an image URL. Ignored when `visual` is provided. */
   image?: string;
   imageAlt?: string;
@@ -36,6 +44,7 @@ export default function PageHero({
   visual,
   belowVisual,
   afterLede,
+  visualBleed = false,
   image,
   imageAlt,
 }: Props) {
@@ -86,9 +95,18 @@ export default function PageHero({
                 ) : null}
               </div>
               <div className="col-span-12 lg:col-span-4">
-                <div className="reveal-on-scroll overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
-                  {rightSlot}
-                </div>
+                {visualBleed ? (
+                  <div
+                    data-testid="page-hero-visual-bleed"
+                    className="reveal-on-scroll relative"
+                  >
+                    {rightSlot}
+                  </div>
+                ) : (
+                  <div className="reveal-on-scroll overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
+                    {rightSlot}
+                  </div>
+                )}
                 {belowVisual}
               </div>
             </>
