@@ -8,6 +8,7 @@
 import SiteShell from "@/components/site/SiteShell";
 import Hero from "@/components/site/Hero";
 import LogoStrip from "@/components/site/LogoStrip";
+import SampleReportSection from "@/components/site/SampleReportSection";
 import StopGambling from "@/components/site/StopGambling";
 import WhyUs from "@/components/site/WhyUs";
 import Workflows from "@/components/site/Workflows";
@@ -20,6 +21,7 @@ export default function Home() {
     <SiteShell>
       <Hero />
       <LogoStrip />
+      <SampleReportSection />
       <StopGambling />
       <WhyUs />
       <Workflows />

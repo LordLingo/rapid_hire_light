@@ -15,7 +15,10 @@
 import { ArrowRight, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "wouter";
-import { HOME_HERO_IMAGE_URL } from "@shared/brand";
+import {
+  HOME_HERO_IMAGE_URL,
+  HOME_HERO_IMAGE_URL_MOBILE,
+} from "@shared/brand";
 
 export default function Hero() {
   return (
@@ -106,16 +109,38 @@ function HeroKeyVisual() {
   return (
     <div className="relative">
       <div className="relative overflow-hidden rounded-[20px] border border-border bg-white paper-shadow">
-        <img
-          src={HOME_HERO_IMAGE_URL}
-          alt="Hiring leader reviewing a Rapid Hire Solutions background check report on her laptop, with a pull-quote that reads: Trusted Results. Fast. Right People. Safe Choices. Stronger Teams."
-          width={1240}
-          height={1240}
-          decoding="async"
-          fetchPriority="high"
-          draggable={false}
-          className="block h-auto w-full select-none"
-        />
+        {/*
+          <picture> swaps source at the Tailwind `sm` breakpoint (640px).
+          - >= 640px: 5:4 desktop crop (vertical dead space trimmed).
+          - <  640px: original 1:1 source so neither baked-in copy region is
+            clipped on a narrow viewport.
+          The <img> fallback declares the desktop dimensions; the mobile
+          source naturally renders square at full width.
+        */}
+        <picture>
+          <source
+            media="(min-width: 640px)"
+            srcSet={HOME_HERO_IMAGE_URL}
+            width={1254}
+            height={1003}
+          />
+          <source
+            media="(max-width: 639px)"
+            srcSet={HOME_HERO_IMAGE_URL_MOBILE}
+            width={1254}
+            height={1254}
+          />
+          <img
+            src={HOME_HERO_IMAGE_URL}
+            alt="Hiring leader reviewing a Rapid Hire Solutions background check report on her laptop, with a pull-quote that reads: Trusted Results. Fast. Right People. Safe Choices. Stronger Teams."
+            width={1254}
+            height={1003}
+            decoding="async"
+            fetchPriority="high"
+            draggable={false}
+            className="block h-auto w-full select-none"
+          />
+        </picture>
       </div>
       <div
         aria-hidden

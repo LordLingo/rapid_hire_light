@@ -302,3 +302,13 @@
 - [x] Replaced ReportCard component with `<HeroKeyVisual />` rendering the supplied photo; dropped the "THE INTELLIGENT HIRING PLATFORM" eyebrow above the headline (kept the "01 — PLATFORM" left rail since it sits separately and doesn't compete); rebalanced grid (left rail 2 / headline 6 / image 4) and headline sizes (lg:58px, xl:64px) so the headline no longer overlaps the photo at desktop
 - [x] Added `client/src/lib/homeHeroImage.test.ts` (6 assertions): URL pin, import pin, src pin, descriptive alt, old ReportCard removed, no competing eyebrow
 - [x] Browser QA verified at desktop; 114/114 vitest passing, LSP/TS clean; checkpoint 4b9a5569 saved
+
+## 38. Hero image follow-ups: balanced crop, mobile variant, ReportCard reuse
+- [ ] Generate a 5:4 desktop crop (e.g. 1240x992) of the supplied home-hero photo so its vertical footprint matches the headline; preserve the baked-in headline + tagline in the crop window
+- [ ] Generate a mobile crop variant (square or 4:5) that keeps the baked-in copy readable at <640px viewports
+- [ ] Upload both via `manus-upload-file --webdev`, add `HOME_HERO_IMAGE_URL_DESKTOP` and `HOME_HERO_IMAGE_URL_MOBILE` to `shared/brand.ts` (keep the original constant name pointing at the desktop crop for backward compatibility, or migrate)
+- [ ] Replace the `<img>` in Hero.tsx's `HeroKeyVisual` with a `<picture>` element that swaps source at the `sm` breakpoint
+- [ ] Re-introduce the retired structured ReportCard as a new homepage section between hero and the next existing section ("What a Rapid Hire report looks like" — eyebrow + heading + 1-2 sentence intro + ReportCard centered or paired with a short bullet rail). Keep the same five rows (Identity, Criminal, Employment, MVR, Drug) so it still reads as a real product preview
+- [ ] Move the ReportCard JSX into a reusable `client/src/components/site/SampleReportCard.tsx` so it can be embedded by future pages too
+- [ ] Add / update vitest: `homeHeroImage.test.ts` updated for the new constants + `<picture>` markup; new `sampleReportCard.test.tsx` (or a small assertion in `homeHeroImage.test.ts`) verifying the structured card is on the homepage
+- [ ] Browser QA at desktop + mobile breakpoints, run vitest, save checkpoint and deliver

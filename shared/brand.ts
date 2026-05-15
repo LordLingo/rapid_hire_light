@@ -26,9 +26,17 @@ export const HEADER_LOGO_URL = "/manus-storage/rhs-color-logo_038dbc01.png";
 export const FOOTER_LOGO_URL = "/manus-storage/rhs-white-logo_ba46549d.png";
 
 // Homepage hero key visual. Marketing photograph supplied by the brand owner
-// (woman + laptop showing a sample report). Replaces the inline structured
-// "Report 24A-08821" card that used to occupy the hero's right column.
-export const HOME_HERO_IMAGE_URL = "/manus-storage/rhs-home-hero_16a035cf.png";
+// (woman + laptop showing a sample report). Two crops are served via a
+// <picture> element so the baked-in copy stays legible at every viewport:
+//   - Desktop (>= sm): 5:4 crop, vertical dead space trimmed (1254x1003).
+//   - Mobile (< sm):   original 1:1 source so neither baked-in copy region
+//                      gets clipped on a narrow phone screen.
+// `HOME_HERO_IMAGE_URL` is the desktop default; tests pin it to the 5:4
+// crop, and Hero.tsx's <picture> falls back to the mobile URL below sm.
+export const HOME_HERO_IMAGE_URL =
+  "/manus-storage/rhs-home-hero-desktop_463c89fa.png";
+export const HOME_HERO_IMAGE_URL_MOBILE =
+  "/manus-storage/rhs-home-hero_16a035cf.png";
 
 // Social/share preview card. 1200x630 PNG that composes the color mark on a
 // branded background. Wired into <head> via index.html.
