@@ -680,14 +680,14 @@ export default function Compliance() {
                 <CalendarCheck2 aria-hidden className="size-4" />
                 Book a free 15-min audit
               </Link>
-              <a
-                href="#certifications"
+              <Link
+                href="/compliance/checklist"
                 data-testid="compliance-cta-checklist"
                 className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)]"
               >
                 <FileDown aria-hidden className="size-4 text-[color:var(--color-accent-ink)]" />
                 Get the 24-point checklist
-              </a>
+              </Link>
             </div>
             <ul
               data-testid="compliance-trust-strip"

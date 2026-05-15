@@ -56,14 +56,19 @@ describe("§61 — Compliance hero CTA pair", () => {
     expect(text).toMatch(/btn-press/);
   });
 
-  it("secondary CTA \"Get the 24-point checklist\" is an outlined anchor to #certifications", () => {
+  it("secondary CTA \"Get the 24-point checklist\" is an outlined wouter Link to /compliance/checklist", () => {
+    // §65: re-pointed from in-page #certifications anchor to the dedicated
+    // /compliance/checklist page. The element type also changed from <a> to
+    // <Link> (wouter) for SPA-style navigation.
     expect(COMPLIANCE_SRC).toMatch(/data-testid="compliance-cta-checklist"/);
     const block = COMPLIANCE_SRC.match(
-      /<a[\s\S]*?data-testid="compliance-cta-checklist"[\s\S]*?Get the 24-point checklist/
+      /<Link[\s\S]*?data-testid="compliance-cta-checklist"[\s\S]*?Get the 24-point checklist/
     );
     expect(block).toBeTruthy();
     const text = block![0];
-    expect(text).toMatch(/href="#certifications"/);
+    expect(text).toMatch(/href="\/compliance\/checklist"/);
+    // Anti-regression: the old #certifications anchor must NOT come back.
+    expect(text).not.toMatch(/href="#certifications"/);
     expect(text).toMatch(/bg-transparent/);
     expect(text).toMatch(/border-\[color:var\(--color-border\)\]/);
     expect(text).toMatch(/text-\[color:var\(--color-ink\)\]/);

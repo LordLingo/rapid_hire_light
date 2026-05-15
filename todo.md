@@ -722,3 +722,11 @@ Tasks:
 - [x] Registered `/compliance/audit` route in `App.tsx` BEFORE the `/compliance` route (wouter matches first hit).
 - [x] Re-pointed the Compliance hero primary CTA from `/contact?topic=compliance-audit` → `/compliance/audit`.
 - [x] Pinned the new page (16 vitest cases in `complianceAuditPage.test.ts`) covering route registration, hero copy, six-surfaces order, form fields/posting/success/error states, three-step flow, FAQ count, closing band, and SEO. Updated §61 hero CTA pin to expect the new href and added an anti-regression assertion against the old `/contact?topic=` URL. 383/383 tests passing.
+
+## 65. /compliance/checklist dedicated 24-point checklist page
+
+- [x] Reference precisehire.com/compliance/checklist for structure inspiration.
+- [x] Build a new ComplianceChecklist.tsx page on our design system: hero, 24-point checklist organised by category (disclosure, adverse-action, EEOC, jurisdictional overlays, dispute handling, monitoring), download/print affordance, and a closing CTA back to /compliance/audit.
+- [x] Register /compliance/checklist route in App.tsx BEFORE /compliance.
+- [x] Re-point the Compliance hero secondary CTA "Get the 24-point checklist" from #certifications anchor → /compliance/checklist.
+- [x] Add vitest pins covering route registration, hero, exact 24-item count, category structure, CTA + closing band, and the §61 anti-regression on the new href. Run full suite green.
