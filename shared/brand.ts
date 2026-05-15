@@ -31,12 +31,24 @@ export const FOOTER_LOGO_URL = "/manus-storage/rhs-white-logo_ba46549d.png";
 //   - Desktop (>= sm): 5:4 crop, vertical dead space trimmed (1254x1003).
 //   - Mobile (< sm):   original 1:1 source so neither baked-in copy region
 //                      gets clipped on a narrow phone screen.
-// `HOME_HERO_IMAGE_URL` is the desktop default; tests pin it to the 5:4
-// crop, and Hero.tsx's <picture> falls back to the mobile URL below sm.
+//
+// Each crop is encoded three ways for `<picture>` source negotiation:
+//   AVIF (best compression on modern browsers) -> WebP (broad support) ->
+//   PNG (universal fallback / used by the <img> element). The PNG URLs
+//   below remain the canonical "truth" of which crop is which; the AVIF
+//   and WebP variants are produced by `webdev-static-assets/encode_hero_modern.py`.
 export const HOME_HERO_IMAGE_URL =
   "/manus-storage/rhs-home-hero-desktop_463c89fa.png";
+export const HOME_HERO_IMAGE_URL_AVIF =
+  "/manus-storage/rhs-home-hero-desktop_ad433090.avif";
+export const HOME_HERO_IMAGE_URL_WEBP =
+  "/manus-storage/rhs-home-hero-desktop_ba3383b8.webp";
 export const HOME_HERO_IMAGE_URL_MOBILE =
   "/manus-storage/rhs-home-hero_16a035cf.png";
+export const HOME_HERO_IMAGE_URL_MOBILE_AVIF =
+  "/manus-storage/rhs-home-hero_2d59da93.avif";
+export const HOME_HERO_IMAGE_URL_MOBILE_WEBP =
+  "/manus-storage/rhs-home-hero_017a8af6.webp";
 
 // Social/share preview card. 1200x630 PNG that composes the color mark on a
 // branded background. Wired into <head> via index.html.

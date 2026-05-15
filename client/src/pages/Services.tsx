@@ -22,6 +22,7 @@ import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { ServicesStack } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
+import SampleReportCard from "@/components/site/SampleReportCard";
 
 const SERVICES = [
   {
@@ -176,6 +177,42 @@ export default function Services() {
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sample of what every service returns. The same SampleReportCard
+          used on /home and /pricing renders here too — reused so the
+          deliverable looks identical wherever a prospect sees it. Lives
+          between the long-form list and the closing CTA. */}
+      <section
+        id="sample-report"
+        aria-labelledby="services-sample-heading"
+        className="bg-white border-t border-border"
+      >
+        <div className="container py-20 md:py-24">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-center">
+            <div className="col-span-12 lg:col-span-5">
+              <SampleReportCard />
+            </div>
+            <div className="col-span-12 lg:col-span-7">
+              <p className="eyebrow">07 — What lands in your inbox</p>
+              <h3
+                id="services-sample-heading"
+                className="mt-4 font-display text-[30px] sm:text-[38px] md:text-[44px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]"
+              >
+                Six services. One{" "}
+                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+                  audit-ready report.
+                </span>
+              </h3>
+              <p className="mt-5 max-w-xl text-[15.5px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+                Whether you order Employment alone or every line above,
+                hiring managers see the same clean layout — status pill,
+                candidate, time-to-clear, a row per check, and an FCRA
+                stamp. No legalese, no surprise PDFs.
+              </p>
+            </div>
           </div>
         </div>
       </section>

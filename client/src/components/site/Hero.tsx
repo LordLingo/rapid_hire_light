@@ -13,11 +13,14 @@
      with the image's baked-in headline.
 */
 import { ArrowRight, FileText } from "lucide-react";
-import { toast } from "sonner";
 import { Link } from "wouter";
 import {
   HOME_HERO_IMAGE_URL,
+  HOME_HERO_IMAGE_URL_AVIF,
+  HOME_HERO_IMAGE_URL_WEBP,
   HOME_HERO_IMAGE_URL_MOBILE,
+  HOME_HERO_IMAGE_URL_MOBILE_AVIF,
+  HOME_HERO_IMAGE_URL_MOBILE_WEBP,
 } from "@shared/brand";
 
 export default function Hero() {
@@ -73,13 +76,22 @@ export default function Hero() {
                 Start Screening
                 <ArrowRight className="size-4" />
               </Link>
-              <button
-                onClick={() => toast("Sample report — preview")}
+              {/*
+                Anchor link to the homepage "What a Rapid Hire report looks
+                like" section. We use a plain <a> instead of an onClick
+                handler so right-click → "open in new tab" still works,
+                Cmd+click opens the section in a new tab with the hash
+                preserved, and the browser handles smooth-scroll natively
+                via the `scroll-behavior: smooth` global rule. Keeps the
+                button purely declarative.
+              */}
+              <a
+                href="#sample-report"
                 className="btn-press inline-flex items-center gap-2 rounded-full border border-[color:var(--color-rule)] bg-white px-6 py-3.5 text-[14px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-accent-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-white"
               >
                 <FileText className="size-4" />
                 View Sample Report
-              </button>
+              </a>
             </div>
 
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 eyebrow text-[color:var(--color-ink-muted)]">
@@ -110,21 +122,58 @@ function HeroKeyVisual() {
     <div className="relative">
       <div className="relative overflow-hidden rounded-[20px] border border-border bg-white paper-shadow">
         {/*
-          <picture> swaps source at the Tailwind `sm` breakpoint (640px).
-          - >= 640px: 5:4 desktop crop (vertical dead space trimmed).
-          - <  640px: original 1:1 source so neither baked-in copy region is
-            clipped on a narrow viewport.
-          The <img> fallback declares the desktop dimensions; the mobile
-          source naturally renders square at full width.
+          <picture> swaps source at the Tailwind `sm` breakpoint (640px) and
+          negotiates format inside each breakpoint. Browsers walk the
+          <source> list top-down and pick the first they can decode whose
+          media query matches.
+            - >= 640px: 5:4 desktop crop  (AVIF -> WebP -> PNG fallback)
+            - <  640px: original 1:1 source (AVIF -> WebP -> PNG fallback)
+          AVIF + WebP cut the LCP image payload from ~1.5 MB to ~100 KB
+          with no visible quality loss; the PNG <img> below remains the
+          universal fallback for browsers that ship neither codec.
+          See encode_hero_modern.py in webdev-static-assets/ for how the
+          AVIF/WebP variants were produced.
         */}
         <picture>
+          {/* Desktop sources (>= 640px) */}
           <source
+            type="image/avif"
+            media="(min-width: 640px)"
+            srcSet={HOME_HERO_IMAGE_URL_AVIF}
+            width={1254}
+            height={1003}
+          />
+          <source
+            type="image/webp"
+            media="(min-width: 640px)"
+            srcSet={HOME_HERO_IMAGE_URL_WEBP}
+            width={1254}
+            height={1003}
+          />
+          <source
+            type="image/png"
             media="(min-width: 640px)"
             srcSet={HOME_HERO_IMAGE_URL}
             width={1254}
             height={1003}
           />
+          {/* Mobile sources (< 640px) */}
           <source
+            type="image/avif"
+            media="(max-width: 639px)"
+            srcSet={HOME_HERO_IMAGE_URL_MOBILE_AVIF}
+            width={1254}
+            height={1254}
+          />
+          <source
+            type="image/webp"
+            media="(max-width: 639px)"
+            srcSet={HOME_HERO_IMAGE_URL_MOBILE_WEBP}
+            width={1254}
+            height={1254}
+          />
+          <source
+            type="image/png"
             media="(max-width: 639px)"
             srcSet={HOME_HERO_IMAGE_URL_MOBILE}
             width={1254}

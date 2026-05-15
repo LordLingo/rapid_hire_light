@@ -1,33 +1,38 @@
 /*
   Spec: pin the homepage hero key visual + the resurrected sample report
-  section. The right column of Hero.tsx used to render a structured "Report
-  24A-08821" card in code; the brand owner supplied a marketing photograph
-  (HOME_HERO_IMAGE_URL) that replaced it. As a follow-up we (a) added a
-  mobile-cropped variant served via <picture>, and (b) re-introduced the
-  retired structured card mid-page on the homepage as a "What a report
-  looks like" proof section, lifted into its own SampleReportCard
-  component.
+  section across pages.
 
-  Assertions:
+  Hero key visual:
     - HOME_HERO_IMAGE_URL + HOME_HERO_IMAGE_URL_MOBILE both point at the
-      webdev static host (/manus-storage/...).
-    - The two URLs are not identical (we actually have two crops).
-    - Hero.tsx imports both constants from @shared/brand.
-    - Hero.tsx renders a <picture> element with two <source>s and a
-      fallback <img> using the desktop URL.
-    - The fallback <img> has a real, descriptive alt attribute.
-    - The competing on-page eyebrow row remains removed.
-    - The structured card is now sourced from SampleReportCard.tsx.
-    - SampleReportCard.tsx still contains the canonical labels.
-    - SampleReportSection.tsx is rendered inside Home.tsx between
-      LogoStrip and StopGambling.
+      webdev static host.
+    - The desktop + mobile crops also have AVIF and WebP variants
+      (HOME_HERO_IMAGE_URL_AVIF / _WEBP / _MOBILE_AVIF / _MOBILE_WEBP),
+      uploaded by encode_hero_modern.py and named with the right extensions.
+    - Hero.tsx imports all six constants from @shared/brand.
+    - Hero.tsx's <picture> declares each format in the right order
+      (AVIF -> WebP -> PNG) and at the right breakpoint (>= 640 / < 640).
+    - The rendered <img> fallback uses the desktop PNG, has a real alt,
+      and the competing eyebrow row stays removed.
+    - The "View Sample Report" CTA is now an anchor link to #sample-report
+      (no toast).
+
+  Sample report card reuse:
+    - The structured card lives in SampleReportCard.tsx and carries the
+      canonical labels.
+    - Home.tsx, Services.tsx, and Pricing.tsx all import + render
+      SampleReportCard somewhere on the page.
+    - Home.tsx mounts SampleReportSection between LogoStrip and StopGambling.
 */
 import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import {
   HOME_HERO_IMAGE_URL,
+  HOME_HERO_IMAGE_URL_AVIF,
+  HOME_HERO_IMAGE_URL_WEBP,
   HOME_HERO_IMAGE_URL_MOBILE,
+  HOME_HERO_IMAGE_URL_MOBILE_AVIF,
+  HOME_HERO_IMAGE_URL_MOBILE_WEBP,
 } from "@shared/brand";
 
 const ROOT = path.resolve(__dirname, "../../..");
@@ -48,9 +53,17 @@ const homeSrc = fs.readFileSync(
   path.join(ROOT, "client/src/pages/Home.tsx"),
   "utf8",
 );
+const servicesSrc = fs.readFileSync(
+  path.join(ROOT, "client/src/pages/Services.tsx"),
+  "utf8",
+);
+const pricingSrc = fs.readFileSync(
+  path.join(ROOT, "client/src/pages/Pricing.tsx"),
+  "utf8",
+);
 
-describe("Home hero key visual", () => {
-  it("desktop + mobile URLs both live on the webdev static host", () => {
+describe("Home hero key visual — URL constants", () => {
+  it("desktop + mobile PNG URLs both live on the webdev static host", () => {
     expect(HOME_HERO_IMAGE_URL).toMatch(
       /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.png$/,
     );
@@ -59,28 +72,90 @@ describe("Home hero key visual", () => {
     );
   });
 
-  it("desktop and mobile URLs are distinct (two real crops)", () => {
+  it("desktop + mobile AVIF and WebP variants are present, distinct, and end with the right extension", () => {
+    const all = [
+      HOME_HERO_IMAGE_URL_AVIF,
+      HOME_HERO_IMAGE_URL_WEBP,
+      HOME_HERO_IMAGE_URL_MOBILE_AVIF,
+      HOME_HERO_IMAGE_URL_MOBILE_WEBP,
+    ];
+    expect(HOME_HERO_IMAGE_URL_AVIF).toMatch(
+      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.avif$/,
+    );
+    expect(HOME_HERO_IMAGE_URL_WEBP).toMatch(
+      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.webp$/,
+    );
+    expect(HOME_HERO_IMAGE_URL_MOBILE_AVIF).toMatch(
+      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.avif$/,
+    );
+    expect(HOME_HERO_IMAGE_URL_MOBILE_WEBP).toMatch(
+      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.webp$/,
+    );
+    // Six unique URLs total — none of them collide.
+    const set = new Set([HOME_HERO_IMAGE_URL, HOME_HERO_IMAGE_URL_MOBILE, ...all]);
+    expect(set.size).toBe(6);
+  });
+
+  it("desktop and mobile PNG URLs are distinct (two real crops)", () => {
     expect(HOME_HERO_IMAGE_URL).not.toEqual(HOME_HERO_IMAGE_URL_MOBILE);
   });
+});
 
-  it("Hero.tsx imports both URL constants from @shared/brand", () => {
-    expect(heroSrc).toMatch(
-      /import\s*\{[\s\S]*?HOME_HERO_IMAGE_URL[\s\S]*?HOME_HERO_IMAGE_URL_MOBILE[\s\S]*?\}\s*from\s*"@shared\/brand"/,
-    );
+describe("Hero.tsx <picture> wiring", () => {
+  it("imports all six hero URL constants from @shared/brand", () => {
+    for (const name of [
+      "HOME_HERO_IMAGE_URL",
+      "HOME_HERO_IMAGE_URL_AVIF",
+      "HOME_HERO_IMAGE_URL_WEBP",
+      "HOME_HERO_IMAGE_URL_MOBILE",
+      "HOME_HERO_IMAGE_URL_MOBILE_AVIF",
+      "HOME_HERO_IMAGE_URL_MOBILE_WEBP",
+    ]) {
+      expect(heroSrc).toContain(name);
+    }
+    expect(heroSrc).toMatch(/from\s*"@shared\/brand"/);
   });
 
-  it("Hero.tsx renders a <picture> with desktop + mobile <source>s and an <img> fallback", () => {
-    expect(heroSrc).toMatch(/<picture>/);
-    expect(heroSrc).toMatch(
-      /<source[\s\S]*?media="\(min-width: 640px\)"[\s\S]*?srcSet=\{HOME_HERO_IMAGE_URL\}/,
+  it("declares AVIF before WebP before PNG within the desktop breakpoint", () => {
+    const desktopAvif = heroSrc.indexOf(
+      'srcSet={HOME_HERO_IMAGE_URL_AVIF}',
     );
-    expect(heroSrc).toMatch(
-      /<source[\s\S]*?media="\(max-width: 639px\)"[\s\S]*?srcSet=\{HOME_HERO_IMAGE_URL_MOBILE\}/,
+    const desktopWebp = heroSrc.indexOf(
+      'srcSet={HOME_HERO_IMAGE_URL_WEBP}',
     );
+    // Find the *desktop* PNG <source> (srcSet={HOME_HERO_IMAGE_URL} appears
+    // a second time inside the <img>; we want the first occurrence).
+    const desktopPng = heroSrc.indexOf('srcSet={HOME_HERO_IMAGE_URL}');
+    expect(desktopAvif).toBeGreaterThan(-1);
+    expect(desktopWebp).toBeGreaterThan(-1);
+    expect(desktopPng).toBeGreaterThan(-1);
+    expect(desktopAvif).toBeLessThan(desktopWebp);
+    expect(desktopWebp).toBeLessThan(desktopPng);
+  });
+
+  it("declares AVIF before WebP before PNG within the mobile breakpoint", () => {
+    const mobileAvif = heroSrc.indexOf(
+      'srcSet={HOME_HERO_IMAGE_URL_MOBILE_AVIF}',
+    );
+    const mobileWebp = heroSrc.indexOf(
+      'srcSet={HOME_HERO_IMAGE_URL_MOBILE_WEBP}',
+    );
+    const mobilePng = heroSrc.indexOf('srcSet={HOME_HERO_IMAGE_URL_MOBILE}');
+    expect(mobileAvif).toBeGreaterThan(-1);
+    expect(mobileWebp).toBeGreaterThan(-1);
+    expect(mobilePng).toBeGreaterThan(-1);
+    expect(mobileAvif).toBeLessThan(mobileWebp);
+    expect(mobileWebp).toBeLessThan(mobilePng);
+  });
+
+  it("each <source> declares its image type so the browser can pick correctly", () => {
+    expect(heroSrc).toMatch(/type="image\/avif"/);
+    expect(heroSrc).toMatch(/type="image\/webp"/);
+    expect(heroSrc).toMatch(/type="image\/png"/);
+  });
+
+  it("the rendered <img> uses the desktop PNG and has a non-trivial alt", () => {
     expect(heroSrc).toMatch(/<img[\s\S]*?src=\{HOME_HERO_IMAGE_URL\}/);
-  });
-
-  it("the rendered <img> has a non-trivial alt attribute", () => {
     const altMatch = heroSrc.match(
       /<img[\s\S]*?src=\{HOME_HERO_IMAGE_URL\}[\s\S]*?alt="([^"]+)"/,
     );
@@ -92,25 +167,34 @@ describe("Home hero key visual", () => {
 
   it("the competing 'intelligent hiring platform' eyebrow is removed", () => {
     // Strip the file-header doc-comment before searching so the prose that
-    // *describes* the change ("...drop the eyebrow ...") doesn't false-fail.
+    // *describes* the change doesn't false-fail.
     const stripped = heroSrc.replace(/\/\*[\s\S]*?\*\//g, "");
     expect(stripped.toLowerCase()).not.toContain(
       "the intelligent hiring platform",
     );
   });
 
-  it("Hero.tsx no longer hosts an inline ReportCard component", () => {
+  it("the inline ReportCard is gone from Hero.tsx", () => {
     expect(heroSrc).not.toMatch(/function\s+ReportCard\s*\(/);
-    // The card's signature label should no longer live in Hero.tsx.
     expect(heroSrc).not.toContain("Report · 24a-08821");
   });
 });
 
-describe("Sample report card (resurrected)", () => {
+describe("Hero CTA: View Sample Report deep-link", () => {
+  it("uses an anchor element pointing at #sample-report (not the toast)", () => {
+    // Strip block doc-comments so the explanatory prose doesn't satisfy the
+    // 'no toast' assertion below.
+    const code = heroSrc.replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(code).toMatch(/href="#sample-report"[\s\S]*?View Sample Report/);
+    expect(code).not.toMatch(/Sample report — preview/);
+    expect(code).not.toMatch(/from\s+"sonner"/);
+  });
+});
+
+describe("Sample report card reuse across pages", () => {
   it("SampleReportCard.tsx is the canonical home for the structured card", () => {
     expect(sampleCardSrc).toContain("Report · 24a-08821");
     expect(sampleCardSrc).toContain("Maya R. — Logistics Lead");
-    // All five canonical row labels survive intact.
     for (const label of [
       "Identity",
       "Criminal — Federal & County",
@@ -138,5 +222,21 @@ describe("Sample report card (resurrected)", () => {
     expect(stopIdx).toBeGreaterThan(-1);
     expect(logoIdx).toBeLessThan(sampleIdx);
     expect(sampleIdx).toBeLessThan(stopIdx);
+  });
+
+  it("Services.tsx imports + renders SampleReportCard", () => {
+    expect(servicesSrc).toMatch(
+      /import\s+SampleReportCard\s+from\s+"@\/components\/site\/SampleReportCard"/,
+    );
+    expect(servicesSrc).toMatch(/<SampleReportCard\s*\/>/);
+    expect(servicesSrc).toMatch(/id="sample-report"/);
+  });
+
+  it("Pricing.tsx imports + renders SampleReportCard", () => {
+    expect(pricingSrc).toMatch(
+      /import\s+SampleReportCard\s+from\s+"@\/components\/site\/SampleReportCard"/,
+    );
+    expect(pricingSrc).toMatch(/<SampleReportCard\s*\/>/);
+    expect(pricingSrc).toMatch(/id="sample-report"/);
   });
 });

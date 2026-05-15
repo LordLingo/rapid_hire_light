@@ -15,6 +15,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { PricingLineItem } from "@/components/heroes/HeroCards";
+import SampleReportCard from "@/components/site/SampleReportCard";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
@@ -373,6 +374,41 @@ export default function Pricing() {
               </div>
             ))}
           </dl>
+        </div>
+      </section>
+
+      {/* Sample of what's delivered. Pairs the SampleReportCard with a
+          short reassurance line so prospects can see the deliverable before
+          requesting a quote. Lives between the FAQ and the closing CTA. */}
+      <section
+        id="sample-report"
+        aria-labelledby="pricing-sample-heading"
+        className="bg-white border-t border-border"
+      >
+        <div className="container py-20 md:py-24">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-center">
+            <div className="col-span-12 lg:col-span-7">
+              <p className="eyebrow">08 — What you receive</p>
+              <h3
+                id="pricing-sample-heading"
+                className="mt-4 font-display text-[30px] sm:text-[38px] md:text-[44px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]"
+              >
+                Every package returns the same{" "}
+                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+                  honest report.
+                </span>
+              </h3>
+              <p className="mt-5 max-w-xl text-[15.5px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+                Whichever tier you pick, hiring managers see the same clean
+                layout: a status pill at the top, the candidate and
+                time-to-clear, then a row per check with a verifiable result.
+                Audit trail and FCRA confirmation close every file.
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-5">
+              <SampleReportCard />
+            </div>
+          </div>
         </div>
       </section>
 
