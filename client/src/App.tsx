@@ -20,6 +20,7 @@ import Compliance from "./pages/Compliance";
 import ComplianceAudit from "./pages/ComplianceAudit";
 import ComplianceChecklist from "./pages/ComplianceChecklist";
 import Trust from "./pages/Trust";
+import Industries from "./pages/Industries";
 
 
 function Router() {
@@ -27,6 +28,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/services"} component={Services} />
+      <Route path={"/industries"} component={Industries} />
       <Route path={"/integrations"} component={Integrations} />
       <Route path={"/pricing"} component={Pricing} />
       <Route path={"/about"} component={About} />

@@ -755,3 +755,12 @@ Tasks:
 - [x] Each Verify link points to /trust#soc2 | /trust#pbsa | /trust#fcra.
 - [x] Add the "22+ years · est. 2003" and "U.S. specialist · Mon–Fri 8a–8p ET, Sat 9a–1p" items in the same row to mirror the reference, but with copy that reflects Rapid Hire's actual stated hours/years (verify against existing Support page data — e.g. PHONE_DISPLAY/HQ_CITY constants — and only ship the line if it's accurate).
 - [x] Add vitest pins covering the bar, the Verify links, and the badge assets. Run full suite green.
+
+## 69. /industries page + header Industries nav entry
+
+- [x] Reference https://www.precisehire.com/industries to identify the verticals taxonomy (Healthcare, Transportation/Logistics, Staffing, Finance/Professional Services, Retail/Hospitality, Nonprofit/Faith-based) and page structure.
+- [x] Build /industries page: PageHero + vertical-grid intro section + per-vertical deep-linked sections (each with a vertical-specific framing line, a "What we run by default" bullet list, a regulatory callout, and a sample turnaround stat) + FAQ + closing CTA.
+- [x] Use original Rapid-Hire-grounded copy that ties back to claims already on the site (FCRA, HIPAA, US-based ops, 7am–7pm CT support, etc.). Do NOT copy precisehire copy verbatim and do NOT reference any third-party CRA brand by name.
+- [x] Wire route in App.tsx and add "Industries" to the header nav between Services and Pricing (mirroring precisehire's order).
+- [x] Add a "Industries" entry to Footer Company column.
+- [x] Add vitest pins for the page, the route, the nav entry, and the anti-regression "no third-party CRA brand" guard.

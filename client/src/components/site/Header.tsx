@@ -14,6 +14,7 @@ type NavItem = { label: string; href: string; type: "route" | "placeholder" };
 
 const NAV: NavItem[] = [
   { label: "Services", href: "/services", type: "route" },
+  { label: "Industries", href: "/industries", type: "route" },
   { label: "Integrations", href: "/integrations", type: "route" },
   { label: "Pricing", href: "/pricing", type: "route" },
   { label: "Support", href: "/support", type: "route" },

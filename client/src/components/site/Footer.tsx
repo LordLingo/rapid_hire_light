@@ -23,6 +23,10 @@ const COMPANY: FooterItem[] = [
   { label: "About Us", to: "/about" },
   { label: "Blog", to: "/blog" },
   { label: "Pricing", to: "/pricing" },
+  // §69: surface Industries from the global footer alongside the other
+  // top-level routes, so procurement teams can reach a sector-specific
+  // package without going back through the header.
+  { label: "Industries", to: "/industries" },
   { label: "Support", to: "/support" },
   // §66: surface the dedicated compliance funnel from every page so the
   // 24-point checklist (§65) and the free 15-minute audit (§64) are
