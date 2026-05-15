@@ -297,8 +297,8 @@
 - [x] Added `client/src/lib/brandHeadMeta.test.ts` (6 assertions) pinning each URL constant to `/manus-storage/...` AND verifying `index.html` references the exact same URLs in the right tag; 108/108 vitest passing, LSP/TS clean; verified header, footer, and tab favicon visually
 
 ## 37. Swap homepage hero report-card for supplied marketing photo
-- [ ] Copy `/home/ubuntu/upload/HeroPage1image.png` into `/home/ubuntu/webdev-static-assets/rhs-home-hero.png` and upload via `manus-upload-file --webdev`
-- [ ] Add `HOME_HERO_IMAGE_URL` to `shared/brand.ts`
-- [ ] Edit `client/src/components/site/Hero.tsx`: replace the structured Report card in the right column with an `<img>` using the new constant; drop the eyebrow row ("01 — PLATFORM / THE INTELLIGENT HIRING PLATFORM") above the headline so it doesn't compete with the photo's baked-in copy
-- [ ] Add `client/src/lib/homeHeroImage.test.ts` pinning the URL constant + asserting Hero.tsx imports it and renders an <img> with the right src/alt
-- [ ] Browser QA at desktop + mobile, run vitest, save checkpoint and deliver
+- [x] Copy `/home/ubuntu/upload/HeroPage1image.png` into `/home/ubuntu/webdev-static-assets/rhs-home-hero.png` and upload via `manus-upload-file --webdev` — hosted at `/manus-storage/rhs-home-hero_16a035cf.png`
+- [x] Add `HOME_HERO_IMAGE_URL` to `shared/brand.ts`
+- [x] Replaced ReportCard component with `<HeroKeyVisual />` rendering the supplied photo; dropped the "THE INTELLIGENT HIRING PLATFORM" eyebrow above the headline (kept the "01 — PLATFORM" left rail since it sits separately and doesn't compete); rebalanced grid (left rail 2 / headline 6 / image 4) and headline sizes (lg:58px, xl:64px) so the headline no longer overlaps the photo at desktop
+- [x] Added `client/src/lib/homeHeroImage.test.ts` (6 assertions): URL pin, import pin, src pin, descriptive alt, old ReportCard removed, no competing eyebrow
+- [x] Browser QA verified at desktop; 114/114 vitest passing, LSP/TS clean; checkpoint 4b9a5569 saved
