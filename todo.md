@@ -490,3 +490,24 @@ Plan:
 - [x] Parked the SampleReportCard zoom suggestion: an anti-regression test in `hoverPolish.test.ts` pins that SampleReportCard does NOT pick up `.hover-zoom-image`. If/when the layered mockup is later replaced with a flat photo, the test should be removed and `.hover-zoom-image` applied to the new wrapper.
 - [x] Extended `client/src/lib/hoverPolish.test.ts` with a new §51 describe block (6 tests): pins the `group` className prefix on each step card, the `group-hover:bg-[color:var(--color-tint)]` background wash, the `group-hover:border-[color:var(--color-accent-halo)]` border deepening, the `transition-colors duration-300 ease-out` animation utility, the SampleReportCard parking-lot guard, and the Pricing add-on chip parking-lot guard (chips do NOT carry `.hover-lift-card`).
 - [x] Ran vitest (236/236 passing, 6 new §51 pins). TS/LSP clean. Ready to checkpoint and deliver.
+
+
+## 52. Hover polish — Workflows DiagramCard glow + Pricing chip gesture
+
+Two scoped follow-ups from §51. Both are well-defined and safe — neither alters layout or interactivity, only adds a hover wash + transition.
+
+Plan:
+
+- [x] Inspected the inline `DiagramCard` component in `client/src/components/site/Workflows.tsx`. Added `group` to its outer div className (line 167), so `.hover-lift-card`'s 3px lift gesture and the new icon-well wash now play together on hover. Both flanking cards (System Integrations 01, Outputs 03) inherit the change because they use the same component.
+
+- [x] Added the EXACT same class string used on the Integrations step cards: `transition-colors duration-300 ease-out group-hover:bg-[color:var(--color-tint)] group-hover:border-[color:var(--color-accent-halo)]` (line 175 of Workflows.tsx). One "icon well wash" gesture now lives in two surfaces: homepage Workflows + /integrations 3-step trio. PlatformCenterCard left untouched — pinned in vitest by extracting its function body and asserting it does NOT contain the group-hover wash.
+
+- [x] Added `transition-colors duration-200 ease-out hover:border-[color:var(--color-accent-halo)] hover:bg-[color:var(--color-tint)]` to the chip className (line 333 of Pricing.tsx). On hover: border deepens toward accent-halo, background fades to soft tint. NO transform, NO box-shadow, NO scale. Chips stay informational `<span>`s — no `group`, no `.btn-press`, no `cursor-pointer`.
+
+- [x] Used 200ms (vs 300ms on the cards) — chips are ~30px tall, so a tighter transition reads more responsive at chip scale. Pinned in vitest.
+
+- [x] Anti-regression pin in `hoverPolish.test.ts` extracts the ADDONS.map block and asserts: NO `<button`, NO `<a `, NO `btn-press`, NO `\bgroup\b`, NO `cursor-pointer`, NO `hover-lift-card`. Future refactors that try to make chips look clickable will fire this guard.
+
+- [x] Added a `§52` describe block to `client/src/lib/hoverPolish.test.ts` (6 new tests): pins the `group` class on DiagramCard, the exact icon-well wash class string, cross-file consistency between Workflows and Integrations (single source of truth check), the PlatformCenterCard NOT picking up the wash (function-body slice + negative match), the chip's new exact hover className, and the chip presentational-only guard. Also fixed two §50/§44 pins that were too generic and caught the new (correct) DiagramCard markup as a false positive: the §50 hover-lift-card pin now allows the new `group` prefix, and the §44 anti-regression on rounded-full-with-tint now uses a negative lookbehind to ignore `group-hover:` prefixes (which are HOVER states on non-chip surfaces, not the OLD resting chip pattern).
+
+- [x] Ran vitest: 242/242 passing (236 → 242, 6 new §52 pins, 0 regressions). TS/LSP clean. Ready to checkpoint and deliver.

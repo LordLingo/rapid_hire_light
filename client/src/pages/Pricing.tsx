@@ -330,7 +330,7 @@ export default function Pricing() {
                 {ADDONS.map((a) => (
                   <span
                     key={a}
-                    className="text-[13px] rounded-full border border-border bg-white px-4 py-2 text-[color:var(--color-ink)]"
+                    className="text-[13px] rounded-full border border-border bg-white px-4 py-2 text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-accent-halo)] hover:bg-[color:var(--color-tint)]"
                   >
                     {a}
                   </span>

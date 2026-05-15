@@ -132,8 +132,15 @@ describe("Workflows center card — §44 redesign", () => {
     // tokens must be gone so a global revert can't silently restore
     // the fake-button look.
     expect(SRC).not.toMatch(/PLATFORM_CHIPS/);
+    // §44 anti-regression: a rounded-full pill that fills with tint
+    // background in its RESTING state is the old fake-button chip
+    // pattern. The negative lookbehind ignores `group-hover:bg-[...tint]`
+    // (the new §52 DiagramCard icon-well wash, which is a HOVER state
+    // on a non-chip surface, not a resting fill on a pill). If a future
+    // refactor reintroduces a literal resting `bg-[color:var(--color-tint)]`
+    // on a `rounded-full` element, this guard will fire.
     expect(SRC).not.toMatch(
-      /rounded-full[^"]*bg-\[color:var\(--color-tint\)\]/
+      /rounded-full[^"]*(?<!group-hover:)bg-\[color:var\(--color-tint\)\]/
     );
   });
 

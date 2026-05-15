@@ -101,7 +101,10 @@ describe("§50 — Integrations page applications (the user's primary ask)", () 
 describe("§50 — Site-wide card/image applications", () => {
   it("Homepage Workflows DiagramCard carries .hover-lift-card on its className", () => {
     const src = read("client/src/components/site/Workflows.tsx");
-    expect(src).toMatch(/"hover-lift-card rounded-\[16px\] border border-border p-5 md:p-6"/);
+    // §52: DiagramCard now also carries `group` so its icon well can pick
+    // up the same group-hover wash as the Integrations step cards. The
+    // hover-lift-card token + dimensions stay locked exactly as in §50.
+    expect(src).toMatch(/"group hover-lift-card rounded-\[16px\] border border-border p-5 md:p-6"/);
   });
 
   it("Homepage Services service cards carry .hover-lift-card", () => {
@@ -207,5 +210,95 @@ describe("§51 hover polish follow-ups — Integrations icon-well glow + parking
     // Find the line with ADDONS chip className and confirm it does NOT carry hover-lift-card.
     const chipSection = src.split("ADDONS.map(")[1]?.split("</span>")[0] ?? "";
     expect(chipSection).not.toMatch(/hover-lift-card/);
+  });
+});
+
+
+describe("§52 — Workflows DiagramCard icon-well glow + Pricing chip hover", () => {
+  // §52 mirrors the §51 Integrations icon-well group-hover pattern onto
+  // the homepage Workflows DiagramCard so the homepage workflow stack
+  // and the /integrations 3-step trio share one gesture (single source
+  // of truth for "icon well glows when its parent card is hovered").
+  // Separately, Pricing add-on chips finally get a chip-appropriate
+  // hover gesture: subtle border deepen + tint background fade, no lift,
+  // no shadow, no scale — so they feel alive without reading clickable.
+
+  it("Workflows DiagramCard outer div carries the `group` class for group-hover", () => {
+    // The icon-well wash below is gated on `group-hover:`, which only
+    // fires when an ancestor with the `group` class is hovered. Pin
+    // both ends of the contract here so a future refactor can't strip
+    // one half and silently break the gesture.
+    const src = read("client/src/components/site/Workflows.tsx");
+    expect(src).toMatch(
+      /"group hover-lift-card rounded-\[16px\] border border-border p-5 md:p-6"/
+    );
+  });
+
+  it("Workflows DiagramCard icon well washes to tint and deepens border on group-hover", () => {
+    // Single source of truth: this class string MUST match the one used
+    // on the Integrations 3-step trio's icon wells (§51). Deviating
+    // would split the two surfaces visually for no good reason.
+    const src = read("client/src/components/site/Workflows.tsx");
+    expect(src).toMatch(
+      /grid place-items-center size-8 rounded-full border border-border text-\[color:var\(--color-accent-ink\)\] transition-colors duration-300 ease-out group-hover:bg-\[color:var\(--color-tint\)\] group-hover:border-\[color:var\(--color-accent-halo\)\]/
+    );
+  });
+
+  it("Workflows DiagramCard icon well uses the same 300ms ease-out as the Integrations icon well (single source of truth)", () => {
+    // Cross-file consistency: both files must use the same transition
+    // duration + easing so the gesture reads as one motion language.
+    const wf = read("client/src/components/site/Workflows.tsx");
+    const integ = read("client/src/pages/Integrations.tsx");
+    expect(wf).toMatch(/transition-colors duration-300 ease-out group-hover:bg-\[color:var\(--color-tint\)\]/);
+    expect(integ).toMatch(/transition-colors duration-300 ease-out group-hover:bg-\[color:var\(--color-tint\)\]/);
+  });
+
+  it("does NOT apply the icon-well glow to the brand-blue PlatformCenterCard", () => {
+    // The center card is the visual anchor (Section 44). It sits between
+    // two flanking white DiagramCards and uses inverted tokens. Adding
+    // a tint wash to its icon wells would (a) be invisible on the blue
+    // surface, and (b) tempt the static badges to feel interactive,
+    // which the user explicitly called out as a problem in §44.
+    const src = read("client/src/components/site/Workflows.tsx");
+    // The PlatformCenterCard function body must not contain the group-hover
+    // wash tokens. Extract it by slicing between its declaration and the
+    // closing brace immediately before the file's default export.
+    const start = src.indexOf("function PlatformCenterCard");
+    expect(start).toBeGreaterThan(-1);
+    // Take everything from PlatformCenterCard onward (the file ends after
+    // it, so this is a safe upper bound).
+    const tail = src.slice(start);
+    expect(tail).not.toMatch(/group-hover:bg-\[color:var\(--color-tint\)\]/);
+  });
+
+  it("Pricing add-on chips fade in a subtle tint background and deepen their border on hover", () => {
+    // Chip-appropriate gesture — NO transform, NO box-shadow, NO scale,
+    // NO `.hover-lift-card`. Just border-color and background-color
+    // transitioning at chip scale (200ms reads tighter than the 300ms
+    // used on cards, which would feel sluggish on small surfaces).
+    const src = read("client/src/pages/Pricing.tsx");
+    expect(src).toMatch(
+      /text-\[13px\] rounded-full border border-border bg-white px-4 py-2 text-\[color:var\(--color-ink\)\] transition-colors duration-200 ease-out hover:border-\[color:var\(--color-accent-halo\)\] hover:bg-\[color:var\(--color-tint\)\]/
+    );
+  });
+
+  it("Pricing add-on chip block stays presentational (NOT <button>/<a>, no btn-press, no group, no hover-lift)", () => {
+    // The user explicitly told us in §44 that surfaces which look like
+    // buttons but aren't clickable are a problem. The §50 anti-regression
+    // is that chips don't carry `.hover-lift-card`. §52 extends that
+    // guard: also no `<button>`/`<a>`/`btn-press`/`group`/`cursor-pointer`
+    // anywhere inside the ADDONS.map block.
+    const src = read("client/src/pages/Pricing.tsx");
+    const start = src.indexOf("ADDONS.map((a) =>");
+    expect(start).toBeGreaterThan(-1);
+    // The block ends with `))}` after the closing </span>. Take a
+    // generous 800-char window — the actual block is about 350 chars.
+    const block = src.slice(start, start + 800);
+    expect(block).not.toMatch(/<button/);
+    expect(block).not.toMatch(/<a /);
+    expect(block).not.toMatch(/btn-press/);
+    expect(block).not.toMatch(/\bgroup\b/);
+    expect(block).not.toMatch(/cursor-pointer/);
+    expect(block).not.toMatch(/hover-lift-card/);
   });
 });

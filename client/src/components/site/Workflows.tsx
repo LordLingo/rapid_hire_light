@@ -164,7 +164,7 @@ function DiagramCard({
   return (
     <div
       className={[
-        "hover-lift-card rounded-[16px] border border-border p-5 md:p-6",
+        "group hover-lift-card rounded-[16px] border border-border p-5 md:p-6",
         featured
           ? "bg-white paper-shadow"
           : "bg-white/70 backdrop-blur-[2px]",
@@ -172,7 +172,7 @@ function DiagramCard({
       ].join(" ")}
     >
       <div className="flex items-center gap-3">
-        <span className="grid place-items-center size-8 rounded-full border border-border text-[color:var(--color-accent-ink)]">
+        <span className="grid place-items-center size-8 rounded-full border border-border text-[color:var(--color-accent-ink)] transition-colors duration-300 ease-out group-hover:bg-[color:var(--color-tint)] group-hover:border-[color:var(--color-accent-halo)]">
           {icon}
         </span>
         <span className="eyebrow">{number} · Layer</span>
