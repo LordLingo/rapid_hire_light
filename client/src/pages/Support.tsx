@@ -580,45 +580,99 @@ export default function Support() {
         </div>
       </section>
 
-      {/* Phone CTA band */}
-      <section className="border-t border-border bg-[color:var(--color-paper-soft)]">
-        <div className="container py-20 md:py-24">
-          <div className="rounded-[24px] border border-border bg-white p-8 sm:p-12 reveal-on-scroll">
-            <div className="grid grid-cols-12 gap-8 items-center">
-              <div className="col-span-12 lg:col-span-7">
-                <p className="eyebrow text-[color:var(--color-accent-ink)]">
-                  Try it.
+      {/*
+        Phone CTA band — §57 dark gradient pass.
+
+        Lifted onto the same footer-family dark surface as StopGambling +
+        Pricing FAQ §54 + Services CTA so the four dark beats sitewide
+        all read as one continuous treatment. Direction matches
+        StopGambling: light cobalt on the LEFT (`--color-footer-soft`),
+        deeper ink on the RIGHT (`--color-footer`). The user described
+        this as "lighter to the right as you have done on the other
+        images" — same gradient family, same direction. The previous
+        white inner card was dropped because the card-on-card treatment
+        doesn't translate to the dark band; the dark surface IS the card.
+      */}
+      <section
+        className="relative overflow-hidden text-[color:var(--color-footer-foreground)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, var(--color-footer-soft) 0%, var(--color-footer) 65%, var(--color-footer) 100%)",
+          colorScheme: "dark",
+        }}
+      >
+        {/* Top sky-halo hairline glow (matches StopGambling). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 30%, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 70%, transparent)",
+          }}
+        />
+        <div className="container py-20 md:py-24 relative">
+          <div className="grid grid-cols-12 gap-8 items-center reveal-on-scroll">
+            <div className="col-span-12 lg:col-span-7 relative">
+              {/*
+                Sky-halo radial halo behind the headline. Same treatment
+                as StopGambling + Pricing FAQ §54 so the three dark beats
+                share the same headline bloom. Marker class
+                `support-cta-halo` is the vitest pin.
+              */}
+              <div
+                aria-hidden
+                className="support-cta-halo pointer-events-none absolute -left-24 -top-16 h-[420px] w-[420px] rounded-full opacity-30 blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(closest-side, var(--color-accent-halo), transparent 70%)",
+                }}
+              />
+              <p className="relative eyebrow text-[color:var(--color-accent-halo)]">
+                Try it.
+              </p>
+              <h2 className="relative mt-4 font-display text-[36px] sm:text-[46px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-footer-foreground)]">
+                Call us right now.
+              </h2>
+              <p className="relative mt-5 max-w-xl text-[16px] leading-[1.7] text-[color:var(--color-footer-soft-text)]">
+                The fastest way to see the difference is to pick up the
+                phone. We'll answer in seconds, in English, and you can ask
+                us anything about a screening package, an FCRA workflow, or
+                current turnaround.
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-5">
+              <div className="flex flex-col gap-3">
+                {/*
+                  Primary CTA stays brand-blue — same as the dark-band
+                  primary on CtaBanner. Reads bright against navy.
+                */}
+                <a
+                  href={`tel:${PHONE_TEL}`}
+                  className="btn-press inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-4 text-[16px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
+                >
+                  <Phone className="size-4" aria-hidden />
+                  {PHONE_DISPLAY}
+                </a>
+                {/*
+                  Secondary CTA lifted to the dark variant: warm-white
+                  text on transparent surface, low-alpha warm-white border
+                  that brightens on hover. Mirrors the secondary CTA
+                  pattern CtaBanner uses on its dark band.
+                */}
+                <Link
+                  href="/contact"
+                  className="btn-press inline-flex items-center justify-center gap-2 rounded-full border bg-transparent px-6 py-4 text-[15px] font-medium text-[color:var(--color-footer-foreground)] hover:bg-[color:color-mix(in_oklch,var(--color-footer-foreground)_8%,transparent)]"
+                  style={{
+                    borderColor:
+                      "color-mix(in oklch, var(--color-footer-foreground) 30%, transparent)",
+                  }}
+                >
+                  Talk to an expert
+                  <ArrowRight className="size-4" aria-hidden />
+                </Link>
+                <p className="text-center eyebrow text-[10.5px] text-[color:var(--color-footer-muted)]">
+                  Avg. answer {ANSWER_TIME} · 7am–7pm Central
                 </p>
-                <h2 className="mt-4 font-display text-[36px] sm:text-[46px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
-                  Call us right now.
-                </h2>
-                <p className="mt-5 max-w-xl text-[16px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                  The fastest way to see the difference is to pick up the
-                  phone. We'll answer in seconds, in English, and you can ask
-                  us anything about a screening package, an FCRA workflow, or
-                  current turnaround.
-                </p>
-              </div>
-              <div className="col-span-12 lg:col-span-5">
-                <div className="flex flex-col gap-3">
-                  <a
-                    href={`tel:${PHONE_TEL}`}
-                    className="btn-press inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-4 text-[16px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
-                  >
-                    <Phone className="size-4" aria-hidden />
-                    {PHONE_DISPLAY}
-                  </a>
-                  <Link
-                    href="/contact"
-                    className="btn-press inline-flex items-center justify-center gap-2 rounded-full border border-border bg-white px-6 py-4 text-[15px] font-medium text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]"
-                  >
-                    Talk to an expert
-                    <ArrowRight className="size-4" aria-hidden />
-                  </Link>
-                  <p className="text-center eyebrow text-[10.5px] text-[color:var(--color-ink-muted)]">
-                    Avg. answer {ANSWER_TIME} · 7am–7pm Central
-                  </p>
-                </div>
               </div>
             </div>
           </div>
