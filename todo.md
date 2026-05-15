@@ -283,3 +283,9 @@
 - [x] Replace the placeholder text-and-icon brand block in `client/src/components/site/Footer.tsx` with an `<img>` tag using the returned static URL; preserve the link to `/`, alt text, and dimensions — logo now sized at 160px (mobile) / 180px (sm+), `aria-label`d, lazy-loaded
 - [x] Update / add a small vitest assertion that pins the new asset reference (footer renders the supplied logo URL) — added `client/src/lib/footerLogo.test.ts` (4 assertions, all green)
 - [x] Browser QA on the homepage footer; save checkpoint and deliver — verified white logo renders crisply on dark footer surface across `/` and `/about`; all 95/95 vitest passing
+
+## 35. Swap header logo to user-supplied color mark
+- [x] Upload `/home/ubuntu/upload/rhsLogo.png` via `manus-upload-file --webdev` and copy it into `/home/ubuntu/webdev-static-assets/rhs-color-logo.png` — hosted at `/manus-storage/rhs-color-logo_038dbc01.png`
+- [x] Replace the placeholder ring + text wordmark in `client/src/components/site/Header.tsx` with an `<img>` tag using the returned static URL; preserve the link to `/`, alt text, and dimensions — sized h-14 (mobile) / h-16 (sm) / h-20 (lg) so wordmark stays legible
+- [x] Add / update vitest assertion that pins the new asset reference (header renders the supplied logo URL) — added `client/src/lib/headerLogo.test.ts` (4 assertions, all green)
+- [x] Browser QA on the homepage header; save checkpoint and deliver — verified at desktop viewport, 99/99 vitest passing, LSP/TS clean

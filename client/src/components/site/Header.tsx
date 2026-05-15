@@ -9,6 +9,12 @@ import { Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import { Link, useLocation } from "wouter";
 
+// Header brand mark for the light surface. Color logo provided by the brand
+// owner. Hosted on the webdev static host so it doesn't bloat the bundle and
+// survives across deploys; if it ever changes, just re-upload and update the
+// URL constant below (and the headerLogo test that pins it).
+const HEADER_LOGO_URL = "/manus-storage/rhs-color-logo_038dbc01.png";
+
 type NavItem = { label: string; href: string; type: "route" | "placeholder" };
 
 const NAV: NavItem[] = [
@@ -173,44 +179,20 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 }
 
 function Logo() {
+  // Native <img> with locked intrinsic ratio so the supplied color lockup
+  // (mark + "RAPID HIRE / SOLUTIONS" wordmark) sits cleanly in the header at
+  // every breakpoint. Heights are chosen to keep the lockup at the same
+  // visual weight as the previous text-only mark (~34px high on desktop).
   return (
-    <span className="inline-flex items-center gap-3">
-      <svg
-        width="34"
-        height="34"
-        viewBox="0 0 34 34"
-        fill="none"
-        aria-hidden
-        className="text-[color:var(--color-accent-ink)]"
-      >
-        <circle cx="17" cy="17" r="16.25" stroke="currentColor" strokeWidth="1" opacity="0.35" />
-        <path
-          d="M9 21c2.5-3 4.5-4.5 8-4.5s5.5 1.5 8 4.5"
-          stroke="currentColor"
-          strokeWidth="1.4"
-          strokeLinecap="round"
-        />
-        <path
-          d="M11 16c1.7-2 3.4-3 6-3s4.3 1 6 3"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          opacity="0.7"
-        />
-        <path
-          d="M13 11.5c1-1 2.2-1.6 4-1.6s3 0.6 4 1.6"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          opacity="0.5"
-        />
-      </svg>
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-[18px] tracking-[-0.01em] text-[color:var(--color-ink)]">
-          Rapid Hire
-        </span>
-        <span className="eyebrow mt-1 text-[9px]">Solutions</span>
-      </span>
-    </span>
+    <img
+      src={HEADER_LOGO_URL}
+      alt="Rapid Hire Solutions"
+      width={210}
+      height={140}
+      decoding="async"
+      fetchPriority="high"
+      draggable={false}
+      className="block h-14 sm:h-16 lg:h-20 w-auto select-none"
+    />
   );
 }
