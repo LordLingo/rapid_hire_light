@@ -345,18 +345,60 @@ export default function Pricing() {
         </div>
       </section>
 
-      {/* Pricing FAQ */}
-      <section className="bg-white border-y border-border">
-        <div className="container py-20 md:py-24">
+      {/*
+        Pricing FAQ — §54 dark gradient restyle.
+        Matches the homepage StopGambling band ("02 — How we're different /
+        Turnaround time & customer support, done right.") so the two
+        surfaces read as one continuous "editorial dark band" family.
+        Same mirrored gradient direction (light on left → deep on right),
+        same top sky-halo hairline, same sky-halo radial halo behind the
+        headline column, same inverted text tokens (footer-foreground /
+        footer-soft-text / footer-muted / accent-halo italic).
+      */}
+      <section
+        className="relative overflow-hidden text-[color:var(--color-footer-foreground)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(90deg, var(--color-footer-soft) 0%, var(--color-footer) 65%, var(--color-footer) 100%)",
+          colorScheme: "dark",
+        }}
+      >
+        {/* Top sky-halo hairline glow (mirrors StopGambling). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 30%, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 70%, transparent)",
+          }}
+        />
+        <div className="container py-20 md:py-24 relative">
           <div className="grid grid-cols-12 gap-x-10 gap-y-8 items-end">
             <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">08 — Pricing FAQ</p>
-              <div className="mt-3 hairline" />
+              <p className="eyebrow text-[color:var(--color-footer-muted)]">
+                08 — Pricing FAQ
+              </p>
+              <div
+                className="mt-3 h-px"
+                style={{
+                  background:
+                    "linear-gradient(90deg, color-mix(in oklch, var(--color-accent-halo) 50%, transparent), transparent)",
+                }}
+              />
             </div>
-            <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
-              <h2 className="font-display text-[34px] sm:text-[44px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
+            <div className="col-span-12 lg:col-span-9 reveal-on-scroll relative">
+              {/* Sky-halo radial halo behind headline (mirrors StopGambling). */}
+              <div
+                aria-hidden
+                className="pricing-faq-halo pointer-events-none absolute -left-32 -top-24 h-[520px] w-[520px] rounded-full opacity-30 blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(closest-side, var(--color-accent-halo), transparent 70%)",
+                }}
+              />
+              <h2 className="relative font-display text-[34px] sm:text-[44px] md:text-[52px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-footer-foreground)]">
                 The honest{" "}
-                <span className="italic font-light text-[color:var(--color-accent-ink)]">
+                <span className="italic font-light text-[color:var(--color-accent-halo)]">
                   fine print.
                 </span>
               </h2>
@@ -367,12 +409,16 @@ export default function Pricing() {
             {PRICING_FAQ.map((row) => (
               <div
                 key={row.q}
-                className="reveal-on-scroll col-span-12 md:col-span-4 border-t border-border pt-6"
+                className="reveal-on-scroll col-span-12 md:col-span-4 pt-6"
+                style={{
+                  borderTop:
+                    "1px solid color-mix(in oklch, var(--color-accent-halo) 28%, transparent)",
+                }}
               >
-                <dt className="font-display text-[20px] leading-snug text-[color:var(--color-ink)]">
+                <dt className="font-display text-[20px] leading-snug text-[color:var(--color-footer-foreground)]">
                   {row.q}
                 </dt>
-                <dd className="mt-3 text-[14.5px] leading-[1.75] text-[color:var(--color-ink-soft)]">
+                <dd className="mt-3 text-[14.5px] leading-[1.75] text-[color:var(--color-footer-soft-text)]">
                   {row.a}
                 </dd>
               </div>

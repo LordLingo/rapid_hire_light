@@ -528,3 +528,19 @@ Plan:
 - [x] Added a `§53` describe block to `client/src/lib/hoverPolish.test.ts` (8 new tests): Services icon-well exact class string, cross-file three-way consistency with Workflows + Integrations, chip outer className with `group`, ChevronRight import pin, chevron exact className with `opacity-0` + `group-hover:opacity-100 group-hover:translate-x-0.5`, chip presentational-only re-guard with `aria-hidden="true"` requirement on the chevron, and the two parked-page guards (About + Support do NOT yet carry `.hover-zoom-image`). Also updated the §52 chip-presentational guard at line 300 to drop the `\bgroup\b` forbidden token (since `group` is now intentionally present for the chevron) while keeping the other five guards (`<button>`, `<a>`, `btn-press`, `cursor-pointer`, `hover-lift-card`) intact.
 
 - [x] Ran vitest: 250/250 passing (242 → 250, 8 new §53 pins, 0 regressions). LSP/TS clean. Ready to checkpoint and deliver.
+
+
+## 54. Pricing FAQ (section 08) — dark navy gradient restyle to match StopGambling
+
+User feedback: the "08 — Pricing FAQ / The honest fine print." block on the Pricing page currently sits on plain white between two warm-paper sections, breaking the dark-band rhythm. They want it restyled to look just like the homepage StopGambling band ("02 — How we're different / Turnaround time & customer support, done right.") — same dark cobalt gradient, same sky-halo italic accent, same inverted text tokens.
+
+Plan:
+
+- [x] Converted the `<section>` wrapper to the StopGambling pattern: `relative overflow-hidden text-[color:var(--color-footer-foreground)]` + the same `linear-gradient(90deg, var(--color-footer-soft) 0%, var(--color-footer) 65%, var(--color-footer) 100%)` + `colorScheme: "dark"`. Light on the left → deep on the right, matching the homepage band's direction exactly.
+- [x] Added the top sky-halo hairline glow: aria-hidden absolute div, h-px, with the exact same `linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 55%, transparent) 30%, color-mix(...) 70%, transparent)` string StopGambling uses.
+- [x] Added the sky-halo radial halo behind the headline column with marker class `pricing-faq-halo`: 520px circle, opacity 30%, blur-3xl, `radial-gradient(closest-side, var(--color-accent-halo), transparent 70%)`. Pinned in vitest.
+- [x] Inverted all text tokens: eyebrow → footer-muted, the eyebrow divider → the same low-alpha sky-halo gradient (the default `.hairline` token would disappear into navy), headline → footer-foreground (warm white), italic accent on "fine print." flips from `text-[color:var(--color-accent-ink)]` (brand-blue, which would disappear into navy) to `text-[color:var(--color-accent-halo)]` (sky-halo) so the emphasis reads against the dark surface.
+- [x] Inverted FAQ row text: each `<dt>` question → footer-foreground (warm white), each `<dd>` answer → footer-soft-text body copy on dark. Replaced the row's `border-t border-border` divider with an inline `borderTop: "1px solid color-mix(in oklch, var(--color-accent-halo) 28%, transparent)"` so the dividers stay visible on the dark surface.
+- [x] Padding stays at `py-20 md:py-24`. No bottom wedge: the next section "08 — What you receive" sits on warm paper and pivots cleanly off the dark band, which is the intended hard surface change.
+- [x] Added new `client/src/lib/pricingFaqDark.test.ts` (13 tests): gradient direction, `colorScheme: "dark"`, base inverted text token, top hairline glow, `pricing-faq-halo` headline halo (class + dimensions + radial gradient), eyebrow `footer-muted`, eyebrow divider sky-halo gradient, `<dt>` `footer-foreground`, `<dd>` `footer-soft-text`, FAQ row sky-halo border, anti-regression on accent-ink italic, anti-regression on `border-t border-border` rows, anti-regression on the old `bg-white border-y border-border` section wrapper.
+- [x] Ran vitest: 263/263 passing (250 → 263, 13 new §54 pins, 0 regressions). LSP/TS clean. Ready to checkpoint and deliver.
