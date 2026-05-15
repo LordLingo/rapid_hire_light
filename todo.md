@@ -747,3 +747,11 @@ Tasks:
 - [x] Register /trust route in App.tsx.
 - [x] Add Trust to the Footer Company column (after Compliance), and optionally add anti-regression on the new href.
 - [x] Add vitest pins covering route registration, three badge images present, three pillars, footer link, and the closing CTA band. Run full suite green.
+
+## 68. /compliance credibility bar (port from precisehire) → links to /trust
+
+- [x] Reference https://www.precisehire.com/compliance to locate the horizontal credibility bar (SOC 2 Type II · PBSA Member · FCRA-aligned with mini badges and Verify links + 22+ years · U.S. specialist hours).
+- [x] Add a matching credibility bar to our /compliance page on our design system, using the three /manus-storage badge assets we already uploaded for /trust.
+- [x] Each Verify link points to /trust#soc2 | /trust#pbsa | /trust#fcra.
+- [x] Add the "22+ years · est. 2003" and "U.S. specialist · Mon–Fri 8a–8p ET, Sat 9a–1p" items in the same row to mirror the reference, but with copy that reflects Rapid Hire's actual stated hours/years (verify against existing Support page data — e.g. PHONE_DISPLAY/HQ_CITY constants — and only ship the line if it's accurate).
+- [x] Add vitest pins covering the bar, the Verify links, and the badge assets. Run full suite green.

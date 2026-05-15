@@ -200,6 +200,153 @@ const TRUST_CARDS: { title: string; body: string; icon: React.ReactNode }[] = [
   },
 ];
 
+/* ---------- §68: credibility bar (under hero, before §01) ---------- */
+
+type CredItem = {
+  slug: "soc2" | "pbsa" | "fcra";
+  badge: string; // /manus-storage URL of the round badge image
+  title: string;
+  caption: string; // small caption to the left of " · Verify"
+  alt: string; // a11y alt text for the badge image
+};
+
+const CRED_BADGES: CredItem[] = [
+  {
+    slug: "soc2",
+    badge: "/manus-storage/badge-soc2-type2_36054675.webp",
+    title: "SOC 2 Type II",
+    caption: "Attested annually",
+    alt: "SOC 2 Type II independently attested annually",
+  },
+  {
+    slug: "pbsa",
+    badge: "/manus-storage/badge-pbsa-member_4f368a83.webp",
+    title: "PBSA Member",
+    caption: "In good standing",
+    alt: "Professional Background Screening Association — member in good standing",
+  },
+  {
+    slug: "fcra",
+    badge: "/manus-storage/badge-fcra-aligned_359d4dc8.webp",
+    title: "FCRA-aligned",
+    caption: "15 U.S.C. §1681 workflow",
+    alt: "FCRA-aligned screening workflow — Fair Credit Reporting Act",
+  },
+];
+
+function ComplianceCredibilityBar() {
+  return (
+    <section
+      data-testid="compliance-credibility-bar"
+      aria-label="Independent attestations and U.S. specialist support"
+      className="relative bg-[color:var(--color-paper-soft)]"
+    >
+      {/* hairline rules top + bottom anchor the bar visually between hero and §01 */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, color-mix(in oklch, var(--color-ink) 14%, transparent) 30%, color-mix(in oklch, var(--color-ink) 14%, transparent) 70%, transparent)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-px"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, color-mix(in oklch, var(--color-ink) 14%, transparent) 30%, color-mix(in oklch, var(--color-ink) 14%, transparent) 70%, transparent)",
+        }}
+      />
+      <div className="container py-6 md:py-7">
+        <ul
+          className="
+            grid grid-cols-1 gap-y-5
+            sm:grid-cols-2 sm:gap-x-8
+            lg:flex lg:flex-wrap lg:items-center lg:justify-between lg:gap-x-8
+          "
+        >
+          {CRED_BADGES.map((b) => (
+            <li
+              key={b.slug}
+              data-testid={`compliance-cred-badge-${b.slug}`}
+              className="flex items-center gap-3"
+            >
+              <img
+                src={b.badge}
+                alt={b.alt}
+                width={36}
+                height={36}
+                loading="lazy"
+                decoding="async"
+                className="size-9 shrink-0 rounded-full select-none"
+                draggable={false}
+              />
+              <div className="min-w-0">
+                <p className="font-display text-[15px] leading-[1.2] tracking-[-0.005em] text-[color:var(--color-ink)]">
+                  {b.title}
+                </p>
+                <p className="mt-0.5 text-[12.5px] leading-[1.4] text-[color:var(--color-ink-muted)]">
+                  {b.caption} ·{" "}
+                  <Link
+                    href={`/trust#${b.slug}`}
+                    data-testid={`compliance-cred-verify-${b.slug}`}
+                    className="underline decoration-[color:color-mix(in_oklch,var(--color-accent-ink)_55%,transparent)] underline-offset-[3px] hover:decoration-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)] transition-colors duration-150"
+                  >
+                    Verify
+                  </Link>
+                </p>
+              </div>
+            </li>
+          ))}
+
+          {/* item 4 — scale proof (Rapid-Hire-truthful, already on Footer) */}
+          <li
+            data-testid="compliance-cred-scale"
+            className="flex items-center gap-3 text-[color:var(--color-ink-soft)]"
+          >
+            <span
+              aria-hidden
+              className="grid place-items-center size-9 shrink-0 rounded-full border border-border bg-white text-[color:var(--color-accent-ink)]"
+            >
+              <ShieldCheck className="size-4" strokeWidth={2} />
+            </span>
+            <p className="text-[13px] leading-[1.45] tracking-[-0.005em]">
+              <span className="font-medium text-[color:var(--color-ink)]">
+                800+ HR &amp; staffing teams
+              </span>{" "}
+              <span className="text-[color:var(--color-ink-muted)]">
+                · 99.4% on-time
+              </span>
+            </p>
+          </li>
+
+          {/* item 5 — U.S. specialist hours line (matches Support.tsx exactly) */}
+          <li
+            data-testid="compliance-cred-hours"
+            className="flex items-center gap-3 text-[color:var(--color-ink-soft)]"
+          >
+            <span
+              aria-hidden
+              className="grid place-items-center size-9 shrink-0 rounded-full border border-border bg-white text-[color:var(--color-accent-ink)]"
+            >
+              <Phone className="size-4" strokeWidth={2} />
+            </span>
+            <p className="text-[13px] leading-[1.45] tracking-[-0.005em]">
+              <span className="font-medium text-[color:var(--color-ink)]">
+                U.S. specialist
+              </span>{" "}
+              <span className="text-[color:var(--color-ink-muted)]">
+                Mon–Fri 7am–7pm CT · Sat on-call
+              </span>
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function TrustGrid() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -711,6 +858,24 @@ export default function Compliance() {
           </>
         }
       />
+
+      {/*
+        §68 — Credibility bar
+        ----------------------
+        Horizontal certification strip that sits directly under the hero,
+        before §01. Three round badges (SOC 2 Type II, PBSA Member,
+        FCRA-aligned) each carry a Verify link that jumps to the matching
+        per-badge anchor on /trust (§67), so procurement / vendor-risk
+        teams can pivot from "we are compliant" to the attestation
+        evidence in one click.
+
+        Items 4 & 5 in the bar are deliberately Rapid-Hire-truthful and
+        already published elsewhere on the site: an 800+ teams scale
+        proof and our verified support hours from Support.tsx. We avoid
+        claiming a founding year because no other page on the site makes
+        that claim today.
+      */}
+      <ComplianceCredibilityBar />
 
       {/* 01 — Overview */}
       <Section
