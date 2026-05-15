@@ -167,3 +167,45 @@ describe("§50 — Site-wide card/image applications", () => {
     expect(src).not.toMatch(/hover-lift-card/);
   });
 });
+
+describe("§51 hover polish follow-ups — Integrations icon-well glow + parking-lot guards", () => {
+  it("Integrations step cards carry the `group` class so the icon well can react on hover", () => {
+    const src = read("client/src/pages/Integrations.tsx");
+    // The card's className must lead with `group` so descendants can use group-hover:
+    // matchers. Pin the exact prefix to anti-regression future copy edits.
+    expect(src).toMatch(/className="group hover-lift-card hover-lift-card-strong /);
+  });
+
+  it("Integrations step icon well shifts background to --color-tint on group-hover", () => {
+    const src = read("client/src/pages/Integrations.tsx");
+    expect(src).toMatch(/group-hover:bg-\[color:var\(--color-tint\)\]/);
+  });
+
+  it("Integrations step icon well border deepens to --color-accent-halo on group-hover", () => {
+    const src = read("client/src/pages/Integrations.tsx");
+    expect(src).toMatch(/group-hover:border-\[color:var\(--color-accent-halo\)\]/);
+  });
+
+  it("Integrations step icon well animates the wash via transition-colors duration-300 ease-out", () => {
+    const src = read("client/src/pages/Integrations.tsx");
+    // Pin both the transition-colors utility and the duration so a future
+    // refactor doesn't accidentally swap to a slower or no-op transition.
+    expect(src).toMatch(/transition-colors duration-300 ease-out group-hover:bg-\[color:var\(--color-tint\)\]/);
+  });
+
+  it("parking-lot: SampleReportCard does NOT pick up .hover-zoom-image (it's a layered mockup, not a flat photo)", () => {
+    const src = read("client/src/components/site/SampleReportCard.tsx");
+    expect(src).not.toMatch(/hover-zoom-image/);
+  });
+
+  it("parking-lot: Pricing add-on chips remain plain pill chips (NOT cards), so no .hover-lift-card is applied to them", () => {
+    const src = read("client/src/pages/Pricing.tsx");
+    // The ADDONS list renders <span> chips with rounded-full + px-4 py-2.
+    // Adding .hover-lift-card to a chip would make it look clickable when it's
+    // informational. Pin that we haven't.
+    expect(src).toMatch(/ADDONS\.map\(/);
+    // Find the line with ADDONS chip className and confirm it does NOT carry hover-lift-card.
+    const chipSection = src.split("ADDONS.map(")[1]?.split("</span>")[0] ?? "";
+    expect(chipSection).not.toMatch(/hover-lift-card/);
+  });
+});

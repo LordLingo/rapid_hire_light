@@ -96,10 +96,10 @@ export default function Integrations() {
               <div
                 key={s.number}
                 data-testid={`integrations-step-${s.number}`}
-                className="hover-lift-card hover-lift-card-strong col-span-12 md:col-span-4 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6 md:p-7"
+                className="group hover-lift-card hover-lift-card-strong col-span-12 md:col-span-4 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6 md:p-7"
               >
                 <div className="flex items-center gap-3">
-                  <span className="grid place-items-center size-8 rounded-full border border-border text-[color:var(--color-accent-ink)] bg-white">
+                  <span className="grid place-items-center size-8 rounded-full border border-border text-[color:var(--color-accent-ink)] bg-white transition-colors duration-300 ease-out group-hover:bg-[color:var(--color-tint)] group-hover:border-[color:var(--color-accent-halo)]">
                     {s.icon}
                   </span>
                   <span className="eyebrow">{s.number} · Step</span>
