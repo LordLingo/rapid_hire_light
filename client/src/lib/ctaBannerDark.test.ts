@@ -20,7 +20,6 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-
 const CTA_BANNER_PATH = resolve(
   __dirname,
   "..",
@@ -28,7 +27,9 @@ const CTA_BANNER_PATH = resolve(
   "site",
   "CtaBanner.tsx"
 );
+const INDEX_CSS_PATH = resolve(__dirname, "..", "index.css");
 const SRC = readFileSync(CTA_BANNER_PATH, "utf8");
+const CSS = readFileSync(INDEX_CSS_PATH, "utf8");
 
 describe("CtaBanner dark gradient redesign", () => {
   it("uses a left-to-right gradient that starts at --color-footer", () => {
@@ -86,5 +87,53 @@ describe("CtaBanner dark gradient redesign", () => {
     expect(SRC).toMatch(/See how it works/);
     // CTA still routes to /integrations.
     expect(SRC).toMatch(/href="\/integrations"/);
+  });
+});
+
+describe("CtaBanner top-edge hairline glow", () => {
+  it("renders a hairline glow at the top edge of the dark card", () => {
+    // Pinned via the inline gradient declaration: the soft sky-halo
+    // hairline that bridges the warm paper above to the deep ink
+    // gradient below. The class marker `cta-banner-dark` is what
+    // identifies the card; the inline style on the absolute bar
+    // carries the actual gradient.
+    expect(SRC).toMatch(/cta-banner-dark/);
+    // The hairline uses color-mix on --color-accent-halo so the
+    // boundary glow stays low-alpha; pin both halves of that mix.
+    expect(SRC).toMatch(
+      /color-mix\(in oklch, var\(--color-accent-halo\) 60%, transparent\)/
+    );
+    expect(SRC).toMatch(/absolute left-6 right-6 top-0 h-px/);
+  });
+});
+
+describe("CtaBanner button hover lift + glow", () => {
+  it("tags the CTA link with the .cta-banner-cta marker so the hover styles attach", () => {
+    expect(SRC).toMatch(/cta-banner-cta/);
+  });
+
+  it("defines a 6px upward translate on hover, gated behind prefers-reduced-motion", () => {
+    // Single deliberate motion moment: 6px lift on hover, only when
+    // the user has not requested reduced motion.
+    expect(CSS).toMatch(/@media \(prefers-reduced-motion: no-preference\)/);
+    expect(CSS).toMatch(/\.cta-banner-cta:hover[\s\S]*?translateY\(-6px\)/);
+  });
+
+  it("adds a sky-halo glow box-shadow on hover", () => {
+    // Faint sky-halo glow encoded as a box-shadow that consumes the
+    // same accent-halo token the hairline uses. We pin the substring
+    // rather than the exact shadow so future tweaks to the offset/
+    // blur aren't blocked, but the colour intent is locked.
+    expect(CSS).toMatch(
+      /\.cta-banner-cta:hover[\s\S]*?box-shadow[\s\S]*?var\(--color-accent-halo\)/
+    );
+  });
+
+  it("uses a snappy ease-out (~180ms) for the hover transition", () => {
+    // Cubic-bezier(0.23, 1, 0.32, 1) is the project's canonical snappy
+    // ease-out curve; the duration sits in the 100–200ms band so the
+    // surface still feels responsive on the dark band.
+    expect(CSS).toMatch(/\.cta-banner-cta\b[\s\S]*?cubic-bezier\(0\.23, 1, 0\.32, 1\)/);
+    expect(CSS).toMatch(/\.cta-banner-cta\b[\s\S]*?180ms/);
   });
 });
