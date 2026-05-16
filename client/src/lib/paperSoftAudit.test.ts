@@ -77,6 +77,11 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       "client/src/pages/Compliance.tsx",
       "client/src/pages/ComplianceAudit.tsx",
       "client/src/pages/Support.tsx",
+      // §79: the Resources dropdown panel uses paper-soft as the
+      // hover/active background tint for menu rows. Visually audited
+      // alongside the existing three pages and matches the same
+      // "soft warm tint to break from white" intent.
+      "client/src/components/site/Header.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

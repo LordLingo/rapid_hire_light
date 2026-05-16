@@ -3,25 +3,70 @@
   Hairline rules, ink wordmark, sparse nav, single ink-cobalt CTA.
   Does NOT replicate the dark utility bar with bright pills; the
   HIPAA / SOC 2 trust signals live as quiet small-caps eyebrow text.
+
+  §79: the standalone "Blog" slot in the primary nav was promoted to a
+  "Resources" dropdown that groups four buyer-facing resource pages
+  (Blog, 24-point Checklist, Free 15-min Audit, Trust & Verification).
+  The trigger lights up as active when any of its children matches the
+  current pathname (so a deep /blog/<slug> path still highlights
+  Resources). On mobile the group becomes a collapsible accordion
+  inside the existing sheet so we keep parity without duplicating
+  nav surface.
 */
-import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import { Link, useLocation } from "wouter";
 import { BRAND_NAME, HEADER_LOGO_URL } from "@shared/brand";
 
-type NavItem = { label: string; href: string; type: "route" | "placeholder" };
+type ResourceChild = {
+  label: string;
+  href: string;
+  description: string;
+};
+
+type NavItem =
+  | { kind: "route"; label: string; href: string }
+  | { kind: "placeholder"; label: string }
+  | { kind: "group"; label: string; children: ResourceChild[] };
+
+const RESOURCES_CHILDREN: ResourceChild[] = [
+  {
+    label: "Blog",
+    href: "/blog",
+    description:
+      "Compliance how-tos, hiring playbooks, and screening explainers.",
+  },
+  {
+    label: "24-point checklist",
+    href: "/compliance/checklist",
+    description:
+      "Audit your current screening program against FCRA, EEOC, and state law.",
+  },
+  {
+    label: "Free 15-min audit",
+    href: "/compliance/audit",
+    description:
+      "A working session with our compliance desk on the gap that's hurting most.",
+  },
+  {
+    label: "Trust & verification",
+    href: "/trust",
+    description:
+      "SOC 2 Type II, PBSA, FCRA-aligned — the attestation pack for procurement.",
+  },
+];
 
 const NAV: NavItem[] = [
-  { label: "Services", href: "/services", type: "route" },
-  { label: "Industries", href: "/industries", type: "route" },
-  { label: "Integrations", href: "/integrations", type: "route" },
-  { label: "Pricing", href: "/pricing", type: "route" },
-  { label: "Support", href: "/support", type: "route" },
-  { label: "Compliance", href: "/compliance", type: "route" },
-  { label: "About", href: "/about", type: "route" },
-  { label: "Contact Us", href: "/contact", type: "route" },
-  { label: "Blog", href: "/blog", type: "route" },
+  { kind: "route", label: "Services", href: "/services" },
+  { kind: "route", label: "Industries", href: "/industries" },
+  { kind: "route", label: "Integrations", href: "/integrations" },
+  { kind: "route", label: "Pricing", href: "/pricing" },
+  { kind: "route", label: "Support", href: "/support" },
+  { kind: "route", label: "Compliance", href: "/compliance" },
+  { kind: "route", label: "About", href: "/about" },
+  { kind: "route", label: "Contact Us", href: "/contact" },
+  { kind: "group", label: "Resources", children: RESOURCES_CHILDREN },
 ];
 
 function notImplemented(label: string) {
@@ -39,6 +84,18 @@ export function isActivePath(location: string, href: string): boolean {
   if (location === href) return true;
   if (href === "/") return location === "/";
   return location.startsWith(href + "/");
+}
+
+/*
+  §79: a Resources group is "active" when any of its children matches
+  the current pathname under the same prefix-aware logic. Exported so
+  the §79 vitest pin can verify the deep-blog → Resources link.
+*/
+export function isActiveGroup(
+  location: string,
+  children: { href: string }[],
+): boolean {
+  return children.some((c) => isActivePath(location, c.href));
 }
 
 export default function Header() {
@@ -98,12 +155,24 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-7">
-            {NAV.map((item) =>
-              item.type === "route" ? (
-                <NavLink key={item.label} href={item.href}>
-                  {item.label}
-                </NavLink>
-              ) : (
+            {NAV.map((item) => {
+              if (item.kind === "route") {
+                return (
+                  <NavLink key={item.label} href={item.href}>
+                    {item.label}
+                  </NavLink>
+                );
+              }
+              if (item.kind === "group") {
+                return (
+                  <ResourcesMenu
+                    key={item.label}
+                    label={item.label}
+                    children={item.children}
+                  />
+                );
+              }
+              return (
                 <button
                   key={item.label}
                   onClick={() => notImplemented(item.label)}
@@ -111,8 +180,8 @@ export default function Header() {
                 >
                   {item.label}
                 </button>
-              )
-            )}
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-3">
@@ -174,16 +243,29 @@ export default function Header() {
               />
             </Link>
             <div className="hairline" aria-hidden />
-            {NAV.map((item) =>
-              item.type === "route" ? (
-                <MobileNavLink
-                  key={item.label}
-                  href={item.href}
-                  onNavigate={() => setOpen(false)}
-                >
-                  {item.label}
-                </MobileNavLink>
-              ) : (
+            {NAV.map((item) => {
+              if (item.kind === "route") {
+                return (
+                  <MobileNavLink
+                    key={item.label}
+                    href={item.href}
+                    onNavigate={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </MobileNavLink>
+                );
+              }
+              if (item.kind === "group") {
+                return (
+                  <MobileResourcesGroup
+                    key={item.label}
+                    label={item.label}
+                    children={item.children}
+                    onNavigate={() => setOpen(false)}
+                  />
+                );
+              }
+              return (
                 <button
                   key={item.label}
                   onClick={() => {
@@ -194,8 +276,8 @@ export default function Header() {
                 >
                   {item.label}
                 </button>
-              )
-            )}
+              );
+            })}
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
@@ -261,6 +343,251 @@ function NavLink({
         />
       )}
     </Link>
+  );
+}
+
+/*
+  §79: desktop Resources dropdown.
+
+  Hover/focus-aware. Trigger reads the same as a NavLink but carries
+  a chevron. Panel sits below the trigger with paper bg + hairline
+  border, an editorial 4-row list, and per-row description copy that
+  helps the buyer self-route. Closes on Esc, click-outside, and any
+  child link click. Active state on the trigger fires whenever the
+  current pathname matches one of the children (so /blog/<slug> still
+  lights up Resources).
+*/
+function ResourcesMenu({
+  label,
+  children: items,
+}: {
+  label: string;
+  children: ResourceChild[];
+}) {
+  const [location] = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const closeTimerRef = useRef<number | null>(null);
+  const active = isActiveGroup(location, items);
+
+  // Click-outside + Esc.
+  useEffect(() => {
+    if (!isOpen) return;
+    function onDocClick(e: MouseEvent) {
+      if (!wrapRef.current) return;
+      if (!wrapRef.current.contains(e.target as Node)) setIsOpen(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setIsOpen(false);
+    }
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [isOpen]);
+
+  // Small grace delay on mouse leave so the cursor can travel from
+  // the trigger to the panel without the menu snapping shut.
+  function scheduleClose() {
+    if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = window.setTimeout(() => setIsOpen(false), 140);
+  }
+  function cancelClose() {
+    if (closeTimerRef.current) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  }
+
+  return (
+    <div
+      ref={wrapRef}
+      className="relative"
+      onMouseEnter={() => {
+        cancelClose();
+        setIsOpen(true);
+      }}
+      onMouseLeave={scheduleClose}
+    >
+      <button
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        data-active={active ? "true" : undefined}
+        data-testid="header-resources-trigger"
+        onClick={() => setIsOpen((v) => !v)}
+        onFocus={() => setIsOpen(true)}
+        className={[
+          "ink-link relative inline-flex items-center gap-1 whitespace-nowrap text-[13.5px] tracking-tight transition-colors",
+          active
+            ? "font-medium text-[color:var(--color-ink)]"
+            : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
+        ].join(" ")}
+      >
+        {label}
+        <ChevronDown
+          className={[
+            "size-3.5 transition-transform duration-200 ease-out",
+            isOpen ? "rotate-180" : "",
+          ].join(" ")}
+          aria-hidden
+        />
+        {active && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-0 right-4 -bottom-1.5 h-[2px] rounded-full bg-[color:var(--color-accent-ink)]"
+          />
+        )}
+      </button>
+
+      {/*
+        Panel. Mounted only when open so we get a clean enter
+        transform without a lingering pointer-events surface. Origin
+        is top-left so the scale-in reads from the trigger.
+      */}
+      {isOpen && (
+        <div
+          role="menu"
+          data-testid="header-resources-panel"
+          className="absolute left-0 top-full z-50 mt-3 w-[360px] origin-top-left rounded-[18px] border border-border bg-[color:var(--color-paper)] p-2 shadow-[0_18px_42px_-22px_rgba(15,23,42,0.35)]"
+          style={{
+            animation: "resourcesMenuIn 220ms cubic-bezier(0.23, 1, 0.32, 1)",
+          }}
+        >
+          {/* Inline keyframes so the menu doesn't depend on a
+              global @keyframes that another section might rename. */}
+          <style>{`
+            @keyframes resourcesMenuIn {
+              0% { opacity: 0; transform: scale(0.97) translateY(-4px); }
+              100% { opacity: 1; transform: scale(1) translateY(0); }
+            }
+          `}</style>
+          <ul className="grid gap-1">
+            {items.map((it) => {
+              const childActive = isActivePath(location, it.href);
+              return (
+                <li key={it.href}>
+                  <Link
+                    href={it.href}
+                    onClick={() => setIsOpen(false)}
+                    role="menuitem"
+                    aria-current={childActive ? "page" : undefined}
+                    data-active={childActive ? "true" : undefined}
+                    className={[
+                      "block rounded-[12px] px-3.5 py-3 transition-colors",
+                      childActive
+                        ? "bg-[color:var(--color-paper-soft)]"
+                        : "hover:bg-[color:var(--color-paper-soft)]",
+                    ].join(" ")}
+                  >
+                    <span className="flex items-baseline justify-between gap-3">
+                      <span
+                        className={[
+                          "text-[14px] tracking-tight",
+                          childActive
+                            ? "font-medium text-[color:var(--color-ink)]"
+                            : "text-[color:var(--color-ink)]",
+                        ].join(" ")}
+                      >
+                        {it.label}
+                      </span>
+                      <span className="eyebrow text-[10px] text-[color:var(--color-ink-muted)]">
+                        {it.href}
+                      </span>
+                    </span>
+                    <span className="mt-1.5 block text-[12.5px] leading-[1.55] text-[color:var(--color-ink-soft)]">
+                      {it.description}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/*
+  §79: mobile counterpart to the desktop dropdown.
+
+  In the existing mobile sheet we render Resources as a collapsible
+  accordion: tapping the trigger row expands the four child links
+  beneath it, indented and rail-marked, matching the existing
+  MobileNavLink visual rhythm. Group is auto-expanded when any
+  child path is currently active so a deep-link arrival shows the
+  right context without a tap.
+*/
+function MobileResourcesGroup({
+  label,
+  children: items,
+  onNavigate,
+}: {
+  label: string;
+  children: ResourceChild[];
+  onNavigate: () => void;
+}) {
+  const [location] = useLocation();
+  const groupActive = isActiveGroup(location, items);
+  const [expanded, setExpanded] = useState<boolean>(groupActive);
+
+  return (
+    <div className="grid">
+      <button
+        type="button"
+        aria-expanded={expanded}
+        data-testid="header-resources-mobile-trigger"
+        onClick={() => setExpanded((v) => !v)}
+        className={[
+          "relative flex items-center justify-between text-left text-[15px] py-1.5 pl-3 -ml-3 transition-colors",
+          groupActive
+            ? "font-medium text-[color:var(--color-ink)]"
+            : "text-[color:var(--color-ink-soft)]",
+        ].join(" ")}
+      >
+        {groupActive && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-0 top-1.5 bottom-1.5 w-[2px] rounded-full bg-[color:var(--color-accent-ink)]"
+          />
+        )}
+        <span>{label}</span>
+        <ChevronDown
+          className={[
+            "size-4 transition-transform duration-200 ease-out",
+            expanded ? "rotate-180" : "",
+          ].join(" ")}
+          aria-hidden
+        />
+      </button>
+      {expanded && (
+        <div className="mt-1 mb-1 ml-3 grid gap-1 border-l border-border pl-4">
+          {items.map((it) => {
+            const childActive = isActivePath(location, it.href);
+            return (
+              <Link
+                key={it.href}
+                href={it.href}
+                onClick={onNavigate}
+                aria-current={childActive ? "page" : undefined}
+                data-active={childActive ? "true" : undefined}
+                className={[
+                  "text-[14px] py-1.5 transition-colors",
+                  childActive
+                    ? "font-medium text-[color:var(--color-ink)]"
+                    : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
+                ].join(" ")}
+              >
+                {it.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 

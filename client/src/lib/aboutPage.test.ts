@@ -45,8 +45,11 @@ describe("§75 — About page is wired into the app shell", () => {
   it("About link appears in the desktop+mobile primary nav (Header.tsx)", () => {
     // Header.tsx defines a single NAV array consumed by both render
     // branches. The §75 entry must be present and route-typed.
+    // §79 changed the discriminator from `type:` to `kind:` when
+    // introducing the Resources group; the route-typed shape is
+    // otherwise identical.
     expect(HEADER_SRC).toMatch(
-      /\{\s*label:\s*"About"\s*,\s*href:\s*"\/about"\s*,\s*type:\s*"route"\s*\}/,
+      /\{\s*kind:\s*"route"\s*,\s*label:\s*"About"\s*,\s*href:\s*"\/about"\s*\}/,
     );
   });
 

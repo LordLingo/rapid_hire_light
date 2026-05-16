@@ -43,8 +43,11 @@ describe("§59 — /compliance route registration", () => {
 
 describe("§59 — Header nav wiring", () => {
   it("includes a Compliance NAV entry pointing at /compliance", () => {
+    // §79 changed the discriminator from `type:` to `kind:` when
+    // introducing the Resources group; the route-typed shape is
+    // otherwise identical.
     expect(HEADER_SRC).toMatch(
-      /\{\s*label:\s*"Compliance",\s*href:\s*"\/compliance",\s*type:\s*"route"\s*\}/
+      /\{\s*kind:\s*"route"\s*,\s*label:\s*"Compliance"\s*,\s*href:\s*"\/compliance"\s*\}/
     );
   });
 

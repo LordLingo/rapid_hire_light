@@ -847,3 +847,25 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Renumbered CTA eyebrow `08 — Talk to us` → `09 — Talk to us`
 - [x] Added 7 §77 pins to aboutPage.test.ts
 - [x] Full vitest suite green (485/485), tsc clean, checkpoint saved
+
+
+## 78. Site-wide button + form audit
+- [x] Enumerated every page under client/src/pages/
+- [x] For each page, listed every `<button>`, every CTA Link/anchor, every `<form>` and what it does on submit
+- [x] Live-probed `/api/contact` and `/api/candidate-contact` (both return 201 Created on valid payloads)
+- [x] Classified each: 3 working forms, 0 broken forms, 3 toast placeholders, 4 implied-but-missing CTAs
+- [x] Wrote SITE_AUDIT_BUTTONS_AND_FORMS.md with prioritized fix list (no code changes in this audit pass)
+
+
+## 79. Convert "Blog" header slot into a "Resources" dropdown
+- [x] Audit Header.tsx + map every test pin that touches NAV shape
+- [x] Replace standalone Blog NAV item with a `kind: "group"` Resources entry containing 4 children (Blog, 24-pt Checklist, Free 15-min Audit, Trust)
+- [x] Build desktop ResourcesMenu component (hover/focus dropdown with paper panel, hairline border, per-row description, 220ms ease-out enter, click-outside + Esc close, aria-haspopup="menu")
+- [x] Build MobileResourcesGroup component (collapsible accordion inside existing sheet, auto-expanded when any child path is active)
+- [x] Active-route lights the Resources trigger when any child path matches (incl. deep /blog/<slug>)
+- [x] Update §75 + §59 NAV-shape regex pins to match new `kind:` discriminator
+- [x] Add Header.tsx to §71 paper-soft audit allow-list with documented reason
+- [x] Add new §79 anti-regression pin (13 assertions covering NAV shape, child set, render-branch presence, isActiveGroup helper)
+- [x] Full vitest suite green (498/498), tsc clean, checkpoint saved
+
+<!-- §79b placeholder absorbed into §79 above -->
