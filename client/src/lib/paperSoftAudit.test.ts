@@ -95,6 +95,16 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       "client/src/pages/ResourcesMarijuanaLaws.tsx",
       "client/src/pages/ResourcesLegislativeUpdates.tsx",
       "client/src/pages/ResourcesWhitePapers.tsx",
+      // §83: per-check service detail, sample-report, candidates, and
+      // case-study pages reuse the same alternating section rhythm as
+      // Resources / Compliance. Visually audited alongside the
+      // existing pillars; consistent paper-soft usage was the design
+      // goal.
+      "client/src/pages/ServiceDetail.tsx",
+      "client/src/pages/SampleReport.tsx",
+      "client/src/pages/Candidates.tsx",
+      "client/src/pages/Customers.tsx",
+      "client/src/pages/CustomerDetail.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

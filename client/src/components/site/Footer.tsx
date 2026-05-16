@@ -44,6 +44,10 @@ const COMPANY: FooterItem[] = [
   { label: "Trust & verification", to: "/trust" },
   { label: "24-point checklist", to: "/compliance/checklist" },
   { label: "Free 15-min audit", to: "/compliance/audit" },
+  // §83: surface candidate self-service + sample-report destination.
+  { label: "For candidates", to: "/candidates" },
+  { label: "Sample report", to: "/sample-report" },
+  { label: "Customer stories", to: "/customers" },
   { label: "Contact", to: "/contact" },
 ];
 const PORTALS: FooterItem[] = [

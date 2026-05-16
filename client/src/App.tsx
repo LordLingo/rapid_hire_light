@@ -7,6 +7,10 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
+import SampleReport from "./pages/SampleReport";
+import Candidates from "./pages/Candidates";
+import Customers from "./pages/Customers";
+import CustomerDetail from "./pages/CustomerDetail";
 import Integrations from "./pages/Integrations";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
@@ -37,6 +41,10 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/services"} component={Services} />
       <Route path={"/services/:slug"} component={ServiceDetail} />
+      <Route path={"/sample-report"} component={SampleReport} />
+      <Route path={"/candidates"} component={Candidates} />
+      <Route path={"/customers"} component={Customers} />
+      <Route path={"/customers/:slug"} component={CustomerDetail} />
       <Route path={"/industries"} component={Industries} />
       <Route path={"/integrations"} component={Integrations} />
       <Route path={"/pricing"} component={Pricing} />

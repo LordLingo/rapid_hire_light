@@ -523,6 +523,14 @@ const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = 
   { path: "/services/identity-verification",   priority: 0.85, changefreq: "monthly" },
   { path: "/services/healthcare-sanctions",    priority: 0.85, changefreq: "monthly" },
   { path: "/services/continuous-monitoring",   priority: 0.85, changefreq: "monthly" },
+  // §83: dedicated sample-report destination + candidate self-service.
+  { path: "/sample-report",  priority: 0.7, changefreq: "monthly" },
+  { path: "/candidates",     priority: 0.8, changefreq: "monthly" },
+  // §83: customer stories index + 3 first-batch detail pages.
+  { path: "/customers",                              priority: 0.8,  changefreq: "monthly" },
+  { path: "/customers/frito-lay-fleet-mvr",          priority: 0.7,  changefreq: "monthly" },
+  { path: "/customers/hr-block-tax-season-scaling",  priority: 0.7,  changefreq: "monthly" },
+  { path: "/customers/taylormade-rd-credentials",    priority: 0.7,  changefreq: "monthly" },
   { path: "/integrations", priority: 0.7,  changefreq: "monthly" },
   { path: "/pricing",      priority: 0.9,  changefreq: "monthly" },
   { path: "/about",        priority: 0.6,  changefreq: "yearly"  },
