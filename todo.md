@@ -903,3 +903,11 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Update Resources header dropdown with the new top-level pillars
 - [x] Add vitest pins per new page (§81 file: structural section markers, route registration, sitemap registration)
 - [x] Run full vitest suite green, run pnpm tsc --noEmit, save checkpoint, deliver
+
+## §82 — 10 more white papers
+
+- [x] Author 10 new WhitePaper entries (no overlap with the existing 6)
+- [x] Append entries to WHITE_PAPERS in client/src/lib/whitePapers.ts
+- [x] Verify ResourcesWhitePapers page renders all 16 with topic filter
+- [x] Run pnpm test --run + pnpm tsc --noEmit
+- [x] Save checkpoint
