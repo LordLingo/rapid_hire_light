@@ -888,18 +888,18 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Crawled accurate.com Resources mega-menu via JS console
 - [x] Classified pages: build = Background Checks by State, Marijuana Laws, Legislative Updates, White Papers; exclude = Ban the Box (already built), Webinars, Sample Forms, eBooks; Blog already exists
 - [x] User confirmed scope: 1C + 2 + 3A + 4A = 17 new pages
-- [ ] Build 50-state statute matrix dataset (states + key compliance rules) in client/src/lib/stateBackgroundCheckMatrix.ts
-- [ ] Build state-by-state cannabis testing matrix in client/src/lib/cannabisLawsMatrix.ts
-- [ ] Build legislative-updates feed in client/src/lib/legislativeUpdates.ts (8 entries)
-- [ ] Build white-papers list in client/src/lib/whitePapers.ts (6 entries)
-- [ ] Build /resources/background-checks-by-state hub (50-state directory + filter + linked detail rows)
-- [ ] Build 13 state detail pages: CA, TX, NY, FL, IL, PA, OH, GA, NC, MI, NJ, VA, WA at /resources/background-checks-by-state/<slug>
-- [ ] Build /resources/marijuana-laws state-by-state cannabis testing matrix page
-- [ ] Build /resources/legislative-updates feed page
-- [ ] Build /resources/white-papers library page
-- [ ] Wire all 17 routes in App.tsx
-- [ ] Add all 17 routes to vite.config.ts STATIC_ROUTES
-- [ ] Update /resources hub to surface all 4 new pillars
-- [ ] Update Resources header dropdown with the new top-level pillars
-- [ ] Add vitest pins per new page (§81 file: structural section markers, route registration, sitemap registration)
-- [ ] Run full vitest suite green, run pnpm tsc --noEmit, save checkpoint, deliver
+- [x] Build 50-state statute matrix dataset (states + key compliance rules) in client/src/lib/stateBackgroundCheckMatrix.ts
+- [x] Build state-by-state cannabis testing matrix in client/src/lib/cannabisLawsMatrix.ts
+- [x] Build legislative-updates feed in client/src/lib/legislativeUpdates.ts (8 entries)
+- [x] Build white-papers list in client/src/lib/whitePapers.ts (6 entries)
+- [x] Build /resources/background-checks-by-state hub (50-state directory + filter + linked detail rows)
+- [x] Build 13 state detail pages: CA, TX, NY, FL, IL, PA, OH, GA, NC, MI, NJ, VA, WA at /resources/background-checks-by-state/<slug>
+- [x] Build /resources/marijuana-laws state-by-state cannabis testing matrix page
+- [x] Build /resources/legislative-updates feed page
+- [x] Build /resources/white-papers library page
+- [x] Wire all 17 routes in App.tsx
+- [x] Add all 17 routes to vite.config.ts STATIC_ROUTES
+- [x] Update /resources hub to surface all 4 new pillars
+- [x] Update Resources header dropdown with the new top-level pillars
+- [x] Add vitest pins per new page (§81 file: structural section markers, route registration, sitemap registration)
+- [x] Run full vitest suite green, run pnpm tsc --noEmit, save checkpoint, deliver
