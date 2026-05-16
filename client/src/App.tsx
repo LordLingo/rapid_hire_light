@@ -23,6 +23,11 @@ import Trust from "./pages/Trust";
 import Industries from "./pages/Industries";
 import Resources from "./pages/Resources";
 import ResourcesBanTheBox from "./pages/ResourcesBanTheBox";
+import ResourcesBackgroundChecksByState from "./pages/ResourcesBackgroundChecksByState";
+import ResourcesStatePage from "./pages/ResourcesStatePage";
+import ResourcesMarijuanaLaws from "./pages/ResourcesMarijuanaLaws";
+import ResourcesLegislativeUpdates from "./pages/ResourcesLegislativeUpdates";
+import ResourcesWhitePapers from "./pages/ResourcesWhitePapers";
 
 
 function Router() {
@@ -46,6 +51,11 @@ function Router() {
       <Route path={"/compliance"} component={Compliance} />
       <Route path={"/trust"} component={Trust} />
       <Route path={"/resources/ban-the-box"} component={ResourcesBanTheBox} />
+      <Route path={"/resources/marijuana-laws"} component={ResourcesMarijuanaLaws} />
+      <Route path={"/resources/legislative-updates"} component={ResourcesLegislativeUpdates} />
+      <Route path={"/resources/white-papers"} component={ResourcesWhitePapers} />
+      <Route path={"/resources/background-checks-by-state"} component={ResourcesBackgroundChecksByState} />
+      <Route path={"/resources/background-checks-by-state/:slug"} component={ResourcesStatePage} />
       <Route path={"/resources"} component={Resources} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

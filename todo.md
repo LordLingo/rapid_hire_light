@@ -882,3 +882,24 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Updated §79 dropdown pin (4→6 children) and §71 paper-soft allow-list to include the two new pages
 - [x] Added new client/src/lib/resourcesBanTheBox.test.ts (21 pins covering dataset, hub, detail page, routes, sitemap)
 - [x] Full vitest suite green (519/519), tsc clean, checkpoint saved
+
+
+## 81. Build Accurate-inspired Resources pages (excluding Ban the Box, Webinars, Sample Forms, eBooks)
+- [x] Crawled accurate.com Resources mega-menu via JS console
+- [x] Classified pages: build = Background Checks by State, Marijuana Laws, Legislative Updates, White Papers; exclude = Ban the Box (already built), Webinars, Sample Forms, eBooks; Blog already exists
+- [x] User confirmed scope: 1C + 2 + 3A + 4A = 17 new pages
+- [ ] Build 50-state statute matrix dataset (states + key compliance rules) in client/src/lib/stateBackgroundCheckMatrix.ts
+- [ ] Build state-by-state cannabis testing matrix in client/src/lib/cannabisLawsMatrix.ts
+- [ ] Build legislative-updates feed in client/src/lib/legislativeUpdates.ts (8 entries)
+- [ ] Build white-papers list in client/src/lib/whitePapers.ts (6 entries)
+- [ ] Build /resources/background-checks-by-state hub (50-state directory + filter + linked detail rows)
+- [ ] Build 13 state detail pages: CA, TX, NY, FL, IL, PA, OH, GA, NC, MI, NJ, VA, WA at /resources/background-checks-by-state/<slug>
+- [ ] Build /resources/marijuana-laws state-by-state cannabis testing matrix page
+- [ ] Build /resources/legislative-updates feed page
+- [ ] Build /resources/white-papers library page
+- [ ] Wire all 17 routes in App.tsx
+- [ ] Add all 17 routes to vite.config.ts STATIC_ROUTES
+- [ ] Update /resources hub to surface all 4 new pillars
+- [ ] Update Resources header dropdown with the new top-level pillars
+- [ ] Add vitest pins per new page (§81 file: structural section markers, route registration, sitemap registration)
+- [ ] Run full vitest suite green, run pnpm tsc --noEmit, save checkpoint, deliver

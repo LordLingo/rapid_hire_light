@@ -87,6 +87,14 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // Pricing already use. Visually audited.
       "client/src/pages/Resources.tsx",
       "client/src/pages/ResourcesBanTheBox.tsx",
+      // §81: Accurate-inspired Resources buildout. All five pages reuse
+      // the same alternating section rhythm. Visually audited alongside
+      // the existing pillars.
+      "client/src/pages/ResourcesBackgroundChecksByState.tsx",
+      "client/src/pages/ResourcesStatePage.tsx",
+      "client/src/pages/ResourcesMarijuanaLaws.tsx",
+      "client/src/pages/ResourcesLegislativeUpdates.tsx",
+      "client/src/pages/ResourcesWhitePapers.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

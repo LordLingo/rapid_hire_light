@@ -36,10 +36,38 @@ const PILLARS: {
 }[] = [
   {
     eyebrow: "Pillar reference",
+    title: "Background checks by state",
+    body:
+      "A 50-state directory and 13 deep-dive state guides — lookback windows, ban-the-box scope, salary-history rules, cannabis treatment, and statute citations for every state.",
+    href: "/resources/background-checks-by-state",
+  },
+  {
+    eyebrow: "Pillar reference",
     title: "Ban the Box laws by jurisdiction",
     body:
       "The 40-row matrix our compliance team operates from. Sixteen states, DC, the U.S. Virgin Islands, and twenty-plus cities and counties — what each requires and when it kicks in.",
     href: "/resources/ban-the-box",
+  },
+  {
+    eyebrow: "Pillar reference",
+    title: "Marijuana laws by state",
+    body:
+      "State-by-state cannabis testing, off-duty protections, and safety-sensitive carve-outs — with the 2024 statute changes flagged for fast review.",
+    href: "/resources/marijuana-laws",
+  },
+  {
+    eyebrow: "Living feed",
+    title: "Legislative updates",
+    body:
+      "Federal, state, and municipal updates with citations, effective dates, and the concrete employer action each one triggers.",
+    href: "/resources/legislative-updates",
+  },
+  {
+    eyebrow: "Library",
+    title: "White papers",
+    body:
+      "Long-form, source-anchored references for compliance, operations, industry programs, and candidate experience.",
+    href: "/resources/white-papers",
   },
 ];
 

@@ -57,11 +57,16 @@ describe("§79 — NAV carries a single Resources group", () => {
     );
   });
 
-  it("the RESOURCES_CHILDREN array is the single source of truth and contains all six canonical children", () => {
+  it("the RESOURCES_CHILDREN array is the single source of truth and contains all canonical children", () => {
     expect(HEADER_SRC).toMatch(/const RESOURCES_CHILDREN: ResourceChild\[\]/);
     // §80 additions
     expect(HEADER_SRC).toMatch(/href:\s*"\/resources"/);
     expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/ban-the-box"/);
+    // §81 additions
+    expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/background-checks-by-state"/);
+    expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/marijuana-laws"/);
+    expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/legislative-updates"/);
+    expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/white-papers"/);
     // §79 originals
     expect(HEADER_SRC).toMatch(/href:\s*"\/blog"/);
     expect(HEADER_SRC).toMatch(/href:\s*"\/compliance\/checklist"/);
@@ -71,13 +76,13 @@ describe("§79 — NAV carries a single Resources group", () => {
 
   it("each child entry carries a non-empty description string", () => {
     // Pull the RESOURCES_CHILDREN array body and count description
-    // entries — must be exactly six (§79 four + §80 two).
+    // entries — §79 four + §80 two + §81 four = 10.
     const block = HEADER_SRC.match(
       /const RESOURCES_CHILDREN:[^\[]*\[([\s\S]*?)\];/,
     );
     expect(block, "RESOURCES_CHILDREN array must exist").not.toBeNull();
     const descriptions = (block?.[1].match(/description:\s*"/g) ?? []);
-    expect(descriptions.length).toBe(6);
+    expect(descriptions.length).toBe(10);
   });
 });
 

@@ -38,10 +38,34 @@ const RESOURCES_CHILDREN: ResourceChild[] = [
       "The hub: pillar references, practitioner tools, and the latest writing.",
   },
   {
+    label: "Background checks by state",
+    href: "/resources/background-checks-by-state",
+    description:
+      "50-state directory and 13 deep-dive state guides for multi-state hiring teams.",
+  },
+  {
     label: "Ban the Box guide",
     href: "/resources/ban-the-box",
     description:
       "40-row jurisdiction matrix, employer playbook, and FAQ \u2014 updated monthly.",
+  },
+  {
+    label: "Marijuana laws",
+    href: "/resources/marijuana-laws",
+    description:
+      "State-by-state cannabis testing and off-duty protections, current to 2026.",
+  },
+  {
+    label: "Legislative updates",
+    href: "/resources/legislative-updates",
+    description:
+      "Federal, state, and municipal updates with citations and employer actions.",
+  },
+  {
+    label: "White papers",
+    href: "/resources/white-papers",
+    description:
+      "Long-form references for compliance, operations, and industry programs.",
   },
   {
     label: "Blog",
