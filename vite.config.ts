@@ -518,6 +518,8 @@ const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = 
   { path: "/contact",      priority: 0.7,  changefreq: "yearly"  },
   { path: "/support",      priority: 0.8,  changefreq: "monthly" },
   { path: "/blog",         priority: 0.8,  changefreq: "weekly"  },
+  { path: "/resources",                priority: 0.8, changefreq: "weekly"  },
+  { path: "/resources/ban-the-box",    priority: 0.8, changefreq: "monthly" },
   { path: "/privacy",      priority: 0.3,  changefreq: "yearly"  },
   { path: "/terms",        priority: 0.3,  changefreq: "yearly"  },
 ];

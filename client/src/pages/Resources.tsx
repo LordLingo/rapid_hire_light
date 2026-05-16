@@ -1,0 +1,253 @@
+/*
+  Resources — Hub Index (§80)
+  ---------------------------
+  Lightweight landing page for the Resources section. Lists the
+  pillar references (Ban the Box matrix), the practitioner tools
+  (24-pt checklist, 15-min audit, trust & verification), and a
+  rail to the latest blog posts.
+
+  Section rhythm:
+    01 — paper        Hero
+    02 — paper-soft   Pillar references (1-up large card grid)
+    03 — paper        Practitioner tools (3-up grid)
+    04 — paper-soft   Latest from the blog (3-up rail)
+    + CtaBanner
+*/
+import * as React from "react";
+import { Link } from "wouter";
+import {
+  ArrowRight,
+  ScrollText,
+  ClipboardList,
+  CalendarCheck2,
+  ShieldCheck,
+} from "lucide-react";
+import SiteShell from "@/components/site/SiteShell";
+import PageHero from "@/components/site/PageHero";
+import CtaBanner from "@/components/site/CtaBanner";
+import { useSeo } from "@/hooks/useSeo";
+import { listPosts } from "@/lib/blog";
+
+const PILLARS: {
+  eyebrow: string;
+  title: string;
+  body: string;
+  href: string;
+}[] = [
+  {
+    eyebrow: "Pillar reference",
+    title: "Ban the Box laws by jurisdiction",
+    body:
+      "The 40-row matrix our compliance team operates from. Sixteen states, DC, the U.S. Virgin Islands, and twenty-plus cities and counties — what each requires and when it kicks in.",
+    href: "/resources/ban-the-box",
+  },
+];
+
+const TOOLS: {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  body: string;
+  href: string;
+}[] = [
+  {
+    icon: ClipboardList,
+    title: "24-point compliance checklist",
+    body:
+      "An auditor-style scorecard that walks every pre-employment screening control your team should be able to demonstrate.",
+    href: "/compliance/checklist",
+  },
+  {
+    icon: CalendarCheck2,
+    title: "Free 15-minute audit",
+    body:
+      "Bring your current consent forms, adverse-action letters, and ATS screen — we tell you which jurisdictions you're already aligned with and which need a fix.",
+    href: "/compliance/audit",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Trust &amp; verification",
+    body:
+      "How candidates verify a Rapid Hire request is real — and how employers verify a Rapid Hire report is authentic.",
+    href: "/trust",
+  },
+];
+
+export default function Resources() {
+  useSeo({
+    title:
+      "Resources — fair-chance hiring guides and compliance tools · Rapid Hire Solutions",
+    description:
+      "Pillar references, compliance checklists, and field guides Rapid Hire's team uses every day. Start with the 40-row Ban the Box matrix or the free 15-minute audit.",
+    canonical: "https://www.rapidhiresolutions.com/resources",
+    ogType: "website",
+  });
+
+  // Pull the three most recent blog posts for the rail.
+  const recentPosts = listPosts().slice(0, 3);
+
+  return (
+    <SiteShell>
+      <PageHero
+        eyebrow="00 — Resources"
+        title={
+          <>
+            Field guides built from the same playbook our{" "}
+            <span className="italic font-light text-[color:var(--color-accent-ink)]">
+              compliance team uses.
+            </span>
+          </>
+        }
+        lede={
+          "Pillar references, practitioner tools, and the latest from our blog. Start with the matrix below, send your team the 24-point checklist, or book a free 15-minute audit if you'd rather have us read your current setup back to you."
+        }
+      />
+
+      {/* 02 — Pillar references */}
+      <section className="bg-[color:var(--color-paper-soft)] border-y border-border">
+        <div className="container py-20 md:py-24">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-8">
+            <div className="col-span-12 lg:col-span-3">
+              <p className="eyebrow">02 — Pillar references</p>
+              <div className="mt-3 hairline" />
+              <p className="mt-6 text-[14px] leading-[1.7] text-[color:var(--color-ink-soft)] max-w-xs">
+                Long-form, deeply-linked references that stay current as
+                statutes amend.
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-9 grid grid-cols-1 gap-6">
+              {PILLARS.map((p) => (
+                <Link
+                  key={p.href}
+                  href={p.href}
+                  className="block rounded-[18px] border border-border bg-white paper-shadow p-7 md:p-9 hover:bg-[color:var(--color-paper)] transition-colors"
+                >
+                  <div className="flex items-start gap-5">
+                    <div className="shrink-0">
+                      <ScrollText
+                        className="h-7 w-7 text-[color:var(--color-accent)]"
+                        aria-hidden
+                      />
+                    </div>
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)]">
+                        {p.eyebrow}
+                      </p>
+                      <h3 className="mt-3 font-display text-[26px] md:text-[30px] leading-[1.18] tracking-[-0.015em] text-[color:var(--color-ink)] max-w-2xl">
+                        {p.title}
+                      </h3>
+                      <p className="mt-4 max-w-2xl text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                        {p.body}
+                      </p>
+                      <p className="mt-5 inline-flex items-center gap-2 text-[14px] font-medium text-[color:var(--color-accent-ink)]">
+                        Open the matrix
+                        <ArrowRight className="h-4 w-4" aria-hidden />
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 03 — Practitioner tools */}
+      <section className="bg-[color:var(--color-paper)]">
+        <div className="container py-20 md:py-24">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-8">
+            <div className="col-span-12 lg:col-span-3">
+              <p className="eyebrow">03 — Practitioner tools</p>
+              <div className="mt-3 hairline" />
+              <p className="mt-6 text-[14px] leading-[1.7] text-[color:var(--color-ink-soft)] max-w-xs">
+                Short-form tools the team can put to work the same morning
+                they read them.
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {TOOLS.map((t) => {
+                const Icon = t.icon;
+                return (
+                  <Link
+                    key={t.href}
+                    href={t.href}
+                    className="block rounded-[16px] border border-border bg-white paper-shadow p-6 md:p-7 hover:bg-[color:var(--color-paper-soft)] transition-colors"
+                  >
+                    <Icon
+                      className="h-6 w-6 text-[color:var(--color-accent)]"
+                      aria-hidden
+                    />
+                    <h3 className="mt-5 font-display text-[20px] leading-[1.25] text-[color:var(--color-ink)]">
+                      {t.title}
+                    </h3>
+                    <p
+                      className="mt-3 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]"
+                      // We allow our author-controlled body to render inline
+                      // entities (& as &amp;). React already escapes, so this
+                      // is safe — but to stay consistent with how the rest of
+                      // the site authors copy, we keep the literal text.
+                    >
+                      {t.body.replace(/&amp;/g, "&")}
+                    </p>
+                    <p className="mt-5 inline-flex items-center gap-2 text-[14px] font-medium text-[color:var(--color-accent-ink)]">
+                      Open
+                      <ArrowRight className="h-4 w-4" aria-hidden />
+                    </p>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 04 — From the blog */}
+      <section className="bg-[color:var(--color-paper-soft)] border-y border-border">
+        <div className="container py-20 md:py-24">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-8">
+            <div className="col-span-12 lg:col-span-3">
+              <p className="eyebrow">04 — From the blog</p>
+              <div className="mt-3 hairline" />
+              <p className="mt-6 text-[14px] leading-[1.7] text-[color:var(--color-ink-soft)] max-w-xs">
+                The most recent posts. New writing lands daily.
+              </p>
+              <div className="mt-5">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-2 text-[14px] font-medium text-[color:var(--color-accent-ink)] hover-lift-link"
+                >
+                  All posts
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </div>
+            </div>
+            <div className="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-3 gap-6">
+              {recentPosts.map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/blog/${p.slug}`}
+                  className="block rounded-[16px] border border-border bg-white paper-shadow p-6 md:p-7 hover:bg-[color:var(--color-paper)] transition-colors"
+                >
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)]">
+                    {p.tags?.[0] ?? "Article"}
+                  </p>
+                  <h3 className="mt-3 font-display text-[19px] leading-[1.3] text-[color:var(--color-ink)]">
+                    {p.title}
+                  </h3>
+                  <p className="mt-3 text-[13.5px] leading-[1.65] text-[color:var(--color-ink-soft)]">
+                    {p.metaDescription}
+                  </p>
+                  <p className="mt-5 inline-flex items-center gap-2 text-[14px] font-medium text-[color:var(--color-accent-ink)]">
+                    Read article
+                    <ArrowRight className="h-4 w-4" aria-hidden />
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CtaBanner />
+    </SiteShell>
+  );
+}

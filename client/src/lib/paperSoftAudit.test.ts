@@ -82,6 +82,11 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // alongside the existing three pages and matches the same
       // "soft warm tint to break from white" intent.
       "client/src/components/site/Header.tsx",
+      // §80: Resources hub + Ban the Box detail page use paper-soft
+      // for the same alternating section rhythm Compliance / Support /
+      // Pricing already use. Visually audited.
+      "client/src/pages/Resources.tsx",
+      "client/src/pages/ResourcesBanTheBox.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

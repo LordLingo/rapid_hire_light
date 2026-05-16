@@ -32,6 +32,18 @@ type NavItem =
 
 const RESOURCES_CHILDREN: ResourceChild[] = [
   {
+    label: "All resources",
+    href: "/resources",
+    description:
+      "The hub: pillar references, practitioner tools, and the latest writing.",
+  },
+  {
+    label: "Ban the Box guide",
+    href: "/resources/ban-the-box",
+    description:
+      "40-row jurisdiction matrix, employer playbook, and FAQ \u2014 updated monthly.",
+  },
+  {
     label: "Blog",
     href: "/blog",
     description:

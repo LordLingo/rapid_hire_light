@@ -21,6 +21,8 @@ import ComplianceAudit from "./pages/ComplianceAudit";
 import ComplianceChecklist from "./pages/ComplianceChecklist";
 import Trust from "./pages/Trust";
 import Industries from "./pages/Industries";
+import Resources from "./pages/Resources";
+import ResourcesBanTheBox from "./pages/ResourcesBanTheBox";
 
 
 function Router() {
@@ -43,6 +45,8 @@ function Router() {
       <Route path={"/compliance/checklist"} component={ComplianceChecklist} />
       <Route path={"/compliance"} component={Compliance} />
       <Route path={"/trust"} component={Trust} />
+      <Route path={"/resources/ban-the-box"} component={ResourcesBanTheBox} />
+      <Route path={"/resources"} component={Resources} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

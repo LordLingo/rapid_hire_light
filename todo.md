@@ -869,3 +869,16 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Full vitest suite green (498/498), tsc clean, checkpoint saved
 
 <!-- §79b placeholder absorbed into §79 above -->
+
+
+## 80. Add /resources/ban-the-box page (precisehire-inspired)
+- [x] Read precisehire.com/resources/ban-the-box reference (8 sections: hero stats, why-this-matters, US coverage, jurisdiction directory, employer playbook, how we help, FAQ, related resources)
+- [x] Audited existing /blog ban-the-box posts — different format/URL, kept as companions in the keep-going rail (no copy collision)
+- [x] Built /resources thin index hub: hero + 3-card pillar/tools row + auto-updating Latest from the blog rail
+- [x] Built /resources/ban-the-box detail page: 8 sections including filterable jurisdiction directory (stage + scope chips), 6-step employer playbook, 5-question FAQ accordion, JSON-LD Article schema, 'reference, not legal advice' disclaimer
+- [x] Built JURISDICTIONS dataset (40 rows: 16 states + DC + USVI + 21 cities/counties) in client/src/lib/banTheBoxJurisdictions.ts
+- [x] Wired both routes in App.tsx + vite.config.ts STATIC_ROUTES (sitemap)
+- [x] Added 'All resources' (→ /resources) and 'Ban the Box guide' (→ /resources/ban-the-box) to RESOURCES_CHILDREN dropdown
+- [x] Updated §79 dropdown pin (4→6 children) and §71 paper-soft allow-list to include the two new pages
+- [x] Added new client/src/lib/resourcesBanTheBox.test.ts (21 pins covering dataset, hub, detail page, routes, sitemap)
+- [x] Full vitest suite green (519/519), tsc clean, checkpoint saved
