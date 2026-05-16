@@ -512,6 +512,17 @@ type BlogMeta = {
 const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = [
   { path: "/",             priority: 1.0,  changefreq: "weekly"  },
   { path: "/services",     priority: 0.9,  changefreq: "monthly" },
+  // §83: per-check service detail pages — dedicated SEO surface area
+  // and the link target the footer + blog crosslinks now point to.
+  { path: "/services/criminal-records",        priority: 0.85, changefreq: "monthly" },
+  { path: "/services/employment-verification", priority: 0.85, changefreq: "monthly" },
+  { path: "/services/education-verification",  priority: 0.85, changefreq: "monthly" },
+  { path: "/services/drug-screening",          priority: 0.85, changefreq: "monthly" },
+  { path: "/services/motor-vehicle-records",   priority: 0.85, changefreq: "monthly" },
+  { path: "/services/social-media-screening",  priority: 0.85, changefreq: "monthly" },
+  { path: "/services/identity-verification",   priority: 0.85, changefreq: "monthly" },
+  { path: "/services/healthcare-sanctions",    priority: 0.85, changefreq: "monthly" },
+  { path: "/services/continuous-monitoring",   priority: 0.85, changefreq: "monthly" },
   { path: "/integrations", priority: 0.7,  changefreq: "monthly" },
   { path: "/pricing",      priority: 0.9,  changefreq: "monthly" },
   { path: "/about",        priority: 0.6,  changefreq: "yearly"  },

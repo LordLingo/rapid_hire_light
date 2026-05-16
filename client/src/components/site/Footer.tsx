@@ -11,13 +11,18 @@ import { isActivePath } from "./Header";
 
 type FooterItem = { label: string; to?: string };
 
+// §83: each footer service link now resolves to its own detail page
+// at /services/<slug>. See client/src/lib/serviceCatalog.ts for the
+// shared dataset; the page hub at /services remains the index.
 const SERVICES: FooterItem[] = [
-  { label: "Background Checks", to: "/services" },
-  { label: "Drug Screening", to: "/services" },
-  { label: "MVR", to: "/services" },
-  { label: "Social Background Checks", to: "/services" },
-  { label: "Employment Verification", to: "/services" },
-  { label: "Education Checks", to: "/services" },
+  { label: "Criminal Records", to: "/services/criminal-records" },
+  { label: "Drug Screening", to: "/services/drug-screening" },
+  { label: "MVR", to: "/services/motor-vehicle-records" },
+  { label: "Social Background Checks", to: "/services/social-media-screening" },
+  { label: "Employment Verification", to: "/services/employment-verification" },
+  { label: "Education Checks", to: "/services/education-verification" },
+  { label: "Healthcare Sanctions", to: "/services/healthcare-sanctions" },
+  { label: "Continuous Monitoring", to: "/services/continuous-monitoring" },
 ];
 const COMPANY: FooterItem[] = [
   { label: "About Us", to: "/about" },

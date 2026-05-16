@@ -9,110 +9,34 @@
    - Closing CTA strip routes to /contact.
 */
 import { Link } from "wouter";
-import {
-  BriefcaseBusiness,
-  Gavel,
-  FlaskConical,
-  GraduationCap,
-  Car,
-  Globe,
-  ArrowUpRight,
-} from "lucide-react";
+import { ArrowUpRight, ArrowRight } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { ServicesStack } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import SampleReportImage from "@/components/site/SampleReportImage";
+import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
 
-const SERVICES = [
-  {
-    icon: BriefcaseBusiness,
-    tag: "01 — Employment",
-    title: "Employment Screening",
-    body:
-      "Effortlessly streamline your hiring with verified employment history, gap analysis, and reference checks — turned around faster than a recruiter can finish their morning standup.",
-    includes: [
-      "Past employer verification (7 years)",
-      "Job title, dates, and reason for leaving",
-      "Gap analysis with candidate prompts",
-      "Up to 5 reference interviews",
-    ],
-    sla: "Avg. 18h turnaround",
-  },
-  {
-    icon: Gavel,
-    tag: "02 — Criminal",
-    title: "Criminal Records",
-    body:
-      "Comprehensive federal, state, and county criminal history searches — built for every U.S. jurisdiction, with adverse action workflow baked in.",
-    includes: [
-      "Federal criminal search (94 districts)",
-      "State + county criminal (7 years)",
-      "Sex offender registry (national)",
-      "OFAC / Interpol watch list",
-      "Pre-adverse + adverse action workflow",
-    ],
-    sla: "85% complete < 24h",
-  },
-  {
-    icon: FlaskConical,
-    tag: "03 — Drug & Health",
-    title: "Drug & Health Screening",
-    body:
-      "Fast, reliable 5-, 10-, and 12-panel drug testing plus occupational health screens — at over 12,000 collection sites nationwide.",
-    includes: [
-      "5 / 10 / 12-panel urine drug tests",
-      "Hair, oral fluid, and ETG alcohol",
-      "Occupational health (TB, vision)",
-      "DOT and non-DOT testing programs",
-      "MRO-reviewed electronic results",
-    ],
-    sla: "Negative results in 24h",
-  },
-  {
-    icon: GraduationCap,
-    tag: "04 — Education",
-    title: "Education Verification",
-    body:
-      "Instantly verify degrees, diplomas, and technical certifications directly with institutions — including international credentials.",
-    includes: [
-      "Degree, major, and graduation status",
-      "Vocational + technical certifications",
-      "Foreign credential evaluation",
-      "Direct Student Clearinghouse access",
-    ],
-    sla: "Avg. 2 business days",
-  },
-  {
-    icon: Car,
-    tag: "05 — MVR",
-    title: "Motor Vehicle Reports",
-    body:
-      "Real-time driving records across all 50 states for any role involving a company vehicle — paired with continuous monitoring for fleet teams.",
-    includes: [
-      "3-, 5-, or 7-year driving history",
-      "License status, class, endorsements",
-      "Violations, accidents, and DUIs",
-      "CDL clearinghouse query (FMCSA)",
-      "Continuous MVR monitoring (optional)",
-    ],
-    sla: "Instant in 47 states",
-  },
-  {
-    icon: Globe,
-    tag: "06 — Social",
-    title: "Social Media Checks",
-    body:
-      "FCRA-compliant screening of public online behavior — flagging only the categories you opt in to, never protected-class data.",
-    includes: [
-      "Public posts across the major platforms",
-      "Hate speech and illegal-activity flags",
-      "Human-reviewed evidence packets",
-      "Configurable category opt-ins",
-    ],
-    sla: "Avg. 2 business days",
-  },
+// §83: source the on-page list from the shared SERVICE_CATALOG so the
+// hub renders all 9 detail pages, the link slugs are guaranteed to
+// match, and edits to copy/SLA/inclusions land in one place.
+const SERVICES = SERVICE_CATALOG.map((s, i) => ({
+  icon: s.icon,
+  slug: s.slug,
+  tag: s.tag.replace(/^\d+/, String(i + 1).padStart(2, "0")),
+  title: s.title,
+  body: s.summary,
+  includes: s.includes.slice(0, 5),
+  sla: s.sla,
+}));
+
+// Legacy literal removed: the original 6-entry array used inline
+// lucide icon symbols (BriefcaseBusiness, Gavel, etc.). The catalog
+// imports them per-entry now, so the literal here is no longer needed.
+// See git history for the prior version.
+const _LEGACY_SERVICES_REFERENCE: unknown[] = [
 ];
+void _LEGACY_SERVICES_REFERENCE;
 
 export default function Services() {
   return (
@@ -174,6 +98,14 @@ export default function Services() {
                   <span className="mt-4 inline-block rounded-full border border-[color:var(--color-accent-ink)]/20 bg-[color:var(--color-tint)] px-3 py-1 text-[11.5px] font-medium text-[color:var(--color-accent-ink)] tracking-wide">
                     {s.sla}
                   </span>
+                  <Link
+                    href={`/services/${s.slug}`}
+                    className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-[color:var(--color-brand-blue)] hover:underline"
+                    data-testid={`service-detail-link-${s.slug}`}
+                  >
+                    Read full spec
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
               </article>
             ))}
