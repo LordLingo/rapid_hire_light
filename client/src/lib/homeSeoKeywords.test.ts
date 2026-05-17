@@ -42,7 +42,7 @@ describe("§99 — Home.tsx keyword wiring", () => {
     expect(HOME_SRC).toMatch(/from\s+"@\/hooks\/useSeo"/);
   });
 
-  it("calls useSeo with a keywords array of at least 6 entries", () => {
+  it("calls useSeo with a keywords array sized to the auditor's 3-8 guideline", () => {
     // The arg literal lives between `useSeo({` and the matching `})`.
     const start = HOME_SRC.indexOf("useSeo({");
     expect(start).toBeGreaterThan(-1);
@@ -53,11 +53,37 @@ describe("§99 — Home.tsx keyword wiring", () => {
       .split(",")
       .map((s) => s.trim())
       .filter((s) => s.length > 0);
-    expect(items.length).toBeGreaterThanOrEqual(6);
+    expect(items.length).toBeGreaterThanOrEqual(3);
+    expect(items.length).toBeLessThanOrEqual(8);
   });
 
   it("includes background check services as the lead keyword", () => {
     expect(HOME_SRC).toMatch(/"background check services"/);
+  });
+});
+
+describe("§100 — title length stays under the 60-char auditor cap", () => {
+  it("keeps the SPA shell <title> at 60 characters or fewer", () => {
+    const m = SHELL.match(/<title>([\s\S]*?)<\/title>/);
+    expect(m).not.toBeNull();
+    const title = (m as RegExpMatchArray)[1].trim();
+    expect(title.length).toBeGreaterThanOrEqual(30);
+    expect(title.length).toBeLessThanOrEqual(60);
+  });
+
+  it("keeps the Home.tsx useSeo title at 60 characters or fewer", () => {
+    const start = HOME_SRC.indexOf("useSeo({");
+    expect(start).toBeGreaterThan(-1);
+    const slice = HOME_SRC.slice(start, HOME_SRC.indexOf("});", start) + 3);
+    const m = slice.match(/title:\s*"([^"]+)"/);
+    expect(m).not.toBeNull();
+    // Decode \u2014 (em dash) escape so length reflects the rendered string.
+    const raw = (m as RegExpMatchArray)[1];
+    const decoded = raw.replace(/\\u([0-9a-fA-F]{4})/g, (_, hex) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    );
+    expect(decoded.length).toBeGreaterThanOrEqual(30);
+    expect(decoded.length).toBeLessThanOrEqual(60);
   });
 });
 

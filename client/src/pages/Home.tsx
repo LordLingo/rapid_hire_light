@@ -20,7 +20,7 @@ import { useSeo } from "@/hooks/useSeo";
 
 export default function Home() {
   useSeo({
-    title: "Rapid Hire Solutions \u2014 The trusted standard in background checks",
+    title: "Rapid Hire Solutions \u2014 Background Checks That Ship Fast",
     description:
       "FCRA-certified background screening built for high-volume hiring. 85%+ of checks complete in under 24 hours, with U.S.-based support.",
     canonical:
@@ -37,11 +37,7 @@ export default function Home() {
       "employment background checks",
       "pre-employment screening",
       "criminal background check",
-      "motor vehicle records",
-      "drug screening",
-      "professional verification",
       "continuous monitoring",
-      "US-based CRA",
     ],
     jsonLd: {
       "@context": "https://schema.org",

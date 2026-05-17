@@ -1091,3 +1091,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Wired curated keywords into `Home.tsx` (10 entries matching the H1/H2 surface) plus an Organization JSON-LD payload that was previously missing from the homepage
 - [x] Added `homeSeoKeywords.test.ts` (7 specs) covering shell tag presence, anchor terms, hook contract, and Home wiring
 - [x] Run vitest + tsc (625/625 across 51 files; tsc clean)
+
+## §100 SEO tightening: 6 focused keywords + ≤60-char title on /
+- [x] Trimmed `<meta name="keywords">` in `client/index.html` from 10 entries to 6 focused anchors (background check services, FCRA-certified background screening, employment background checks, pre-employment screening, criminal background check, continuous monitoring)
+- [x] Shortened `<title>` to "Rapid Hire Solutions — Background Checks That Ship Fast" (55 chars, was 64); mirrored on `og:title` and `twitter:title`
+- [x] Mirrored the trimmed keyword list and shorter title on `Home.tsx` via `useSeo`
+- [x] Updated `homeSeoKeywords.test.ts` to lock keywords count to the 3-8 auditor band, and added a §100 describe block that pins both the SPA shell and `Home.tsx` titles to the 30-60 char range
+- [x] Run vitest + tsc (633/633 across 52 files; tsc clean)
