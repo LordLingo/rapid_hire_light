@@ -533,6 +533,17 @@ const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = 
   { path: "/customers/taylormade-rd-credentials",    priority: 0.7,  changefreq: "monthly" },
   // §83: 2026 industry benchmarks landing page.
   { path: "/resources/benchmarks",  priority: 0.8, changefreq: "yearly" },
+  { path: "/resources/glossary",    priority: 0.7, changefreq: "yearly" },
+  // §83 — industry detail pages
+  { path: "/industries/healthcare",    priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/transportation", priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/staffing",      priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/finance",       priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/retail",        priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/nonprofit",     priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/gig-1099",      priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/manufacturing", priority: 0.8, changefreq: "monthly" },
+  { path: "/industries/education",     priority: 0.8, changefreq: "monthly" },
   { path: "/integrations", priority: 0.7,  changefreq: "monthly" },
   { path: "/pricing",      priority: 0.9,  changefreq: "monthly" },
   { path: "/about",        priority: 0.6,  changefreq: "yearly"  },

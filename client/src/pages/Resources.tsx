@@ -77,6 +77,28 @@ const PILLARS: {
       "TAT, dispute rates, compliance findings, and YoY deltas across four sectors — anchored on the rapid-hire client base and triangulated against PBSA + SHRM.",
     href: "/resources/benchmarks",
   },
+  // §83: A–Z glossary closes the long-tail "what is X" SEO gap.
+  {
+    eyebrow: "Glossary",
+    title: "Background-check glossary",
+    body:
+      "A–Z definitions for the terms that show up across FCRA paperwork, DOT/healthcare/finance hiring, and procurement contracts.",
+    href: "/resources/glossary",
+  },
+];
+
+/* §83 — resource-type filter strip rendered above the pillar grid.
+   Pure visual filter (no JS state); each pill is a fragment anchor so
+   it scrolls the matching pillar to the top of the viewport. */
+const RESOURCE_TYPES: { id: string; label: string; href: string }[] = [
+  { id: "all", label: "All resources", href: "#pillars" },
+  { id: "matrix", label: "State matrices", href: "/resources/background-checks-by-state" },
+  { id: "papers", label: "White papers", href: "/resources/white-papers" },
+  { id: "benchmarks", label: "Benchmarks", href: "/resources/benchmarks" },
+  { id: "glossary", label: "Glossary", href: "/resources/glossary" },
+  { id: "checklist", label: "Checklists", href: "/compliance/checklist" },
+  { id: "updates", label: "Legislative updates", href: "/resources/legislative-updates" },
+  { id: "blog", label: "Blog", href: "/blog" },
 ];
 
 const TOOLS: {
@@ -138,8 +160,33 @@ export default function Resources() {
         }
       />
 
+      {/* §83 — Resource type filter strip */}
+      <section
+        id="resource-types"
+        data-testid="resources-type-filter"
+        className="bg-[color:var(--color-paper)]"
+      >
+        <div className="container py-8">
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="mr-2 text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-muted)]">
+              Browse by type
+            </p>
+            {RESOURCE_TYPES.map((t) => (
+              <Link
+                key={t.id}
+                href={t.href}
+                data-testid={`resources-type-${t.id}`}
+                className="inline-flex items-center rounded-full border border-border bg-white px-4 py-1.5 text-[12.5px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-tint)] hover:border-[color:var(--color-accent-halo)] transition-colors"
+              >
+                {t.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 02 — Pillar references */}
-      <section className="bg-[color:var(--color-paper-soft)] border-y border-border">
+      <section id="pillars" className="bg-[color:var(--color-paper-soft)] border-y border-border scroll-mt-24">
         <div className="container py-20 md:py-24">
           <div className="grid grid-cols-12 gap-x-8 gap-y-8">
             <div className="col-span-12 lg:col-span-3">

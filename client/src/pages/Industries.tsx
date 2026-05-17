@@ -331,7 +331,7 @@ export default function Industries() {
             <ul className="mt-6 grid grid-cols-3 gap-3 text-center">
               <li className="rounded-2xl border border-border bg-[color:var(--color-paper)] py-3">
                 <p className="font-display text-[18px] leading-none text-[color:var(--color-ink)]">
-                  6
+                  9
                 </p>
                 <p className="mt-1 text-[10.5px] tracking-[0.16em] uppercase text-[color:var(--color-ink-muted)]">
                   Verticals
@@ -372,7 +372,7 @@ export default function Industries() {
             </div>
             <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
               <h2 className="font-display text-[36px] md:text-[48px] leading-[1.1] tracking-[-0.015em] text-[color:var(--color-ink)]">
-                Six verticals.{" "}
+                Nine verticals.{" "}
                 <span className="italic font-light text-[color:var(--color-accent-ink)]">
                   One specialist desk.
                 </span>
@@ -392,8 +392,8 @@ export default function Industries() {
                 data-testid={`industries-card-${v.slug}`}
                 className="reveal-on-scroll"
               >
-                <a
-                  href={`#${v.slug}`}
+                <Link
+                  href={`/industries/${v.slug}`}
                   className="hover-lift-card block h-full rounded-[18px] border border-border bg-white p-6 md:p-7 transition-transform duration-200 ease-out"
                 >
                   <div className="flex items-center gap-3 text-[color:var(--color-accent-ink)]">
@@ -414,7 +414,7 @@ export default function Industries() {
                     Read the deep-dive
                     <ArrowRight aria-hidden className="size-3.5" />
                   </p>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -425,6 +425,61 @@ export default function Industries() {
       {VERTICALS.map((v) => (
         <VerticalSection key={v.slug} v={v} />
       ))}
+
+      {/* §83 — three new verticals: gig/1099, manufacturing, education.
+          Linked-only here (no inline VerticalSection) to keep this hub
+          page from doubling in length; their long-form pages live at
+          /industries/<slug>. */}
+      <section
+        id="new-verticals"
+        data-testid="industries-new-rail"
+        className="bg-[color:var(--color-paper-soft)] scroll-mt-24"
+      >
+        <div className="container py-20 md:py-24">
+          <div className="grid grid-cols-12 gap-x-10 gap-y-6 items-end mb-10">
+            <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
+              <p className="eyebrow">08 — Newer specialties</p>
+              <div className="mt-3 hairline" />
+            </div>
+            <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
+              <h2 className="font-display text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.02em] text-[color:var(--color-ink)]">
+                Three more verticals our specialist desk now supports.
+              </h2>
+              <p className="mt-5 max-w-3xl text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                Added in 2026 to match the inbound demand we&apos;ve been getting
+                from marketplaces, plant-floor operators, and K-12 districts.
+              </p>
+            </div>
+          </div>
+
+          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {[
+              { path: "gig-1099", name: "Gig & 1099 Platforms", blurb: "Identity-first, mobile-only onboarding with continuous monitoring for marketplaces." },
+              { path: "manufacturing", name: "Manufacturing & Industrial", blurb: "Safety-sensitive scoping, drug & alcohol programs, and credential verification." },
+              { path: "education", name: "Education (K-12 + Higher Ed)", blurb: "Fingerprint coordination, sex-offender deep search, annual re-screen for current employees." },
+            ].map((v) => (
+              <li key={v.path} className="reveal-on-scroll">
+                <Link
+                  href={`/industries/${v.path}`}
+                  data-testid={`industries-card-${v.path}`}
+                  className="hover-lift-card block h-full rounded-[18px] border border-border bg-white p-6 md:p-7 transition-transform duration-200 ease-out"
+                >
+                  <p className="font-display text-[20px] tracking-[-0.005em] text-[color:var(--color-ink)]">
+                    {v.name}
+                  </p>
+                  <p className="mt-3 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                    {v.blurb}
+                  </p>
+                  <p className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-[color:var(--color-accent-ink)]">
+                    Read the deep-dive
+                    <ArrowRight aria-hidden className="size-3.5" />
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       {/* Cross-vertical FAQ */}
       <section

@@ -86,7 +86,8 @@ describe("§69 — Industries page", () => {
     expect(industries).toMatch(/85%\+\s+of reports cleared inside 24 hours/);
     expect(industries).toMatch(/>\s*800\+\s*</);
     expect(industries).toMatch(/>\s*99\.4%\s*</);
-    expect(industries).toMatch(/>\s*6\s*</);
+    // §83: hero stat card now reads "9" verticals (added gig-1099, manufacturing, education).
+    expect(industries).toMatch(/>\s*9\s*</);
   });
 
   it("hero CTA pair links to /contact and to the #sectors anchor on the same page", () => {
@@ -104,7 +105,11 @@ describe("§69 — Industries page", () => {
       // every slug appears at least once as a typed entry
       expect(industries).toContain(`slug: "${slug}"`);
     }
-    // and only those six (no stray seventh)
+    // §83: page now has 6 inline VERTICALS + 3 link-only new verticals.
+    // Allow either 6 (just the inline VERTICALS array) or 9 (if the new
+    // rail's literal slug strings are inlined). The new-rail slugs use
+    // hyphens ("gig-1099") which the [a-z]+ regex does NOT capture, so
+    // the slug count from the regex stays at 6 — keep that pin tight.
     const slugMatches = industries.match(/slug:\s*"([a-z]+)"/g) ?? [];
     expect(slugMatches.length).toBe(SLUGS.length);
   });

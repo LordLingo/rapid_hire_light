@@ -115,6 +115,13 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // §83: 2026 benchmark report uses the same alternating section
       // rhythm as the rest of /resources.
       "client/src/pages/ResourcesBenchmarks.tsx",
+      // §83: Industries hub gained a 'newer specialties' rail using
+      // paper-soft; detail pages reuse the same alternating section
+      // rhythm as ServiceDetail.
+      "client/src/pages/Industries.tsx",
+      "client/src/pages/IndustryDetail.tsx",
+      // §83: glossary page uses paper-soft on the alphabet jump-strip card.
+      "client/src/pages/ResourcesGlossary.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {
