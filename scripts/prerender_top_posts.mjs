@@ -141,6 +141,7 @@ function buildPostHtml(post, shell) {
     ogType: "article",
     ogImage: og,
     jsonld,
+    preHydrationBody: buildPostBody(post),
   });
 }
 
@@ -164,6 +165,7 @@ function buildTagHtml(tagEntry, shell) {
     ogType: "website",
     ogImage: og,
     jsonld,
+    preHydrationBody: buildTagBody(tagEntry),
   });
 }
 
@@ -186,6 +188,7 @@ function buildYearHtml(year, shell) {
     ogType: "website",
     ogImage: SITE_OG,
     jsonld,
+    preHydrationBody: buildYearBody(year),
   });
 }
 
@@ -210,7 +213,94 @@ function injectHead(shell, opts) {
     `    <meta name="twitter:image" content="${htmlEscape(opts.ogImage)}" />\n` +
     `    <script type="application/ld+json">${JSON.stringify(opts.jsonld)}</script>\n  `;
   html = html.replace(/<\/head>/i, `${inject}</head>`);
+  // 4) Replace whatever's inside <div id="root">...</div> with a route-aware
+  //    pre-hydration SEO block. Same crawler/auditor rationale as the homepage
+  //    shell in client/index.html: bots that don't execute JS see a real H1,
+  //    intro paragraph, and crawlable links instead of an empty div.
+  if (opts.preHydrationBody) {
+    // Find <div id="root"> ... </div> by walking the string and balancing
+    // <div>/</div> pairs. Regex won't do this safely once the production
+    // shell carries the §101 SEO block (potentially nested elements).
+    const startIdx = html.indexOf('<div id="root">');
+    if (startIdx >= 0) {
+      const openLen = '<div id="root">'.length;
+      let depth = 1;
+      let i = startIdx + openLen;
+      while (i < html.length && depth > 0) {
+        const nextOpen = html.indexOf("<div", i);
+        const nextClose = html.indexOf("</div>", i);
+        if (nextClose === -1) break;
+        if (nextOpen !== -1 && nextOpen < nextClose) {
+          depth += 1;
+          i = nextOpen + 4;
+        } else {
+          depth -= 1;
+          i = nextClose + "</div>".length;
+        }
+      }
+      if (depth === 0) {
+        const replacement =
+          `<div id="root">\n      <main hidden aria-hidden="true" data-pre-hydration-seo="${htmlEscape(opts.marker)}">\n${opts.preHydrationBody}\n      </main>\n    </div>`;
+        html = html.slice(0, startIdx) + replacement + html.slice(i);
+      }
+    }
+  }
   return html;
+}
+
+function renderBreadcrumb() {
+  return `        <nav aria-label="Breadcrumb">\n` +
+    `          <a href="/">Home</a> &middot; <a href="/blog">Blog</a>\n` +
+    `        </nav>`;
+}
+
+function renderSiteLinks() {
+  return `        <h2>Explore Rapid Hire Solutions</h2>\n` +
+    `        <ul>\n` +
+    `          <li><a href="/services">Background screening services</a></li>\n` +
+    `          <li><a href="/industries">Industries we serve</a></li>\n` +
+    `          <li><a href="/integrations">ATS &amp; HRIS integrations</a></li>\n` +
+    `          <li><a href="/pricing">Pricing</a></li>\n` +
+    `          <li><a href="/compliance">Compliance &amp; FCRA resources</a></li>\n` +
+    `          <li><a href="/about">About Rapid Hire Solutions</a></li>\n` +
+    `          <li><a href="/blog">Background screening blog</a></li>\n` +
+    `          <li><a href="/contact">Contact our team</a></li>\n` +
+    `        </ul>`;
+}
+
+function buildPostBody(post) {
+  const tagLabel = post.tag ? titleCase(post.tag) : "";
+  const tagLine = post.tag
+    ? `        <p>Filed under <a href="/blog/tag/${htmlEscape(post.tag)}">${htmlEscape(tagLabel)}</a> on the Rapid Hire Solutions blog. <a href="/blog">See all posts</a>.</p>`
+    : `        <p>Published on the Rapid Hire Solutions blog. <a href="/blog">See all posts</a>.</p>`;
+  return [
+    renderBreadcrumb(),
+    `        <h1>${htmlEscape(post.title)}</h1>`,
+    tagLine,
+    `        <p>This article from Rapid Hire Solutions — a U.S.-based, FCRA-certified consumer reporting agency that delivers employment background checks, pre-employment screening, criminal background checks, motor vehicle records, drug screening, and continuous monitoring with 85%+ of standard checks completing in under 24 hours — covers ${htmlEscape(tagLabel || "background screening")} for hiring and compliance teams.</p>`,
+    renderSiteLinks(),
+  ].join("\n");
+}
+
+function buildTagBody(tagEntry) {
+  const label = titleCase(tagEntry.tag);
+  return [
+    renderBreadcrumb(),
+    `        <h1>${htmlEscape(label)} — Rapid Hire Solutions Blog</h1>`,
+    `        <p>${tagEntry.count} article${tagEntry.count === 1 ? "" : "s"} on ${htmlEscape(label)} from the Rapid Hire Solutions compliance team. We are an FCRA-certified, U.S.-based consumer reporting agency that delivers employment background checks, pre-employment screening, criminal background checks, motor vehicle records, drug screening, and continuous monitoring; 85%+ of standard checks complete in under 24 hours.</p>`,
+    `        <p><a href="/blog/tag/${htmlEscape(tagEntry.tag)}">View every ${htmlEscape(label)} article</a> or <a href="/blog">browse the full Rapid Hire Solutions blog</a>.</p>`,
+    renderSiteLinks(),
+  ].join("\n");
+}
+
+function buildYearBody(year) {
+  return [
+    renderBreadcrumb(),
+    `        <h1>${htmlEscape(year)} in review — Rapid Hire Solutions Blog</h1>`,
+    `        <p>Every Rapid Hire Solutions blog post published in ${htmlEscape(year)}, grouped by quarter. Rapid Hire Solutions is an FCRA-certified, U.S.-based consumer reporting agency that delivers employment background checks, pre-employment screening, criminal background checks, motor vehicle records, drug screening, and continuous monitoring; 85%+ of standard checks complete in under 24 hours.</p>`,
+    `        <p><a href="/blog/year/${htmlEscape(year)}">Open the ${htmlEscape(year)} archive</a> or <a href="/blog">browse the full Rapid Hire Solutions blog</a>.</p>`,
+    renderSiteLinks(),
+  ].join("\n");
 }
 
 /**

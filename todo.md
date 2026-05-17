@@ -1105,3 +1105,11 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Added `seoShellContent.test.ts` (6 specs) pinning: exactly one H1, brand + topic in the H1, FCRA + 24-hour proof points in a `<p>`, every required internal-link, the block lives inside `#root`, and the `hidden` attribute is preserved
 - [x] Run vitest + tsc (639/639 across 53 files; tsc clean)
 - [x] (User-side) Note: click **Publish** in the Management UI so §99/§100/§101 reach production — cannot be done from code
+
+## §102 SEO follow-ups (per-route shells, audit script, hero invariant)
+- [x] Extended `scripts/prerender_top_posts.mjs` to inject a route-aware `<main hidden aria-hidden="true" data-pre-hydration-seo="...">` block inside `<div id="root">` for every post/tag/year stub. Each carries a breadcrumb, a route-specific `<h1>`, an FCRA + sub-24-hour intro paragraph, and an 8-link site map. Uses a div-balanced walker so it works against the now-populated homepage shell
+- [x] Updated `prerenderTopPosts.test.ts` fixture to a populated `#root` and added per-stub assertions for the route-specific marker, single `<h1>`, `/services` + `/blog` links, and absence of the homepage placeholder
+- [x] Added `scripts/seo_audit.mjs` + `pnpm seo:audit`. Grades title/desc/keywords lengths, single H1, canonical, OG parity, twitter:card, robots, internal-link count, and `<html lang>`. Live audit reports 94/100 — only fail is the lingering `og:title` vs `<title>` drift from the partial deploy, fixed by the next Publish
+- [x] Added `seoAuditScript.test.ts` (6 specs) covering WEIGHTS, perfect-shell at 100, broken-shell under 50 with the right failing checks, and `summarize()` parsing edge-cases
+- [x] Added `heroCopyLength.test.ts` (3 specs) pinning >=150 chars of visible hero copy, the FCRA + U.S.-based + 24-hour proof-point row, and exactly one `<h1>` in Hero.tsx
+- [x] Run vitest + tsc (648/648 across 55 files; tsc clean)

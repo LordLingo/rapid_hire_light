@@ -18,6 +18,9 @@ const PROJECT_ROOT = path.resolve(__dirname, "..", "..", "..");
 const DIST = path.resolve(PROJECT_ROOT, "dist", "public");
 const SHELL = path.join(DIST, "index.html");
 const MANIFEST = path.join(DIST, "_prerender-manifest.json");
+// Mirror the real production shell shape: a non-empty #root with the §101
+// homepage SEO block, so we can confirm the prerender script's div-walker
+// correctly replaces a populated #root with the route-specific block.
 const SHELL_HTML = `<!doctype html>
 <html lang="en">
   <head>
@@ -25,7 +28,14 @@ const SHELL_HTML = `<!doctype html>
     <title>Default Title</title>
     <meta name="description" content="Default description." />
   </head>
-  <body><div id="root"></div></body>
+  <body>
+    <div id="root">
+      <main hidden aria-hidden="true" data-pre-hydration-seo="true">
+        <h1>Homepage H1 placeholder</h1>
+        <p>Homepage intro placeholder with FCRA and 24 hours.</p>
+      </main>
+    </div>
+  </body>
 </html>
 `;
 
@@ -83,6 +93,13 @@ describe("prerender_top_posts.mjs", () => {
       expect(html).toMatch(new RegExp(`<link rel="canonical" href="[^"]*?/blog/${entry.slug}"`));
       // BlogPosting JSON-LD present
       expect(html).toContain(`"@type":"BlogPosting"`);
+      // §102: pre-hydration SEO block carries a route-specific H1 +
+      // crawlable links + breadcrumb, replacing the homepage placeholder.
+      expect(html).not.toContain("Homepage H1 placeholder");
+      expect(html).toContain(`data-pre-hydration-seo="prerendered:${entry.slug}"`);
+      expect(html).toMatch(/<h1[^>]*>[^<]*<\/h1>/);
+      expect(html).toContain('<a href="/services">');
+      expect(html).toContain('<a href="/blog">');
     }
   });
 
@@ -95,6 +112,10 @@ describe("prerender_top_posts.mjs", () => {
       expect(html).toContain(`<!-- prerendered:tag/${entry.tag} -->`);
       expect(html).toMatch(new RegExp(`<link rel="canonical" href="[^"]*?/blog/tag/${entry.tag}"`));
       expect(html).toContain(`"@type":"CollectionPage"`);
+      // §102: tag-specific SEO block.
+      expect(html).toContain(`data-pre-hydration-seo="prerendered:tag/${entry.tag}"`);
+      expect(html).toMatch(/<h1[^>]*>[^<]*<\/h1>/);
+      expect(html).not.toContain("Homepage H1 placeholder");
     }
     for (const entry of manifest.years) {
       const file = path.join(DIST, "blog", "year", entry.year, "index.html");
@@ -103,6 +124,9 @@ describe("prerender_top_posts.mjs", () => {
       expect(html).toContain(`<!-- prerendered:year/${entry.year} -->`);
       expect(html).toMatch(new RegExp(`<link rel="canonical" href="[^"]*?/blog/year/${entry.year}"`));
       expect(html).toContain(`"@type":"CollectionPage"`);
+      // §102: year-specific SEO block.
+      expect(html).toContain(`data-pre-hydration-seo="prerendered:year/${entry.year}"`);
+      expect(html).toMatch(new RegExp(`<h1[^>]*>${entry.year} in review`));
     }
   });
 

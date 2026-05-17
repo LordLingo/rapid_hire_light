@@ -16,7 +16,8 @@
     "seo:submit": "node scripts/submit-sitemap.mjs",
     "seo:submit:dry": "node scripts/submit-sitemap.mjs --dry-run",
     "postdeploy": "node scripts/submit-sitemap.mjs",
-    "test:seo": "npx -p @lhci/cli@0.13.x lhci autorun --config=./.lighthouserc.json"
+    "test:seo": "npx -p @lhci/cli@0.13.x lhci autorun --config=./.lighthouserc.json",
+    "seo:audit": "node scripts/seo_audit.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
