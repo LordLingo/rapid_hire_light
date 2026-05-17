@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-15",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["fcra", "adverse-action", "compliance"],
+  tags: ["fcra", "adverse-action", "compliance", "criminal-records"],
   body: `The adverse action workflow is the most-litigated artifact in employment background screening. The Fair Credit Reporting Act prescribes a two-step sequence: pause hiring, send a specific notice, wait a specific period, then send a second specific notice. A single missed element exposes the employer to statutory damages.
 
 This guide walks through what each notice must contain, when to send it, and the failure modes that drive most enforcement actions.

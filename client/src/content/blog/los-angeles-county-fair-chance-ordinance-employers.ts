@@ -12,7 +12,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["california", "compliance", "fair-chance"],
+  tags: ["california", "compliance", "fair-chance", "ban-the-box"],
   body: `On September 3, 2024, the **Los Angeles County Fair Chance Ordinance for Employers** (FCOE) took effect. The ordinance layers stricter requirements on top of California's state-level Fair Chance Act (CFCA), and it applies to any employer with five or more employees whose workers perform — or whose positions will perform — duties in **unincorporated Los Angeles County**, regardless of where the employer is headquartered. For 2026 employers running California background checks, the FCOE is one of three places (LA County, San Diego County, San Francisco) where local ordinances now exceed state law.
 
 ## Who the FCOE covers

@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-13",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["verification", "compliance", "i9"],
+  tags: ["verification", "compliance"],
   body: `Every U.S. employer must complete Form I-9 to verify employment authorization for new hires. A growing share — including all federal contractors above defined thresholds and employers in 21 mandate states as of 2026 — must also use **E-Verify** to electronically confirm work authorization with the Social Security Administration and the Department of Homeland Security. The two programs intersect but operate on different timelines, different evidence rules, and different audit risks. Below is the 2026 employer guide that keeps both compliant without slowing onboarding.
 
 ## Form I-9: the federal floor

@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-15",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["new-york", "fair-chance", "compliance"],
+  tags: ["new-york", "fair-chance", "compliance", "ban-the-box"],
   body: `New York Correction Law **Article 23-A** is the substantive standard the New York State Human Rights Law and the New York City Fair Chance Act both apply when an employer takes adverse action based on a conviction. Cities and the state share the procedural framework — conditional offer first, then conviction inquiry — but Article 23-A is what governs whether the resulting denial is lawful. The eight-factor analysis sits at the heart of every conviction-record decision in New York. Most employers can recite the factors. Far fewer can produce factor-by-factor documentation that survives a New York City Commission on Human Rights (CCHR) probable-cause finding. Below is the deep read.
 
 ## The eight factors

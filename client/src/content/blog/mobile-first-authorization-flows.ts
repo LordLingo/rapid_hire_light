@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-13",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["candidate-experience", "fcra", "compliance"],
+  tags: ["candidate-experience", "fcra", "compliance", "ai"],
   body: `More than half of U.S. employment-screening authorizations are now signed on a mobile device. The shift has happened faster in hourly retail, food service, and gig categories than in knowledge-worker corporate, but the trend is universal. The FCRA disclosure and authorization rules do not relax for mobile, and abandonment rates on poorly designed mobile flows run 25–40% above desktop equivalents. Below is the 2026 mobile-first design guide.
 
 ## What the FCRA requires on mobile

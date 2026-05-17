@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["new-york", "fair-chance", "compliance"],
+  tags: ["new-york", "fair-chance", "compliance", "ban-the-box"],
   body: `New York's **Clean Slate Act**, signed by Governor Hochul on November 16, 2023, took effect November 16, 2024. The law amends Section 160.57 of the Criminal Procedure Law to provide for automatic sealing of eligible convictions after defined waiting periods, without requiring the individual to file a petition. The Act parallels — but differs from — California's SB 731, Pennsylvania's Clean Slate, Michigan's Clean Slate, and similar laws in roughly a dozen states. Below is the 2026 employer compliance map.
 
 ## What the law does

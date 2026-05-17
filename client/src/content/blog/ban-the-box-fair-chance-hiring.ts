@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-04-23",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["fair-chance", "ban-the-box", "compliance"],
+  tags: ["fair-chance", "ban-the-box", "compliance", "criminal-records"],
   body: `Fifteen years ago, asking about criminal history on a job application was the U.S. norm. Today, it is illegal in 37 states for public employers and in 13 states for private employers — plus more than 150 cities and counties with their own ordinances, several of which go well beyond the state baseline. The umbrella term is **ban-the-box** (after the literal checkbox the laws removed) and the broader policy is **Fair Chance Hiring**.
 
 This brief is the version of the rules an HR team actually needs to operationalize in 2026, organized by what they restrict and when those restrictions kick in.

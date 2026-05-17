@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-13",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
-  tags: ["candidate-experience", "operations"],
+  tags: ["candidate-experience", "operations", "ai"],
   body: `Background-check turnaround is measured in days; candidate patience is measured in hours. The gap between the two produces the single largest source of recruiter escalations and candidate attrition during the screening phase. A candidate who applied on Sunday, signed disclosures on Monday, and has heard nothing by Thursday assumes the worst and starts a parallel process with another employer. Below is the 2026 candidate portal transparency guide that closes the gap without creating false promises.
 
 ## The transparency continuum

@@ -12,7 +12,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["fcra", "compliance", "adverse-action"],
+  tags: ["fcra", "compliance", "adverse-action", "criminal-records"],
   body: `Two FCRA sections drive a disproportionate share of employer enforcement risk and are routinely misunderstood by even experienced HR teams. **§615** (15 U.S.C. §1681m) governs the adverse-action notice — what the employer tells a candidate when a consumer report drives an unfavorable hiring decision. **§623** (15 U.S.C. §1681s-2) governs the duties of furnishers — entities that report information to a CRA — and most employers do not realize they become §623 furnishers when they verify employment for outbound reference checks.
 
 This guide walks through what each section actually requires in 2026 and where the two intersect with employment screening.

@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["icraa", "california", "compliance"],
+  tags: ["icraa", "california", "compliance", "comparison"],
   body: `California regulates background reports through two parallel statutes. The **Investigative Consumer Reporting Agencies Act (ICRAA)** at Civil Code §§1786 et seq. governs investigative consumer reports — the category covering criminal history, civil records, and other character/reputation/mode-of-living content. The **Consumer Credit Reporting Agencies Act (CCRAA)** at Civil Code §§1785 et seq. governs credit-bureau reports. The distinction matters because each statute imposes a separate set of disclosure, procedural, and substantive duties, and reports that include both kinds of content trigger both statutes simultaneously. Below is the 2026 employer guide to the distinction.
 
 ## What CCRAA covers

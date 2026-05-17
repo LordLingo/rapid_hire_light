@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-12",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["verification", "compliance"],
+  tags: ["verification", "compliance", "comparison"],
   body: `Reference checks and employment verification both involve contacting prior employers, but they answer different questions, operate under different rules, and produce different evidentiary value. Treating them as the same check produces both compliance failures and missed signal. Below is the 2026 guide to running both correctly.
 
 ## Employment verification

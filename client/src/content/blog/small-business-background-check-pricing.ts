@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["small-business", "pricing", "hiring"],
+  tags: ["small-business", "hiring"],
   body: `If you run a shop with fewer than twenty employees and you only hire a handful of people each year, the background check pricing landscape can feel disorienting. Vendor websites quote enterprise pricing assuming hundreds of monthly searches, broker networks bundle a dozen line-items into a single confusing invoice, and DIY public-record portals advertise free searches that are anything but free. This guide explains what a small business actually pays in 2026, what drives the differences, and where the **real volume breakpoints** sit.
 
 ## The base package math

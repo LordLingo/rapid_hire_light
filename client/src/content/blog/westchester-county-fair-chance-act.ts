@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-16",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["new-york", "fair-chance", "compliance"],
+  tags: ["new-york", "fair-chance", "compliance", "ban-the-box"],
   body: `Most employers building a New York compliance program treat NYC as the high-water-mark jurisdiction and assume that compliance with the New York City Fair Chance Act covers the rest of the state. That assumption misses **Westchester County's Fair Chance to Work Act**, enacted by the Westchester County Board of Legislators and effective March 4, 2024. The Westchester ordinance applies to employers operating in Westchester County and adds county-specific procedural duties on top of the New York State Human Rights Law's Article 23-A framework. Below is the 2026 employer guide.
 
 ## What the ordinance covers

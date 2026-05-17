@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-16",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["illinois", "fair-chance", "compliance"],
+  tags: ["illinois", "fair-chance", "compliance", "ban-the-box"],
   body: `On March 23, 2021, Illinois Governor Pritzker signed SB 1480 into law, amending the **Illinois Human Rights Act (IHRA)** to make **conviction record** a protected characteristic for employment purposes. The amendment took effect immediately and reshaped the conviction-record analysis Illinois employers must run on every applicant. Six years on, the framework is well-tested through Illinois Department of Human Rights (IDHR) enforcement and a growing body of administrative findings, and the operational playbook for 2026 is reasonably settled. Here is what the IHRA conviction-record amendment requires and how it interacts with JOQAA, federal Title VII, and the Chicago Human Rights Ordinance.
 
 ## What the amendment did

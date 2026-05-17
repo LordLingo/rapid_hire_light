@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-16",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["illinois", "fair-chance", "compliance"],
+  tags: ["illinois", "fair-chance", "compliance", "ban-the-box"],
   body: `Chicago employers operate under three concentric layers of fair-chance compliance: federal Title VII and EEOC guidance, the Illinois **Job Opportunities for Qualified Applicants Act (JOQAA)** plus the 2021 Illinois Human Rights Act amendment, and the Chicago Human Rights Ordinance (CHRO). The 2022 amendments to the CHRO — passed by the Chicago City Council to align with the Illinois conviction-record framework — added city-specific employer duties that go beyond state law in several places. Below is the 2026 compliance map for employers operating in the City of Chicago.
 
 ## What the CHRO covers

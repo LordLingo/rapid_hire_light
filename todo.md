@@ -1029,5 +1029,5 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Register all + vitest + tsc + checkpoint
 
 ### Phase 5: Final summary
-- [ ] Verify every active tag has ≥6 posts
-- [ ] Final delivery message
+- [x] Verify every active tag has ≥6 posts (26/26 tags now ≥6; retired narrow `i9` and `pricing` tags by folding into `verification` and `small-business` respectively; retagged 13 existing posts to round out `ban-the-box`, `criminal-records`, `comparison`, and `ai` clusters)
+- [x] Final delivery message
