@@ -6,7 +6,7 @@
   - Tag filter rail on the left so the page stays usable past 30+ posts.
   - On-page SEO: dynamic title, meta description, canonical, Blog JSON-LD.
 */
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
@@ -19,10 +19,32 @@ import {
   formatTag,
 } from "@/lib/blog";
 
+type DateRange = "all" | "90d" | "30d";
+
+function parseInitialRange(): DateRange {
+  if (typeof window === "undefined") return "all";
+  const v = new URLSearchParams(window.location.search).get("range");
+  return v === "30d" || v === "90d" ? v : "all";
+}
+
 export default function Blog() {
   const allPosts = useMemo(() => listPosts(), []);
   const allTags = useMemo(() => getAllTags(), []);
-  const visiblePosts = allPosts;
+
+  // Date-range facet — lets visitors quickly surface what's recent now
+  // that the corpus is past 100 posts. Initial value is read from the
+  // `?range=` query param so links remain shareable.
+  const [range, setRange] = useState<DateRange>(parseInitialRange);
+  const visiblePosts = useMemo(() => {
+    if (range === "all") return allPosts;
+    const now = Date.now();
+    const days = range === "30d" ? 30 : 90;
+    const cutoff = now - days * 24 * 60 * 60 * 1000;
+    return allPosts.filter((p) => {
+      const t = Date.parse(p.publishedAt);
+      return Number.isFinite(t) && t >= cutoff;
+    });
+  }, [allPosts, range]);
 
   // Topics-by-depth: descending post-count list of every tag, used to
   // surface our deepest clusters and give crawlers a tag-overview shortcut.
@@ -31,6 +53,16 @@ export default function Blog() {
       .map((t) => ({ tag: t, count: allPosts.filter((p) => p.tags.includes(t)).length }))
       .sort((a, b) => (b.count !== a.count ? b.count - a.count : a.tag.localeCompare(b.tag)));
   }, [allTags, allPosts]);
+
+  function selectRange(next: DateRange) {
+    setRange(next);
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href);
+      if (next === "all") url.searchParams.delete("range");
+      else url.searchParams.set("range", next);
+      window.history.replaceState(null, "", url.toString());
+    }
+  }
 
   // ItemList JSON-LD helps Google understand the index as a structured
   // collection of articles — improves the chance of rich-result eligibility.
@@ -101,10 +133,14 @@ export default function Blog() {
               <li key={tag}>
                 <Link
                   href={`/blog/tag/${tag}`}
+                  aria-label={`${formatTag(tag)} — ${count} ${count === 1 ? "article" : "articles"}`}
                   className="group inline-flex items-center gap-2 rounded-full border border-border bg-white px-3.5 py-1.5 text-[13.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-ink)] transition-colors"
                 >
                   <span>{formatTag(tag)}</span>
-                  <span className="text-[12px] font-medium tabular-nums text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-accent-ink)]">
+                  <span
+                    aria-hidden="true"
+                    className="text-[12px] font-medium tabular-nums text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-accent-ink)]"
+                  >
                     {count}
                   </span>
                 </Link>
@@ -153,9 +189,46 @@ export default function Blog() {
 
           {/* Post grid */}
           <div className="col-span-12 lg:col-span-9">
+            {/* Date-range facet */}
+            <div
+              role="toolbar"
+              aria-label="Filter articles by date"
+              className="mb-10 flex flex-wrap items-center gap-3"
+            >
+              <p className="eyebrow !mt-0 mr-1">Show</p>
+              {([
+                { id: "all" as const, label: "All time" },
+                { id: "90d" as const, label: "Last 90 days" },
+                { id: "30d" as const, label: "Last 30 days" },
+              ]).map((opt) => {
+                const active = range === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => selectRange(opt.id)}
+                    aria-pressed={active}
+                    className={[
+                      "rounded-full border px-3.5 py-1.5 text-[13.5px] tracking-tight transition-colors",
+                      active
+                        ? "border-[color:var(--color-accent-ink)] text-[color:var(--color-accent-ink)] bg-white"
+                        : "border-border text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
+                    ].join(" ")}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
+              <p
+                aria-live="polite"
+                className="ml-auto text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+              >
+                {visiblePosts.length} {visiblePosts.length === 1 ? "article" : "articles"}
+              </p>
+            </div>
             {visiblePosts.length === 0 ? (
               <p className="text-[color:var(--color-ink-soft)]">
-                No posts under this topic yet.
+                No posts in this date range. Try widening the filter.
               </p>
             ) : (
               <div className="grid grid-cols-12 gap-x-8 gap-y-12 md:gap-y-16">

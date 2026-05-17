@@ -112,6 +112,71 @@ function wrapTitleForOg(title: string, maxChars: number, maxLines: number): stri
 function xmlEscapeText(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
+// ---- Blog index feed (mirror of vite.config.ts) ----------------------------
+
+type BlogIndexEntry = {
+  slug: string;
+  title: string;
+  tag: string;
+  lastmod: string;
+  url: string;
+};
+
+type BlogIndexFeed = {
+  generatedAt: string;
+  count: number;
+  posts: BlogIndexEntry[];
+};
+
+function buildBlogIndexFeed(): BlogIndexFeed {
+  const lastmodBySlug = new Map<string, string>();
+  if (fs.existsSync(BLOG_META_FILE)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(BLOG_META_FILE, "utf-8")) as {
+        posts?: { slug?: string; lastmod?: string }[];
+      };
+      const posts = Array.isArray(raw.posts) ? raw.posts : [];
+      for (const p of posts) {
+        if (typeof p.slug === "string" && typeof p.lastmod === "string") {
+          lastmodBySlug.set(p.slug, p.lastmod);
+        }
+      }
+    } catch { /* ignore */ }
+  }
+  const entries: BlogIndexEntry[] = [];
+  if (fs.existsSync(BLOG_OG_FILE)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(BLOG_OG_FILE, "utf-8")) as {
+        posts?: { slug?: string; title?: string; tag?: string }[];
+      };
+      const posts = Array.isArray(raw.posts) ? raw.posts : [];
+      for (const p of posts) {
+        if (
+          typeof p.slug !== "string" ||
+          typeof p.title !== "string" ||
+          typeof p.tag !== "string"
+        ) continue;
+        entries.push({
+          slug: p.slug,
+          title: p.title,
+          tag: p.tag,
+          lastmod: lastmodBySlug.get(p.slug) ?? "",
+          url: `/blog/${p.slug}`,
+        });
+      }
+    } catch { /* ignore */ }
+  }
+  entries.sort((a, b) => {
+    if (a.lastmod !== b.lastmod) return a.lastmod < b.lastmod ? 1 : -1;
+    return a.slug.localeCompare(b.slug);
+  });
+  return {
+    generatedAt: new Date().toISOString(),
+    count: entries.length,
+    posts: entries,
+  };
+}
+
 // ---- Per-tag OG card (mirror of vite.config.ts) ----------------------------
 
 type BlogMetaForOg = {
@@ -298,6 +363,14 @@ async function startServer() {
     res.set("Content-Type", "image/svg+xml; charset=utf-8");
     res.set("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
     res.send(renderBlogOgSvg(entry));
+  });
+
+  // GET /blog/index.json — machine-readable feed of every post.
+  app.get("/blog/index.json", (_req, res) => {
+    const feed = buildBlogIndexFeed();
+    res.set("Content-Type", "application/json; charset=utf-8");
+    res.set("Cache-Control", "public, max-age=300, stale-while-revalidate=86400");
+    res.send(JSON.stringify(feed));
   });
 
   // GET /api/og/blog/tag/:tag.svg — dynamic OG image per blog tag

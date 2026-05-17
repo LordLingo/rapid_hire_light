@@ -1043,3 +1043,9 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] "Topics by depth" pill grid added to `/blog` between hero and the post grid; tags sorted descending by post count, each with the count badge
 - [x] `/api/og/blog/tag/:tag.svg` endpoint added (dev plugin in `vite.config.ts` + prod handler in `server/index.ts`); `BlogTag.tsx` wires the per-tag og:image; new vitest coverage for `renderBlogTagOgSvg`
 - [x] Run vitest + tsc (600 tests passing, tsc clean)
+
+## §93 Follow-ups (date-range facet, a11y labels, JSON feed)
+- [x] Date-range facet added to /blog (`All time`, `Last 90 days`, `Last 30 days`); state mirrored to `?range=` in the URL via `history.replaceState`; toolbar uses `role="toolbar"`, `aria-pressed`, and an `aria-live="polite"` count read-out; empty-state copy updated
+- [x] Topics-by-depth pills now carry `aria-label="<topic> — N articles"` for screen readers; the visible count badge is `aria-hidden="true"` so the label is the single source of narration
+- [x] `/blog/index.json` feed shipped (dev plugin + prod Express handler), joins `shared/blog-meta.json` + `shared/blog-og.json` on slug; emits `{ generatedAt, count, posts: [{ slug, title, tag, lastmod, url }] }`, sorted newest-first; new vitest covers shape, parity with the registry, ordering, and dedup
+- [x] Run vitest + tsc (605 tests passing, tsc clean)

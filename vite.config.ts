@@ -490,6 +490,18 @@ function vitePluginBlogOgImage(): Plugin {
         });
         res.end(svg);
       });
+      // GET /blog/index.json — machine-readable feed of every post.
+      // Joins shared/blog-meta.json (lastmod) with shared/blog-og.json
+      // (title + primary tag) on slug, so external aggregators can ingest
+      // the corpus without scraping HTML.
+      server.middlewares.use("/blog/index.json", (_req, res) => {
+        const feed = buildBlogIndexFeed();
+        res.writeHead(200, {
+          "Content-Type": "application/json; charset=utf-8",
+          "Cache-Control": "public, max-age=300, stale-while-revalidate=86400",
+        });
+        res.end(JSON.stringify(feed));
+      });
       // Per-tag landing-page OG card.
       server.middlewares.use("/api/og/blog/tag/", (req, res) => {
         const url = req.url || "";
@@ -515,6 +527,74 @@ function vitePluginBlogOgImage(): Plugin {
         res.end(svg);
       });
     },
+  };
+}
+
+// ---- Blog index feed --------------------------------------------------------
+
+export type BlogIndexEntry = {
+  slug: string;
+  title: string;
+  tag: string;
+  lastmod: string;
+  url: string;
+};
+
+export type BlogIndexFeed = {
+  generatedAt: string;
+  count: number;
+  posts: BlogIndexEntry[];
+};
+
+export function buildBlogIndexFeed(): BlogIndexFeed {
+  const metaPath = path.join(PROJECT_ROOT, "shared", "blog-meta.json");
+  const ogPath = path.join(PROJECT_ROOT, "shared", "blog-og.json");
+  const lastmodBySlug = new Map<string, string>();
+  if (fs.existsSync(metaPath)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(metaPath, "utf-8")) as {
+        posts?: { slug?: string; lastmod?: string }[];
+      };
+      const posts = Array.isArray(raw.posts) ? raw.posts : [];
+      for (const p of posts) {
+        if (typeof p.slug === "string" && typeof p.lastmod === "string") {
+          lastmodBySlug.set(p.slug, p.lastmod);
+        }
+      }
+    } catch { /* ignore */ }
+  }
+  const entries: BlogIndexEntry[] = [];
+  if (fs.existsSync(ogPath)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(ogPath, "utf-8")) as {
+        posts?: { slug?: string; title?: string; tag?: string }[];
+      };
+      const posts = Array.isArray(raw.posts) ? raw.posts : [];
+      for (const p of posts) {
+        if (
+          typeof p.slug !== "string" ||
+          typeof p.title !== "string" ||
+          typeof p.tag !== "string"
+        ) continue;
+        entries.push({
+          slug: p.slug,
+          title: p.title,
+          tag: p.tag,
+          lastmod: lastmodBySlug.get(p.slug) ?? "",
+          url: `/blog/${p.slug}`,
+        });
+      }
+    } catch { /* ignore */ }
+  }
+  // Sort newest first by lastmod, then by slug for stability.
+  entries.sort((a, b) => {
+    if (a.lastmod !== b.lastmod) return a.lastmod < b.lastmod ? 1 : -1;
+    return a.slug.localeCompare(b.slug);
+  });
+  return {
+    generatedAt: new Date().toISOString(),
+    count: entries.length,
+    posts: entries,
   };
 }
 
