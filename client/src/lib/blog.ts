@@ -155,6 +155,36 @@ import { post as postIcraaPenalty } from "@/content/blog/icraa-penalty-exposure-
 import { post as postIcraaSevenYear } from "@/content/blog/icraa-seven-year-reporting-cap";
 import { post as postIcraa178640 } from "@/content/blog/icraa-1786-40-public-record-notice";
 import { post as postIcraaVsCcraa } from "@/content/blog/icraa-vs-ccraa-distinction";
+// §90 Phase 3 — Operations cluster
+import { post as postBulkRescreen } from "@/content/blog/bulk-rescreen-workflow-design";
+import { post as postFunnelSla } from "@/content/blog/hiring-funnel-screening-sla-design";
+import { post as postMultiVendor } from "@/content/blog/multi-vendor-screening-orchestration";
+import { post as postCostPerHire } from "@/content/blog/screening-cost-per-hire-benchmarks";
+import { post as postContingentOps } from "@/content/blog/contingent-workforce-screening-operations";
+// §90 Phase 3 — Verification cluster
+import { post as postI9EVerify } from "@/content/blog/i9-e-verify-employer-guide";
+import { post as post7yrEmpHistory } from "@/content/blog/seven-year-employment-history-workflow";
+import { post as postLicensePsv } from "@/content/blog/professional-license-primary-source-verification";
+import { post as postIntlDegree } from "@/content/blog/international-degree-credential-evaluation";
+import { post as postRefsVsEmp } from "@/content/blog/references-vs-employment-verification";
+// §90 Phase 3 — Candidate experience cluster
+import { post as postPreApplicantUx } from "@/content/blog/pre-applicant-disclosure-ux";
+import { post as postMobileFirstAuth } from "@/content/blog/mobile-first-authorization-flows";
+import { post as postDisputeResponse } from "@/content/blog/dispute-letter-response-best-practices";
+import { post as postPortalStatus } from "@/content/blog/candidate-portal-status-transparency";
+import { post as postMultilingualDisc } from "@/content/blog/multilingual-disclosure-design";
+// §90 Phase 3 — Adverse action cluster
+import { post as postPreAdverse5Day } from "@/content/blog/pre-adverse-five-business-day-clock";
+import { post as postIndividualAssess } from "@/content/blog/individualized-assessment-letter-template";
+import { post as postReasonableTimeState } from "@/content/blog/reasonable-time-rule-by-state";
+import { post as postAdverseContingent } from "@/content/blog/adverse-action-contingent-workers";
+import { post as postJointEmployerAdv } from "@/content/blog/joint-employer-adverse-action";
+// §90 Phase 3 — Continuous monitoring cluster
+import { post as postPostHireAlerts } from "@/content/blog/post-hire-criminal-alerts-program";
+import { post as postMvrMonitoring } from "@/content/blog/mvr-continuous-monitoring-program";
+import { post as postHcExclusionCm } from "@/content/blog/healthcare-exclusion-continuous-monitoring";
+import { post as postCmLookback } from "@/content/blog/continuous-monitoring-lookback-policy";
+import { post as postCmDriftDetect } from "@/content/blog/continuous-monitoring-drift-detection";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -251,6 +281,32 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postIcraaSevenYear,
   postIcraa178640,
   postIcraaVsCcraa,
+  // §90 Phase 3 — 25 posts
+  postBulkRescreen,
+  postFunnelSla,
+  postMultiVendor,
+  postCostPerHire,
+  postContingentOps,
+  postI9EVerify,
+  post7yrEmpHistory,
+  postLicensePsv,
+  postIntlDegree,
+  postRefsVsEmp,
+  postPreApplicantUx,
+  postMobileFirstAuth,
+  postDisputeResponse,
+  postPortalStatus,
+  postMultilingualDisc,
+  postPreAdverse5Day,
+  postIndividualAssess,
+  postReasonableTimeState,
+  postAdverseContingent,
+  postJointEmployerAdv,
+  postPostHireAlerts,
+  postMvrMonitoring,
+  postHcExclusionCm,
+  postCmLookback,
+  postCmDriftDetect,
 ]);
 
 /**

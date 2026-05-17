@@ -372,6 +372,106 @@
     {
       "slug": "icraa-vs-ccraa-distinction",
       "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "bulk-rescreen-workflow-design",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "hiring-funnel-screening-sla-design",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "multi-vendor-screening-orchestration",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "screening-cost-per-hire-benchmarks",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "contingent-workforce-screening-operations",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "i9-e-verify-employer-guide",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "seven-year-employment-history-workflow",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "professional-license-primary-source-verification",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "international-degree-credential-evaluation",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "references-vs-employment-verification",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "pre-applicant-disclosure-ux",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "mobile-first-authorization-flows",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "dispute-letter-response-best-practices",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "candidate-portal-status-transparency",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "multilingual-disclosure-design",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "pre-adverse-five-business-day-clock",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "individualized-assessment-letter-template",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "reasonable-time-rule-by-state",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "adverse-action-contingent-workers",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "joint-employer-adverse-action",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "post-hire-criminal-alerts-program",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "mvr-continuous-monitoring-program",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "healthcare-exclusion-continuous-monitoring",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "continuous-monitoring-lookback-policy",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "continuous-monitoring-drift-detection",
+      "lastmod": "2026-05-13"
     }
   ],
   "tags": [
@@ -392,6 +492,7 @@
     "fcra",
     "healthcare",
     "hiring",
+    "i9",
     "icraa",
     "illinois",
     "marijuana",

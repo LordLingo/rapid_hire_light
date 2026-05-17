@@ -1021,12 +1021,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Register all + vitest + tsc + checkpoint
 
 ### Phase 3: 5 posts × 5 clusters = 25 posts
-- [ ] sanctions · illinois · new-york · ada · icraa
-- [ ] Register all + vitest + tsc + checkpoint
+- [x] sanctions · illinois · new-york · ada · icraa
+- [x] Register all + vitest + tsc + checkpoint
 
 ### Phase 4: 5 posts × 5 clusters = 25 posts
-- [ ] operations · verification · candidate-experience · adverse-action · continuous-monitoring
-- [ ] Register all + vitest + tsc + checkpoint
+- [x] operations · verification · candidate-experience · adverse-action · continuous-monitoring
+- [x] Register all + vitest + tsc + checkpoint
 
 ### Phase 5: Final summary
 - [ ] Verify every active tag has ≥6 posts

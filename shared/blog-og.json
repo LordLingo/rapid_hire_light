@@ -465,6 +465,131 @@
       "slug": "icraa-vs-ccraa-distinction",
       "title": "ICRAA vs CCRAA: California's Two Consumer-Reporting Statutes Explained",
       "tag": "icraa"
+    },
+    {
+      "slug": "bulk-rescreen-workflow-design",
+      "title": "Bulk Rescreen Workflow Design: A Practical Operations Playbook",
+      "tag": "operations"
+    },
+    {
+      "slug": "hiring-funnel-screening-sla-design",
+      "title": "Hiring Funnel Screening SLAs: How to Set Times That Hold",
+      "tag": "operations"
+    },
+    {
+      "slug": "multi-vendor-screening-orchestration",
+      "title": "Multi-Vendor Screening Orchestration Without the Compliance Drift",
+      "tag": "operations"
+    },
+    {
+      "slug": "screening-cost-per-hire-benchmarks",
+      "title": "Screening Cost Per Hire: 2026 Benchmarks and Composition",
+      "tag": "operations"
+    },
+    {
+      "slug": "contingent-workforce-screening-operations",
+      "title": "Contingent Workforce Screening Operations: A 2026 Operating Model",
+      "tag": "operations"
+    },
+    {
+      "slug": "i9-e-verify-employer-guide",
+      "title": "I-9 and E-Verify: A 2026 Employer Operating Guide",
+      "tag": "verification"
+    },
+    {
+      "slug": "seven-year-employment-history-workflow",
+      "title": "Seven-Year Employment History Verification: A Workflow That Actually Closes",
+      "tag": "verification"
+    },
+    {
+      "slug": "professional-license-primary-source-verification",
+      "title": "Professional License Primary Source Verification: A Field Guide",
+      "tag": "verification"
+    },
+    {
+      "slug": "international-degree-credential-evaluation",
+      "title": "International Degree Credential Evaluation: A 2026 Sourcing Guide",
+      "tag": "verification"
+    },
+    {
+      "slug": "references-vs-employment-verification",
+      "title": "References vs Employment Verification: Two Tools, Different Rules",
+      "tag": "verification"
+    },
+    {
+      "slug": "pre-applicant-disclosure-ux",
+      "title": "Pre-Applicant Disclosure UX: Designing the Form That Actually Holds Up",
+      "tag": "candidate-experience"
+    },
+    {
+      "slug": "mobile-first-authorization-flows",
+      "title": "Mobile-First Authorization Flows: FCRA That Survives a 5-Inch Screen",
+      "tag": "candidate-experience"
+    },
+    {
+      "slug": "dispute-letter-response-best-practices",
+      "title": "Responding to a Background Check Dispute: A Practical Playbook",
+      "tag": "candidate-experience"
+    },
+    {
+      "slug": "candidate-portal-status-transparency",
+      "title": "Candidate Portal Status Transparency: How Much Is Right",
+      "tag": "candidate-experience"
+    },
+    {
+      "slug": "multilingual-disclosure-design",
+      "title": "Multilingual Background Check Disclosure: When and How",
+      "tag": "candidate-experience"
+    },
+    {
+      "slug": "pre-adverse-five-business-day-clock",
+      "title": "The Pre-Adverse-Action Five-Business-Day Clock: How to Get It Right",
+      "tag": "adverse-action"
+    },
+    {
+      "slug": "individualized-assessment-letter-template",
+      "title": "Individualized Assessment Letters: Templates That Actually Comply",
+      "tag": "adverse-action"
+    },
+    {
+      "slug": "reasonable-time-rule-by-state",
+      "title": "FCRA Reasonable Time by State: A Pre-Adverse-Action Reference Table",
+      "tag": "adverse-action"
+    },
+    {
+      "slug": "adverse-action-contingent-workers",
+      "title": "Adverse Action for Contingent Workers: Allocation, Process, and Pitfalls",
+      "tag": "adverse-action"
+    },
+    {
+      "slug": "joint-employer-adverse-action",
+      "title": "Joint Employer Adverse Action: Mapping the FCRA Duties",
+      "tag": "adverse-action"
+    },
+    {
+      "slug": "post-hire-criminal-alerts-program",
+      "title": "Post-Hire Criminal Alerts: Building a Defensible Continuous Monitoring Program",
+      "tag": "continuous-monitoring"
+    },
+    {
+      "slug": "mvr-continuous-monitoring-program",
+      "title": "MVR Continuous Monitoring: A 2026 Operations Guide",
+      "tag": "continuous-monitoring"
+    },
+    {
+      "slug": "healthcare-exclusion-continuous-monitoring",
+      "title": "Healthcare Exclusion Continuous Monitoring: Beyond the Monthly OIG Check",
+      "tag": "continuous-monitoring"
+    },
+    {
+      "slug": "continuous-monitoring-lookback-policy",
+      "title": "Continuous Monitoring Lookback Policy: How Far Back Counts",
+      "tag": "continuous-monitoring"
+    },
+    {
+      "slug": "continuous-monitoring-drift-detection",
+      "title": "Continuous Monitoring Drift Detection: Catching the Program That's Slipping",
+      "tag": "continuous-monitoring"
     }
   ]
 }
