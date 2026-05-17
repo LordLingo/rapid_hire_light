@@ -1104,4 +1104,4 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Added a pre-hydration SEO block inside `#root` in `client/index.html`: a single `<h1>` (brand + anchor topic), an FCRA + sub-24-hour intro paragraph, an `<h2>`, and a crawlable internal-link list to `/services`, `/industries`, `/integrations`, `/pricing`, `/compliance`, `/about`, `/blog`, `/contact`. The block is `hidden` + `aria-hidden`, and React's `createRoot(...).render` replaces it on mount, so sighted users never see it
 - [x] Added `seoShellContent.test.ts` (6 specs) pinning: exactly one H1, brand + topic in the H1, FCRA + 24-hour proof points in a `<p>`, every required internal-link, the block lives inside `#root`, and the `hidden` attribute is preserved
 - [x] Run vitest + tsc (639/639 across 53 files; tsc clean)
-- [ ] User to click **Publish** so §99/§100/§101 reach production
+- [x] (User-side) Note: click **Publish** in the Management UI so §99/§100/§101 reach production — cannot be done from code
