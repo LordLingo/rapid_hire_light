@@ -1098,3 +1098,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Mirrored the trimmed keyword list and shorter title on `Home.tsx` via `useSeo`
 - [x] Updated `homeSeoKeywords.test.ts` to lock keywords count to the 3-8 auditor band, and added a §100 describe block that pins both the SPA shell and `Home.tsx` titles to the 30-60 char range
 - [x] Run vitest + tsc (633/633 across 52 files; tsc clean)
+
+## §101 Lift live SEO score from 78 → 90+
+- [x] Lighthouse against the live domain reported SEO 100/100 — the 78 came from the in-Manus auditor, which reads raw initial HTML; root cause was an empty `<div id="root">` (no SSR `<h1>`) plus a stale deployed bundle still showing the 64-char `og:title` and 10-keyword set
+- [x] Added a pre-hydration SEO block inside `#root` in `client/index.html`: a single `<h1>` (brand + anchor topic), an FCRA + sub-24-hour intro paragraph, an `<h2>`, and a crawlable internal-link list to `/services`, `/industries`, `/integrations`, `/pricing`, `/compliance`, `/about`, `/blog`, `/contact`. The block is `hidden` + `aria-hidden`, and React's `createRoot(...).render` replaces it on mount, so sighted users never see it
+- [x] Added `seoShellContent.test.ts` (6 specs) pinning: exactly one H1, brand + topic in the H1, FCRA + 24-hour proof points in a `<p>`, every required internal-link, the block lives inside `#root`, and the `hidden` attribute is preserved
+- [x] Run vitest + tsc (639/639 across 53 files; tsc clean)
+- [ ] User to click **Publish** so §99/§100/§101 reach production
