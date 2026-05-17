@@ -129,6 +129,23 @@ export default function BlogPost() {
         </div>
       </section>
 
+      {/* Optional hero cover image — alt text mirrors the post's primary keywords. */}
+      {post.cover && (
+        <section className="bg-[color:var(--color-paper)]">
+          <div className="container pb-12 md:pb-16">
+            <div className="reveal-on-scroll overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+              <img
+                src={post.cover}
+                alt={post.coverAlt ?? post.title}
+                className="block w-full h-auto"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Body */}
       <section className="bg-white border-y border-border">
         <div className="container py-16 md:py-24 grid grid-cols-12 gap-x-10">

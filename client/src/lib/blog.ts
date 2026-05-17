@@ -40,6 +40,8 @@ export type BlogPost = {
   tags: string[];
   /** Optional cover image URL (uploaded via manus-upload-file --webdev). */
   cover?: string;
+  /** Alt text for the cover image. Should mirror the post's primary keywords. */
+  coverAlt?: string;
   /**
    * Body in a tiny Markdown-like dialect:
    *   - Lines starting with `## ` become <h2>.
@@ -88,6 +90,11 @@ import { post as postLaCountyFco } from "@/content/blog/los-angeles-county-fair-
 import { post as postCaSb731 } from "@/content/blog/california-sb-731-clean-slate-employer-guide";
 import { post as postCaAb2188 } from "@/content/blog/california-ab-2188-marijuana-hiring-employers";
 import { post as postCaCfcaEnforcement } from "@/content/blog/california-crd-cfca-enforcement-employer-lessons";
+import { post as postCaAb2095 } from "@/content/blog/california-ab-2095-job-duty-transparency";
+import { post as postCaAiBias } from "@/content/blog/california-ai-algorithmic-bias-hiring-rules";
+import { post as postCaAb2064 } from "@/content/blog/california-ab-2064-criminal-history-protected-characteristic";
+import { post as postCaIcraaParsonage } from "@/content/blog/california-icraa-parsonage-walmart-10k-penalty";
+import { post as postCaSb731Impact } from "@/content/blog/california-sb-731-clean-slate-impact-2026";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -123,6 +130,11 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postCaSb731,
   postCaAb2188,
   postCaCfcaEnforcement,
+  postCaAb2095,
+  postCaAiBias,
+  postCaAb2064,
+  postCaIcraaParsonage,
+  postCaSb731Impact,
 ]);
 
 /**

@@ -981,3 +981,13 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Draft each post (550–880 words, 4–5 H2s, 5+ internal links, statute-anchored, SEO-focused)
 - [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
 - [x] Run blog tests + tsc, save checkpoint
+
+## §87 — User-supplied 5 California blogs (HTML format + cover images)
+- [x] Generate 5 cover images (one per post) with bolded-keyword alt text
+- [x] AB 2095 "Job Duty Transparency" post
+- [x] CA AI/ADS algorithmic bias rules post
+- [x] AB 2064 criminal history as protected characteristic post
+- [x] ICRAA Parsonage v. Walmart $10K statutory-penalty post
+- [x] SB 731 Clean Slate (user's reframe — distinct from §86 SB 731 post which exists, so may need to merge or differentiate)
+- [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json + render bolded keywords as <strong> in body
+- [x] vitest + tsc green, checkpoint
