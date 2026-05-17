@@ -73,6 +73,11 @@ import { post as postContinuousVsAnnual } from "@/content/blog/continuous-monito
 import { post as postAdverseAction } from "@/content/blog/adverse-action-letter-fcra-template";
 import { post as postNycFairChance } from "@/content/blog/nyc-fair-chance-act-background-checks";
 import { post as postIllinoisJoqaa } from "@/content/blog/illinois-joqaa-background-checks";
+import { post as postDotPart40 } from "@/content/blog/dot-drug-testing-49-cfr-part-40";
+import { post as postMarijuanaStateLaws } from "@/content/blog/marijuana-drug-testing-state-laws";
+import { post as postMroProcess } from "@/content/blog/medical-review-officer-mro-process";
+import { post as post5vs10Panel } from "@/content/blog/5-panel-vs-10-panel-drug-test";
+import { post as postOralVsUrine } from "@/content/blog/oral-fluid-vs-urine-drug-testing";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -93,6 +98,11 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postAdverseAction,
   postNycFairChance,
   postIllinoisJoqaa,
+  postDotPart40,
+  postMarijuanaStateLaws,
+  postMroProcess,
+  post5vs10Panel,
+  postOralVsUrine,
 ]);
 
 /**

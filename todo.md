@@ -959,3 +959,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Build `/international` page surface
 - [x] Country selector header element (placeholder, US only enabled)
 - [x] Final cross-link QA + checkpoint
+
+## §84 — 5 drug-screening blog posts (heavy, statute-grounded)
+- [x] Slug 1: dot-drug-testing-49-cfr-part-40
+- [x] Slug 2: marijuana-drug-testing-state-laws
+- [x] Slug 3: medical-review-officer-mro-process
+- [x] Slug 4: 5-panel-vs-10-panel-drug-test
+- [x] Slug 5: oral-fluid-vs-urine-drug-testing
+- [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
+- [x] Run blog tests + tsc, save checkpoint
