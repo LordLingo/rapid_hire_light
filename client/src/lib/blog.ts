@@ -116,6 +116,15 @@ import { post as postHcCredVsBg } from "@/content/blog/healthcare-credentialing-
 import { post as postNpdb } from "@/content/blog/npdb-national-practitioner-data-bank";
 import { post as postLtcSnf } from "@/content/blog/long-term-care-snf-screening-civil-money-penalty";
 import { post as postClearinghouse } from "@/content/blog/fmcsa-drug-alcohol-clearinghouse";
+import { post as postDotRtd } from "@/content/blog/dot-return-to-duty-process";
+import { post as postDotTestTypes } from "@/content/blog/dot-pre-employment-random-reasonable-suspicion-testing";
+import { post as postDqFile } from "@/content/blog/driver-qualification-file-checklist-49-cfr-391";
+import { post as postNonDotTesting } from "@/content/blog/non-dot-drug-testing-state-local-cdl";
+import { post as postWaMarijuana } from "@/content/blog/washington-marijuana-hiring-protections";
+import { post as postNy201d } from "@/content/blog/new-york-labor-law-201-d-marijuana";
+import { post as postNjCreamm } from "@/content/blog/new-jersey-creamm-act-wire-certification";
+import { post as postThcMetabolite } from "@/content/blog/thc-metabolite-vs-impairment-science";
+import { post as postSafetySensitive } from "@/content/blog/marijuana-testing-safety-sensitive-vs-non-safety-sensitive";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -177,6 +186,15 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postNpdb,
   postLtcSnf,
   postClearinghouse,
+  postDotRtd,
+  postDotTestTypes,
+  postDqFile,
+  postNonDotTesting,
+  postWaMarijuana,
+  postNy201d,
+  postNjCreamm,
+  postThcMetabolite,
+  postSafetySensitive,
 ]);
 
 /**

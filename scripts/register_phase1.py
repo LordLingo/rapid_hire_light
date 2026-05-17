@@ -19,6 +19,15 @@ new_slugs = [
     "npdb-national-practitioner-data-bank",
     "long-term-care-snf-screening-civil-money-penalty",
     "fmcsa-drug-alcohol-clearinghouse",
+    "dot-return-to-duty-process",
+    "dot-pre-employment-random-reasonable-suspicion-testing",
+    "driver-qualification-file-checklist-49-cfr-391",
+    "non-dot-drug-testing-state-local-cdl",
+    "washington-marijuana-hiring-protections",
+    "new-york-labor-law-201-d-marijuana",
+    "new-jersey-creamm-act-wire-certification",
+    "thc-metabolite-vs-impairment-science",
+    "marijuana-testing-safety-sensitive-vs-non-safety-sensitive",
 ]
 
 def parse(slug):

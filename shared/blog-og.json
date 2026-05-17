@@ -295,6 +295,51 @@
       "slug": "fmcsa-drug-alcohol-clearinghouse",
       "title": "FMCSA Drug and Alcohol Clearinghouse: Carrier Query and Reporting Duty",
       "tag": "dot"
+    },
+    {
+      "slug": "dot-return-to-duty-process",
+      "title": "DOT Return-to-Duty: The Six-Step Process After a Drug or Alcohol Violation",
+      "tag": "dot"
+    },
+    {
+      "slug": "dot-pre-employment-random-reasonable-suspicion-testing",
+      "title": "DOT Drug Testing: Pre-Employment vs Random vs Reasonable-Suspicion Explained",
+      "tag": "dot"
+    },
+    {
+      "slug": "driver-qualification-file-checklist-49-cfr-391",
+      "title": "Driver Qualification File: The 49 CFR 391 Checklist for Motor Carriers",
+      "tag": "dot"
+    },
+    {
+      "slug": "non-dot-drug-testing-state-local-cdl",
+      "title": "Non-DOT Drug Testing: When State and Local CDL Programs Diverge from Part 40",
+      "tag": "dot"
+    },
+    {
+      "slug": "washington-marijuana-hiring-protections",
+      "title": "Washington's 2024 Marijuana Hiring Protections: What WAC 296-800-110 Means for Employers",
+      "tag": "marijuana"
+    },
+    {
+      "slug": "new-york-labor-law-201-d-marijuana",
+      "title": "New York Labor Law \u00a7201-d: The Off-Duty Marijuana Protection Employers Miss",
+      "tag": "marijuana"
+    },
+    {
+      "slug": "new-jersey-creamm-act-wire-certification",
+      "title": "New Jersey's CREAMM Act and the WIRE Certification Employers Have Been Waiting For",
+      "tag": "marijuana"
+    },
+    {
+      "slug": "thc-metabolite-vs-impairment-science",
+      "title": "THC Metabolites vs Impairment: Why a Positive Marijuana Test Doesn't Prove Anything Useful",
+      "tag": "marijuana"
+    },
+    {
+      "slug": "marijuana-testing-safety-sensitive-vs-non-safety-sensitive",
+      "title": "Marijuana Testing in Safety-Sensitive vs Non-Safety-Sensitive Roles: The 2026 Divide",
+      "tag": "marijuana"
     }
   ]
 }
