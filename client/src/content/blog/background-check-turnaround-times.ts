@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-09",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
-  tags: ["operations", "turnaround", "hiring"],
+  tags: ["operations", "hiring"],
   body: `"How long does a background check take?" is the single most common question we get from new HR leads — and it is also the question with the most misleading answers floating around the internet. The honest version is that the answer depends almost entirely on **which checks you ordered**, and a single slow record type can hold the entire report. This post breaks down realistic turnaround times by check, in 2026.
 
 ## The headline number: 24 to 72 hours

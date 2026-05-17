@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-05",
   readingMinutes: 4,
   author: "Rapid Hire Compliance Team",
-  tags: ["criminal", "compliance", "comparison"],
+  tags: ["criminal-records", "compliance", "comparison"],
   body: `If you run any volume of background checks, you have probably been quoted both a "national criminal search" and a "county criminal search" — and probably wondered why one report contains both, or why the cheaper package only contains one. The two products solve overlapping but distinct problems, and combining them correctly is the difference between a defensible criminal screen and one that misses real records.
 
 ## What a national criminal database actually is

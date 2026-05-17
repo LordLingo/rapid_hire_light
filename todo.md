@@ -1004,3 +1004,30 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Draft each post (550–880 words, 4–5 H2s, 5+ internal links, statute-anchored, SEO-focused)
 - [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
 - [x] Run blog tests + tsc, save checkpoint
+
+## §90 — Thin-tag cluster buildout (Option A: dedupe + 70 posts across 3 phases)
+
+### Phase 1: Tag consolidation (no new posts, just retags)
+- [ ] Merge `monitoring` + `post-hire` + `risk` → `continuous-monitoring`
+- [ ] Merge `turnaround` → `operations`
+- [ ] Merge `how-to` → `verification`
+- [ ] Merge `criminal` → `criminal-records`
+- [ ] Merge `disclosure` → `fcra`
+- [ ] Update blog-meta.json tag list
+- [ ] Run vitest + tsc
+
+### Phase 2: 5 posts × 5 clusters = 25 posts
+- [ ] small-business · transportation · healthcare · dot · marijuana
+- [ ] Register all + vitest + tsc + checkpoint
+
+### Phase 3: 5 posts × 5 clusters = 25 posts
+- [ ] sanctions · illinois · new-york · ada · icraa
+- [ ] Register all + vitest + tsc + checkpoint
+
+### Phase 4: 5 posts × 5 clusters = 25 posts
+- [ ] operations · verification · candidate-experience · adverse-action · continuous-monitoring
+- [ ] Register all + vitest + tsc + checkpoint
+
+### Phase 5: Final summary
+- [ ] Verify every active tag has ≥6 posts
+- [ ] Final delivery message

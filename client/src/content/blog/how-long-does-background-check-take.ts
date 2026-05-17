@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-10",
   readingMinutes: 4,
   author: "Rapid Hire Compliance Team",
-  tags: ["turnaround", "hiring"],
+  tags: ["operations", "hiring"],
   body: `If you are about to start a job, the question on your mind is probably how long the background check is going to hold up your start date. If you are an employer, the question is how to set expectations with the candidate so they do not accept a competing offer mid-process. The honest answer in both cases is that turnaround time depends almost entirely on **which checks are in the package**, and the median number you read on a vendor's homepage hides real variance.
 
 This guide breaks the timing down by component, in the same order our researchers actually run them.

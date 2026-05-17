@@ -1,5 +1,5 @@
 {
-  "_comment": "Build-time mirror of (slug, title, tag) for the dynamic /api/og/blog/<slug>.svg endpoint. The endpoint is a pure Node module (vite plugin + Express server) and so cannot import the @/ runtime registry; this JSON is its source of truth. Kept in sync with client/src/lib/blog.ts and the post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly — adding, renaming, or retitling a post without updating this file fails CI.",
+  "_comment": "Build-time mirror of (slug, title, tag) for the dynamic /api/og/blog/<slug>.svg endpoint. The endpoint is a pure Node module (vite plugin + Express server) and so cannot import the @/ runtime registry; this JSON is its source of truth. Kept in sync with client/src/lib/blog.ts and the post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly \u2014 adding, renaming, or retitling a post without updating this file fails CI.",
   "posts": [
     {
       "slug": "fcra-compliance-guide",
@@ -44,7 +44,7 @@
     {
       "slug": "county-vs-national-criminal-background-check",
       "title": "County vs National Criminal Background Check: Which One You Actually Need",
-      "tag": "criminal"
+      "tag": "criminal-records"
     },
     {
       "slug": "eeoc-ban-the-box-compliance",
@@ -59,7 +59,7 @@
     {
       "slug": "how-long-does-background-check-take",
       "title": "How Long Does a Background Check Take to Come Back?",
-      "tag": "turnaround"
+      "tag": "operations"
     },
     {
       "slug": "education-verification-process",
@@ -74,7 +74,7 @@
     {
       "slug": "continuous-monitoring-vs-annual-rescreening",
       "title": "Continuous Criminal Monitoring vs Annual Rescreening: Which Wins?",
-      "tag": "monitoring"
+      "tag": "continuous-monitoring"
     },
     {
       "slug": "adverse-action-letter-fcra-template",
@@ -118,27 +118,27 @@
     },
     {
       "slug": "fcra-604b-disclosure-authorization",
-      "title": "FCRA §604(b) Disclosure and Authorization: The Most-Litigated Background Check Rule",
+      "title": "FCRA \u00a7604(b) Disclosure and Authorization: The Most-Litigated Background Check Rule",
       "tag": "fcra"
     },
     {
       "slug": "fcra-613-public-record-reporting",
-      "title": "FCRA §613: How Public Records Get Reported on a Background Check",
+      "title": "FCRA \u00a7613: How Public Records Get Reported on a Background Check",
       "tag": "fcra"
     },
     {
       "slug": "fcra-609-consumer-file-disclosure",
-      "title": "FCRA §609 Consumer File Disclosure: What Candidates See and What Employers Must Honor",
+      "title": "FCRA \u00a7609 Consumer File Disclosure: What Candidates See and What Employers Must Honor",
       "tag": "fcra"
     },
     {
       "slug": "fcra-611-dispute-reinvestigation",
-      "title": "FCRA §611 Reinvestigation: How Background Check Disputes Get Resolved",
+      "title": "FCRA \u00a7611 Reinvestigation: How Background Check Disputes Get Resolved",
       "tag": "fcra"
     },
     {
       "slug": "fcra-615-623-employer-duties",
-      "title": "FCRA §615 and §623: The Two Sections Most Employers Get Wrong",
+      "title": "FCRA \u00a7615 and \u00a7623: The Two Sections Most Employers Get Wrong",
       "tag": "fcra"
     },
     {
@@ -208,13 +208,93 @@
     },
     {
       "slug": "eeoc-strategic-enforcement-plan-2024-2028",
-      "title": "EEOC Strategic Enforcement Plan FY 2024–2028: What It Signals for Employers",
+      "title": "EEOC Strategic Enforcement Plan FY 2024\u20132028: What It Signals for Employers",
       "tag": "eeoc"
     },
     {
       "slug": "eeoc-eeo1-component-1-reporting",
       "title": "EEOC EEO-1 Component 1: A Plain-English Filing Guide for HR and Compliance",
       "tag": "eeoc"
+    },
+    {
+      "slug": "small-business-background-check-pricing",
+      "title": "Small Business Background Check Pricing: What Under-20-Employee Shops Actually Pay",
+      "tag": "small-business"
+    },
+    {
+      "slug": "small-business-fcra-compliance-traps",
+      "title": "Three FCRA Compliance Traps That Catch Small Business Founders",
+      "tag": "small-business"
+    },
+    {
+      "slug": "small-business-first-background-check",
+      "title": "Running Your First Background Check: A Small Business Step-by-Step",
+      "tag": "small-business"
+    },
+    {
+      "slug": "small-business-no-hr-screening-practices",
+      "title": "Hiring Without an HR Team: DIY-Safe Background Screening Practices",
+      "tag": "small-business"
+    },
+    {
+      "slug": "small-business-cra-vs-free-public-record-search",
+      "title": "Small Business CRA vs Free Public Record Search: When to Use Each",
+      "tag": "small-business"
+    },
+    {
+      "slug": "fmcsa-psp-pre-employment-screening-program",
+      "title": "FMCSA PSP: The Pre-Employment Screening Program Explained for Carriers",
+      "tag": "transportation"
+    },
+    {
+      "slug": "hair-follicle-drug-testing-cdl-drivers",
+      "title": "Hair Follicle Drug Testing for CDL Drivers: FMCSA Status in 2026",
+      "tag": "transportation"
+    },
+    {
+      "slug": "owner-operator-vs-employee-driver-screening",
+      "title": "Owner-Operator vs Employee Driver: Screening Program Differences",
+      "tag": "transportation"
+    },
+    {
+      "slug": "last-mile-delivery-driver-hiring-non-dot",
+      "title": "Last-Mile Delivery Driver Hiring: Non-DOT Screening Done Right",
+      "tag": "transportation"
+    },
+    {
+      "slug": "cdl-endorsements-disqualifying-offenses",
+      "title": "CDL Endorsements and Disqualifying Offenses Under 49 CFR \u00a7383.51",
+      "tag": "transportation"
+    },
+    {
+      "slug": "cms-exclusion-screening-oig-leie-sam",
+      "title": "CMS Exclusion Screening: OIG LEIE, SAM.gov, and State Medicaid Lists",
+      "tag": "healthcare"
+    },
+    {
+      "slug": "joint-commission-hr-standards",
+      "title": "Joint Commission HR.01.02.01\u2013.05: Background Screening for Hospitals",
+      "tag": "healthcare"
+    },
+    {
+      "slug": "healthcare-credentialing-vs-background-check",
+      "title": "Healthcare Credentialing vs Background Check: Where the Workflows Split",
+      "tag": "healthcare"
+    },
+    {
+      "slug": "npdb-national-practitioner-data-bank",
+      "title": "NPDB Queries and Reports: A Hospital Practitioner Screening Guide",
+      "tag": "healthcare"
+    },
+    {
+      "slug": "long-term-care-snf-screening-civil-money-penalty",
+      "title": "Long-Term Care and SNF Background Screening: 2026 Compliance Playbook",
+      "tag": "healthcare"
+    },
+    {
+      "slug": "fmcsa-drug-alcohol-clearinghouse",
+      "title": "FMCSA Drug and Alcohol Clearinghouse: Carrier Query and Reporting Duty",
+      "tag": "dot"
     }
   ]
 }

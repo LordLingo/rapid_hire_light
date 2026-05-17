@@ -100,6 +100,22 @@ import { post as postEeocAda } from "@/content/blog/eeoc-ada-pre-employment-medi
 import { post as postEeocPwfa } from "@/content/blog/eeoc-pwfa-pregnant-workers-fairness-act";
 import { post as postEeocSep } from "@/content/blog/eeoc-strategic-enforcement-plan-2024-2028";
 import { post as postEeocEeo1 } from "@/content/blog/eeoc-eeo1-component-1-reporting";
+import { post as postSmbPricing } from "@/content/blog/small-business-background-check-pricing";
+import { post as postSmbFcraTraps } from "@/content/blog/small-business-fcra-compliance-traps";
+import { post as postSmbFirstCheck } from "@/content/blog/small-business-first-background-check";
+import { post as postSmbNoHr } from "@/content/blog/small-business-no-hr-screening-practices";
+import { post as postSmbCraVsFree } from "@/content/blog/small-business-cra-vs-free-public-record-search";
+import { post as postFmcsaPsp } from "@/content/blog/fmcsa-psp-pre-employment-screening-program";
+import { post as postHairFollicle } from "@/content/blog/hair-follicle-drug-testing-cdl-drivers";
+import { post as postOwnerOpVsEmployee } from "@/content/blog/owner-operator-vs-employee-driver-screening";
+import { post as postLastMile } from "@/content/blog/last-mile-delivery-driver-hiring-non-dot";
+import { post as postCdlDisqualify } from "@/content/blog/cdl-endorsements-disqualifying-offenses";
+import { post as postCmsExclusion } from "@/content/blog/cms-exclusion-screening-oig-leie-sam";
+import { post as postJointCommission } from "@/content/blog/joint-commission-hr-standards";
+import { post as postHcCredVsBg } from "@/content/blog/healthcare-credentialing-vs-background-check";
+import { post as postNpdb } from "@/content/blog/npdb-national-practitioner-data-bank";
+import { post as postLtcSnf } from "@/content/blog/long-term-care-snf-screening-civil-money-penalty";
+import { post as postClearinghouse } from "@/content/blog/fmcsa-drug-alcohol-clearinghouse";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -145,6 +161,22 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postEeocPwfa,
   postEeocSep,
   postEeocEeo1,
+  postSmbPricing,
+  postSmbFcraTraps,
+  postSmbFirstCheck,
+  postSmbNoHr,
+  postSmbCraVsFree,
+  postFmcsaPsp,
+  postHairFollicle,
+  postOwnerOpVsEmployee,
+  postLastMile,
+  postCdlDisqualify,
+  postCmsExclusion,
+  postJointCommission,
+  postHcCredVsBg,
+  postNpdb,
+  postLtcSnf,
+  postClearinghouse,
 ]);
 
 /**

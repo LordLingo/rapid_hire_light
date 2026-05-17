@@ -12,7 +12,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-17",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
-  tags: ["california", "icraa", "compliance", "disclosure"],
+  tags: ["california", "icraa", "compliance", "fcra"],
   cover:
     "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/blog-icraa-parsonage-walmart-statutory-penalty-FYEWQqKQsV227Yut3HuM44.webp",
   coverAlt:

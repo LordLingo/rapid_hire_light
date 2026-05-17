@@ -1,49 +1,242 @@
 {
-  "_comment": "Build-time mirror of the blog registry, consumed by the sitemap.xml generator in vite.config.ts. Keep in sync with client/src/lib/blog.ts and the post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly — adding or renaming a post without updating this file fails CI.",
+  "_comment": "Build-time mirror of the blog registry, consumed by the sitemap.xml generator in vite.config.ts. Keep in sync with client/src/lib/blog.ts and the post modules under client/src/content/blog/. The vitest spec client/src/lib/blog.test.ts asserts this JSON matches the runtime registry exactly \u2014 adding or renaming a post without updating this file fails CI.",
   "posts": [
-    { "slug": "fcra-compliance-guide", "lastmod": "2026-05-12" },
-    { "slug": "background-check-turnaround-times", "lastmod": "2026-05-09" },
-    { "slug": "pre-employment-drug-testing", "lastmod": "2026-05-06" },
-    { "slug": "dot-driver-background-checks-mvr", "lastmod": "2026-05-02" },
-    { "slug": "continuous-employee-monitoring", "lastmod": "2026-04-28" },
-    { "slug": "ban-the-box-fair-chance-hiring", "lastmod": "2026-04-23" },
-    { "slug": "how-to-run-a-background-check-on-an-employee", "lastmod": "2026-05-03" },
-    { "slug": "best-background-check-service-small-business", "lastmod": "2026-05-04" },
-    { "slug": "county-vs-national-criminal-background-check", "lastmod": "2026-05-05" },
-    { "slug": "eeoc-ban-the-box-compliance", "lastmod": "2026-05-07" },
-    { "slug": "california-icraa-disclosure-requirements", "lastmod": "2026-05-08" },
-    { "slug": "how-long-does-background-check-take", "lastmod": "2026-05-10" },
-    { "slug": "education-verification-process", "lastmod": "2026-05-11" },
-    { "slug": "healthcare-background-check-requirements", "lastmod": "2026-05-13" },
-    { "slug": "continuous-monitoring-vs-annual-rescreening", "lastmod": "2026-05-14" },
-    { "slug": "adverse-action-letter-fcra-template", "lastmod": "2026-05-15" },
-    { "slug": "nyc-fair-chance-act-background-checks", "lastmod": "2026-05-16" },
-    { "slug": "illinois-joqaa-background-checks", "lastmod": "2026-05-17" },
-    { "slug": "dot-drug-testing-49-cfr-part-40", "lastmod": "2026-05-17" },
-    { "slug": "marijuana-drug-testing-state-laws", "lastmod": "2026-05-17" },
-    { "slug": "medical-review-officer-mro-process", "lastmod": "2026-05-17" },
-    { "slug": "5-panel-vs-10-panel-drug-test", "lastmod": "2026-05-17" },
-    { "slug": "oral-fluid-vs-urine-drug-testing", "lastmod": "2026-05-17" },
-    { "slug": "fcra-604b-disclosure-authorization", "lastmod": "2026-05-17" },
-    { "slug": "fcra-613-public-record-reporting", "lastmod": "2026-05-17" },
-    { "slug": "fcra-609-consumer-file-disclosure", "lastmod": "2026-05-17" },
-    { "slug": "fcra-611-dispute-reinvestigation", "lastmod": "2026-05-17" },
-    { "slug": "fcra-615-623-employer-duties", "lastmod": "2026-05-17" },
-    { "slug": "california-ads-ai-employment-screening-regulations", "lastmod": "2026-05-17" },
-    { "slug": "los-angeles-county-fair-chance-ordinance-employers", "lastmod": "2026-05-17" },
-    { "slug": "california-sb-731-clean-slate-employer-guide", "lastmod": "2026-05-17" },
-    { "slug": "california-ab-2188-marijuana-hiring-employers", "lastmod": "2026-05-17" },
-    { "slug": "california-crd-cfca-enforcement-employer-lessons", "lastmod": "2026-05-17" },
-    { "slug": "california-ab-2095-job-duty-transparency", "lastmod": "2026-05-17" },
-    { "slug": "california-ai-algorithmic-bias-hiring-rules", "lastmod": "2026-05-17" },
-    { "slug": "california-ab-2064-criminal-history-protected-characteristic", "lastmod": "2026-05-17" },
-    { "slug": "california-icraa-parsonage-walmart-10k-penalty", "lastmod": "2026-05-17" },
-    { "slug": "california-sb-731-clean-slate-impact-2026", "lastmod": "2026-05-17" },
-    { "slug": "eeoc-title-vii-disparate-impact-screening", "lastmod": "2026-05-17" },
-    { "slug": "eeoc-ada-pre-employment-medical-inquiries", "lastmod": "2026-05-17" },
-    { "slug": "eeoc-pwfa-pregnant-workers-fairness-act", "lastmod": "2026-05-17" },
-    { "slug": "eeoc-strategic-enforcement-plan-2024-2028", "lastmod": "2026-05-17" },
-    { "slug": "eeoc-eeo1-component-1-reporting", "lastmod": "2026-05-17" }
+    {
+      "slug": "fcra-compliance-guide",
+      "lastmod": "2026-05-12"
+    },
+    {
+      "slug": "background-check-turnaround-times",
+      "lastmod": "2026-05-09"
+    },
+    {
+      "slug": "pre-employment-drug-testing",
+      "lastmod": "2026-05-06"
+    },
+    {
+      "slug": "dot-driver-background-checks-mvr",
+      "lastmod": "2026-05-02"
+    },
+    {
+      "slug": "continuous-employee-monitoring",
+      "lastmod": "2026-04-28"
+    },
+    {
+      "slug": "ban-the-box-fair-chance-hiring",
+      "lastmod": "2026-04-23"
+    },
+    {
+      "slug": "how-to-run-a-background-check-on-an-employee",
+      "lastmod": "2026-05-03"
+    },
+    {
+      "slug": "best-background-check-service-small-business",
+      "lastmod": "2026-05-04"
+    },
+    {
+      "slug": "county-vs-national-criminal-background-check",
+      "lastmod": "2026-05-05"
+    },
+    {
+      "slug": "eeoc-ban-the-box-compliance",
+      "lastmod": "2026-05-07"
+    },
+    {
+      "slug": "california-icraa-disclosure-requirements",
+      "lastmod": "2026-05-08"
+    },
+    {
+      "slug": "how-long-does-background-check-take",
+      "lastmod": "2026-05-10"
+    },
+    {
+      "slug": "education-verification-process",
+      "lastmod": "2026-05-11"
+    },
+    {
+      "slug": "healthcare-background-check-requirements",
+      "lastmod": "2026-05-13"
+    },
+    {
+      "slug": "continuous-monitoring-vs-annual-rescreening",
+      "lastmod": "2026-05-14"
+    },
+    {
+      "slug": "adverse-action-letter-fcra-template",
+      "lastmod": "2026-05-15"
+    },
+    {
+      "slug": "nyc-fair-chance-act-background-checks",
+      "lastmod": "2026-05-16"
+    },
+    {
+      "slug": "illinois-joqaa-background-checks",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "dot-drug-testing-49-cfr-part-40",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "marijuana-drug-testing-state-laws",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "medical-review-officer-mro-process",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "5-panel-vs-10-panel-drug-test",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "oral-fluid-vs-urine-drug-testing",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "fcra-604b-disclosure-authorization",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "fcra-613-public-record-reporting",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "fcra-609-consumer-file-disclosure",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "fcra-611-dispute-reinvestigation",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "fcra-615-623-employer-duties",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-ads-ai-employment-screening-regulations",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "los-angeles-county-fair-chance-ordinance-employers",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-sb-731-clean-slate-employer-guide",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-ab-2188-marijuana-hiring-employers",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-crd-cfca-enforcement-employer-lessons",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-ab-2095-job-duty-transparency",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-ai-algorithmic-bias-hiring-rules",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-ab-2064-criminal-history-protected-characteristic",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-icraa-parsonage-walmart-10k-penalty",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "california-sb-731-clean-slate-impact-2026",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "eeoc-title-vii-disparate-impact-screening",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "eeoc-ada-pre-employment-medical-inquiries",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "eeoc-pwfa-pregnant-workers-fairness-act",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "eeoc-strategic-enforcement-plan-2024-2028",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "eeoc-eeo1-component-1-reporting",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "small-business-background-check-pricing",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "small-business-fcra-compliance-traps",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "small-business-first-background-check",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "small-business-no-hr-screening-practices",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "small-business-cra-vs-free-public-record-search",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "fmcsa-psp-pre-employment-screening-program",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "hair-follicle-drug-testing-cdl-drivers",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "owner-operator-vs-employee-driver-screening",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "last-mile-delivery-driver-hiring-non-dot",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "cdl-endorsements-disqualifying-offenses",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "cms-exclusion-screening-oig-leie-sam",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "joint-commission-hr-standards",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "healthcare-credentialing-vs-background-check",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "npdb-national-practitioner-data-bank",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "long-term-care-snf-screening-civil-money-penalty",
+      "lastmod": "2026-05-17"
+    },
+    {
+      "slug": "fmcsa-drug-alcohol-clearinghouse",
+      "lastmod": "2026-05-17"
+    }
   ],
   "tags": [
     "ada",
@@ -55,9 +248,7 @@
     "comparison",
     "compliance",
     "continuous-monitoring",
-    "criminal",
     "criminal-records",
-    "disclosure",
     "dot",
     "drug-screening",
     "eeoc",
@@ -65,19 +256,15 @@
     "fcra",
     "healthcare",
     "hiring",
-    "how-to",
     "icraa",
     "illinois",
     "marijuana",
-    "monitoring",
     "new-york",
     "operations",
-    "post-hire",
-    "risk",
+    "pricing",
     "sanctions",
     "small-business",
     "transportation",
-    "turnaround",
     "verification"
   ]
 }

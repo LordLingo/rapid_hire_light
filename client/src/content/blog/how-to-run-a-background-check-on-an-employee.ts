@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-03",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["hiring", "compliance", "how-to"],
+  tags: ["hiring", "compliance", "verification"],
   body: `Running an employee background check sounds like a one-click operation. In reality, the legally compliant workflow has nine moving parts, and a single missed step can turn a $30 report into a $30,000 settlement under the Fair Credit Reporting Act. This guide walks through the entire process for U.S. employers in 2026, in the order it actually happens.
 
 ## Step 1: Decide what you actually need to verify

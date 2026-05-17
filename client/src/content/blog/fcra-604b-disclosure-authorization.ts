@@ -12,7 +12,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["fcra", "compliance", "disclosure"],
+  tags: ["fcra", "compliance"],
   body: `More FCRA class actions are filed under **§604(b)(2)** than any other section of the statute. The rule sounds straightforward: before an employer procures a consumer report for employment purposes, the consumer must receive a "clear and conspicuous disclosure" that a report may be obtained, and the disclosure must appear in a document that "consists solely of" the disclosure. The case law on what disqualifies that disclosure, however, is unforgiving — and the damages math under §616 (actual or statutory damages of \\$100–\\$1,000 per applicant, plus attorney's fees) makes any flawed template a six- or seven-figure exposure.
 
 This guide walks through what §604(b)(2) actually requires in 2026, the four template defects that have driven the largest settlements, and how to wire a clean disclosure into the hiring workflow.

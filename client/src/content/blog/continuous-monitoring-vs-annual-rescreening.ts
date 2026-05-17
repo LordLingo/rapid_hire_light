@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-05-14",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
-  tags: ["monitoring", "comparison", "compliance"],
+  tags: ["continuous-monitoring", "comparison", "compliance"],
   body: `For two decades, the post-hire screening conversation defaulted to annual rescreening: rerun the same criminal package every twelve months, paper the result, move on. In the past five years, **continuous criminal monitoring** has emerged as a credible alternative — and in most populations, the better one. This guide compares the two approaches on the dimensions that actually matter: detection latency, cost, candidate experience, and Fair Credit Reporting Act exposure.
 
 ## What annual rescreening actually does

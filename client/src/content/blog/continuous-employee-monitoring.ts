@@ -11,7 +11,7 @@ export const post: BlogPost = {
   publishedAt: "2026-04-28",
   readingMinutes: 5,
   author: "Rapid Hire Product Team",
-  tags: ["continuous-monitoring", "post-hire", "risk"],
+  tags: ["continuous-monitoring", "operations", "compliance"],
   body: `For decades, the standard way to manage post-hire risk in a workforce was the **annual re-check** — a yearly bulk re-screen of every employee on roster. It is operationally expensive, blunt, and very nearly useless. An incident that happens in February will not show up on a re-check that runs in November. By that point the underlying risk has been live for nine months.
 
 **Continuous employee monitoring** replaces the annual re-check with a real-time alert pipeline that pings you when something material changes on a current employee's record. Done well, it is the single biggest post-hire risk improvement an HR team can make in 2026, often at a lower annual cost than what you are already spending.
