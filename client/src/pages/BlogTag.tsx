@@ -23,6 +23,10 @@ import {
   listPostsByTag,
 } from "@/lib/blog";
 
+function tagCount(t: string): number {
+  return listPostsByTag(t).length;
+}
+
 export default function BlogTag() {
   const params = useParams<{ tag: string }>();
   const tag = (params?.tag ?? "").toLowerCase();
@@ -129,6 +133,9 @@ export default function BlogTag() {
                       className="text-[14px] tracking-tight text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] transition-colors"
                     >
                       {formatTag(t)}
+                      <span className="ml-2 text-[color:var(--color-ink-muted)]">
+                        ({tagCount(t)})
+                      </span>
                     </Link>
                   </li>
                 ))}

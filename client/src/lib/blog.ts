@@ -332,9 +332,27 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
  * "More from the team" rail on detail pages.
  */
 export function relatedPosts(currentSlug: string, n: number = 3): BlogPost[] {
-  return listPosts()
+  const all = listPosts();
+  const current = all.find((p) => p.slug === currentSlug);
+  const currentTags = new Set(current?.tags ?? []);
+  return all
     .filter((p) => p.slug !== currentSlug)
-    .slice(0, n);
+    .map((p) => {
+      const shared = p.tags.reduce(
+        (acc, t) => (currentTags.has(t) ? acc + 1 : acc),
+        0,
+      );
+      return { post: p, shared };
+    })
+    .sort((a, b) => {
+      if (b.shared !== a.shared) return b.shared - a.shared;
+      // Tie-break by publish date (newest first), already the listPosts() order.
+      const ai = all.findIndex((p) => p.slug === a.post.slug);
+      const bi = all.findIndex((p) => p.slug === b.post.slug);
+      return ai - bi;
+    })
+    .slice(0, n)
+    .map((entry) => entry.post);
 }
 
 /**

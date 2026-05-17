@@ -163,6 +163,20 @@ describe("relatedPosts", () => {
     expect(relatedPosts("fcra-compliance-guide", 2)).toHaveLength(2);
     expect(relatedPosts("fcra-compliance-guide", 10)).toHaveLength(10);
   });
+
+  it("ranks by shared-tag overlap, not just publish date", () => {
+    // Pick a post with a distinctive tag and confirm every result shares
+    // at least one tag with it. Without tag-aware ranking, the rail would
+    // just return the three newest posts site-wide — which would almost
+    // certainly include posts that share zero tags with the input.
+    const seed = getPostBySlug("fcra-compliance-guide")!;
+    const seedTags = new Set(seed.tags);
+    const rel = relatedPosts(seed.slug, 5);
+    for (const r of rel) {
+      const overlap = r.tags.filter((t) => seedTags.has(t)).length;
+      expect(overlap, `${r.slug} shares ${overlap} tags with ${seed.slug}`).toBeGreaterThanOrEqual(1);
+    }
+  });
 });
 
 describe("formatPublishedDate", () => {

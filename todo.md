@@ -1031,3 +1031,9 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 ### Phase 5: Final summary
 - [x] Verify every active tag has ≥6 posts (26/26 tags now ≥6; retired narrow `i9` and `pricing` tags by folding into `verification` and `small-business` respectively; retagged 13 existing posts to round out `ban-the-box`, `criminal-records`, `comparison`, and `ai` clusters)
 - [x] Final delivery message
+
+## §91 Follow-up tooling for §90 (post-cluster reinforcement)
+- [ ] Sitemap ping infrastructure (script that pings Google + Bing IndexNow on demand; robots.txt sitemap reference verified; submission instructions documented)
+- [ ] Tag-coverage badges on /blog index + /blog/tag/:slug pages (post count per tag visible)
+- [ ] Reciprocal back-link audit pass on the 50 new posts (older sibling posts get one forward link each to a new sibling)
+- [ ] Run vitest + tsc + save checkpoint
