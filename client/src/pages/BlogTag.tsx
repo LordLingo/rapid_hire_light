@@ -38,6 +38,16 @@ export default function BlogTag() {
       ? `${window.location.origin}/blog/tag/${tag}`
       : `/blog/tag/${tag}`;
 
+  // Per-tag dynamic OG card. The /api/og/blog/tag/:tag.svg endpoint is
+  // mirrored in vite.config.ts (dev) and server/index.ts (prod) so social
+  // shares of /blog/tag/<tag> render a branded card instead of the default
+  // site-wide image.
+  const tagOgImage = known
+    ? typeof window !== "undefined"
+      ? `${window.location.origin}/api/og/blog/tag/${tag}.svg`
+      : `/api/og/blog/tag/${tag}.svg`
+    : undefined;
+
   useSeo({
     title: known
       ? `${human} — Blog | Rapid Hire Solutions`
@@ -47,6 +57,7 @@ export default function BlogTag() {
       : "The requested topic could not be found. Browse all articles from the Rapid Hire Solutions blog.",
     canonical,
     ogType: "website",
+    image: tagOgImage,
     jsonLd: known
       ? {
           "@context": "https://schema.org",

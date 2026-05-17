@@ -11,7 +11,10 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "seo:submit": "node scripts/submit-sitemap.mjs",
+    "seo:submit:dry": "node scripts/submit-sitemap.mjs --dry-run",
+    "postdeploy": "node scripts/submit-sitemap.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -1037,3 +1037,9 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Tag-coverage badges on /blog index + /blog/tag/:slug pages (post count per tag visible — `Blog.tsx` already had it; added matching badges to `BlogTag.tsx` Other-topics rail)
 - [x] Reciprocal back-link audit pass (rewrote `relatedPosts()` to rank by shared-tag overlap; new vitest assertion guards the algorithm; covers all 118 posts at runtime instead of edits to 50)
 - [x] Run vitest + tsc + save checkpoint (597 passing; tsc clean)
+
+## §92 Follow-ups (post-deploy hook, topics-by-depth, per-tag OG)
+- [x] Added `pnpm seo:submit`, `pnpm seo:submit:dry`, and `pnpm postdeploy` scripts to `package.json`; updated `docs/seo-submission.md` with the deploy-hook recipe (GitHub Actions / Render / Railway)
+- [x] "Topics by depth" pill grid added to `/blog` between hero and the post grid; tags sorted descending by post count, each with the count badge
+- [x] `/api/og/blog/tag/:tag.svg` endpoint added (dev plugin in `vite.config.ts` + prod handler in `server/index.ts`); `BlogTag.tsx` wires the per-tag og:image; new vitest coverage for `renderBlogTagOgSvg`
+- [x] Run vitest + tsc (600 tests passing, tsc clean)

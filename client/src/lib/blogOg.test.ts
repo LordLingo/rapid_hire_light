@@ -9,7 +9,7 @@
   in blog.test.ts already locks in title parity.
 */
 import { describe, it, expect } from "vitest";
-import { wrapTitleForOg, renderBlogOgSvg } from "../../../vite.config";
+import { wrapTitleForOg, renderBlogOgSvg, renderBlogTagOgSvg } from "../../../vite.config";
 
 describe("wrapTitleForOg", () => {
   it("keeps a single short title on one line", () => {
@@ -65,5 +65,28 @@ describe("renderBlogOgSvg", () => {
     expect(ampersand).toContain("&quot;");
     // No raw ampersand left over from our own escaping pipeline.
     expect(ampersand).not.toMatch(/[^&]&[^a-z#]/);
+  });
+});
+
+describe("renderBlogTagOgSvg", () => {
+  it("emits a 1200x630 SVG with the topic title-cased", () => {
+    const svg = renderBlogTagOgSvg({ tag: "continuous-monitoring", count: 12 });
+    expect(svg).toMatch(/^<\?xml version="1.0" encoding="UTF-8"\?>/);
+    expect(svg).toContain('viewBox="0 0 1200 630"');
+    expect(svg).toContain("Continuous Monitoring");
+    expect(svg).toContain("TOPIC · BLOG");
+  });
+
+  it("renders the brand mark and the article count subtitle", () => {
+    const svg = renderBlogTagOgSvg({ tag: "healthcare", count: 8 });
+    expect(svg).toContain("RAPID HIRE SOLUTIONS");
+    expect(svg).toContain("8 articles");
+    expect(svg).toContain("Topic landing page");
+  });
+
+  it("singularizes when the tag has only one article", () => {
+    const svg = renderBlogTagOgSvg({ tag: "dot", count: 1 });
+    expect(svg).toContain("1 article ");
+    expect(svg).not.toContain("1 articles");
   });
 });

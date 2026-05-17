@@ -12,6 +12,7 @@ const DATA_DIR = path.resolve(__dirname, "..", "data");
 const DATA_FILE = path.join(DATA_DIR, "contact_submissions.json");
 const CANDIDATE_FILE = path.join(DATA_DIR, "candidate_contact_submissions.json");
 const BLOG_OG_FILE = path.resolve(__dirname, "..", "shared", "blog-og.json");
+const BLOG_META_FILE = path.resolve(__dirname, "..", "shared", "blog-meta.json");
 
 function ensureContactStore() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -111,6 +112,71 @@ function wrapTitleForOg(title: string, maxChars: number, maxLines: number): stri
 function xmlEscapeText(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
+// ---- Per-tag OG card (mirror of vite.config.ts) ----------------------------
+
+type BlogMetaForOg = {
+  tags: string[];
+  countByTag: Map<string, number>;
+};
+
+function loadBlogMetaForOg(): BlogMetaForOg {
+  let tags: string[] = [];
+  if (fs.existsSync(BLOG_META_FILE)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(BLOG_META_FILE, "utf-8")) as { tags?: string[] };
+      if (Array.isArray(raw.tags)) tags = raw.tags;
+    } catch { /* ignore */ }
+  }
+  const countByTag = new Map<string, number>();
+  if (fs.existsSync(BLOG_OG_FILE)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(BLOG_OG_FILE, "utf-8")) as { posts?: { tag?: string }[] };
+      const posts = Array.isArray(raw.posts) ? raw.posts : [];
+      for (const p of posts) {
+        const t = typeof p.tag === "string" ? p.tag : "";
+        if (!t) continue;
+        countByTag.set(t, (countByTag.get(t) ?? 0) + 1);
+      }
+    } catch { /* ignore */ }
+  }
+  return { tags, countByTag };
+}
+
+function toTitleCase(s: string): string {
+  return s.split("-").map((w) => (w.length === 0 ? w : w[0].toUpperCase() + w.slice(1))).join(" ");
+}
+
+function renderBlogTagOgSvg(input: { tag: string; count: number }): string {
+  const human = toTitleCase(input.tag);
+  const titleLines = wrapTitleForOg(human, 22, 2);
+  const lineHeight = 92;
+  const startY = 280;
+  const tspans = titleLines
+    .map((ln, i) => `<tspan x="96" y="${startY + i * lineHeight}">${xmlEscapeText(ln)}</tspan>`)
+    .join("");
+  const subtitle = `${input.count} ${input.count === 1 ? "article" : "articles"} · Topic landing page`;
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="halo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0ecff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#fafaf7" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#FAFAF7" />
+  <circle cx="1080" cy="120" r="360" fill="url(#halo)" />
+  <rect x="96" y="96" width="6" height="42" fill="#3b82f6" />
+  <text x="118" y="126" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600" letter-spacing="4" fill="#1f2937">RAPID HIRE SOLUTIONS</text>
+  <text x="96" y="180" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" letter-spacing="4" fill="#3b82f6">TOPIC · BLOG</text>
+  <text font-family="Fraunces, Georgia, serif" font-size="82" font-weight="500" fill="#0f172a" letter-spacing="-1">${tspans}</text>
+  <text x="96" y="500" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#475569">${xmlEscapeText(subtitle)}</text>
+  <line x1="96" y1="540" x2="1104" y2="540" stroke="#e7e5dc" stroke-width="1" />
+  <text x="96" y="580" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">A US-based CRA · Prosper, TX · FCRA certified</text>
+  <text x="1104" y="580" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">rapidhiresolutions.com</text>
+</svg>
+`;
+}
+
 function renderBlogOgSvg(entry: BlogOgEntry): string {
   const titleLines = wrapTitleForOg(entry.title, 28, 4);
   const lineHeight = 78;
@@ -232,6 +298,24 @@ async function startServer() {
     res.set("Content-Type", "image/svg+xml; charset=utf-8");
     res.set("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
     res.send(renderBlogOgSvg(entry));
+  });
+
+  // GET /api/og/blog/tag/:tag.svg — dynamic OG image per blog tag
+  app.get("/api/og/blog/tag/:tag.svg", (req, res) => {
+    const tag = String(req.params.tag || "");
+    if (!/^[a-z0-9-]+$/i.test(tag)) {
+      res.status(400).type("text/plain").send("Bad tag");
+      return;
+    }
+    const meta = loadBlogMetaForOg();
+    if (!meta.tags.includes(tag)) {
+      res.status(404).type("text/plain").send("Unknown tag");
+      return;
+    }
+    const count = meta.countByTag.get(tag) ?? 0;
+    res.set("Content-Type", "image/svg+xml; charset=utf-8");
+    res.set("Cache-Control", "public, max-age=86400, stale-while-revalidate=604800");
+    res.send(renderBlogTagOgSvg({ tag, count }));
   });
 
   // Serve static files from dist/public in production

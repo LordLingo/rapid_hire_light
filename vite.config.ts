@@ -465,9 +465,11 @@ function vitePluginBlogOgImage(): Plugin {
   return {
     name: "manus-blog-og-image",
     configureServer(server: ViteDevServer) {
-      server.middlewares.use("/api/og/blog/", (req, res) => {
+      // Per-post OG card.
+      server.middlewares.use("/api/og/blog/", (req, res, next) => {
         const url = req.url || "";
-        // Match `/<slug>.svg` (the leading `/api/og/blog` prefix is stripped by Vite middleware).
+        // Tag landing page card has its own subroute below; defer to it.
+        if (/^\/?tag\//i.test(url)) return next();
         const m = url.match(/^\/?([a-z0-9-]+)\.svg(?:\?|$)/i);
         if (!m) {
           res.writeHead(404, { "Content-Type": "text/plain" });
@@ -488,8 +490,103 @@ function vitePluginBlogOgImage(): Plugin {
         });
         res.end(svg);
       });
+      // Per-tag landing-page OG card.
+      server.middlewares.use("/api/og/blog/tag/", (req, res) => {
+        const url = req.url || "";
+        const m = url.match(/^\/?([a-z0-9-]+)\.svg(?:\?|$)/i);
+        if (!m) {
+          res.writeHead(404, { "Content-Type": "text/plain" });
+          res.end("Not found");
+          return;
+        }
+        const tag = m[1];
+        const meta = loadBlogMetaForOg();
+        if (!meta.tags.includes(tag)) {
+          res.writeHead(404, { "Content-Type": "text/plain" });
+          res.end("Unknown tag");
+          return;
+        }
+        const count = meta.countByTag.get(tag) ?? 0;
+        const svg = renderBlogTagOgSvg({ tag, count });
+        res.writeHead(200, {
+          "Content-Type": "image/svg+xml; charset=utf-8",
+          "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800",
+        });
+        res.end(svg);
+      });
     },
   };
+}
+
+// ---- Per-tag OG card --------------------------------------------------------
+
+type BlogMetaForOg = {
+  tags: string[];
+  // Set of (tag -> primary-tag post count) derived from blog-og.json.
+  countByTag: Map<string, number>;
+};
+
+function loadBlogMetaForOg(): BlogMetaForOg {
+  const metaPath = path.join(PROJECT_ROOT, "shared", "blog-meta.json");
+  const ogPath = path.join(PROJECT_ROOT, "shared", "blog-og.json");
+  let tags: string[] = [];
+  if (fs.existsSync(metaPath)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(metaPath, "utf-8")) as { tags?: string[] };
+      if (Array.isArray(raw.tags)) tags = raw.tags;
+    } catch { /* ignore */ }
+  }
+  const countByTag = new Map<string, number>();
+  if (fs.existsSync(ogPath)) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(ogPath, "utf-8")) as { posts?: { tag?: string }[] };
+      const posts = Array.isArray(raw.posts) ? raw.posts : [];
+      for (const p of posts) {
+        const t = typeof p.tag === "string" ? p.tag : "";
+        if (!t) continue;
+        countByTag.set(t, (countByTag.get(t) ?? 0) + 1);
+      }
+    } catch { /* ignore */ }
+  }
+  return { tags, countByTag };
+}
+
+function toTitleCase(s: string): string {
+  return s
+    .split("-")
+    .map((w) => (w.length === 0 ? w : w[0].toUpperCase() + w.slice(1)))
+    .join(" ");
+}
+
+export function renderBlogTagOgSvg(input: { tag: string; count: number }): string {
+  const human = toTitleCase(input.tag);
+  const titleLines = wrapTitleForOg(human, 22, 2);
+  const lineHeight = 92;
+  const startY = 280;
+  const tspans = titleLines
+    .map((ln, i) => `<tspan x="96" y="${startY + i * lineHeight}">${xmlEscapeText(ln)}</tspan>`)
+    .join("");
+  const subtitle = `${input.count} ${input.count === 1 ? "article" : "articles"} · Topic landing page`;
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="halo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0ecff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#fafaf7" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#FAFAF7" />
+  <circle cx="1080" cy="120" r="360" fill="url(#halo)" />
+  <rect x="96" y="96" width="6" height="42" fill="#3b82f6" />
+  <text x="118" y="126" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600" letter-spacing="4" fill="#1f2937">RAPID HIRE SOLUTIONS</text>
+  <text x="96" y="180" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" letter-spacing="4" fill="#3b82f6">TOPIC · BLOG</text>
+  <text font-family="Fraunces, Georgia, serif" font-size="82" font-weight="500" fill="#0f172a" letter-spacing="-1">${tspans}</text>
+  <text x="96" y="500" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#475569">${xmlEscapeText(subtitle)}</text>
+  <line x1="96" y1="540" x2="1104" y2="540" stroke="#e7e5dc" stroke-width="1" />
+  <text x="96" y="580" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">A US-based CRA · Prosper, TX · FCRA certified</text>
+  <text x="1104" y="580" text-anchor="end" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#475569">rapidhiresolutions.com</text>
+</svg>
+`;
 }
 
 // =============================================================================

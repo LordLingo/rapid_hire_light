@@ -24,6 +24,14 @@ export default function Blog() {
   const allTags = useMemo(() => getAllTags(), []);
   const visiblePosts = allPosts;
 
+  // Topics-by-depth: descending post-count list of every tag, used to
+  // surface our deepest clusters and give crawlers a tag-overview shortcut.
+  const tagsByDepth = useMemo(() => {
+    return allTags
+      .map((t) => ({ tag: t, count: allPosts.filter((p) => p.tags.includes(t)).length }))
+      .sort((a, b) => (b.count !== a.count ? b.count - a.count : a.tag.localeCompare(b.tag)));
+  }, [allTags, allPosts]);
+
   // ItemList JSON-LD helps Google understand the index as a structured
   // collection of articles — improves the chance of rich-result eligibility.
   const jsonLd = {
@@ -64,6 +72,47 @@ export default function Blog() {
         }
         lede="Practical, jurisdiction-aware writing on background checks, FCRA compliance, drug screening, MVR/DOT, and the hiring workflow that surrounds them — by the Rapid Hire Solutions team."
       />
+
+      {/* Topics by depth — a one-glance overview of every cluster, sorted
+          by post count. Doubles as an internal-linking surface for crawlers. */}
+      <section
+        className="bg-[color:var(--color-paper)] border-y border-border"
+        aria-labelledby="topics-by-depth-heading"
+      >
+        <div className="container py-14 md:py-16">
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <div>
+              <p className="eyebrow">Topics by depth</p>
+              <h2
+                id="topics-by-depth-heading"
+                className="mt-3 font-display tracking-[-0.02em] text-[28px] sm:text-[34px] md:text-[40px] leading-[1.08] text-[color:var(--color-ink)]"
+              >
+                Where the editorial weight sits.
+              </h2>
+            </div>
+            <p className="max-w-md text-[14.5px] leading-[1.65] text-[color:var(--color-ink-soft)]">
+              {tagsByDepth.length} active topics, sorted by post count. The
+              clusters at the top are where we have the deepest, most cross-linked
+              coverage — a useful place to start when researching a workflow.
+            </p>
+          </div>
+          <ul className="mt-8 flex flex-wrap gap-2">
+            {tagsByDepth.map(({ tag, count }) => (
+              <li key={tag}>
+                <Link
+                  href={`/blog/tag/${tag}`}
+                  className="group inline-flex items-center gap-2 rounded-full border border-border bg-white px-3.5 py-1.5 text-[13.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-ink)] transition-colors"
+                >
+                  <span>{formatTag(tag)}</span>
+                  <span className="text-[12px] font-medium tabular-nums text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-accent-ink)]">
+                    {count}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       <section className="bg-white border-y border-border">
         <div className="container py-20 md:py-24 grid grid-cols-12 gap-x-10 gap-y-10">

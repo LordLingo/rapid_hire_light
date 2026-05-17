@@ -24,13 +24,18 @@ changes within minutes rather than days.
 ## After every deploy
 
 ```bash
-node scripts/submit-sitemap.mjs
+pnpm seo:submit
 # or, against a non-prod host:
 SITE_BASE_URL=https://staging.rapidhiresolutions.com \
-  node scripts/submit-sitemap.mjs
+  pnpm seo:submit
 # preview without making any network calls:
-node scripts/submit-sitemap.mjs --dry-run
+pnpm seo:submit:dry
 ```
+
+The `postdeploy` script runs the same submitter; CI providers that
+trigger `npm run postdeploy` (GitHub Actions deploy step, Render's
+`postDeploy` command, Railway's `release` phase, etc.) will fire IndexNow
+automatically with no extra config beyond the Manus-managed env.
 
 The script:
 
