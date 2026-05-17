@@ -38,9 +38,15 @@
     { "slug": "california-ai-algorithmic-bias-hiring-rules", "lastmod": "2026-05-17" },
     { "slug": "california-ab-2064-criminal-history-protected-characteristic", "lastmod": "2026-05-17" },
     { "slug": "california-icraa-parsonage-walmart-10k-penalty", "lastmod": "2026-05-17" },
-    { "slug": "california-sb-731-clean-slate-impact-2026", "lastmod": "2026-05-17" }
+    { "slug": "california-sb-731-clean-slate-impact-2026", "lastmod": "2026-05-17" },
+    { "slug": "eeoc-title-vii-disparate-impact-screening", "lastmod": "2026-05-17" },
+    { "slug": "eeoc-ada-pre-employment-medical-inquiries", "lastmod": "2026-05-17" },
+    { "slug": "eeoc-pwfa-pregnant-workers-fairness-act", "lastmod": "2026-05-17" },
+    { "slug": "eeoc-strategic-enforcement-plan-2024-2028", "lastmod": "2026-05-17" },
+    { "slug": "eeoc-eeo1-component-1-reporting", "lastmod": "2026-05-17" }
   ],
   "tags": [
+    "ada",
     "adverse-action",
     "ai",
     "ban-the-box",

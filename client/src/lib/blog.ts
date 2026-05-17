@@ -95,6 +95,11 @@ import { post as postCaAiBias } from "@/content/blog/california-ai-algorithmic-b
 import { post as postCaAb2064 } from "@/content/blog/california-ab-2064-criminal-history-protected-characteristic";
 import { post as postCaIcraaParsonage } from "@/content/blog/california-icraa-parsonage-walmart-10k-penalty";
 import { post as postCaSb731Impact } from "@/content/blog/california-sb-731-clean-slate-impact-2026";
+import { post as postEeocDisparate } from "@/content/blog/eeoc-title-vii-disparate-impact-screening";
+import { post as postEeocAda } from "@/content/blog/eeoc-ada-pre-employment-medical-inquiries";
+import { post as postEeocPwfa } from "@/content/blog/eeoc-pwfa-pregnant-workers-fairness-act";
+import { post as postEeocSep } from "@/content/blog/eeoc-strategic-enforcement-plan-2024-2028";
+import { post as postEeocEeo1 } from "@/content/blog/eeoc-eeo1-component-1-reporting";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -135,6 +140,11 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postCaAb2064,
   postCaIcraaParsonage,
   postCaSb731Impact,
+  postEeocDisparate,
+  postEeocAda,
+  postEeocPwfa,
+  postEeocSep,
+  postEeocEeo1,
 ]);
 
 /**

@@ -998,3 +998,9 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Verify wheel + touch events stay inside the menu (no page scroll behind)
 - [x] Add anti-regression test
 - [x] vitest + tsc green, checkpoint
+
+## §89 — 5 EEOC SEO blog posts
+- [x] Pick 5 EEOC topics that don't overlap with eeoc-arrest-conviction-employer-guidance
+- [x] Draft each post (550–880 words, 4–5 H2s, 5+ internal links, statute-anchored, SEO-focused)
+- [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
+- [x] Run blog tests + tsc, save checkpoint
