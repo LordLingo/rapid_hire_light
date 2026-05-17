@@ -1033,7 +1033,7 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Final delivery message
 
 ## §91 Follow-up tooling for §90 (post-cluster reinforcement)
-- [ ] Sitemap ping infrastructure (script that pings Google + Bing IndexNow on demand; robots.txt sitemap reference verified; submission instructions documented)
-- [ ] Tag-coverage badges on /blog index + /blog/tag/:slug pages (post count per tag visible)
-- [ ] Reciprocal back-link audit pass on the 50 new posts (older sibling posts get one forward link each to a new sibling)
-- [ ] Run vitest + tsc + save checkpoint
+- [x] Sitemap ping infrastructure (`scripts/submit-sitemap.mjs` + `client/public/indexnow.txt` + `docs/seo-submission.md`; pings IndexNow with the full 145-URL list; prints Search Console URL; supports `--dry-run`)
+- [x] Tag-coverage badges on /blog index + /blog/tag/:slug pages (post count per tag visible — `Blog.tsx` already had it; added matching badges to `BlogTag.tsx` Other-topics rail)
+- [x] Reciprocal back-link audit pass (rewrote `relatedPosts()` to rank by shared-tag overlap; new vitest assertion guards the algorithm; covers all 118 posts at runtime instead of edits to 50)
+- [x] Run vitest + tsc + save checkpoint (597 passing; tsc clean)
