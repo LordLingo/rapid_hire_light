@@ -792,6 +792,22 @@ function buildSitemap(baseUrl: string, meta: BlogMeta): string {
     );
   }
 
+  // Year-in-review hubs. Derived from the lastmod timestamps in blog-meta
+  // (proxy for publish year). Each year archive is a stable, indexable
+  // collection page that links to every post from that year, grouped by quarter.
+  const years = Array.from(
+    new Set(
+      meta.posts
+        .map((p) => (typeof p.lastmod === "string" ? p.lastmod.slice(0, 4) : ""))
+        .filter((y) => /^\d{4}$/.test(y)),
+    ),
+  ).sort();
+  for (const y of years) {
+    urls.push(
+      `  <url>\n    <loc>${xmlEscape(`${baseUrl}/blog/year/${y}`)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n  </url>`,
+    );
+  }
+
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 }
 
@@ -812,7 +828,12 @@ function vitePluginSitemap(): Plugin {
         fs.writeFileSync(path.join(outDir, "sitemap.xml"), buildSitemap(baseUrl, meta), "utf-8");
         fs.writeFileSync(path.join(outDir, "robots.txt"), buildRobots(baseUrl), "utf-8");
         // eslint-disable-next-line no-console
-        console.log(`[sitemap] wrote sitemap.xml (${STATIC_ROUTES.length + meta.posts.length + meta.tags.length} URLs) and robots.txt`);
+        const yearCount = new Set(
+          meta.posts
+            .map((p) => (typeof p.lastmod === "string" ? p.lastmod.slice(0, 4) : ""))
+            .filter((y) => /^\d{4}$/.test(y)),
+        ).size;
+        console.log(`[sitemap] wrote sitemap.xml (${STATIC_ROUTES.length + meta.posts.length + meta.tags.length + yearCount} URLs) and robots.txt`);
       } catch (e) {
         // eslint-disable-next-line no-console
         console.warn("[sitemap] generation failed:", e);

@@ -401,3 +401,92 @@ export function formatPublishedDate(iso: string): string {
     timeZone: "UTC",
   });
 }
+
+/**
+ * Build-time-imported blog metadata. The same JSON file is consumed by the
+ * sitemap pipeline and the OG SVG renderer; importing it directly keeps the
+ * "lastmod" source of truth aligned across the build, the runtime, and the
+ * sitemap. The shape is `{ posts: [{ slug, lastmod }] }`.
+ */
+import blogMeta from "../../../shared/blog-meta.json";
+
+const LASTMOD_BY_SLUG: Record<string, string> = (() => {
+  const map: Record<string, string> = {};
+  const posts = (blogMeta as { posts?: Array<{ slug?: string; lastmod?: string }> }).posts ?? [];
+  for (const entry of posts) {
+    if (entry.slug && entry.lastmod) map[entry.slug] = entry.lastmod;
+  }
+  return map;
+})();
+
+/**
+ * Returns the last-modified ISO date for a post. Falls back to publishedAt
+ * if the meta file hasn't been refreshed yet (defensive — should not happen
+ * in production builds, but useful for local snapshots).
+ */
+export function getPostLastmod(slug: string): string {
+  const fromMeta = LASTMOD_BY_SLUG[slug];
+  if (fromMeta) return fromMeta;
+  const post = ALL_POSTS.find((p) => p.slug === slug);
+  return post?.publishedAt ?? "";
+}
+
+/**
+ * "Recently updated" heuristic: lastmod is at least `dayThreshold` days
+ * after publishedAt. Default 60 days — enough to filter out routine
+ * republish noise but catch genuinely-revised posts.
+ */
+export function isRecentlyUpdated(post: BlogPost, dayThreshold: number = 60): boolean {
+  const lastmod = getPostLastmod(post.slug);
+  if (!lastmod || lastmod === post.publishedAt) return false;
+  const pub = Date.parse(`${post.publishedAt}T00:00:00Z`);
+  const mod = Date.parse(`${lastmod}T00:00:00Z`);
+  if (Number.isNaN(pub) || Number.isNaN(mod)) return false;
+  const days = (mod - pub) / (1000 * 60 * 60 * 24);
+  return days >= dayThreshold;
+}
+
+/**
+ * All publication years that contain at least one post, newest first.
+ * Used to render /blog/year/:year hub navigation without hard-coding.
+ */
+export function listPostYears(): number[] {
+  const years = new Set<number>();
+  for (const p of ALL_POSTS) {
+    const y = Number(p.publishedAt.slice(0, 4));
+    if (!Number.isNaN(y)) years.add(y);
+  }
+  return Array.from(years).sort((a, b) => b - a);
+}
+
+/** Posts published in a given year, newest first. */
+export function listPostsByYear(year: number): BlogPost[] {
+  return listPosts().filter((p) => p.publishedAt.startsWith(`${year}-`));
+}
+
+/**
+ * Group a list of posts by quarter (Q1..Q4). Returns an ordered array of
+ * { quarter, label, posts } so the year-in-review page can render four
+ * columns with chronologically-grouped entries.
+ */
+export function groupPostsByQuarter(
+  posts: BlogPost[],
+): Array<{ quarter: 1 | 2 | 3 | 4; label: string; posts: BlogPost[] }> {
+  const buckets: Record<1 | 2 | 3 | 4, BlogPost[]> = { 1: [], 2: [], 3: [], 4: [] };
+  for (const p of posts) {
+    const m = Number(p.publishedAt.slice(5, 7));
+    const q = (Math.ceil(m / 3) || 1) as 1 | 2 | 3 | 4;
+    buckets[q].push(p);
+  }
+  const labels: Record<1 | 2 | 3 | 4, string> = {
+    1: "Q1 — January to March",
+    2: "Q2 — April to June",
+    3: "Q3 — July to September",
+    4: "Q4 — October to December",
+  };
+  return ([1, 2, 3, 4] as const).map((q) => ({
+    quarter: q,
+    label: labels[q],
+    posts: buckets[q],
+  }));
+}

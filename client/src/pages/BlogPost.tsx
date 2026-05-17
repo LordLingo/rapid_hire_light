@@ -18,6 +18,8 @@ import ReadingProgressBar from "@/components/site/ReadingProgressBar";
 import {
   formatPublishedDate,
   getPostBySlug,
+  getPostLastmod,
+  isRecentlyUpdated,
   relatedPosts,
 } from "@/lib/blog";
 
@@ -46,6 +48,13 @@ export default function BlogPost() {
       ? `${window.location.origin}/api/og/blog/${post.slug}.svg`
       : `/api/og/blog/${post.slug}.svg`);
 
+  // dateModified comes from shared/blog-meta.json's lastmod field, which is
+  // refreshed every time a post body or metadata is touched. When it equals
+  // publishedAt (the typical case), Google treats the article as un-revised;
+  // when it diverges (e.g., we re-ran a registration script after editing),
+  // the rich-result tester surfaces the freshness signal correctly.
+  const lastmod = getPostLastmod(post.slug) || post.publishedAt;
+
   // BlogPosting JSON-LD with the fields Google's rich-result tester expects.
   const jsonLd = {
     "@context": "https://schema.org",
@@ -53,7 +62,7 @@ export default function BlogPost() {
     headline: post.title,
     description: post.metaDescription,
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    dateModified: lastmod,
     author: { "@type": "Organization", name: post.author },
     publisher: {
       "@type": "Organization",
@@ -109,6 +118,11 @@ export default function BlogPost() {
               <div className="mt-3 hairline" />
               <p className="mt-6 text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
                 {formatPublishedDate(post.publishedAt)}
+                {isRecentlyUpdated(post) && (
+                  <span className="ml-2 inline-flex items-center rounded-full border border-[color:var(--color-accent-ink)]/30 bg-[color:var(--color-accent-ink)]/8 px-2 py-0.5 text-[10.5px] tracking-wider text-[color:var(--color-accent-ink)]">
+                    Updated {formatPublishedDate(lastmod)}
+                  </span>
+                )}
               </p>
               <p className="mt-1 text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
                 {post.readingMinutes} min read

@@ -1057,3 +1057,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Re-dated 106 posts; refreshed `shared/blog-meta.json` lastmod for affected entries; final monthly distribution: 2/2/3/20/22/24/27/18 (Oct → May)
 - [x] White papers audited — already organically dated 2025-11-24 → 2026-05-12, no two on the same day; no changes needed
 - [x] Run vitest + tsc (605 passing, tsc clean) + checkpoint
+
+## §95 Follow-ups (Updated badge, year-in-review hubs, JSON-LD dates)
+- [x] Added `Updated <Month D, YYYY>` pill to /blog cards and to each post hero when lastmod ≥ publishedAt + 60 days; pill carries an `aria-label` so screen readers announce the date
+- [x] /blog/year/:year hub pages live: `BlogYear.tsx` renders posts grouped by quarter with a year switcher; route registered ahead of `/blog/:slug` in `App.tsx`; archive strip surfaced on /blog index; CollectionPage + ItemList JSON-LD emitted
+- [x] Per-post JSON-LD now emits `datePublished` and a separate `dateModified` from `shared/blog-meta.json` lastmod; sitemap now includes `/blog/year/<y>` URLs derived from blog-meta lastmod years
+- [x] New helpers in `client/src/lib/blog.ts`: `getPostLastmod`, `isRecentlyUpdated`, `listPostYears`, `listPostsByYear`, `groupPostsByQuarter`; covered by 5 specs in `blogYear.test.ts`
+- [x] Run vitest + tsc (610/610 across 48 files; tsc clean) + checkpoint

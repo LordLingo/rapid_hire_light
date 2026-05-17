@@ -17,6 +17,9 @@ import {
   getAllTags,
   formatPublishedDate,
   formatTag,
+  isRecentlyUpdated,
+  getPostLastmod,
+  listPostYears,
 } from "@/lib/blog";
 
 type DateRange = "all" | "90d" | "30d";
@@ -30,6 +33,7 @@ function parseInitialRange(): DateRange {
 export default function Blog() {
   const allPosts = useMemo(() => listPosts(), []);
   const allTags = useMemo(() => getAllTags(), []);
+  const yearArchives = useMemo(() => listPostYears(), []);
 
   // Date-range facet — lets visitors quickly surface what's recent now
   // that the corpus is past 100 posts. Initial value is read from the
@@ -147,6 +151,28 @@ export default function Blog() {
               </li>
             ))}
           </ul>
+
+          {yearArchives.length > 1 && (
+            <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] tracking-wider uppercase text-[color:var(--color-ink-muted)]">
+              <span className="font-medium">Archives</span>
+              {yearArchives.map((y) => {
+                const count = allPosts.filter((p) => p.publishedAt.startsWith(`${y}-`)).length;
+                return (
+                  <Link
+                    key={y}
+                    href={`/blog/year/${y}`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1 text-[12.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-ink)] transition-colors"
+                    aria-label={`${y} archive — ${count} ${count === 1 ? "article" : "articles"}`}
+                  >
+                    <span className="font-medium tabular-nums">{y}</span>
+                    <span aria-hidden="true" className="text-[color:var(--color-ink-muted)]">
+                      ({count})
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -256,9 +282,19 @@ export default function Blog() {
                       >
                         {p.title}
                       </h2>
-                      <p className="mt-4 text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
-                        {formatPublishedDate(p.publishedAt)} ·{" "}
-                        {p.readingMinutes} min read
+                      <p className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                        <span>{formatPublishedDate(p.publishedAt)}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>{p.readingMinutes} min read</span>
+                        {isRecentlyUpdated(p) && (
+                          <span
+                            className="inline-flex items-center rounded-full border border-[color:var(--color-accent-ink)]/30 bg-[color:var(--color-accent-ink)]/8 px-2 py-0.5 text-[10.5px] tracking-wider text-[color:var(--color-accent-ink)]"
+                            title={`Last updated ${formatPublishedDate(getPostLastmod(p.slug))}`}
+                            aria-label={`Updated ${formatPublishedDate(getPostLastmod(p.slug))}`}
+                          >
+                            Updated
+                          </span>
+                        )}
                       </p>
                       <p
                         className={[
