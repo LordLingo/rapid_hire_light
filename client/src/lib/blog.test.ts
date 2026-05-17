@@ -26,6 +26,11 @@ const VALID_INTERNAL_PREFIXES = [
   "/about",
   "/integrations",
   "/industries",
+  "/resources",
+  "/customers",
+  "/candidates",
+  "/sample-report",
+  "/compliance",
   "/blog/",
 ];
 
@@ -36,8 +41,8 @@ function wordCount(s: string): number {
 describe("listPosts", () => {
   const posts = listPosts();
 
-  it("returns exactly twenty-three posts", () => {
-    expect(posts).toHaveLength(23);
+  it("returns exactly twenty-eight posts", () => {
+    expect(posts).toHaveLength(28);
   });
 
   it("is sorted newest-first by publishedAt", () => {

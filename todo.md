@@ -968,3 +968,9 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Slug 5: oral-fluid-vs-urine-drug-testing
 - [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
 - [x] Run blog tests + tsc, save checkpoint
+
+## §85 — 5 FCRA blog posts (statute-grounded, top-notch)
+- [x] Pick 5 FCRA topics that don't overlap with fcra-compliance-guide or adverse-action-letter-fcra-template
+- [x] Draft each post (550–880 words, 4–6 H2s, 5+ internal links, statute-anchored)
+- [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
+- [x] Run blog tests + tsc, save checkpoint
