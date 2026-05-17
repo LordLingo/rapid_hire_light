@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "The ADA forbids medical inquiries before a conditional offer but allows drug tests. Here is the EEOC framework for lawful pre-employment screening under 42 USC 12112(d).",
   excerpt:
     "The Americans with Disabilities Act draws a sharp line between drug tests, which employers may run at any stage, and medical examinations, which are forbidden until a conditional offer is on the table. Conflating the two is one of the most common — and most expensive — compliance mistakes in modern hiring.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-15",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["eeoc", "ada", "drug-screening", "compliance"],

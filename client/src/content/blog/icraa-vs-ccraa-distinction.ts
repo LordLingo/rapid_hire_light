@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "California has two consumer-reporting statutes — ICRAA and CCRAA. Here is the precise distinction and what employers must do under each in 2026.",
   excerpt:
     "California operates two parallel consumer-reporting statutes — ICRAA and CCRAA. Here is the precise distinction and the employer duties under each.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-18",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["icraa", "california", "compliance", "comparison"],

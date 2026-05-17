@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "A defensible screening SLA needs realistic medians, defined exception paths, and explicit FCRA coordination. Here is how to build one that holds in 2026.",
   excerpt:
     "Screening SLAs that compress hiring without breaking FCRA timing live in a narrow band. Here is how to set medians, exception paths, and fail-safe escalation.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-02-23",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["operations", "candidate-experience", "compliance"],

@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "HHS authorized oral-fluid testing under federal Mandatory Guidelines in 2023. The 2026 employer guide to detection windows, when to use each, and DOT status.",
   excerpt:
     "Oral fluid drug testing went from niche option to federally authorized specimen in 2023, and the science around recent-use detection is now defensible enough to change how employers run reasonable-suspicion programs. Here is the 2026 employer guide to specimen choice.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-18",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["drug-screening", "comparison", "operations"],

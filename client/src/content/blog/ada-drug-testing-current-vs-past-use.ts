@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "ADA excludes current illegal drug use from disability protection but protects rehabilitated past use. Here is how the line works for employers in 2026.",
   excerpt:
     "ADA excludes current illegal drug use from disability protection but protects rehabilitated past use. Here is the precise line between the two and how to operate it defensibly.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-01-26",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["ada", "drug-screening", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "New York Labor Law §201-d makes off-duty marijuana use a protected activity. Here is what NY employers can and cannot do under the 2021 MRTA amendment in 2026.",
   excerpt:
     "New York's Labor Law §201-d makes off-duty, off-premises marijuana use a protected activity for adults. Here is what New York employers can and cannot do in 2026.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-07",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["marijuana", "new-york", "compliance"],

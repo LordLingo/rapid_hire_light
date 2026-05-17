@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Many CDL roles fall outside FMCSA jurisdiction but still require drug testing under state law. Here is how non-DOT testing differs from 49 CFR Part 40.",
   excerpt:
     "Many CDL drivers operate outside FMCSA jurisdiction but still require drug testing under state law, municipal contracts, or insurer requirements. Here is how non-DOT testing differs from 49 CFR Part 40.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-04",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["dot", "drug-screening", "compliance"],

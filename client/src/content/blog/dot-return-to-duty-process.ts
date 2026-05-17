@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "When a DOT-regulated driver tests positive or refuses, the only path back to safety-sensitive duty is the SAP-supervised return-to-duty process. Here is the six-step playbook.",
   excerpt:
     "When a DOT-regulated driver tests positive, refuses, or otherwise violates 49 CFR Part 40, the only path back to safety-sensitive duty is the federally specified return-to-duty process. Here is the six-step playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-29",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["dot", "drug-screening", "compliance"],

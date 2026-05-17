@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "The National Practitioner Data Bank captures malpractice payments and adverse actions on US healthcare practitioners. Here is the 2026 hospital query and report duty playbook.",
   excerpt:
     "The National Practitioner Data Bank captures malpractice payments and adverse actions on every US healthcare practitioner. Here is what hospitals must query, when, and how to handle results that surface adverse history.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2025-12-15",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["healthcare", "verification", "compliance"],

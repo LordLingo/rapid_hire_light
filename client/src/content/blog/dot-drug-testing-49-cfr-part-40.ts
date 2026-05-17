@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "49 CFR Part 40 governs every DOT drug and alcohol test in the U.S. The 2026 employer playbook on six-test panels, MRO review, refusals, and Clearinghouse duty.",
   excerpt:
     "Title 49 CFR Part 40 is the federal rulebook for every DOT-regulated drug and alcohol test in the United States. Here is the 2026 employer playbook for the six required tests, the MRO chain, refusal-to-test rules, and the FMCSA Clearinghouse duties most carriers under-execute.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-27",
   readingMinutes: 6,
   author: "Rapid Hire Compliance Team",
   tags: ["dot", "drug-screening", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "ADA permits return-to-work medical exams only when job-related and consistent with business necessity. Here is how to scope them defensibly in 2026.",
   excerpt:
     "ADA permits return-to-work medical exams only when job-related and consistent with business necessity. Here is the 2026 employer playbook for defensible scoping.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-01-29",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["ada", "compliance"],

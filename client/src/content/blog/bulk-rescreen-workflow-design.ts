@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Designing a bulk rescreen workflow that survives FCRA scrutiny means controlling consent, scope, and adverse-action timelines. Here is the 2026 operations playbook.",
   excerpt:
     "Bulk rescreen programs trip on consent, scope, and adverse-action timing. This playbook walks the operations design that survives FCRA scrutiny in 2026.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-02-19",
   readingMinutes: 6,
   author: "Rapid Hire Operations Team",
   tags: ["operations", "continuous-monitoring", "compliance"],

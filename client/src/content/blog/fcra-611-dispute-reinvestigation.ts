@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "FCRA §611 gives candidates a 30-day reinvestigation right when they dispute a CRA file. Here is the 2026 employer playbook for the reinvestigation flow and the hold-decision rule.",
   excerpt:
     "When a candidate disputes a record on a background check, FCRA §611 imposes a 30-day reinvestigation duty on the CRA — and a procedural duty on the employer to hold the hiring decision. Here is the 2026 playbook for both sides.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-12",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["fcra", "compliance", "candidate-experience"],

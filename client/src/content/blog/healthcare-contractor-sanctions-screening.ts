@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Healthcare contractor exclusion screening is where most CMS findings hit. Here is how to extend LEIE/SAM/state checks defensibly to vendors and locum staff.",
   excerpt:
     "Most healthcare exclusion-screening programs are tight on direct employees and full of holes on contractors and downstream vendors. This is where CMS findings actually land, and how to close the gaps.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2025-12-29",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["sanctions", "healthcare", "compliance"],

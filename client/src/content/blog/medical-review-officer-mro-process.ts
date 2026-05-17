@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "Every non-negative drug test goes through a Medical Review Officer before reaching the employer. The 2026 guide to MRO verification, defenses, and the five-day clock.",
   excerpt:
     "Every non-negative drug test in the United States is required to go through a Medical Review Officer before the result reaches the employer. Here is how the MRO process actually works in 2026, what counts as a legitimate medical explanation, and where employers most often act on a result before MRO verification is complete.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["drug-screening", "compliance", "verification"],

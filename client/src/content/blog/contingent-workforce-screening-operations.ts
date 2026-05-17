@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Contingent workforce screening sits between staffing-firm and end-client responsibilities. Here is the 2026 operating model for joint-employer screening.",
   excerpt:
     "Contingent workforce screening crosses staffing-firm and end-client boundaries. Here is the 2026 operating model that allocates duties without compliance gaps.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-02-20",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["operations", "compliance", "fcra"],

@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "Even neutral background check policies can violate Title VII if they screen out protected groups. Here is the EEOC disparate impact framework employers must follow.",
   excerpt:
     "A background check policy can be perfectly neutral on paper and still violate federal law. The EEOC uses a 50-year-old framework — disparate impact under Title VII — to challenge screening policies that disproportionately exclude protected groups, even when the employer never intended to discriminate.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-21",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["eeoc", "compliance", "fcra"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "California ICRAA §1786.40 requires CRAs to send public-record notices to consumers. Here is the 2026 employer and CRA compliance walkthrough.",
   excerpt:
     "California ICRAA §1786.40 requires CRAs to send public-record notices to consumers when public-record information is reported. Here is the 2026 walkthrough.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-03-12",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["icraa", "california", "compliance"],

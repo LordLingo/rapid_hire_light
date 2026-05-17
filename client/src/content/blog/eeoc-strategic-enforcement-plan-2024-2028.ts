@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "The EEOC's FY 2024-2028 Strategic Enforcement Plan flags AI hiring, vulnerable workers, and systemic discrimination as priorities. Here is what employers should do now.",
   excerpt:
     "Every five years the EEOC publishes a Strategic Enforcement Plan that signals where the agency will spend its limited investigative budget. The FY 2024–2028 SEP, finalized in September 2023, narrows the priorities to six subject-matter areas — and several of them sit squarely on the hiring funnel.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-20",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["eeoc", "compliance", "ai"],

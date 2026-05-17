@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "LA County's Fair Chance Ordinance for Employers, effective Sept 3, 2024, adds strict requirements on top of California's CFCA. Here is the 2026 compliance playbook.",
   excerpt:
     "LA County's Fair Chance Ordinance for Employers, effective September 3, 2024, applies to any employer with 5+ employees whose worker performs duties in unincorporated LA County — regardless of where the employer is based. Here is the 2026 compliance playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-01",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["california", "compliance", "fair-chance", "ban-the-box"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "The Joint Commission's HR.01.02.01 through HR.01.02.05 standards govern hospital employee background screening. Here is how accredited hospitals build defensible programs in 2026.",
   excerpt:
     "The Joint Commission's HR.01.02.01 through HR.01.02.05 standards govern how accredited hospitals screen, verify, and competency-assess every employee. Here is the 2026 hospital playbook for meeting each standard.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2025-11-18",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["healthcare", "compliance", "verification"],

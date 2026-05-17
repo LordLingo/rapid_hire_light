@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Every FMCSA-regulated motor carrier must maintain a Driver Qualification File for every driver. Here is the 2026 checklist of every required document under 49 CFR Part 391.",
   excerpt:
     "Every FMCSA-regulated motor carrier must maintain a Driver Qualification File for every driver, retained for the duration of employment plus three years. Here is the 2026 checklist of every required document.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-30",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["dot", "transportation", "compliance"],

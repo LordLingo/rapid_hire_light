@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Free public-record portals look like an SMB shortcut but are a legal trap for hiring. Here is when to use a CRA and the FCRA line that separates them.",
   excerpt:
     "Free public-record portals look like a small business shortcut. They are a legal trap for hiring decisions. Here is when to use a CRA, when public-record search is acceptable, and the FCRA line that separates the two.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-02",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["small-business", "fcra", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "49 CFR §383.51 lists the offenses that disqualify a CDL holder from operating CMVs. The 2026 carrier guide to triggers, durations, and endorsements.",
   excerpt:
     "Federal regulation 49 CFR §383.51 lists the offenses that disqualify a CDL holder from operating commercial motor vehicles. Here is the 2026 carrier guide to disqualification triggers, durations, and how endorsements layer on additional screening.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-20",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["transportation", "dot", "compliance"],

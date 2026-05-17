@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Three FCRA mistakes that small businesses keep making in 2026: bundled disclosures, skipped pre-adverse waiting periods, and missing standalone authorization. The fix for each.",
   excerpt:
     "Founders running a small shop without an HR team trip the same three FCRA wires over and over. Here is what each trap looks like in practice — and the cheap fix that keeps the company out of class-action range.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-03",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["small-business", "fcra", "compliance"],

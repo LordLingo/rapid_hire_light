@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's 2026 Civil Rights Council rules on Automated Decision Systems make employers responsible for algorithmic bias. Here is what AI hiring laws require.",
   excerpt:
     "Is your background check algorithm breaking the law? As of 2026, California has implemented landmark Automated Decision Systems regulations. If you use AI to screen resumes or rank background-check results, you are now legally responsible for the black-box decisions your software makes.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-25",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["california", "ai", "compliance", "fair-chance"],

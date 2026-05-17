@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Individualized assessment under EEOC, California, and NYC rules requires a documented letter to the candidate. Here is the 2026 template that complies with all three.",
   excerpt:
     "Individualized assessment under EEOC, California, and NYC frameworks requires a documented letter. Here is the 2026 template that complies with all three.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-03-06",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["adverse-action", "compliance", "fcra"],

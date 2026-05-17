@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "I-9 and E-Verify run on different timelines and different rules. Here is the 2026 employer guide that keeps both compliant without slowing onboarding.",
   excerpt:
     "I-9 and E-Verify are different programs with different timelines, audit risks, and state mandates. Here is the 2026 employer operating guide.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-02-06",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["verification", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "A defensible 2026 screening playbook for small businesses without an HR team. Five practices that keep founders out of FCRA, EEOC, and state-law trouble.",
   excerpt:
     "Most small businesses do not have an HR team. That does not exempt them from FCRA, EEOC, or state-law screening requirements. Here are five DIY-safe practices founders can put in place without dedicated compliance staff.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-05",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["small-business", "hiring", "compliance"],

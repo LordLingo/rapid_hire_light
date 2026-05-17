@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Hair offers a 90-day detection window vs urine's days. FMCSA still won't accept hair as a stand-alone DOT specimen — here is how carriers use it lawfully.",
   excerpt:
     "Hair follicle testing offers a roughly 90-day detection window, far longer than urine. But FMCSA still does not accept hair as a stand-alone DOT specimen. Here is the 2026 status and how carriers use hair lawfully alongside urine.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-22",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["transportation", "dot", "drug-screening"],

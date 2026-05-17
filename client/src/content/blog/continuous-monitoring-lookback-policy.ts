@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Continuous monitoring programs need a defined lookback policy for actionable content. Here is the 2026 design guide aligned with FCRA, ICRAA, and state law.",
   excerpt:
     "How far back into a continuous-monitoring alert is actionable? Here is the 2026 lookback policy design guide aligned with FCRA, ICRAA, and state-law constraints.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-03-19",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["continuous-monitoring", "fcra", "compliance"],

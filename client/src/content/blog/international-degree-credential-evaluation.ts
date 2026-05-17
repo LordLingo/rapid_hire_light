@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "International degree credential evaluation requires NACES/AICE-affiliated agencies and country-specific approaches. Here is the 2026 sourcing guide.",
   excerpt:
     "International degree credential evaluation requires the right agency, the right document set, and country-specific judgment calls. Here is the 2026 guide.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-02-09",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["verification", "compliance"],

@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "FCRA §609 gives consumers the right to see their full CRA file. Here is the 2026 employer guide to how §609 disclosures interact with the hiring decision and dispute process.",
   excerpt:
     "FCRA §609 grants consumers the right to receive their full CRA file on request. For employment screening, the §609 file is the document candidates use to identify reporting errors and trigger §611 disputes. Here is the 2026 employer playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-09",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["fcra", "compliance", "candidate-experience"],

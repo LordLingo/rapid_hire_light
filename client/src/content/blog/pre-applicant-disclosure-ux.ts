@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "FCRA pre-applicant disclosure is more UX problem than legal problem. Here is the 2026 design guide that holds up in court without breaking conversion.",
   excerpt:
     "FCRA pre-applicant disclosure has produced thousands of class actions because the design is hard to get right. Here is the 2026 UX guide that holds up.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-03-04",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["candidate-experience", "fcra", "compliance"],

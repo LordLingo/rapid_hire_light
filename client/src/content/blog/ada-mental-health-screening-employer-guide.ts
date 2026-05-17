@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "ADA protects mental-health conditions on equal terms with physical disabilities. Here is what employers can and cannot screen for in pre-employment processes.",
   excerpt:
     "ADA protects mental-health conditions on equal terms with physical disabilities. Here is what employers can and cannot screen for in 2026 pre-employment processes.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-28",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["ada", "compliance"],

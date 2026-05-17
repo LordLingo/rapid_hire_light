@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "FCRA §604(b)(2) requires a clear, conspicuous, standalone disclosure before an employment background check. Here is the 2026 employer playbook to stay out of class-action court.",
   excerpt:
     "More FCRA class actions are filed under §604(b)(2) than any other section of the statute. The 'standalone disclosure' rule sounds simple, and it is — but the case law on what disqualifies a disclosure is unforgiving. Here is the 2026 employer playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-06",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["fcra", "compliance"],

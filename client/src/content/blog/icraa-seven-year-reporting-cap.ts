@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "California ICRAA imposes a seven-year reporting cap on adverse public records with no salary carve-out. Here is how it differs from FCRA and what to do.",
   excerpt:
     "California ICRAA caps adverse public-record reporting at seven years with no \\$75,000-salary carve-out. Here is the precise scope and the operational fix.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-03-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["icraa", "california", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "The FCRA two-step adverse action sequence is the most-litigated part of screening. Here is what each notice must contain, when to send it, and the failure modes that drive suits.",
   excerpt:
     "Adverse action notices are the most-litigated artifact in employment screening. Get the language wrong, the timing wrong, or the bundling wrong, and a $30 background check turns into a six-figure exposure.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-01-08",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["fcra", "adverse-action", "compliance", "criminal-records"],

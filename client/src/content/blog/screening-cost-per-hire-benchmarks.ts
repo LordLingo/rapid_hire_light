@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Background screening cost per hire varies five-fold by industry. Here is the 2026 benchmark table and the composition behind the spread.",
   excerpt:
     "Background screening cost per hire ranges from \\$25 to \\$450+ depending on scope and industry. Here is the 2026 benchmark table and the composition behind the spread.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-02-25",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["operations", "small-business", "compliance"],

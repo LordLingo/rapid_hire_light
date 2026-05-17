@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Owner-operators and employee drivers face different screening rules — but Part 391 still applies to both. Here is how the workflows actually differ in 2026.",
   excerpt:
     "Carriers using owner-operators and W-2 employees often assume the screening rules differ dramatically. They differ — but less than carriers expect. Here is how Part 391 applies to both, and where the workflows actually split.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-24",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["transportation", "dot", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Step-by-step for small business owners running their first background check: vendor selection, disclosure, authorization, adjudication, adverse action.",
   excerpt:
     "Hiring your first or second employee and never run a background check before? This step-by-step walks through vendor selection, disclosure, authorization, ordering the check, adjudicating findings, and the FCRA adverse-action sequence.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-04",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["small-business", "hiring", "compliance"],

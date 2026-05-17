@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's SB 731 has automatically sealed over a million criminal records by 2026. Here is what California employers need to know about hiring and screening.",
   excerpt:
     "California's SB 731 — the Clean Slate Act — has automatically sealed over a million criminal records by the end of 2025. Employers cannot consider sealed records, and the auto-sealing schedule means California background checks now look fundamentally different than they did pre-2023.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-30",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["california", "compliance", "criminal-records"],

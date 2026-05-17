@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "A positive marijuana drug test detects THC metabolites that linger long after impairment ends. Here is the pharmacology and what employers must understand in 2026.",
   excerpt:
     "A positive marijuana drug test detects THC metabolites that linger long after impairment ends. Here is the pharmacology and what employers must understand to set defensible policy in 2026.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-08",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["marijuana", "drug-screening", "compliance"],

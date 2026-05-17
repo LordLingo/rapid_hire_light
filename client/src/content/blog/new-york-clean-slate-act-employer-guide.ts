@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "New York Clean Slate Act seals eligible convictions automatically after waiting periods. Here is the 2026 employer compliance map for screening and hiring.",
   excerpt:
     "New York's Clean Slate Act seals eligible convictions automatically after defined waiting periods. Here is what employers must do and not do under the 2026 framework.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-10",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["new-york", "fair-chance", "compliance", "ban-the-box"],

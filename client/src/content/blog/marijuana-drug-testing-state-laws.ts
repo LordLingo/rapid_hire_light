@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "21 states now restrict employer marijuana testing in some form. The 2026 employer guide to off-duty use protections, lawful-product statutes, and what still works.",
   excerpt:
     "Marijuana testing is no longer a uniform policy decision in the United States. By 2026, more than twenty states restrict employer marijuana testing in some way — through off-duty-use protections, lawful-product statutes, or outright bans on pre-employment testing. Here is the state-by-state employer playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-16",
   readingMinutes: 6,
   author: "Rapid Hire Compliance Team",
   tags: ["drug-screening", "marijuana", "compliance"],

@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "Illinois' Job Opportunities for Qualified Applicants Act (820 ILCS 75) governs when employers can ask about criminal history. The 2026 compliance playbook.",
   excerpt:
     "Illinois' Job Opportunities for Qualified Applicants Act sets the timing rule for when an employer can ask about criminal history, and a 2021 amendment to the Illinois Human Rights Act adds a federal-style multi-factor analysis on top. Here is the 2026 compliance playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-07",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["illinois", "fair-chance", "compliance"],

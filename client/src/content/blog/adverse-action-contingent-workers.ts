@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Adverse action for contingent workers crosses staffing-firm and end-client lines. Here is the 2026 guide to allocating duties and avoiding the dual-FCRA failure.",
   excerpt:
     "Adverse action for contingent workers is the most-failed FCRA sequence in the staffing-arrangement market. Here is the 2026 allocation and process guide.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-03-05",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["adverse-action", "fcra", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Candidates abandon hiring funnels when they cannot see screening progress. Here is the 2026 portal-design guide for how much status to show and when.",
   excerpt:
     "Candidates who can't see screening progress assume the worst and abandon. Here is the 2026 portal design guide for how much status transparency is right.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-02-26",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["candidate-experience", "operations", "ai"],

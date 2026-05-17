@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "FCRA's pre-adverse-action 'reasonable period' is widely understood to mean five business days. Here is the 2026 timing guide for the start, end, and exceptions.",
   excerpt:
     "The FCRA pre-adverse-action 'reasonable period' is widely understood as five business days, but the start and end dates produce most litigation. Here is the 2026 timing guide.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-03-10",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["adverse-action", "fcra", "compliance"],

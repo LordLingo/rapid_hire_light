@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "The EEOC's PWFA final rule took effect June 18, 2024. Here is what employers must accommodate, how it differs from the ADA, and where it touches background checks.",
   excerpt:
     "The Pregnant Workers Fairness Act took effect in June 2023, and the EEOC's final rule landed June 18, 2024. The statute is short, but the EEOC's accommodation framework is broader than the ADA's and reaches well into the hiring funnel — including background checks, drug screening, and the candidate experience.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-19",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["eeoc", "compliance"],

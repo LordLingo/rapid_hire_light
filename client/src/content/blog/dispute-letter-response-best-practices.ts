@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "How an employer responds to a candidate dispute determines FCRA exposure. Here is the 2026 playbook for the pre-adverse-action dispute window.",
   excerpt:
     "How an employer handles a candidate dispute during the pre-adverse-action window decides whether the FCRA case lives or dies. Here is the 2026 playbook.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-02-27",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["candidate-experience", "fcra", "adverse-action"],

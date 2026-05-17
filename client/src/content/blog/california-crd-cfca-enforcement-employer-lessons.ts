@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's CRD secured a $100K Fair Chance Act settlement with CRST in April 2025. Here is what the CFCA enforcement ramp means for 2026 employers and how to fortify compliance.",
   excerpt:
     "On April 3, 2025, the California Civil Rights Department announced a $100,000 Fair Chance Act settlement with a national trucking company. The CRD has been ramping CFCA enforcement, interpreting the law liberally and second-guessing employer final decisions. Here is the 2026 playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-26",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["california", "compliance", "fair-chance"],

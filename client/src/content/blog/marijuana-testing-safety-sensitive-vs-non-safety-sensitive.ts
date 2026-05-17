@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "State marijuana laws split employer testing by role designation. Here is how to classify safety-sensitive vs non-safety-sensitive in 2026 and the documentation that holds up.",
   excerpt:
     "State marijuana laws split employer testing rules by role designation. Here is how to draw the safety-sensitive vs non-safety-sensitive line in 2026 and the documentation that holds up.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-05",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["marijuana", "drug-screening", "compliance"],

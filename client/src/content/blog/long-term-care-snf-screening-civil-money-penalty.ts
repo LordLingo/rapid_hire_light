@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Long-term care and skilled nursing facilities face the strictest screening rules in healthcare. The 2026 playbook for state registries, abuse reporting, and CMS CMP exposure.",
   excerpt:
     "Long-term care and skilled nursing facilities face some of the strictest background screening rules in US healthcare. Here is the 2026 compliance playbook covering state nurse aide registries, abuse reporting, and the CMS Civil Money Penalty exposure.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2025-12-01",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["healthcare", "compliance", "sanctions"],

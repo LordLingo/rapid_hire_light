@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Joint-employer arrangements expand FCRA adverse-action duties to multiple entities. Here is the 2026 mapping of who owes which duty in 2026.",
   excerpt:
     "Joint-employer arrangements multiply FCRA adverse-action exposure across two or more entities. Here is the 2026 mapping of who owes which duty.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-03-09",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["adverse-action", "fcra", "compliance"],

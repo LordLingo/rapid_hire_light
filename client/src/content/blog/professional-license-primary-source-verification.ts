@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Primary source license verification — directly from the issuing board — is the regulatory standard. Here is the 2026 field guide for healthcare, legal, and finance roles.",
   excerpt:
     "Primary source license verification means going directly to the issuing board. Here is the 2026 field guide for healthcare, legal, finance, and technical licenses.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-02-10",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["verification", "compliance", "healthcare"],

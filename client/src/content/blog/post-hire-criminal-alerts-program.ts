@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Post-hire criminal alerts surface mid-cycle convictions automatically. Here is the 2026 guide to building a defensible continuous monitoring program.",
   excerpt:
     "Post-hire criminal alerts catch convictions occurring after hire — the highest-leverage continuous monitoring layer. Here is the 2026 program build guide.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-05-15",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["continuous-monitoring", "operations", "compliance"],

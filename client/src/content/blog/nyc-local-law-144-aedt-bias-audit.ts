@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "NYC Local Law 144 requires bias audits for automated employment decision tools used in hiring. Here is the 2026 employer compliance map and audit standard.",
   excerpt:
     "NYC Local Law 144 requires annual independent bias audits of automated employment decision tools used to substantially screen NYC candidates. Here is the 2026 compliance map.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-04-16",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["new-york", "ai", "compliance"],

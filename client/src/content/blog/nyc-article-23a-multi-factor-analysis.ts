@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "NYC Fair Chance Act requires the eight-factor Article 23-A analysis on every conviction-based denial. Here is how to document it defensibly in 2026.",
   excerpt:
     "NYC Fair Chance Act requires the eight-factor Article 23-A analysis on every conviction-based denial. Here is the factor-by-factor playbook for 2026.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-04-14",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["new-york", "fair-chance", "compliance", "ban-the-box"],

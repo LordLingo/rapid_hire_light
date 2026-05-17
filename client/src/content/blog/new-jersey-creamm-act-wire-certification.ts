@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "New Jersey's 2021 CREAMM Act conditions employer marijuana drug testing on a Workplace Impairment Recognition Expert (WIRE). Here is what the WIRE rule means for 2026 hiring.",
   excerpt:
     "New Jersey's 2021 CREAMM Act conditions employer marijuana drug testing on the use of a Workplace Impairment Recognition Expert (WIRE). Here is what the rule means in 2026.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-06",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["marijuana", "drug-screening", "compliance"],

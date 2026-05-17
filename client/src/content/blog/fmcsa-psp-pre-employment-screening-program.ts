@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "FMCSA's PSP gives carriers access to a driver's roadside-inspection and crash history. What PSP shows, what it does not, and how to use it under FCRA.",
   excerpt:
     "FMCSA's Pre-Employment Screening Program gives motor carriers access to a driver's last five years of roadside-inspection and crash history. Here is what PSP shows, what it omits, and how to integrate it into a compliant carrier hiring program.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-21",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["transportation", "dot", "compliance"],

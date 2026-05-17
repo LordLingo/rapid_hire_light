@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Mobile candidates abandon authorization flows that aren't designed for thumbs. Here is the 2026 mobile-first FCRA authorization design guide.",
   excerpt:
     "More than half of background-check authorizations are now signed on a phone. Here is the 2026 mobile-first FCRA design guide that survives the 5-inch screen.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-03-02",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["candidate-experience", "fcra", "compliance", "ai"],

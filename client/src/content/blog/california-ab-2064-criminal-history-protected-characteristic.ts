@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's AB 2064 adds criminal history to FEHA's protected characteristics. Here is what the 2026 Unruh Civil Rights Act expansion means for background checks.",
   excerpt:
     "In 2026, a massive shift occurred in how California views past mistakes. AB 2064 adds criminal history to the list of protected characteristics under FEHA and the Unruh Civil Rights Act. Background-check errors are no longer procedural slips — they are civil rights violations.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-19",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["california", "fair-chance", "compliance", "criminal-records"],

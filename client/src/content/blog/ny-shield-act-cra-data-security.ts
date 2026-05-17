@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "NY SHIELD Act imposes data security and breach notification duties on any business holding NY resident data. Here is how it applies to background screening in 2026.",
   excerpt:
     "NY SHIELD Act extends data security and breach-notification duties to any business that holds private information of New York residents. Here is the CRA and employer compliance map for 2026.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-04-13",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["new-york", "compliance"],

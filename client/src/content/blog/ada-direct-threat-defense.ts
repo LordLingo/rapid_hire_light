@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "ADA permits exclusion only on individualized direct threat findings. Here is the four-factor test, EEOC guidance, and how to document the defense in 2026.",
   excerpt:
     "ADA permits exclusion only on individualized direct threat findings. Here is the four-factor test, the EEOC guidance, and how to document the defense in 2026.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-01-23",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["ada", "compliance"],

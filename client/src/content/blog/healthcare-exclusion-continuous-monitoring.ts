@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Healthcare exclusion continuous monitoring goes beyond OIG LEIE to SAM, state Medicaid lists, and DEA. Here is the 2026 program build guide.",
   excerpt:
     "Monthly OIG LEIE checks are the floor. The 2026 healthcare exclusion continuous monitoring program covers SAM, state Medicaid lists, DEA, and license status.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-04-16",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["continuous-monitoring", "healthcare", "compliance"],

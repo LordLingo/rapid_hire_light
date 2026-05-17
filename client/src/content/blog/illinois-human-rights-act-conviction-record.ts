@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Illinois added conviction record as a protected characteristic in 2021. Here is how the IHRA amendment overlays JOQAA and what employers must document in 2026.",
   excerpt:
     "Illinois made conviction record a protected characteristic in March 2021. Here is how the IHRA amendment overlays JOQAA, what employers must document, and how the IDHR enforces it.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-04-06",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["illinois", "fair-chance", "compliance", "ban-the-box"],

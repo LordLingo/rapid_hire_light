@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Last-mile drivers fall outside DOT — but skipping screening is not an option. Here is the 2026 non-DOT playbook for state analogs and insurance rules.",
   excerpt:
     "Last-mile delivery drivers usually fall outside FMCSA regulation. That does not mean the screening is optional — non-DOT delivery has state-level analogs, insurance-driven MVR requirements, and an aggressive plaintiffs' bar. Here is the 2026 playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-23",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["transportation", "operations", "compliance"],

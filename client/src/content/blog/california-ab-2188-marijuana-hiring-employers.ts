@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's AB 2188 and SB 700 fundamentally changed pre-employment drug testing in 2024. Here is what specimens California employers can use and who is exempt.",
   excerpt:
     "California's AB 2188 took effect January 1, 2024, paired with SB 700, fundamentally rewiring pre-employment marijuana testing. Most employers can no longer test for non-psychoactive metabolites — and that rules out urine and hair for THC screening.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-23",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["california", "drug-screening", "marijuana"],

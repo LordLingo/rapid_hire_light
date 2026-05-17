@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "FMCSA's Drug and Alcohol Clearinghouse requires every motor carrier to query and report on CDL driver violations. Here is the 2026 query, report, and audit playbook.",
   excerpt:
     "FMCSA's Drug and Alcohol Clearinghouse requires every motor carrier to query and report on CDL driver violations. Here is what is in the database, when to query, and how to handle a hit.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-01",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["dot", "transportation", "compliance"],

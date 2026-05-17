@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Chicago amended the city Human Rights Ordinance to add fair-chance protections that go beyond Illinois state law. Here is the 2026 employer compliance map.",
   excerpt:
     "Chicago's amended Human Rights Ordinance adds fair-chance hiring protections that layer on top of Illinois JOQAA. Here is the city-specific compliance map for 2026.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-04-02",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["illinois", "fair-chance", "compliance", "ban-the-box"],

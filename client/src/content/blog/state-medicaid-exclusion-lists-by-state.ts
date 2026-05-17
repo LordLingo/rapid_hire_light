@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "All 50 states publish Medicaid exclusion lists, and CMS requires providers to screen against every state where they operate. Here is the 2026 map.",
   excerpt:
     "All 50 states publish Medicaid exclusion lists. CMS requires providers to screen them in every state of operation. Here is how the lists differ and why a national approach is essential.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-02-23",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["sanctions", "healthcare", "compliance"],

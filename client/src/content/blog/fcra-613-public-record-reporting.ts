@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "FCRA §613 governs how a CRA reports adverse public-record information for employment. Here is the 2026 guide to the contemporaneous-notice and strict-procedures rules.",
   excerpt:
     "When a background check report includes a criminal record, civil judgment, or arrest, FCRA §613 imposes specific procedural rules on the consumer reporting agency. Here is the 2026 guide to the two compliance paths and the seven-year non-conviction limit.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-13",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["fcra", "compliance", "criminal-records"],

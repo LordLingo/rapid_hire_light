@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "California ICRAA imposes \\$10,000 per-violation statutory damages with class certification widely available. Here is the 2026 exposure map for employers.",
   excerpt:
     "California ICRAA imposes \\$10,000 per-violation statutory damages with class certification widely available. Here is the exposure math and the defenses that work in 2026.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-03-16",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["icraa", "california", "compliance"],

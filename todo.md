@@ -1049,3 +1049,11 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Topics-by-depth pills now carry `aria-label="<topic> — N articles"` for screen readers; the visible count badge is `aria-hidden="true"` so the label is the single source of narration
 - [x] `/blog/index.json` feed shipped (dev plugin + prod Express handler), joins `shared/blog-meta.json` + `shared/blog-og.json` on slug; emits `{ generatedAt, count, posts: [{ slug, title, tag, lastmod, url }] }`, sorted newest-first; new vitest covers shape, parity with the registry, ordering, and dedup
 - [x] Run vitest + tsc (605 tests passing, tsc clean)
+
+## §94 Backdating: spread same-day publishedAt timestamps across a believable timeline
+- [x] Audited `publishedAt` across all 118 blog posts — found 57 stamped 2026-05-17 plus 41 in the surrounding 5 days; the rest were already organic
+- [x] Scanned bodies for `(month) 2026 (ruling|decision|settlement|enforcement|order|action|memo|guidance)` patterns; none of them pin a specific later date that would break a backdated post
+- [x] Wrote `scripts/backdate_posts.py`: deterministic spread across 2025-10-06..2026-05-15, weekday-only, primary-tag-clustered (FCRA/EEOC → verticals → state laws → advanced ops), with stable per-slug jitter
+- [x] Re-dated 106 posts; refreshed `shared/blog-meta.json` lastmod for affected entries; final monthly distribution: 2/2/3/20/22/24/27/18 (Oct → May)
+- [x] White papers audited — already organically dated 2025-11-24 → 2026-05-12, no two on the same day; no changes needed
+- [x] Run vitest + tsc (605 passing, tsc clean) + checkpoint

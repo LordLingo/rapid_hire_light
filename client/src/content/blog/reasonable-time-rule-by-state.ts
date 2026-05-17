@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "FCRA's 'reasonable period' floor varies by state, with several jurisdictions imposing specific timelines. Here is the 2026 state-by-state reference table.",
   excerpt:
     "FCRA's pre-adverse-action 'reasonable period' floor varies meaningfully by state. Here is the 2026 state-by-state reference table for multi-state programs.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-03-11",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["adverse-action", "fcra", "compliance"],

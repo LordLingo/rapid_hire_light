@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "A realistic 2026 pricing guide for under-20-employee shops: package math, hidden fees, and the volume tiers that actually move the needle.",
   excerpt:
     "What does a background check cost when you only hire two people a year? A realistic 2026 pricing guide for shops with fewer than 20 employees — package math, hidden fees, and the volume tiers that actually move the needle.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-30",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["small-business", "hiring"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "SAM.gov is the federal exclusion list for procurement and healthcare contractors. Here is the workflow, FAR §52.209-6 duty, and 2026 audit posture.",
   excerpt:
     "SAM.gov is the federal exclusion repository for procurement, contracting, and healthcare. This is the workflow, the FAR clauses that govern it, and the audit posture that survives scrutiny.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-01-22",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["sanctions", "compliance"],

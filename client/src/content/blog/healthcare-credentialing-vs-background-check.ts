@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Credentialing and background screening are not the same workflow. Here is how the two diverge in healthcare hiring and where each lives in the compliance stack.",
   excerpt:
     "Credentialing and background screening are different workflows that healthcare HR teams routinely conflate. Here is how the two diverge — and how a defensible hospital program runs both in parallel.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2025-11-03",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["healthcare", "verification", "compliance"],

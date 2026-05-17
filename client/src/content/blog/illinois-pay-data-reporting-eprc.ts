@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Illinois EPRC requires pay data reporting by sex and race for employers with 100+ employees. Here is the 2026 filing process, deadlines, and audit posture.",
   excerpt:
     "Illinois EPRC requires every employer with 100+ Illinois employees to file pay data by sex and race on a two-year cycle. Here is the 2026 filing process and the audit posture that survives scrutiny.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-08",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["illinois", "compliance"],

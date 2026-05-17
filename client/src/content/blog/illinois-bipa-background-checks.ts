@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Illinois BIPA imposes per-violation statutory damages on employers collecting biometric identifiers. Here is how it intersects with background screening in 2026.",
   excerpt:
     "Illinois BIPA imposes per-violation statutory damages of \\$1,000 to \\$5,000 on employers who mishandle biometric identifiers. Here is where it intersects with background screening, and how to avoid class-action exposure.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-03",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["illinois", "compliance"],

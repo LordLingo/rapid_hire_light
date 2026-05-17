@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "FCRA §615 imposes the adverse-action notice duty; §623 imposes furnisher accuracy duties. Here is the 2026 employer playbook for both sections in employment screening.",
   excerpt:
     "FCRA §615 is the adverse-action duty — the obligation to notify a candidate when a report drives an adverse hiring decision. §623 is the furnisher accuracy duty. Both apply to employers in specific scenarios most compliance programs miss. Here is the 2026 playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-14",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["fcra", "compliance", "adverse-action", "criminal-records"],

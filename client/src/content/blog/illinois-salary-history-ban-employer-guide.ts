@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Illinois banned salary-history inquiries in 2019 and added pay-data reporting in 2021. Here is how the rules apply to background checks and onboarding in 2026.",
   excerpt:
     "Illinois prohibits salary-history inquiries and requires equal-pay registration certificates for employers above 100 employees. Here is how the rules touch background screening and onboarding.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-04-09",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["illinois", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "The OIG LEIE updates monthly. Here is how new exclusions are added, why old ones drop off, and how providers should run the monthly check defensibly.",
   excerpt:
     "The OIG LEIE updates on a fixed monthly cadence — but the data behind those updates flows through a process providers rarely see. Here is the inside view, and how to run a defensible monthly check.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-01-12",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["sanctions", "healthcare", "compliance"],

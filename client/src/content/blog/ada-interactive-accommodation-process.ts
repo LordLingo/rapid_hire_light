@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "ADA requires an interactive accommodation process before any exclusion. Here is the step-by-step employer playbook with EEOC guidance for 2026.",
   excerpt:
     "ADA requires an interactive accommodation process before any exclusion based on disability. Here is the EEOC-aligned employer playbook for 2026.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-01-27",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["ada", "compliance"],

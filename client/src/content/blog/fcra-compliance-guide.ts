@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "A practical FCRA compliance guide for HR teams running background checks. Disclosures, authorization, adverse action, and the mistakes that trigger lawsuits.",
   excerpt:
     "What the Fair Credit Reporting Act actually requires when you run pre-employment background checks — disclosures, authorization, adverse action, and the seven mistakes that trigger lawsuits.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-01-22",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["compliance", "fcra", "hiring"],

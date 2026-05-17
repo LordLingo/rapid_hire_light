@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "CMS expects monthly sanctions screening but the right cadence depends on workforce volatility, contractor scope, and audit posture. Here is how to decide.",
   excerpt:
     "Monthly screening is the CMS floor, but the right cadence depends on workforce volatility, contractor scope, and the audit posture you want to defend. Here is how the cadence actually maps to risk.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-09",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["sanctions", "continuous-monitoring", "compliance"],

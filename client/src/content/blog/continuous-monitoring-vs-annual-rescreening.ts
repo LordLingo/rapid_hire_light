@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Annual rescreening was standard for two decades. Continuous criminal monitoring has changed the math. Here is how the two approaches compare on cost, freshness, and FCRA exposure.",
   excerpt:
     "Annual rescreening was the standard for two decades. Continuous monitoring is the new floor. Here is the side-by-side on cost, freshness, candidate experience, and FCRA exposure.",
-  publishedAt: "2026-05-14",
+  publishedAt: "2026-04-06",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["continuous-monitoring", "comparison", "compliance"],

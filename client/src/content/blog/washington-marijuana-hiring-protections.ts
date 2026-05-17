@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Washington SB 5123 (effective January 1, 2024) makes pre-employment marijuana testing largely unlawful. Here is what employers must change in 2026.",
   excerpt:
     "Washington's SB 5123, effective January 1, 2024, makes pre-employment marijuana testing largely unlawful for non-safety-sensitive roles. Here is what employers must change in 2026.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-11",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["marijuana", "drug-screening", "compliance"],

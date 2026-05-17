@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "DOT drug testing is six different programs in one. Pre-employment, random, post-accident, reasonable-suspicion, return-to-duty, and follow-up testing each have distinct rules.",
   excerpt:
     "DOT drug testing is six different programs operating in one. Pre-employment, random, post-accident, reasonable-suspicion, return-to-duty, and follow-up testing each have distinct rules. Here is the playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-04-28",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["dot", "drug-screening", "compliance"],

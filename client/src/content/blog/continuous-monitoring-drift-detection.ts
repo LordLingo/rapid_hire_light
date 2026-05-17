@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Continuous monitoring programs drift over time and stop catching what they should. Here is the 2026 drift detection methodology for program owners.",
   excerpt:
     "Even well-built continuous monitoring programs drift over time. Here is the 2026 drift detection methodology for catching the slippage before it becomes a regulatory finding.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-03-09",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["continuous-monitoring", "operations", "compliance"],

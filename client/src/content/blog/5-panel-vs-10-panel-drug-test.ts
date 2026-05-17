@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "5-panel is the federal DOT minimum. 10-panel adds five drug classes including barbiturates and benzodiazepines. The 2026 employer guide on which to choose and why.",
   excerpt:
     "5-panel and 10-panel drug tests sound like a simple numerical choice, but the substances on each panel, the medical defenses, and the price difference matter more than most employers realize. Here is the 2026 buyer's guide on which to use, when to escalate, and how the choice interacts with state law.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-02-13",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["drug-screening", "comparison", "hiring"],

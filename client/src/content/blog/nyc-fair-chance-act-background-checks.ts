@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "NYC's Fair Chance Act has the strictest fair-chance hiring rules in the U.S. The 2026 employer playbook for conditional offers, Article 23-A, and Fair Chance Notices.",
   excerpt:
     "New York City's Fair Chance Act is the strictest fair-chance hiring law in the United States. Here is a 2026 compliance guide for the conditional-offer rule, the Article 23-A analysis, and the Fair Chance Notice that almost every NYC employer has to send.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-04-15",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["new-york", "fair-chance", "compliance"],

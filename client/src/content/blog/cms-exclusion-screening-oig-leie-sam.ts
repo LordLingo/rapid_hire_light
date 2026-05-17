@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "CMS requires monthly screening against OIG LEIE, SAM.gov, and state Medicaid sanction lists. Here is how to run the program defensibly in 2026.",
   excerpt:
     "CMS requires healthcare providers to screen every employee and contractor monthly against the OIG LEIE, SAM.gov debarment list, and state Medicaid sanction lists. Here is the 2026 program playbook.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2025-10-06",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["healthcare", "sanctions", "compliance"],

@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Running multiple screening vendors creates compliance drift fast. Here is how to orchestrate the workflow without losing FCRA discipline in 2026.",
   excerpt:
     "Running multiple screening vendors brings cost and coverage flexibility — and compliance drift. Here is how to orchestrate the workflow without losing FCRA discipline.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-02-24",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["operations", "compliance"],

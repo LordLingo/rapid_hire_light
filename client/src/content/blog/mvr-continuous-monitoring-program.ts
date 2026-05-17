@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "MVR continuous monitoring catches driving violations between annual rescreens. Here is the 2026 operations guide for transportation, delivery, and ride-hailing programs.",
   excerpt:
     "MVR continuous monitoring catches driving incidents between annual rescreens — the highest-leverage layer for any driving-role program. Here is the 2026 ops guide.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-04-29",
   readingMinutes: 5,
   author: "Rapid Hire Operations Team",
   tags: ["continuous-monitoring", "operations", "transportation"],

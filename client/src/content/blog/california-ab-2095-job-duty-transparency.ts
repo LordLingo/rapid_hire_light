@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's AB 2095 takes Ban the Box into a new era of Job Duty Transparency. Here is what the 2026 California Fair Chance Act compliance rules require from employers.",
   excerpt:
     "Under AB 2095, California has moved beyond Ban the Box into a new era of Job Duty Transparency. The old process of waiting until a conditional offer to check records is no longer enough to stay compliant in 2026.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-20",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["california", "fair-chance", "ban-the-box", "compliance"],

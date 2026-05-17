@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's ICRAA lawsuits exploded after Parsonage v. Walmart confirmed the $10K standalone-disclosure penalty applies without proof of harm. Here is the playbook.",
   excerpt:
     "Can a single extra sentence on a consent form cost you $10,000 per applicant? In California, the answer is yes. The 2026 Parsonage v. Walmart ruling has sent shockwaves through HR by confirming that technical ICRAA violations carry heavy penalties, even without proof of harm.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-27",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["california", "icraa", "compliance", "fcra"],

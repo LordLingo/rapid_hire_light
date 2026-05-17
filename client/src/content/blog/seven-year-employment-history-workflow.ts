@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Seven-year employment history verification stalls without a defined workflow. Here is the 2026 process that actually closes — including unreachable-employer fallbacks.",
   excerpt:
     "Seven-year employment history verification stalls more often than any other check. Here is the 2026 workflow that actually closes — including the unreachable-employer fallback chain.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2026-02-12",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["verification", "compliance"],

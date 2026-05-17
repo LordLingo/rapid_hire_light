@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "California's CRD Automated-Decision Systems regulations took effect October 1, 2025. Here is what they require and how they intersect with background-check workflows in 2026.",
   excerpt:
     "California's CRD Automated-Decision Systems regulations took effect October 1, 2025. Any employer using AI-assisted resume screening, predictive assessments, or automated background-check adjudication is now squarely inside the rule's scope.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-24",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["california", "compliance", "ai"],

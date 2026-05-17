@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Westchester County's Fair Chance Act extends ban-the-box and Article 23-A duties beyond NYC. Here is the 2026 county-level compliance map for employers.",
   excerpt:
     "Westchester County extended ban-the-box and Article 23-A obligations beyond New York City. Here is the county-level employer compliance map for 2026.",
-  publishedAt: "2026-05-16",
+  publishedAt: "2026-04-17",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["new-york", "fair-chance", "compliance", "ban-the-box"],

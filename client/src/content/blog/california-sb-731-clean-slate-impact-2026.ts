@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "By 2026 California's Clean Slate Act has automatically sealed millions of records. Here is what SB 731 background check results now look like, and the vendor risk.",
   excerpt:
     "By 2026 the full implementation of California's Clean Slate Act has fundamentally changed what employers see — or more importantly, don't see — on a background check. SB 731 automates the sealing of records for millions of Californians, creating a now-you-see-it, now-you-don't reality for recruiters.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-03-31",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["california", "criminal-records", "compliance", "fair-chance"],

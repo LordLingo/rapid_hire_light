@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "California ICRAA covers investigative consumer reports — broader than the FCRA equivalent. Here is what the definition catches and what it leaves out.",
   excerpt:
     "California ICRAA covers investigative consumer reports — a category broader than the FCRA equivalent. Here is what the definition actually catches and what it leaves out.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-03-13",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["icraa", "california", "compliance"],

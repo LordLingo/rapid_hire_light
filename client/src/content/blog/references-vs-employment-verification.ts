@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Reference checks and employment verification serve different purposes under different rules. Here is the 2026 employer guide to running both correctly.",
   excerpt:
     "Reference checks and employment verification look similar but serve different purposes under different rules. Here is the 2026 guide to running both correctly.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-02-11",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["verification", "compliance", "comparison"],

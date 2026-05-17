@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Multilingual FCRA disclosure is required in some states and recommended elsewhere. Here is the 2026 employer guide for when and how to translate.",
   excerpt:
     "Federal FCRA does not mandate translation, but several states do, and the practical case is broader. Here is the 2026 multilingual disclosure design guide.",
-  publishedAt: "2026-05-12",
+  publishedAt: "2026-03-03",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["candidate-experience", "fcra", "compliance"],

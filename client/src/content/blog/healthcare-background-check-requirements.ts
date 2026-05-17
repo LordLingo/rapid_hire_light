@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Healthcare hiring carries the strictest screening burden of any U.S. industry: OIG sanctions, state license verification, abuse registries, and ongoing monitoring.",
   excerpt:
     "Healthcare hiring carries the strictest screening burden of any U.S. industry. Federal sanctions, state licensure, abuse registries, and ongoing monitoring stack on top of the standard FCRA workflow.",
-  publishedAt: "2026-05-13",
+  publishedAt: "2025-10-20",
   readingMinutes: 5,
   author: "Rapid Hire Compliance Team",
   tags: ["healthcare", "sanctions", "compliance"],

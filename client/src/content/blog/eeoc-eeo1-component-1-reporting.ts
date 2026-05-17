@@ -9,7 +9,7 @@ export const post: BlogPost = {
     "Private employers with 100+ employees must file EEO-1 Component 1 each year. Here is the workforce snapshot, job-category mapping, and how to avoid common errors.",
   excerpt:
     "EEO-1 Component 1 is the annual demographic snapshot the EEOC uses to power systemic enforcement. The form is short — ten job categories by sex, race, and ethnicity — but the workforce-snapshot mechanics, the establishment-level filing rule, and the data-quality stakes catch hiring teams off guard every year.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-01-16",
   readingMinutes: 5,
   author: "Rapid Hire Solutions",
   tags: ["eeoc", "compliance"],
