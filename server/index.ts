@@ -448,6 +448,20 @@ async function startServer() {
 
   app.use(express.static(staticPath));
 
+  // Prerender resolver: when /blog/<slug> has a prerendered HTML stub, serve it.
+  // This makes head metadata + JSON-LD available in the initial response
+  // without UA-based cloaking; the SPA still hydrates on top.
+  app.get("/blog/:slug", (req, res, next) => {
+    const slug = String(req.params.slug || "");
+    if (!/^[a-z0-9-]+$/.test(slug)) return next();
+    const candidate = path.join(staticPath, "blog", slug, "index.html");
+    fs.access(candidate, fs.constants.R_OK, (err) => {
+      if (err) return next();
+      res.set("Cache-Control", "public, max-age=300, stale-while-revalidate=86400");
+      res.sendFile(candidate);
+    });
+  });
+
   // Handle client-side routing — serve index.html for any non-API GET
   app.get("*", (_req, res) => {
     res.sendFile(path.join(staticPath, "index.html"));

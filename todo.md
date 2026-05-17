@@ -1070,3 +1070,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] /blog/year/:year rows now show `<date> · <N> min` with `aria-label="<N> minute read"`; primary-tag eyebrow already rendered above the title
 - [x] `RecentBlog` component added to `Home.tsx` between `ModernScreening` and `Faq`: surfaces 3 newest posts as cards with primary tag, reading-minutes chip, and Updated pill where applicable
 - [x] New `blogAtom.test.ts` (3 specs) guards Atom XML wrapper + entry shape + escaping; full suite 613/613 across 49 files; tsc clean
+
+## §97 Follow-ups (footer RSS icon, robots meta, prerender top 20)
+- [x] Footer now exposes an `RSS` link pointing at `/blog/feed.xml` with `aria-label`, `type="application/atom+xml"`, and a visible focus ring; aggregator users can subscribe in one click
+- [x] `client/index.html` now ships `<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">` so Google can show our OG cards directly in SERPs
+- [x] `scripts/prerender_top_posts.mjs` runs in the build pipeline (`vite build && node scripts/prerender_top_posts.mjs && esbuild ...`) and emits `dist/public/blog/<slug>/index.html` for the top 20 posts plus a `_prerender-manifest.json`; `server/index.ts` adds a `/blog/:slug` resolver that prefers the prerendered file before the SPA fallback (no UA-based cloaking)
+- [x] New `prerenderTopPosts.test.ts` (3 specs) materialises a tmp shell, runs the script, asserts manifest count, head rewrites, canonical, JSON-LD, and re-run stability
+- [x] Run vitest + tsc (616/616 across 50 files; tsc clean) + checkpoint

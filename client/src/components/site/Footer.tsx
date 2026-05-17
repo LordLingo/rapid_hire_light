@@ -5,7 +5,7 @@
 */
 import { Link, useLocation } from "wouter";
 import { toast } from "sonner";
-import { ShieldCheck } from "lucide-react";
+import { Rss, ShieldCheck } from "lucide-react";
 import { BRAND_NAME, FOOTER_LOGO_URL } from "@shared/brand";
 import { isActivePath } from "./Header";
 
@@ -150,6 +150,15 @@ export default function Footer() {
             >
               Terms &amp; Conditions
             </Link>
+            <a
+              href="/blog/feed.xml"
+              className="footer-link inline-flex items-center gap-1.5 text-[color:var(--color-footer-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent-halo)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-footer)]"
+              aria-label="Subscribe to the blog Atom feed"
+              type="application/atom+xml"
+            >
+              <Rss aria-hidden="true" className="size-3.5" />
+              <span>RSS</span>
+            </a>
           </div>
           <span>Made for high-volume hiring.</span>
         </div>
