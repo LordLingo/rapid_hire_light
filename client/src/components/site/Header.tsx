@@ -273,8 +273,20 @@ export default function Header() {
 
       {/* Mobile sheet */}
       {open && (
-        <div className="lg:hidden border-t border-border bg-[color:var(--color-paper)]">
-          <div className="container py-5 grid gap-3">
+        /*
+          §88: cap the sheet to the viewport and own the scroll inside
+          it. Without `overscroll-contain` the wheel/touch event leaks
+          to the page behind once the inner list reaches its end (or
+          when the sheet content is shorter than the viewport on
+          short laptops). The outer wrapper sets the max-height; the
+          inner scrollable child does the actual scrolling. `pb-8`
+          keeps the bottom CTAs reachable above any iOS safe area.
+        */
+        <div
+          data-testid="header-mobile-sheet"
+          className="lg:hidden border-t border-border bg-[color:var(--color-paper)] max-h-[calc(100vh-64px)] overflow-y-auto overscroll-contain [scrollbar-gutter:stable]"
+        >
+          <div className="container py-5 pb-8 grid gap-3">
             {/* Brand mark stays visible inside the open sheet so users
                 always know whose nav they're inside on small screens.
                 Smaller than the desktop lockup so it doesn't crowd the
@@ -504,7 +516,16 @@ function ResourcesMenu({
         <div
           role="menu"
           data-testid="header-resources-panel"
-          className="absolute left-0 top-full z-50 mt-3 w-[360px] origin-top-left rounded-[18px] border border-border bg-[color:var(--color-paper)] p-2 shadow-[0_18px_42px_-22px_rgba(15,23,42,0.35)]"
+          /*
+            §88: cap the panel height to the viewport (minus header + a
+            small gutter) and confine wheel/touch scroll inside it.
+            `overscroll-contain` is the CSS contract that stops the
+            wheel/touch event from chaining to the page behind once the
+            panel has nothing more to scroll. `[scrollbar-gutter:stable]`
+            keeps the layout stable so links don't shift when the
+            scrollbar appears.
+          */
+          className="absolute left-0 top-full z-50 mt-3 w-[360px] max-h-[calc(100vh-160px)] origin-top-left overflow-y-auto overscroll-contain rounded-[18px] border border-border bg-[color:var(--color-paper)] p-2 shadow-[0_18px_42px_-22px_rgba(15,23,42,0.35)] [scrollbar-gutter:stable]"
           style={{
             animation: "resourcesMenuIn 220ms cubic-bezier(0.23, 1, 0.32, 1)",
           }}

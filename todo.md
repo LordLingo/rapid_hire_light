@@ -991,3 +991,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] SB 731 Clean Slate (user's reframe — distinct from §86 SB 731 post which exists, so may need to merge or differentiate)
 - [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json + render bolded keywords as <strong> in body
 - [x] vitest + tsc green, checkpoint
+
+## §88 — Resources submenu scroll-chain fix
+- [x] Locate desktop Resources mega-menu + mobile drawer submenu components
+- [x] Add overscroll-behavior: contain + max-height + visible scrollbar
+- [x] Verify wheel + touch events stay inside the menu (no page scroll behind)
+- [x] Add anti-regression test
+- [x] vitest + tsc green, checkpoint
