@@ -11,6 +11,7 @@ import SampleReport from "./pages/SampleReport";
 import Candidates from "./pages/Candidates";
 import Customers from "./pages/Customers";
 import CustomerDetail from "./pages/CustomerDetail";
+import ResourcesBenchmarks from "./pages/ResourcesBenchmarks";
 import Integrations from "./pages/Integrations";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
@@ -45,6 +46,7 @@ function Router() {
       <Route path={"/candidates"} component={Candidates} />
       <Route path={"/customers"} component={Customers} />
       <Route path={"/customers/:slug"} component={CustomerDetail} />
+      <Route path={"/resources/benchmarks"} component={ResourcesBenchmarks} />
       <Route path={"/industries"} component={Industries} />
       <Route path={"/integrations"} component={Integrations} />
       <Route path={"/pricing"} component={Pricing} />

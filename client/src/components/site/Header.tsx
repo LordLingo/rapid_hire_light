@@ -159,19 +159,36 @@ export default function Header() {
           : "bg-transparent border-b border-transparent shadow-none",
       ].join(" ")}
     >
-      {/* Trust strip */}
+      {/* Trust strip — §83 upgrade. The competitor audit found that
+           Sterling/HireRight surface 4–6 attestations in their persistent
+           top bar; we previously surfaced two. Adding FCRA-certified +
+           PBSA-accredited and turning the band into a single Link to
+           /trust closes the gap without breaking the editorial-calm
+           cadence (still small-caps eyebrow, same hairline divider). */}
       <div className="container">
         <div className="flex items-center justify-between gap-6 py-2.5 text-[11px]">
-          <div className="hidden md:flex items-center gap-5 eyebrow">
-            <span className="inline-flex items-center gap-2">
+          <Link
+            href="/trust"
+            className="hidden md:flex items-center gap-5 eyebrow group"
+            data-testid="trust-strip"
+          >
+            <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
+              <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
+              FCRA Certified
+            </span>
+            <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
+              <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
+              SOC 2 Type II
+            </span>
+            <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
               <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
               HIPAA Compliant
             </span>
-            <span className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
               <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
-              SOC 2 Compliant
+              PBSA Accredited
             </span>
-          </div>
+          </Link>
           <div className="ml-auto eyebrow text-[color:var(--color-ink-muted)]">
             Made for high-volume hiring
           </div>

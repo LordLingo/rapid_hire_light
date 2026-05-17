@@ -19,6 +19,7 @@ import SampleReportImage from "@/components/site/SampleReportImage";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import PricingCalculator from "@/components/site/PricingCalculator";
 import type { CalculatorEstimate } from "@/components/site/PricingCalculator";
+import RoiCalculator from "@/components/site/RoiCalculator";
 import StickyEstimateBar from "@/components/site/StickyEstimateBar";
 
 type TierId = "essential" | "professional" | "comprehensive";
@@ -305,6 +306,9 @@ export default function Pricing() {
       {/* Sentinel — when this scrolls out of view above the viewport, the sticky
           estimate bar appears at the bottom of the screen with the live numbers. */}
       <div ref={calculatorEndRef} aria-hidden="true" className="h-px w-full" />
+
+      {/* §83: ROI calculator answers "what does that spend save me?" */}
+      <RoiCalculator />
 
       {/* Add-ons */}
       <section className="bg-[color:var(--color-paper)]">

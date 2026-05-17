@@ -105,6 +105,16 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       "client/src/pages/Candidates.tsx",
       "client/src/pages/Customers.tsx",
       "client/src/pages/CustomerDetail.tsx",
+      // §83: ROI calculator embedded on /pricing reuses the paper-soft
+      // sub-band tint (visually audited; matches PricingCalculator's
+      // surrounding section bands).
+      "client/src/components/site/RoiCalculator.tsx",
+      // §83: floating chat launcher uses paper-soft as the hover state
+      // for the close button (visually audited).
+      "client/src/components/site/ChatLauncher.tsx",
+      // §83: 2026 benchmark report uses the same alternating section
+      // rhythm as the rest of /resources.
+      "client/src/pages/ResourcesBenchmarks.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

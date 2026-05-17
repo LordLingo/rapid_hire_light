@@ -531,6 +531,8 @@ const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = 
   { path: "/customers/frito-lay-fleet-mvr",          priority: 0.7,  changefreq: "monthly" },
   { path: "/customers/hr-block-tax-season-scaling",  priority: 0.7,  changefreq: "monthly" },
   { path: "/customers/taylormade-rd-credentials",    priority: 0.7,  changefreq: "monthly" },
+  // §83: 2026 industry benchmarks landing page.
+  { path: "/resources/benchmarks",  priority: 0.8, changefreq: "yearly" },
   { path: "/integrations", priority: 0.7,  changefreq: "monthly" },
   { path: "/pricing",      priority: 0.9,  changefreq: "monthly" },
   { path: "/about",        priority: 0.6,  changefreq: "yearly"  },

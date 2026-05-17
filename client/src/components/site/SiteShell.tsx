@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useLocation } from "wouter";
 import Header from "./Header";
 import Footer from "./Footer";
+import ChatLauncher from "./ChatLauncher";
 import { useReveal } from "@/hooks/useReveal";
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
@@ -32,6 +33,8 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <Footer />
+      {/* §83: floating sales chat launcher (hidden on /contact + /support). */}
+      <ChatLauncher />
     </div>
   );
 }

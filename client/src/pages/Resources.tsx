@@ -69,6 +69,14 @@ const PILLARS: {
       "Long-form, source-anchored references for compliance, operations, industry programs, and candidate experience.",
     href: "/resources/white-papers",
   },
+  // §83: Annual benchmark report — same surface every top-5 BGC competitor publishes.
+  {
+    eyebrow: "Annual report",
+    title: "Background check benchmarks 2026",
+    body:
+      "TAT, dispute rates, compliance findings, and YoY deltas across four sectors — anchored on the rapid-hire client base and triangulated against PBSA + SHRM.",
+    href: "/resources/benchmarks",
+  },
 ];
 
 const TOOLS: {
