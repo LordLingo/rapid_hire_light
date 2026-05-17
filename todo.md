@@ -1008,17 +1008,17 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 ## §90 — Thin-tag cluster buildout (Option A: dedupe + 70 posts across 3 phases)
 
 ### Phase 1: Tag consolidation (no new posts, just retags)
-- [ ] Merge `monitoring` + `post-hire` + `risk` → `continuous-monitoring`
-- [ ] Merge `turnaround` → `operations`
-- [ ] Merge `how-to` → `verification`
-- [ ] Merge `criminal` → `criminal-records`
-- [ ] Merge `disclosure` → `fcra`
-- [ ] Update blog-meta.json tag list
-- [ ] Run vitest + tsc
+- [x] Merge `monitoring` + `post-hire` + `risk` → `continuous-monitoring`
+- [x] Merge `turnaround` → `operations`
+- [x] Merge `how-to` → `verification`
+- [x] Merge `criminal` → `criminal-records`
+- [x] Merge `disclosure` → `fcra`
+- [x] Update blog-meta.json tag list
+- [x] Run vitest + tsc
 
 ### Phase 2: 5 posts × 5 clusters = 25 posts
-- [ ] small-business · transportation · healthcare · dot · marijuana
-- [ ] Register all + vitest + tsc + checkpoint
+- [x] small-business · transportation · healthcare · dot · marijuana
+- [x] Register all + vitest + tsc + checkpoint
 
 ### Phase 3: 5 posts × 5 clusters = 25 posts
 - [ ] sanctions · illinois · new-york · ada · icraa

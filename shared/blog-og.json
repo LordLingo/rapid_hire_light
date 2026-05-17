@@ -340,6 +340,131 @@
       "slug": "marijuana-testing-safety-sensitive-vs-non-safety-sensitive",
       "title": "Marijuana Testing in Safety-Sensitive vs Non-Safety-Sensitive Roles: The 2026 Divide",
       "tag": "marijuana"
+    },
+    {
+      "slug": "state-medicaid-exclusion-lists-by-state",
+      "title": "State Medicaid Exclusion Lists: A Provider's State-by-State Map",
+      "tag": "sanctions"
+    },
+    {
+      "slug": "sam-gov-exclusion-check-workflow",
+      "title": "SAM.gov Exclusion Check Workflow: A Federal Contractor Playbook",
+      "tag": "sanctions"
+    },
+    {
+      "slug": "oig-leie-monthly-update-process",
+      "title": "OIG LEIE Monthly Update Process: Inside the Federal Exclusion List",
+      "tag": "sanctions"
+    },
+    {
+      "slug": "healthcare-contractor-sanctions-screening",
+      "title": "Healthcare Contractor Sanctions Screening: Where Programs Break",
+      "tag": "sanctions"
+    },
+    {
+      "slug": "sanctions-screening-frequency-best-practices",
+      "title": "Sanctions Screening Frequency: Monthly, Quarterly, or Continuous?",
+      "tag": "sanctions"
+    },
+    {
+      "slug": "illinois-bipa-background-checks",
+      "title": "Illinois BIPA and Background Checks: Where Biometrics Meet Screening",
+      "tag": "illinois"
+    },
+    {
+      "slug": "illinois-salary-history-ban-employer-guide",
+      "title": "Illinois Salary History Ban: An Employer Guide to the IEPA",
+      "tag": "illinois"
+    },
+    {
+      "slug": "chicago-fair-chance-ordinance-employer-guide",
+      "title": "Chicago Fair Chance Ordinance: An Employer Guide for 2026",
+      "tag": "illinois"
+    },
+    {
+      "slug": "illinois-human-rights-act-conviction-record",
+      "title": "Illinois Human Rights Act Conviction-Record Amendment Explained",
+      "tag": "illinois"
+    },
+    {
+      "slug": "illinois-pay-data-reporting-eprc",
+      "title": "Illinois Equal Pay Registration Certificate: 2026 Filing Guide",
+      "tag": "illinois"
+    },
+    {
+      "slug": "nyc-article-23a-multi-factor-analysis",
+      "title": "NYC Article 23-A Multi-Factor Analysis: A Deep Read",
+      "tag": "new-york"
+    },
+    {
+      "slug": "ny-shield-act-cra-data-security",
+      "title": "NY SHIELD Act: Data Security Duties for CRAs and Employers",
+      "tag": "new-york"
+    },
+    {
+      "slug": "nyc-local-law-144-aedt-bias-audit",
+      "title": "NYC Local Law 144 AEDT Bias Audit: An Employer Compliance Guide",
+      "tag": "new-york"
+    },
+    {
+      "slug": "westchester-county-fair-chance-act",
+      "title": "Westchester County Fair Chance Act: An Employer Compliance Guide",
+      "tag": "new-york"
+    },
+    {
+      "slug": "new-york-clean-slate-act-employer-guide",
+      "title": "New York Clean Slate Act: An Employer Guide for 2026",
+      "tag": "new-york"
+    },
+    {
+      "slug": "ada-direct-threat-defense",
+      "title": "ADA Direct Threat Defense: When Safety Concerns Justify Exclusion",
+      "tag": "ada"
+    },
+    {
+      "slug": "ada-interactive-accommodation-process",
+      "title": "ADA Interactive Accommodation Process: A Step-by-Step Employer Guide",
+      "tag": "ada"
+    },
+    {
+      "slug": "ada-return-to-work-fitness-for-duty",
+      "title": "ADA Return-to-Work Fitness-for-Duty Examinations: Where Lines Run",
+      "tag": "ada"
+    },
+    {
+      "slug": "ada-drug-testing-current-vs-past-use",
+      "title": "ADA and Drug Testing: Current Use vs Past Use, Drawn Carefully",
+      "tag": "ada"
+    },
+    {
+      "slug": "ada-mental-health-screening-employer-guide",
+      "title": "ADA Mental Health Screening: An Employer Guide for 2026",
+      "tag": "ada"
+    },
+    {
+      "slug": "icraa-investigative-consumer-report-definition",
+      "title": "ICRAA Investigative Consumer Report: What It Actually Covers",
+      "tag": "icraa"
+    },
+    {
+      "slug": "icraa-penalty-exposure-class-action",
+      "title": "ICRAA Penalty Exposure and Class Actions: The 2026 Reality",
+      "tag": "icraa"
+    },
+    {
+      "slug": "icraa-seven-year-reporting-cap",
+      "title": "California ICRAA Seven-Year Cap: When the Federal Carve-Out Doesn't Help",
+      "tag": "icraa"
+    },
+    {
+      "slug": "icraa-1786-40-public-record-notice",
+      "title": "ICRAA \u00a71786.40 Public-Record Notice: A Compliance Walkthrough",
+      "tag": "icraa"
+    },
+    {
+      "slug": "icraa-vs-ccraa-distinction",
+      "title": "ICRAA vs CCRAA: California's Two Consumer-Reporting Statutes Explained",
+      "tag": "icraa"
     }
   ]
 }
