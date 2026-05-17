@@ -83,6 +83,11 @@ import { post as postFcra613 } from "@/content/blog/fcra-613-public-record-repor
 import { post as postFcra609 } from "@/content/blog/fcra-609-consumer-file-disclosure";
 import { post as postFcra611 } from "@/content/blog/fcra-611-dispute-reinvestigation";
 import { post as postFcra615623 } from "@/content/blog/fcra-615-623-employer-duties";
+import { post as postCaAds } from "@/content/blog/california-ads-ai-employment-screening-regulations";
+import { post as postLaCountyFco } from "@/content/blog/los-angeles-county-fair-chance-ordinance-employers";
+import { post as postCaSb731 } from "@/content/blog/california-sb-731-clean-slate-employer-guide";
+import { post as postCaAb2188 } from "@/content/blog/california-ab-2188-marijuana-hiring-employers";
+import { post as postCaCfcaEnforcement } from "@/content/blog/california-crd-cfca-enforcement-employer-lessons";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -113,6 +118,11 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcra609,
   postFcra611,
   postFcra615623,
+  postCaAds,
+  postLaCountyFco,
+  postCaSb731,
+  postCaAb2188,
+  postCaCfcaEnforcement,
 ]);
 
 /**

@@ -974,3 +974,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Draft each post (550–880 words, 4–6 H2s, 5+ internal links, statute-anchored)
 - [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
 - [x] Run blog tests + tsc, save checkpoint
+
+## §86 — California-trend SEO blog posts
+- [x] Research 2025–2026 CA background check trends (save findings to file)
+- [x] Pick 5 SEO-targeted topics that don't overlap with california-icraa-disclosure-requirements
+- [x] Draft each post (550–880 words, 4–5 H2s, 5+ internal links, statute-anchored, SEO-focused)
+- [x] Register all 5 in blog.ts + blog-meta.json + blog-og.json
+- [x] Run blog tests + tsc, save checkpoint
