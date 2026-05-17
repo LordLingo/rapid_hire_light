@@ -72,6 +72,7 @@ import { post as postHealthcare } from "@/content/blog/healthcare-background-che
 import { post as postContinuousVsAnnual } from "@/content/blog/continuous-monitoring-vs-annual-rescreening";
 import { post as postAdverseAction } from "@/content/blog/adverse-action-letter-fcra-template";
 import { post as postNycFairChance } from "@/content/blog/nyc-fair-chance-act-background-checks";
+import { post as postIllinoisJoqaa } from "@/content/blog/illinois-joqaa-background-checks";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -91,6 +92,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postContinuousVsAnnual,
   postAdverseAction,
   postNycFairChance,
+  postIllinoisJoqaa,
 ]);
 
 /**
