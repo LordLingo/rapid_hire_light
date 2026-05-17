@@ -27,6 +27,13 @@ export type SeoOptions = {
   ogType?: "website" | "article";
   /** Optional JSON-LD payload that will be serialized into a <script>. */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /**
+   * Optional `<meta name="keywords">` content. Modern Google ignores this
+   * tag, but several SEO auditors still flag its absence as a warning, so
+   * we render a small, on-topic, non-stuffed list per page when supplied.
+   * Accepts an array (preferred) or a comma-separated string.
+   */
+  keywords?: string | string[];
 };
 
 const SITE_SUFFIX = "Rapid Hire Solutions";
@@ -80,6 +87,26 @@ export function useSeo(opts: SeoOptions): void {
     if (image) setMeta("twitter:image", image);
     if (canonical) setLink("canonical", canonical);
 
+    // Keywords meta — restore previous value (or remove) on unmount so
+    // navigating away from a page that supplies keywords cannot leak
+    // them into a sibling page that does not.
+    const keywordsList = Array.isArray(opts.keywords)
+      ? opts.keywords.map((k) => k.trim()).filter(Boolean)
+      : typeof opts.keywords === "string"
+        ? opts.keywords.split(",").map((k) => k.trim()).filter(Boolean)
+        : null;
+    let keywordsRestore: { existed: boolean; previous: string } | null = null;
+    if (keywordsList && keywordsList.length > 0) {
+      const existing = document.head.querySelector<HTMLMetaElement>(
+        'meta[name="keywords"]',
+      );
+      keywordsRestore = {
+        existed: !!existing,
+        previous: existing?.getAttribute("content") ?? "",
+      };
+      setMeta("keywords", keywordsList.join(", "));
+    }
+
     let scriptEl: HTMLScriptElement | null = null;
     if (opts.jsonLd) {
       scriptEl = document.createElement("script");
@@ -94,6 +121,16 @@ export function useSeo(opts: SeoOptions): void {
       document.title = previousTitle;
       if (scriptEl && scriptEl.parentNode) {
         scriptEl.parentNode.removeChild(scriptEl);
+      }
+      if (keywordsRestore) {
+        const el = document.head.querySelector<HTMLMetaElement>(
+          'meta[name="keywords"]',
+        );
+        if (!keywordsRestore.existed) {
+          if (el && el.parentNode) el.parentNode.removeChild(el);
+        } else if (el) {
+          el.setAttribute("content", keywordsRestore.previous);
+        }
       }
     };
     // We intentionally re-run the effect whenever the serialized opts change

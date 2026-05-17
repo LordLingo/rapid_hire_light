@@ -57,12 +57,16 @@ afterAll(() => {
 });
 
 describe("prerender_top_posts.mjs", () => {
-  it("writes a manifest with exactly 20 posts", () => {
+  it("writes a manifest with exactly 20 posts plus tag/year sections", () => {
     expect(fs.existsSync(MANIFEST)).toBe(true);
     const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf-8"));
     expect(manifest.count).toBe(20);
     expect(Array.isArray(manifest.posts)).toBe(true);
     expect(manifest.posts).toHaveLength(20);
+    expect(Array.isArray(manifest.tags)).toBe(true);
+    expect(manifest.tags).toHaveLength(4);
+    expect(Array.isArray(manifest.years)).toBe(true);
+    expect(manifest.years.length).toBeGreaterThanOrEqual(1);
   });
 
   it("emits a per-slug HTML stub for each manifest entry, with rewritten head", () => {
@@ -80,6 +84,35 @@ describe("prerender_top_posts.mjs", () => {
       // BlogPosting JSON-LD present
       expect(html).toContain(`"@type":"BlogPosting"`);
     }
+  });
+
+  it("emits per-tag and per-year stubs with CollectionPage JSON-LD", () => {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf-8"));
+    for (const entry of manifest.tags) {
+      const file = path.join(DIST, "blog", "tag", entry.tag, "index.html");
+      expect(fs.existsSync(file), file).toBe(true);
+      const html = fs.readFileSync(file, "utf-8");
+      expect(html).toContain(`<!-- prerendered:tag/${entry.tag} -->`);
+      expect(html).toMatch(new RegExp(`<link rel="canonical" href="[^"]*?/blog/tag/${entry.tag}"`));
+      expect(html).toContain(`"@type":"CollectionPage"`);
+    }
+    for (const entry of manifest.years) {
+      const file = path.join(DIST, "blog", "year", entry.year, "index.html");
+      expect(fs.existsSync(file), file).toBe(true);
+      const html = fs.readFileSync(file, "utf-8");
+      expect(html).toContain(`<!-- prerendered:year/${entry.year} -->`);
+      expect(html).toMatch(new RegExp(`<link rel="canonical" href="[^"]*?/blog/year/${entry.year}"`));
+      expect(html).toContain(`"@type":"CollectionPage"`);
+    }
+  });
+
+  it("minifies emitted HTML by default (no leading-whitespace runs)", () => {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf-8"));
+    expect(manifest.minified).toBe(true);
+    const sample = path.join(DIST, manifest.posts[0].file);
+    const html = fs.readFileSync(sample, "utf-8");
+    // No long runs of leading spaces, and no >\n+\s+< sequences.
+    expect(html).not.toMatch(/>\s{2,}</);
   });
 
   it("dedup: re-running keeps the manifest stable for the same input", () => {

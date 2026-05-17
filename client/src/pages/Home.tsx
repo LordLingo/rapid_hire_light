@@ -16,8 +16,56 @@ import CtaBanner from "@/components/site/CtaBanner";
 import ModernScreening from "@/components/site/ModernScreening";
 import Faq from "@/components/site/Faq";
 import RecentBlog from "@/components/site/RecentBlog";
+import { useSeo } from "@/hooks/useSeo";
 
 export default function Home() {
+  useSeo({
+    title: "Rapid Hire Solutions \u2014 The trusted standard in background checks",
+    description:
+      "FCRA-certified background screening built for high-volume hiring. 85%+ of checks complete in under 24 hours, with U.S.-based support.",
+    canonical:
+      typeof window !== "undefined"
+        ? `${window.location.origin}/`
+        : "https://rapidhiresolutions.com/",
+    image:
+      typeof window !== "undefined"
+        ? `${window.location.origin}/manus-storage/rhs-og-card_22bd2542.png`
+        : "https://rapidhiresolutions.com/manus-storage/rhs-og-card_22bd2542.png",
+    keywords: [
+      "background check services",
+      "FCRA-certified background screening",
+      "employment background checks",
+      "pre-employment screening",
+      "criminal background check",
+      "motor vehicle records",
+      "drug screening",
+      "professional verification",
+      "continuous monitoring",
+      "US-based CRA",
+    ],
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Rapid Hire Solutions",
+      url:
+        typeof window !== "undefined"
+          ? window.location.origin
+          : "https://rapidhiresolutions.com",
+      logo:
+        typeof window !== "undefined"
+          ? `${window.location.origin}/manus-storage/rhs-icon-512_4751a040.png`
+          : "https://rapidhiresolutions.com/manus-storage/rhs-icon-512_4751a040.png",
+      description:
+        "FCRA-certified background screening for high-volume hiring teams. US-based CRA serving HR, talent acquisition, and operations leaders since 2018.",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Prosper",
+        addressRegion: "TX",
+        addressCountry: "US",
+      },
+      sameAs: [],
+    },
+  });
   return (
     <SiteShell>
       <Hero />

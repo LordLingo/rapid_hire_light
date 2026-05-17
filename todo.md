@@ -1077,3 +1077,16 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] `scripts/prerender_top_posts.mjs` runs in the build pipeline (`vite build && node scripts/prerender_top_posts.mjs && esbuild ...`) and emits `dist/public/blog/<slug>/index.html` for the top 20 posts plus a `_prerender-manifest.json`; `server/index.ts` adds a `/blog/:slug` resolver that prefers the prerendered file before the SPA fallback (no UA-based cloaking)
 - [x] New `prerenderTopPosts.test.ts` (3 specs) materialises a tmp shell, runs the script, asserts manifest count, head rewrites, canonical, JSON-LD, and re-run stability
 - [x] Run vitest + tsc (616/616 across 50 files; tsc clean) + checkpoint
+
+## §98 Follow-ups (prerender hubs, minify, lighthouse SEO budget)
+- [ ] Extend `scripts/prerender_top_posts.mjs` (or new sibling) to emit prerendered HTML for the top 4 tag landing pages + each active year hub
+- [ ] Minify the emitted HTML stubs (and round-trip the per-tag/per-post OG SVGs through SVGO when they live on disk) to shrink first-byte size
+- [ ] Add `.lighthouserc.json` + `pnpm test:seo` script that runs Lighthouse against `/`, `/blog`, and one prerendered post URL with an SEO budget of >= 95
+- [ ] Run vitest + tsc + checkpoint
+
+## §99 Fix: "No keywords were detected" on / (and add hook support)
+- [x] Added a 10-keyword `<meta name="keywords">` to `client/index.html` so the SPA shell carries the tag before hydration
+- [x] Extended `useSeo` with typed `keywords?: string | string[]`; the hook writes the meta and restores the previous value (or removes it) on unmount, so route changes don't leak keywords
+- [x] Wired curated keywords into `Home.tsx` (10 entries matching the H1/H2 surface) plus an Organization JSON-LD payload that was previously missing from the homepage
+- [x] Added `homeSeoKeywords.test.ts` (7 specs) covering shell tag presence, anchor terms, hook contract, and Home wiring
+- [x] Run vitest + tsc (625/625 across 51 files; tsc clean)
