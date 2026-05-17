@@ -160,6 +160,8 @@ export default function BlogYear() {
                           </div>
                           <p className="flex items-center gap-2 text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)] md:shrink-0">
                             <span>{formatPublishedDate(p.publishedAt)}</span>
+                            <span aria-hidden="true" className="text-[color:var(--color-ink-muted)]/50">·</span>
+                            <span aria-label={`${p.readingMinutes} minute read`}>{p.readingMinutes} min</span>
                             <ArrowUpRight className="size-4 text-[color:var(--color-accent-ink)] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                           </p>
                         </Link>

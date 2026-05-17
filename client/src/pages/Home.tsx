@@ -15,6 +15,7 @@ import Workflows from "@/components/site/Workflows";
 import CtaBanner from "@/components/site/CtaBanner";
 import ModernScreening from "@/components/site/ModernScreening";
 import Faq from "@/components/site/Faq";
+import RecentBlog from "@/components/site/RecentBlog";
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
       <Workflows />
       <CtaBanner />
       <ModernScreening />
+      <RecentBlog />
       <Faq />
     </SiteShell>
   );

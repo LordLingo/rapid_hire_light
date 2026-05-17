@@ -502,6 +502,16 @@ function vitePluginBlogOgImage(): Plugin {
         });
         res.end(JSON.stringify(feed));
       });
+      // GET /blog/feed.xml — Atom 1.0 feed for RSS aggregators.
+      server.middlewares.use("/blog/feed.xml", (req, res) => {
+        const host = (req.headers.host as string | undefined) ?? "localhost:3000";
+        const origin = `http://${host}`.replace(/\/$/, "");
+        res.writeHead(200, {
+          "Content-Type": "application/atom+xml; charset=utf-8",
+          "Cache-Control": "public, max-age=300, stale-while-revalidate=86400",
+        });
+        res.end(buildBlogAtomFeed(origin));
+      });
       // Per-tag landing-page OG card.
       server.middlewares.use("/api/og/blog/tag/", (req, res) => {
         const url = req.url || "";
@@ -636,6 +646,36 @@ function toTitleCase(s: string): string {
     .split("-")
     .map((w) => (w.length === 0 ? w : w[0].toUpperCase() + w.slice(1)))
     .join(" ");
+}
+
+export function buildBlogAtomFeed(origin: string): string {
+  const feed = buildBlogIndexFeed();
+  const entries = feed.posts.slice(0, 50);
+  const updated = entries[0]?.lastmod ? `${entries[0].lastmod}T00:00:00Z` : new Date().toISOString();
+  const items = entries.map((e) => {
+    const updatedAt = e.lastmod ? `${e.lastmod}T00:00:00Z` : new Date().toISOString();
+    const link = `${origin}${e.url}`;
+    return `  <entry>
+    <title>${xmlEscapeText(e.title)}</title>
+    <link href="${xmlEscapeText(link)}"/>
+    <id>${xmlEscapeText(link)}</id>
+    <updated>${updatedAt}</updated>
+    <category term="${xmlEscapeText(e.tag)}"/>
+    <summary>${xmlEscapeText(e.title)}</summary>
+  </entry>`;
+  }).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Rapid Hire Solutions Blog</title>
+  <subtitle>Background screening, FCRA compliance, and the hiring workflow.</subtitle>
+  <link href="${origin}/blog" rel="alternate" type="text/html"/>
+  <link href="${origin}/blog/feed.xml" rel="self" type="application/atom+xml"/>
+  <id>${origin}/blog</id>
+  <updated>${updated}</updated>
+  <author><name>Rapid Hire Solutions</name></author>
+${items}
+</feed>
+`;
 }
 
 export function renderBlogTagOgSvg(input: { tag: string; count: number }): string {

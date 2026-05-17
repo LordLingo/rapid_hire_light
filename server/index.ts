@@ -177,6 +177,47 @@ function buildBlogIndexFeed(): BlogIndexFeed {
   };
 }
 
+// ---- Atom feed for /blog/feed.xml ----------------------------------------
+
+function inferSiteOrigin(host?: string | undefined): string {
+  // Prefer explicit env override; otherwise use the request host header.
+  const env = process.env.SITE_ORIGIN;
+  if (env && /^https?:\/\//.test(env)) return env.replace(/\/$/, "");
+  if (host) return `https://${host}`.replace(/\/$/, "");
+  return "https://rapidhiresolutions.com";
+}
+
+function buildAtomFeed(origin: string): string {
+  const feed = buildBlogIndexFeed();
+  const entries = feed.posts.slice(0, 50);
+  const updated = entries[0]?.lastmod ? `${entries[0].lastmod}T00:00:00Z` : new Date().toISOString();
+  const items = entries.map((e) => {
+    const updatedAt = e.lastmod ? `${e.lastmod}T00:00:00Z` : new Date().toISOString();
+    const link = `${origin}${e.url}`;
+    const id = link;
+    return `  <entry>
+    <title>${xmlEscapeText(e.title)}</title>
+    <link href="${xmlEscapeText(link)}"/>
+    <id>${xmlEscapeText(id)}</id>
+    <updated>${updatedAt}</updated>
+    <category term="${xmlEscapeText(e.tag)}"/>
+    <summary>${xmlEscapeText(e.title)}</summary>
+  </entry>`;
+  }).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Rapid Hire Solutions Blog</title>
+  <subtitle>Background screening, FCRA compliance, and the hiring workflow.</subtitle>
+  <link href="${origin}/blog" rel="alternate" type="text/html"/>
+  <link href="${origin}/blog/feed.xml" rel="self" type="application/atom+xml"/>
+  <id>${origin}/blog</id>
+  <updated>${updated}</updated>
+  <author><name>Rapid Hire Solutions</name></author>
+${items}
+</feed>
+`;
+}
+
 // ---- Per-tag OG card (mirror of vite.config.ts) ----------------------------
 
 type BlogMetaForOg = {
@@ -371,6 +412,14 @@ async function startServer() {
     res.set("Content-Type", "application/json; charset=utf-8");
     res.set("Cache-Control", "public, max-age=300, stale-while-revalidate=86400");
     res.send(JSON.stringify(feed));
+  });
+
+  // GET /blog/feed.xml — Atom 1.0 feed for RSS aggregators.
+  app.get("/blog/feed.xml", (req, res) => {
+    const origin = inferSiteOrigin(req.headers.host as string | undefined);
+    res.set("Content-Type", "application/atom+xml; charset=utf-8");
+    res.set("Cache-Control", "public, max-age=300, stale-while-revalidate=86400");
+    res.send(buildAtomFeed(origin));
   });
 
   // GET /api/og/blog/tag/:tag.svg — dynamic OG image per blog tag

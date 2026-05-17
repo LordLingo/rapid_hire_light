@@ -1064,3 +1064,9 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Per-post JSON-LD now emits `datePublished` and a separate `dateModified` from `shared/blog-meta.json` lastmod; sitemap now includes `/blog/year/<y>` URLs derived from blog-meta lastmod years
 - [x] New helpers in `client/src/lib/blog.ts`: `getPostLastmod`, `isRecentlyUpdated`, `listPostYears`, `listPostsByYear`, `groupPostsByQuarter`; covered by 5 specs in `blogYear.test.ts`
 - [x] Run vitest + tsc (610/610 across 48 files; tsc clean) + checkpoint
+
+## §96 Follow-ups (Atom feed, year-archive row metadata, homepage recent-blog rail)
+- [x] /blog/feed.xml Atom 1.0 feed shipped: dev plugin in `vite.config.ts` + prod Express handler in `server/index.ts`; HTML auto-discovery `<link rel="alternate" type="application/atom+xml">` added in `client/index.html` so Feedly/Inoreader/Slack RSS auto-detect
+- [x] /blog/year/:year rows now show `<date> · <N> min` with `aria-label="<N> minute read"`; primary-tag eyebrow already rendered above the title
+- [x] `RecentBlog` component added to `Home.tsx` between `ModernScreening` and `Faq`: surfaces 3 newest posts as cards with primary tag, reading-minutes chip, and Updated pill where applicable
+- [x] New `blogAtom.test.ts` (3 specs) guards Atom XML wrapper + entry shape + escaping; full suite 613/613 across 49 files; tsc clean
