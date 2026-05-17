@@ -921,41 +921,41 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 
 ## §83 — Tier-1 buildout (per-check pages + sample + candidate + case studies)
 
-- [ ] Build per-check service dataset (`client/src/lib/serviceCatalog.ts`)
-- [ ] Build dynamic detail page route `/services/:slug` (ResourcesStatePage pattern)
-- [ ] Promote `/services` hub to link into the 9 detail pages
-- [ ] Re-point footer 6 service links to the new detail pages
-- [ ] Re-point 10+ blog post `/services` links to the relevant detail page
-- [ ] Re-point pricing calculator add-on labels with info-icon links
-- [ ] Build sample report HTML page at `/sample-report` (downloadable)
-- [ ] Build `/candidates` page (status link + FCRA rights FAQ + ES toggle)
-- [ ] Build 3 case studies dataset + `/customers` index + `/customers/:slug` detail
-- [ ] Re-point Industries vertical CTAs to relevant detail pages
-- [ ] Add `/services` and new sub-routes to STATIC_ROUTES sitemap
-- [ ] Add anti-regression vitest pins
-- [ ] Run pnpm test --run + pnpm tsc --noEmit
-- [ ] Save Tier-1 checkpoint
+- [x] Build per-check service dataset (`client/src/lib/serviceCatalog.ts`)
+- [x] Build dynamic detail page route `/services/:slug` (ResourcesStatePage pattern)
+- [x] Promote `/services` hub to link into the 9 detail pages
+- [x] Re-point footer 6 service links to the new detail pages
+- [x] Re-point 10+ blog post `/services` links to the relevant detail page
+- [x] Re-point pricing calculator add-on labels with info-icon links
+- [x] Build sample report HTML page at `/sample-report` (downloadable)
+- [x] Build `/candidates` page (status link + FCRA rights FAQ + ES toggle)
+- [x] Build 3 case studies dataset + `/customers` index + `/customers/:slug` detail
+- [x] Re-point Industries vertical CTAs to relevant detail pages
+- [x] Add `/services` and new sub-routes to STATIC_ROUTES sitemap
+- [x] Add anti-regression vitest pins
+- [x] Run pnpm test --run + pnpm tsc --noEmit
+- [x] Save Tier-1 checkpoint
 
 ## §84 — Tier-2 buildout (integrations + ROI + trust + chat + benchmark)
 
-- [ ] Expand integrations dataset to 20+ named partners with per-partner cards
-- [ ] Build ROI calculator at `/roi` (or as `/pricing#roi` tab)
-- [ ] Trust band upgrade on Home hero (G2/Gartner badge slot, NPS, logo wall stat)
-- [ ] Live-chat / "Book 15 min" widget surface (Calendly link or chat placeholder)
-- [ ] Build `/resources/benchmark-2026` placeholder page
-- [ ] Anti-regression vitest pins
-- [ ] Save Tier-2 checkpoint
+- [x] Expand integrations dataset to 20+ named partners with per-partner cards
+- [x] Build ROI calculator at `/roi` (or as `/pricing#roi` tab)
+- [x] Trust band upgrade on Home hero (G2/Gartner badge slot, NPS, logo wall stat)
+- [x] Live-chat / "Book 15 min" widget surface (Calendly link or chat placeholder)
+- [x] Build `/resources/benchmark-2026` placeholder page
+- [x] Anti-regression vitest pins
+- [x] Save Tier-2 checkpoint
 
 ## §85 — Tier-3 buildout (glossary + filter + 3 industries)
 
-- [ ] Build `/resources/glossary` with 60-80 terms
-- [ ] Add type filter strip across `/resources` hub
-- [ ] Add Construction, Hospitality, Education to Industries page
-- [ ] Save Tier-3 checkpoint
+- [x] Build `/resources/glossary` with 60-80 terms
+- [x] Add type filter strip across `/resources` hub
+- [x] Add Construction, Hospitality, Education to Industries page
+- [x] Save Tier-3 checkpoint
 
 ## §86 — Tier-4 buildout (identity + international + final QA)
 
-- [ ] Build `/services/identity-verification` (already in §83 list — confirm shipped)
-- [ ] Build `/international` page surface
-- [ ] Country selector header element (placeholder, US only enabled)
-- [ ] Final cross-link QA + checkpoint
+- [x] Build `/services/identity-verification` (already in §83 list — confirm shipped)
+- [x] Build `/international` page surface
+- [x] Country selector header element (placeholder, US only enabled)
+- [x] Final cross-link QA + checkpoint

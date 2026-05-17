@@ -113,6 +113,47 @@ export default function Services() {
         </div>
       </section>
 
+      {/* §83 — International screening pillar callout. Sits between
+          the services list and the sample report so the international
+          surface gets equal weight to the domestic checks. */}
+      <section
+        data-testid="services-international-callout"
+        className="bg-[color:var(--color-paper-soft)] border-y border-border"
+      >
+        <div className="container py-16 md:py-20">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-6 items-center">
+            <div className="col-span-12 lg:col-span-7">
+              <p className="eyebrow">10 — International</p>
+              <h3 className="mt-3 font-display text-[28px] md:text-[40px] leading-[1.05] tracking-[-0.02em] text-[color:var(--color-ink)]">
+                Screening across{" "}
+                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+                  borders.
+                </span>
+              </h3>
+              <p className="mt-4 max-w-2xl text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                12+ countries today. GDPR-compliant consent, country-specific
+                criminal-record retrieval, education and employment
+                verification calibrated to the local registrar, and a single
+                desk that runs the dispute when one is needed.
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-5 flex flex-col items-start lg:items-end gap-3">
+              <Link
+                href="/services/international"
+                className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-blue)] px-5 py-2.5 text-sm font-medium text-white hover:opacity-95 transition"
+                data-testid="services-international-link"
+              >
+                Open the country selector
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <p className="text-[12px] text-[color:var(--color-ink-muted)]">
+                US · Canada · Mexico · UK · Ireland · Germany · France · Spain · NL · Poland · Italy · India
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Sample of what every service returns. The real Rapid Hire
           sample report PNG (§55) renders here too — same image used
           on /home and /pricing, with the same click-to-enlarge

@@ -29,6 +29,7 @@ import Trust from "./pages/Trust";
 import Industries from "./pages/Industries";
 import IndustryDetail from "./pages/IndustryDetail";
 import ResourcesGlossary from "./pages/ResourcesGlossary";
+import ServiceInternational from "./pages/ServiceInternational";
 import Resources from "./pages/Resources";
 import ResourcesBanTheBox from "./pages/ResourcesBanTheBox";
 import ResourcesBackgroundChecksByState from "./pages/ResourcesBackgroundChecksByState";
@@ -52,6 +53,7 @@ function Router() {
       <Route path={"/industries"} component={Industries} />
       <Route path={"/industries/:slug"} component={IndustryDetail} />
       <Route path={"/resources/glossary"} component={ResourcesGlossary} />
+      <Route path={"/services/international"} component={ServiceInternational} />
       <Route path={"/integrations"} component={Integrations} />
       <Route path={"/pricing"} component={Pricing} />
       <Route path={"/about"} component={About} />

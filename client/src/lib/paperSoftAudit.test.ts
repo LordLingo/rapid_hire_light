@@ -122,6 +122,10 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       "client/src/pages/IndustryDetail.tsx",
       // §83: glossary page uses paper-soft on the alphabet jump-strip card.
       "client/src/pages/ResourcesGlossary.tsx",
+      // §83: international service pillar reuses the alternating section
+      // rhythm; the Services hub gained a paper-soft callout to it.
+      "client/src/pages/ServiceInternational.tsx",
+      "client/src/pages/Services.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

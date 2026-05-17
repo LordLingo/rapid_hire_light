@@ -544,6 +544,8 @@ const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = 
   { path: "/industries/gig-1099",      priority: 0.8, changefreq: "monthly" },
   { path: "/industries/manufacturing", priority: 0.8, changefreq: "monthly" },
   { path: "/industries/education",     priority: 0.8, changefreq: "monthly" },
+  // §83 — international screening pillar.
+  { path: "/services/international",   priority: 0.8, changefreq: "monthly" },
   { path: "/integrations", priority: 0.7,  changefreq: "monthly" },
   { path: "/pricing",      priority: 0.9,  changefreq: "monthly" },
   { path: "/about",        priority: 0.6,  changefreq: "yearly"  },
