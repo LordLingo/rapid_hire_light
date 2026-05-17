@@ -1079,10 +1079,11 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Run vitest + tsc (616/616 across 50 files; tsc clean) + checkpoint
 
 ## §98 Follow-ups (prerender hubs, minify, lighthouse SEO budget)
-- [ ] Extend `scripts/prerender_top_posts.mjs` (or new sibling) to emit prerendered HTML for the top 4 tag landing pages + each active year hub
-- [ ] Minify the emitted HTML stubs (and round-trip the per-tag/per-post OG SVGs through SVGO when they live on disk) to shrink first-byte size
-- [ ] Add `.lighthouserc.json` + `pnpm test:seo` script that runs Lighthouse against `/`, `/blog`, and one prerendered post URL with an SEO budget of >= 95
-- [ ] Run vitest + tsc + checkpoint
+- [x] Extended `scripts/prerender_top_posts.mjs` to emit per-tag (top 4 by post count) and per-year-hub HTML stubs alongside the 20 top posts; manifest records each surface
+- [x] Prerender HTML output is collapsed inter-tag whitespace + de-duplicated head metadata; OG SVG renderers (`server/index.ts`) now use a `minifySvg` helper so wire bytes drop on every request without touching the on-disk shape
+- [x] `.lighthouserc.json` ships with SEO-only category, threshold ≥0.95, hard-error audits for meta-description / document-title / html-has-lang / viewport, plus three audited URLs (homepage, /blog, prerendered post); `pnpm test:seo` invokes `npx -p @lhci/cli@0.13.x lhci autorun`; usage documented in `docs/lighthouse-seo.md`
+- [x] New `lighthouseSeoBudget.test.ts` (6 specs) pins the URL list, category scope, score floor, structural audits, and script wiring so future edits can't quietly weaken the budget
+- [x] Run vitest + tsc (631/631 across 52 files; tsc clean)
 
 ## §99 Fix: "No keywords were detected" on / (and add hook support)
 - [x] Added a 10-keyword `<meta name="keywords">` to `client/index.html` so the SPA shell carries the tag before hydration

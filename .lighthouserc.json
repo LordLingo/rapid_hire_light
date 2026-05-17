@@ -1,0 +1,32 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "http://localhost:3000/",
+        "http://localhost:3000/blog",
+        "http://localhost:3000/blog/fcra-pre-adverse-action-process"
+      ],
+      "numberOfRuns": 1,
+      "settings": {
+        "preset": "desktop",
+        "chromeFlags": "--no-sandbox --headless=new --disable-dev-shm-usage",
+        "onlyCategories": ["seo"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:seo": ["error", { "minScore": 0.95 }],
+        "meta-description": "error",
+        "document-title": "error",
+        "html-has-lang": "error",
+        "viewport": "error",
+        "canonical": "warn",
+        "robots-txt": "warn",
+        "structured-data": "warn"
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
