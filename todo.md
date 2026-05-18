@@ -1122,3 +1122,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Updated the /support hours card from "Live phone, email, and chat" to "Live phone and email" so the visible support copy matches reality
 - [x] Added `chatRemoved.test.ts` (3 specs): file does not exist, SiteShell does not import or mount `<ChatLauncher>` (with JSX-comment-stripping so the explanatory note doesn't false-positive), and Support no longer advertises chat
 - [x] Run vitest + tsc (651/651 across 56 files; tsc clean)
+
+## §104 Deep research: what HR buyers want on a vendor website
+- [x] Research HR / procurement buyer-evaluation criteria from Verified First (16 questions), SHRM (CRA checklist + HR-tech vendor advice), Cisive (RFP guide), Aptitude Research (2023 TA Tech Buyer's Guide), and Serhat Oypan / LinkedIn (enterprise B2B buyer signals)
+- [x] Cross-checked against PBSA accreditation-program documentation, HireRight Buyer's Guide 2026, OneSource Screening, Veremark 2026 buyer guide, and Mitratech buyer guide
+- [x] Audited current rapidhire site against the synthesized 12-row buyer checklist; identified 15 concrete gaps (G1–G15) and the pages that already cover the rest
+- [x] Wrote `references/hr-buyer-website-recommendations.md` with executive summary, research foundation, audit, gap analysis, 17 prioritized recommendations (R1–R17) tiered by ROI, sequencing plan, and 11 references
+- [x] Delivered to user
