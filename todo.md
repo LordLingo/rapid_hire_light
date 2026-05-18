@@ -1283,3 +1283,17 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §129.4 — Verified white footer variant composites legibly on navy (manual on-navy preview)
 - [x] §129.5 — Uploaded all 7 assets via `manus-upload-file --webdev`; wired URLs into shared/brand.ts (HEADER/FOOTER/FAVICON/APPLE/192/512/OG) and client/index.html (favicon, apple-touch, PWA, og:image, twitter:image)
 - [x] §129.6 — vitest 853/853 across 68 files; tsc clean (loosened filename patterns from §128 still hold; brandHeadMeta cross-file enforcement passes against the new URLs)
+
+## §130 — Regenerate logo to faithfully match the existing brand mark
+- [ ] §130.1 — Use the user's reference image (two figures + heart, bright blue, wordmark + "SOLUTIONS") as the originalImages input to generate_image so the new mark matches the existing branding
+- [ ] §130.2 — Re-run process_brand_assets_v3 (or new v4) to derive trimmed color, white footer variant, favicon multi-size .ico, Apple touch icon, PWA 192/512, OG card
+- [ ] §130.3 — Upload all 7 assets and rewire shared/brand.ts + client/index.html
+- [ ] §130.4 — vitest 853/853 + tsc clean + checkpoint
+## §131 — Replace logo with user-supplied newrapidhirelogo.webp (three figures, center navy)
+- [x] §131.1 — Staged user upload to webdev-static-assets/rhs5-source.webp (2048×1196), confirmed opaque off-white bg via pixel sampling
+- [x] §131.2 — Authored process_brand_assets_v5.py (near-white knockout at threshold 230, trim+pad, downscale to 1100w, white silhouette, top-55% glyph crop for icons, 1200×630 OG card on cream with navy hairline + tagline)
+- [x] §131.3 — Produced rhs5-color-trimmed (1100×750), rhs5-white footer variant, rhs5-favicon.ico (16/32/48/64), rhs5-apple-touch-icon (180), rhs5-icon-192, rhs5-icon-512, rhs5-og-card (1200×630)
+- [x] §131.4 — Verified white footer variant on navy preview
+- [x] §131.5 — Uploaded all 7 assets via `manus-upload-file --webdev`; wired URLs into shared/brand.ts (HEADER/FOOTER/FAVICON/APPLE/192/512/OG) and client/index.html (favicon, apple-touch, PWA, og:image, twitter:image)
+- [x] §131.6 — Bumped Header.tsx logo height from `h-14 sm:h-16 lg:h-20` to `h-16 sm:h-20 lg:h-28` and mobile sheet from h-12 to h-16 to compensate for the new vertical-aspect (1.47:1) lockup
+- [x] §131.7 — vitest 853/853 across 68 files; tsc clean (existing headerLogo.test.ts assertions are URL+import+alt-text only and don't pin tailwind height tokens, so the bump is safe)

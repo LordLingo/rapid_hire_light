@@ -307,7 +307,7 @@ export default function Header() {
                 height={140}
                 decoding="async"
                 draggable={false}
-                className="block h-12 w-auto select-none"
+                className="block h-16 w-auto select-none"
               />
             </Link>
             <div className="hairline" aria-hidden />
@@ -726,7 +726,7 @@ function Logo() {
       decoding="async"
       fetchPriority="high"
       draggable={false}
-      className="block h-14 sm:h-16 lg:h-20 w-auto select-none"
+      className="block h-16 sm:h-20 lg:h-28 w-auto select-none"
     />
   );
 }

@@ -22,8 +22,8 @@
 // `manus-upload-file --webdev <path>` and replace the URL here when the
 // asset changes; the corresponding *.test.ts files will fail loudly if the
 // constant ever drifts away from "/manus-storage/...".
-export const HEADER_LOGO_URL = "/manus-storage/rhs3-color-trimmed_6ea6f63b.png";
-export const FOOTER_LOGO_URL = "/manus-storage/rhs3-white_0e0ccecf.png";
+export const HEADER_LOGO_URL = "/manus-storage/rhs5-color-trimmed_5cbbb11f.png";
+export const FOOTER_LOGO_URL = "/manus-storage/rhs5-white_4026a964.png";
 
 // Homepage hero key visual. Marketing photograph supplied by the brand owner
 // (woman + laptop showing a sample report). Two crops are served via a
@@ -52,19 +52,19 @@ export const HOME_HERO_IMAGE_URL_MOBILE_WEBP =
 
 // Social/share preview card. 1200x630 PNG that composes the color mark on a
 // branded background. Wired into <head> via index.html.
-export const SOCIAL_OG_IMAGE_URL = "/manus-storage/rhs3-og-card_f132b62c.png";
+export const SOCIAL_OG_IMAGE_URL = "/manus-storage/rhs5-og-card_3f643ff4.png";
 
 // Browser tab favicon. Multi-size .ico (16/32/48/64) generated from the
 // color mark only — the wordmark is unreadable at favicon scale.
-export const FAVICON_ICO_URL = "/manus-storage/rhs3-favicon_cb9100cf.ico";
+export const FAVICON_ICO_URL = "/manus-storage/rhs5-favicon_dc62a770.ico";
 
 // iOS home-screen icon. 180x180 PNG, transparent background, color mark
 // only (no wordmark — too small to read at 60pt).
-export const APPLE_TOUCH_ICON_URL = "/manus-storage/rhs3-apple-touch-icon_6f21e930.png";
+export const APPLE_TOUCH_ICON_URL = "/manus-storage/rhs5-apple-touch-icon_ab5371f6.png";
 
 // Android / PWA maskable icons. 192 + 512 PNGs from the same source.
-export const ICON_192_URL = "/manus-storage/rhs3-icon-192_1a960af3.png";
-export const ICON_512_URL = "/manus-storage/rhs3-icon-512_8b000206.png";
+export const ICON_192_URL = "/manus-storage/rhs5-icon-192_72d5cd2d.png";
+export const ICON_512_URL = "/manus-storage/rhs5-icon-512_30985797.png";
 
 // Identity strings — kept here so a name/tagline change can't drift between
 // the header link, the footer link, and the document <title>/meta tags.
