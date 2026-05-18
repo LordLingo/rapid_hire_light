@@ -1199,12 +1199,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Run vitest + tsc (746/746 across 64 files; tsc clean); dev server healthy after HMR
 
 ## §114 Education Verification hero — standalone image under the 03 eyebrow (test pattern)
-- [ ] Locate the Education Verification service detail page and understand the current hero layout
-- [ ] Source or generate an editorial education-themed image (caps, diplomas, blueprint-style line art, or stylized transcript — not a stock cliché)
-- [ ] Upload the image via the webdev static-assets pipeline so it never bloats the bundle
-- [ ] Render the image at the documented testid slot under the 03 eyebrow with appropriate alt text + responsive sizing
-- [ ] Lock with a vitest pinning the slot, the testid, the alt-text shape, and that the image is referenced via the manus-storage CDN URL (not a local path)
-- [ ] Run vitest + tsc + checkpoint
+- [x] Locate the Education Verification service detail page and understand the current hero layout (resolved in §114 follow-up block)
+- [x] Source or generate an editorial education-themed image (resolved in §114 follow-up block)
+- [x] Upload the image via the webdev static-assets pipeline so it never bloats the bundle (resolved in §114 follow-up block)
+- [x] Render the image at the documented testid slot under the 03 eyebrow with appropriate alt text + responsive sizing (resolved in §114 follow-up block)
+- [x] Lock with a vitest pinning the slot, the testid, the alt-text shape, and that the image is referenced via the CDN URL (resolved in §114 follow-up block)
+- [x] Run vitest + tsc + checkpoint (resolved in §114 follow-up block)
 
 ## §114 — Education Verification standalone illustration on /services
 - [x] Generate editorial diploma + mortarboard + ledger illustration via webdev image pipeline (compressed WebP)
@@ -1215,17 +1215,17 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] vitest 755/755 across 65 files; tsc clean
 
 ## §117 — Editorial illustrations for the remaining 8 services
-- [ ] Generate framed illustration for criminal-records-search
-- [ ] Generate framed illustration for employment-verification
-- [ ] Generate framed illustration for drug-screening
-- [ ] Generate framed illustration for healthcare-sanctions
-- [ ] Generate framed illustration for mvr-driving-records
-- [ ] Generate framed illustration for social-media-screening
-- [ ] Generate framed illustration for identity-verification
-- [ ] Generate framed illustration for continuous-monitoring
-- [ ] Wire all 8 heroImage entries in serviceCatalog.ts
-- [ ] Extend §114 vitest invariant: 9 expected slugs + per-slug URL/alt assertions
-- [ ] Run vitest + tsc, save §117 checkpoint
+- [x] Generate framed illustration for criminal-records-search (resolved in §117 follow-up block)
+- [x] Generate framed illustration for employment-verification (resolved in §117 follow-up block)
+- [x] Generate framed illustration for drug-screening (resolved in §117 follow-up block)
+- [x] Generate framed illustration for healthcare-sanctions (resolved in §117 follow-up block)
+- [x] Generate framed illustration for mvr-driving-records (resolved in §117 follow-up block)
+- [x] Generate framed illustration for social-media-screening (resolved in §117 follow-up block)
+- [x] Generate framed illustration for identity-verification (resolved in §117 follow-up block)
+- [x] Generate framed illustration for continuous-monitoring (resolved in §117 follow-up block)
+- [x] Wire all 8 heroImage entries in serviceCatalog.ts (resolved in §117 follow-up block)
+- [x] Extend §114 vitest invariant (resolved in §117 follow-up block — 51 specs)
+- [x] Run vitest + tsc, save §117 checkpoint (resolved in §117 follow-up block)
 
 ## §117 — Editorial illustrations rolled out to remaining 8 services
 - [x] Generated matching square editorial illustrations for criminal-records, employment-verification, drug-screening, motor-vehicle-records, social-media-screening, identity-verification, healthcare-sanctions, continuous-monitoring (consistent watercolor on cream paper, navy ink, slate gray, single soft-green check accent — referenced off the §114 Education plate)
@@ -1233,3 +1233,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Wired heroImage on every remaining ServiceDetail entry in client/src/lib/serviceCatalog.ts (8 of 9 — Education was already wired in §114)
 - [x] Extended client/src/lib/servicesEducationImage.test.ts to lock per-slug URL + per-slug alt-text subject keywords + uniqueness + universal coverage (51 specs, up from 13)
 - [x] Full suite green: 797/797 across 65 files
+
+## §121 — /integrations editorial plate + user infographic
+- [x] §121.1 — Inventory /integrations eyebrow + sections to find right placement
+- [x] §121.2 — Generated square text-free editorial plate (two facing panels + interlocking link rings + sage check)
+- [x] §121.3 — Uploaded user's portrait infographic via webdev pipeline; new editorial plate hosted via webdev image pipeline
+- [x] §121.4 — Wired framed plate under "02 — Integrations" eyebrow via PageHero belowEyebrow with hover-zoom + white inner mat
+- [x] §121.5 — Added new "04 — The handshake" paper-soft section between How-it-works and the integrations grid; renumbered Available-today to 05
+- [x] §121.6 — Authored integrationsHeroImage.test.ts (9 specs) + extended paperSoftAudit.test.ts allowlist (§121 audit comment)
+- [x] §121.7 — vitest 841/841 across 67 files; tsc clean

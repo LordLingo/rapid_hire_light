@@ -125,6 +125,12 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // rhythm; the Services hub gained a paper-soft callout to it.
       "client/src/pages/ServiceInternational.tsx",
       "client/src/pages/Services.tsx",
+      // §121: Integrations.tsx gained a paper-soft "04 — The handshake"
+      // section housing the user-supplied portrait infographic, sitting
+      // between the white "How it works" band and the paper integrations
+      // grid. Visually audited — matches the same alternating rhythm used
+      // on Pricing / Compliance / Resources.
+      "client/src/pages/Integrations.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

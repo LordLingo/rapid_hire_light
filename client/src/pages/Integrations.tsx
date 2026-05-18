@@ -60,6 +60,20 @@ export default function Integrations() {
     <SiteShell>
       <PageHero
         eyebrow="02 — Integrations"
+        belowEyebrow={
+          <div
+            data-testid="integrations-hero-image"
+            className="hover-zoom-image mt-6 aspect-square w-full max-w-[16rem] overflow-hidden rounded-2xl border border-border bg-white p-2 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_8px_24px_-12px_rgba(16,42,75,0.18)]"
+          >
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/integrations-plate-5gAXFzjQrFTUZZGW4UdbC7.webp"
+              alt="Editorial illustration of two facing navy-line panels — a candidate-list ATS dashboard on the left and a background-check report sheet on the right — connected through two interlocking link rings with a soft sage-green check at their intersection, representing a secure two-way ATS/HRIS sync with Rapid Hire."
+              loading="lazy"
+              decoding="async"
+              className="block h-full w-full rounded-xl object-cover"
+            />
+          </div>
+        }
         title={
           <>
             Plug Rapid Hire into the{" "}
@@ -116,12 +130,58 @@ export default function Integrations() {
         </div>
       </section>
 
+      {/* §121 — Full-bleed infographic section. The portrait-format chart
+          carries a lot of legible copy that doesn't compress well into the
+          eyebrow plate, so we surface it here at native size between
+          "How it works" and the integrations grid. */}
+      <section className="bg-[color:var(--color-paper-soft)] border-y border-border">
+        <div className="container py-20 md:py-28">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-start">
+            <div className="col-span-12 lg:col-span-4 reveal-on-scroll">
+              <p className="eyebrow">04 — The handshake</p>
+              <div className="mt-3 hairline" />
+              <h2 className="mt-6 font-display text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.02em] text-[color:var(--color-ink)]">
+                One picture of the whole{" "}
+                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+                  data flow.
+                </span>
+              </h2>
+              <p className="mt-5 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                ATS/HRIS on one side, our screening engine on the other,
+                with a secure handshake in the middle. The candidate is
+                added once in your system of record, and the rest — identity,
+                criminal records, employment, and education verification —
+                rides through the integration without manual re-entry.
+              </p>
+              <p className="mt-3 text-[12.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                SOC 2 Type II · GDPR-aligned · end-to-end encrypted in transit
+                and at rest.
+              </p>
+            </div>
+            <div
+              data-testid="integrations-handshake-figure"
+              className="col-span-12 lg:col-span-8 reveal-on-scroll"
+            >
+              <figure className="mx-auto max-w-[560px] overflow-hidden rounded-[20px] border border-border bg-[color:var(--color-paper)] p-3 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_12px_32px_-16px_rgba(16,42,75,0.22)]">
+                <img
+                  src="/manus-storage/integrations-infographic_ad1c2dd4.png"
+                  alt="Vertical infographic showing how Rapid Hire integrates with ATS and HRIS systems: candidate hire → secure data sync → background check software running identity verification, criminal records, employment verification, and education verification, with status updates flowing back into the ATS/HRIS, ending in saved time, reduced risk, improved efficiency, and a better candidate experience. Footer notes SOC 2 Type II, GDPR compliance, and end-to-end encryption."
+                  loading="lazy"
+                  decoding="async"
+                  className="block h-auto w-full rounded-[14px]"
+                />
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Integrations grid */}
       <section className="bg-[color:var(--color-paper)]">
         <div className="container py-20 md:py-28">
           <div className="grid grid-cols-12 gap-x-8 gap-y-8 items-end">
             <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
-              <p className="eyebrow">04 — Available today</p>
+              <p className="eyebrow">05 — Available today</p>
               <div className="mt-3 hairline" />
             </div>
             <div className="col-span-12 lg:col-span-6 reveal-on-scroll">
