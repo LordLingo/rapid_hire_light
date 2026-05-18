@@ -84,14 +84,23 @@ export default function Services() {
                     untouched.
                   */}
                   {s.heroImage ? (
-                    <img
-                      src={s.heroImage.url}
-                      alt={s.heroImage.alt}
-                      loading="lazy"
-                      decoding="async"
-                      data-testid={`service-hero-image-${s.slug}`}
-                      className="mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-white p-2 object-cover paper-shadow"
-                    />
+                    // §118 — framing moves to a .hover-zoom-image
+                    // container so the image scales gently inside the
+                    // rounded clip on hover. The utility (defined in
+                    // index.css) is gated by prefers-reduced-motion.
+                    <div
+                      data-testid={`service-hero-image-frame-${s.slug}`}
+                      className="hover-zoom-image mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-white p-2 paper-shadow"
+                    >
+                      <img
+                        src={s.heroImage.url}
+                        alt={s.heroImage.alt}
+                        loading="lazy"
+                        decoding="async"
+                        data-testid={`service-hero-image-${s.slug}`}
+                        className="w-full h-full object-cover rounded-[14px]"
+                      />
+                    </div>
                   ) : null}
                 </div>
                 <div className="col-span-12 lg:col-span-6">

@@ -329,3 +329,83 @@ describe("§117 — per-slug heroImage data integrity", () => {
     expect(new Set(urls).size).toBe(urls.length);
   });
 });
+
+/*
+  §118 — subtle hover zoom on the framed editorial illustration. The
+  framing now lives on a `.hover-zoom-image` container so the inner
+  <img> can scale gently inside the rounded clip on hover. Pin the
+  utility usage in both Services.tsx and ServiceDetail.tsx so a future
+  refactor can't quietly drop the gesture (and so the gesture stays
+  consistent across the list view and the detail page).
+*/
+describe("§118 — hover zoom on framed service illustrations", () => {
+  /**
+   * Pin the .hover-zoom-image CSS utility itself so a refactor of the
+   * shared utility (1.04 scale, 350ms cubic-bezier ease-out, gated by
+   * prefers-reduced-motion) doesn't silently degrade.
+   */
+  const indexCssSrc = fs.readFileSync(
+    path.join(ROOT, "client/src/index.css"),
+    "utf8",
+  );
+
+  it("defines the .hover-zoom-image utility with overflow:hidden so the scaled child stays clipped", () => {
+    expect(indexCssSrc).toMatch(/\.hover-zoom-image\s*\{[\s\S]*?overflow:\s*hidden/);
+  });
+
+  it("transitions only `transform` (GPU-only) on the child image, with a snappy ease-out curve", () => {
+    // The utility must animate transform exclusively (no width/height/
+    // padding) so the hover stays buttery on low-end devices.
+    expect(indexCssSrc).toMatch(
+      /\.hover-zoom-image\s*>\s*img[\s\S]*?transition:\s*transform\s+\d+ms\s+cubic-bezier\(/,
+    );
+  });
+
+  it("gates the scale gesture behind prefers-reduced-motion: no-preference", () => {
+    // Users who opt out of motion must NOT see the zoom — not even a
+    // diluted version. The :hover scale rule must live inside the
+    // no-preference block.
+    expect(indexCssSrc).toMatch(
+      /@media\s*\(prefers-reduced-motion:\s*no-preference\)[\s\S]*?\.hover-zoom-image:hover\s*>\s*img[\s\S]*?transform:\s*scale\(/,
+    );
+  });
+
+  it("uses a restrained scale value (between 1.02 and 1.08 inclusive) — never an aggressive pop", () => {
+    // The user asked for a SUBTLE zoom. Pin a sensible band so a
+    // future tweak can't silently turn this into a 1.20 jump-scare.
+    const m = indexCssSrc.match(
+      /\.hover-zoom-image:hover\s*>\s*img[\s\S]*?transform:\s*scale\(([0-9.]+)\)/,
+    );
+    expect(m, "expected a scale(N) value on .hover-zoom-image:hover > img").not.toBeNull();
+    const scale = Number(m![1]);
+    expect(scale).toBeGreaterThanOrEqual(1.02);
+    expect(scale).toBeLessThanOrEqual(1.08);
+  });
+
+  it("/services wraps every framed illustration in a .hover-zoom-image container", () => {
+    // The utility must sit on the outer frame (not the <img>) so the
+    // rounded clip contains the scaled child.
+    expect(servicesSrc).toMatch(/className=\"hover-zoom-image[^\"]*\"/);
+    // Frame still keeps its existing visual treatment (rounded, white
+    // inner mat, paper-shadow). The framing pin survives the new
+    // wrapper structure.
+    expect(servicesSrc).toMatch(
+      /hover-zoom-image[^\"]*rounded-2xl[\s\S]*?bg-white[\s\S]*?paper-shadow/,
+    );
+  });
+
+  it("/services/:slug detail page wraps the illustration in the same .hover-zoom-image container", () => {
+    expect(serviceDetailSrc).toMatch(/className=\"hover-zoom-image[^\"]*\"/);
+    expect(serviceDetailSrc).toMatch(
+      /hover-zoom-image[^\"]*rounded-2xl[\s\S]*?bg-white[\s\S]*?paper-shadow/,
+    );
+  });
+
+  it("on both pages the inner <img> still gets the object-cover sizing class", () => {
+    // We moved the framing classes to the wrapper, but the actual
+    // <img> must keep object-cover so the editorial composition isn't
+    // distorted on the rare non-square viewport.
+    expect(servicesSrc).toMatch(/<img[\s\S]*?className=\"[^\"]*object-cover[^\"]*\"/);
+    expect(serviceDetailSrc).toMatch(/<img[\s\S]*?className=\"[^\"]*object-cover[^\"]*\"/);
+  });
+});

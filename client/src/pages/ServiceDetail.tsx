@@ -108,14 +108,22 @@ export default function ServiceDetail() {
         eyebrow={`Services · ${service.tag}`}
         belowEyebrow={
           service.heroImage ? (
-            <img
-              src={service.heroImage.url}
-              alt={service.heroImage.alt}
-              loading="lazy"
-              decoding="async"
-              data-testid={`service-hero-image-${service.slug}`}
-              className="mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-white p-2 object-cover paper-shadow"
-            />
+            // §118 — framing moves to a .hover-zoom-image
+            // container so the image scales gently inside the rounded
+            // clip on hover. Gated by prefers-reduced-motion.
+            <div
+              data-testid={`service-hero-image-frame-${service.slug}`}
+              className="hover-zoom-image mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-white p-2 paper-shadow"
+            >
+              <img
+                src={service.heroImage.url}
+                alt={service.heroImage.alt}
+                loading="lazy"
+                decoding="async"
+                data-testid={`service-hero-image-${service.slug}`}
+                className="w-full h-full object-cover rounded-[14px]"
+              />
+            </div>
           ) : null
         }
         title={
