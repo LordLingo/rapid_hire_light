@@ -216,7 +216,7 @@ function PlatformCenterCard({ className = "" }: { className?: string }) {
       data-testid="platform-center-card"
       className={[
         "rounded-[16px] paper-shadow p-5 md:p-6",
-        "bg-[color:var(--color-accent-ink)] text-white",
+        "bg-[color:var(--color-footer)] text-white",
         className,
       ].join(" ")}
     >

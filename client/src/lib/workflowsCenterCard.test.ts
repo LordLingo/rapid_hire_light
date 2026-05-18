@@ -6,9 +6,10 @@
   inside a white DiagramCard) read like clickable buttons even though
   the chips were static descriptors. The new card:
 
-    1. Uses the brand-blue --color-accent-ink as its surface so it
-       anchors the three-card workflow stack against the two flanking
-       white cards.
+    1. Uses the deep --color-footer navy as its surface so it visually
+       links to the footer band and anchors the three-card workflow
+       stack against the two flanking white cards. (Originally used
+       --color-accent-ink, swapped per user request §132.)
     2. Renders the eight tokens (Speed, Comprehensive, Compliant,
        Accurate, Scalable, Integrated, Trusted, Efficient) as a 2×4
        grid of STATIC <li> badges with icon + label — no <button>,
@@ -34,21 +35,21 @@ const SRC = readFileSync(WORKFLOWS_PATH, "utf8");
 describe("Workflows center card — §44 redesign", () => {
   it("declares a dedicated PlatformCenterCard component", () => {
     // The redesign deliberately splits the center card off from the
-    // shared DiagramCard shell so the brand-blue surface and badge
+    // shared DiagramCard shell so the deep-navy surface and badge
     // grid don't poison its flanking siblings.
     expect(SRC).toMatch(/function\s+PlatformCenterCard\s*\(/);
   });
 
-  it("uses the brand-blue accent-ink token as the card surface", () => {
-    // The whole point of the redesign — the center card must adopt
-    // the same brand blue that the site's primary CTAs use, not stay
-    // on the warm paper of the flanking cards.
+  it("uses the footer-navy token as the card surface", () => {
+    // Per user request §132: the center card adopts the same deep
+    // navy as the page footer so the workflow stack visually rhymes
+    // with the band below it. (Originally used --color-accent-ink.)
     expect(SRC).toMatch(
-      /bg-\[color:var\(--color-accent-ink\)\][\s\S]*?text-white/
+      /bg-\[color:var\(--color-footer\)\][\s\S]*?text-white/
     );
   });
 
-  it("inverts the headline + body to white on the blue surface", () => {
+  it("inverts the headline + body to white on the navy surface", () => {
     // Belt-and-braces: the headline must explicitly carry text-white,
     // not inherit a light-paper ink token.
     expect(SRC).toMatch(/Rapid Hire Solutions Platform/);

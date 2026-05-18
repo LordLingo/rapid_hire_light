@@ -1297,3 +1297,8 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §131.5 — Uploaded all 7 assets via `manus-upload-file --webdev`; wired URLs into shared/brand.ts (HEADER/FOOTER/FAVICON/APPLE/192/512/OG) and client/index.html (favicon, apple-touch, PWA, og:image, twitter:image)
 - [x] §131.6 — Bumped Header.tsx logo height from `h-14 sm:h-16 lg:h-20` to `h-16 sm:h-20 lg:h-28` and mobile sheet from h-12 to h-16 to compensate for the new vertical-aspect (1.47:1) lockup
 - [x] §131.7 — vitest 853/853 across 68 files; tsc clean (existing headerLogo.test.ts assertions are URL+import+alt-text only and don't pin tailwind height tokens, so the bump is safe)
+
+## §132 — Recolor the home-page "02 · Layer / Rapid Hire Solutions Platform" center card to match the footer
+- [x] §132.1 — Swapped Workflows.tsx PlatformCenterCard surface from `bg-[color:var(--color-accent-ink)]` (brand bright blue) to `bg-[color:var(--color-footer)]` (deep navy used by the page footer band)
+- [x] §132.2 — Updated workflowsCenterCard.test.ts assertion + comments to pin the new --color-footer surface (was: --color-accent-ink); kept text-white invariant intact
+- [x] §132.3 — vitest 853/853 + tsc clean
