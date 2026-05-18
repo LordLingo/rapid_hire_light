@@ -30,6 +30,7 @@
 */
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
+import { toast } from "sonner";
 import {
   ArrowUpRight,
   CalendarCheck2,
@@ -41,6 +42,11 @@ import {
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { useSeo } from "@/hooks/useSeo";
+// §108: runtime PDF generator that mirrors the live checked state.
+import {
+  buildChecklistPdf,
+  triggerChecklistDownload,
+} from "@/lib/checklistPdf";
 
 /* ---------- checklist content ---------- */
 
@@ -257,14 +263,15 @@ const TOTAL_ITEMS = SURFACES.reduce((acc, s) => acc + s.items.length, 0);
 const STORAGE_KEY = "rhs.compliance-checklist.progress.v1";
 
 /*
-  §66: real downloadable PDF asset URL. Built locally by
-  scripts/build-checklist-pdf.mjs and uploaded via
-  `manus-upload-file --webdev`. The file is the 8-page, Letter-format,
-  Fraunces+Inter-typeset version of this same checklist (mirrors
-  SURFACES). When the content changes, re-run the script and re-upload.
+  §108: the static pre-built PDF (CHECKLIST_PDF_URL) is no longer used
+  — it couldn't reflect the user's checked state, which was the bug
+  reported on /compliance/checklist. The download is now generated at
+  click-time by `buildChecklistPdf` from `@/lib/checklistPdf`, which
+  receives the same SURFACES data and the live `checked` map. If you
+  ever need a static fallback again (e.g. for an email funnel), revert
+  this commit's changes to ComplianceChecklist.tsx — the script that
+  produces the static PDF lives at scripts/build-checklist-pdf.mjs.
 */
-const CHECKLIST_PDF_URL =
-  "/manus-storage/RapidHire-24-Point-Compliance-Checklist_d9526aba.pdf";
 
 /* ---------- progress hook ---------- */
 
@@ -333,6 +340,33 @@ export default function ComplianceChecklist() {
     }
   };
 
+  /*
+    §108: build a Letter-format PDF on the fly that mirrors the live
+    SURFACES + checked state, then trigger a browser download. We keep
+    the work async + try/catch so an unexpected pdf-lib failure shows
+    the user a recoverable toast instead of a silent click.
+  */
+  const [downloading, setDownloading] = useState(false);
+  const handleDownload = async () => {
+    if (downloading) return;
+    setDownloading(true);
+    try {
+      const bytes = await buildChecklistPdf({
+        surfaces: SURFACES,
+        checked,
+        totalItems: TOTAL_ITEMS,
+      });
+      triggerChecklistDownload(bytes);
+    } catch (err) {
+      console.error("checklist pdf failed", err);
+      toast.error(
+        "Couldn't build the PDF. Please try again, or use Print to export.",
+      );
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   return (
     <SiteShell>
       <PageHero
@@ -358,20 +392,20 @@ export default function ComplianceChecklist() {
                 <Check aria-hidden className="size-4" strokeWidth={2.5} />
                 Start the self-audit
               </a>
-              {/* §66: real downloadable PDF asset (8-page Letter, hosted on
-                  manus-storage). Built by scripts/build-checklist-pdf.mjs. */}
-              <a
-                href={CHECKLIST_PDF_URL}
-                download
+              {/* §108: PDF is now built at click-time from the live state. */}
+              <button
+                type="button"
+                onClick={handleDownload}
+                disabled={downloading}
                 data-testid="checklist-cta-download"
-                className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)]"
+                className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)] disabled:opacity-60 disabled:cursor-progress"
               >
                 <Download
                   aria-hidden
                   className="size-4 text-[color:var(--color-accent-ink)]"
                 />
-                Download the PDF
-              </a>
+                {downloading ? "Building your PDF…" : "Download the PDF"}
+              </button>
               <button
                 type="button"
                 onClick={handlePrint}

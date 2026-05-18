@@ -62,14 +62,18 @@ describe("§66 — Footer 'Company' column surfaces the compliance funnel", () =
   });
 });
 
-describe("§66 — /compliance/checklist Download the PDF affordance", () => {
-  it("declares a CHECKLIST_PDF_URL constant pointing at /manus-storage/...pdf", () => {
-    expect(CHECKLIST_SRC).toMatch(/const CHECKLIST_PDF_URL =/);
-    const m = CHECKLIST_SRC.match(/const CHECKLIST_PDF_URL =\s*"([^"]+)"/);
-    expect(m, "CHECKLIST_PDF_URL must be a string literal").toBeTruthy();
-    const url = m![1];
-    expect(url).toMatch(
-      /^\/manus-storage\/RapidHire-24-Point-Compliance-Checklist_[a-z0-9]+\.pdf$/,
+describe("§66/§108 — /compliance/checklist Download affordance", () => {
+  /*
+    §108 update: the static manus-storage URL was retired because it
+    couldn't reflect the user's checked state, which was the original
+    bug. The download is now generated at click-time from the live
+    `checked` map. This block now pins the runtime wiring instead of
+    the static-URL constant.
+  */
+  it("no longer references the legacy static CHECKLIST_PDF_URL constant", () => {
+    expect(CHECKLIST_SRC).not.toMatch(/const CHECKLIST_PDF_URL =/);
+    expect(CHECKLIST_SRC).not.toMatch(
+      /href=\{CHECKLIST_PDF_URL\}/,
     );
   });
 
@@ -77,22 +81,29 @@ describe("§66 — /compliance/checklist Download the PDF affordance", () => {
     expect(CHECKLIST_SRC).toMatch(/Download,/);
   });
 
-  it("renders an anchor with data-testid=\"checklist-cta-download\" using the URL constant + native download attr", () => {
-    expect(CHECKLIST_SRC).toMatch(/data-testid="checklist-cta-download"/);
-    const block = CHECKLIST_SRC.match(
-      /<a[\s\S]*?data-testid="checklist-cta-download"[\s\S]*?Download the PDF[\s\S]*?<\/a>/,
+  it("imports the runtime PDF generator from @/lib/checklistPdf", () => {
+    expect(CHECKLIST_SRC).toContain('from "@/lib/checklistPdf"');
+    expect(CHECKLIST_SRC).toContain("buildChecklistPdf");
+    expect(CHECKLIST_SRC).toContain("triggerChecklistDownload");
+  });
+
+  it("renders a <button> with data-testid=\"checklist-cta-download\" wired to handleDownload", () => {
+    const idx = CHECKLIST_SRC.indexOf(
+      'data-testid="checklist-cta-download"',
     );
-    expect(block, "download anchor block must exist").toBeTruthy();
-    const text = block![0];
-    expect(text).toMatch(/href=\{CHECKLIST_PDF_URL\}/);
-    // The bare `download` attribute (no value) hints the browser to save
-    // rather than navigate, preserving the original filename.
-    expect(text).toMatch(/\bdownload\b/);
-    expect(text).toMatch(/<Download/);
+    expect(idx).toBeGreaterThan(-1);
+    const win = CHECKLIST_SRC.slice(
+      Math.max(0, idx - 250),
+      idx + 600,
+    );
+    // Must be a button, not the legacy anchor.
+    expect(win).toMatch(/<button[\s\S]*?data-testid="checklist-cta-download"/);
+    expect(win).toContain("onClick={handleDownload}");
     // Outlined CTA — same visual weight as Print this page.
-    expect(text).toMatch(/border-\[color:var\(--color-border\)\]/);
-    expect(text).toMatch(/bg-transparent/);
-    expect(text).toMatch(/btn-press/);
+    expect(win).toMatch(/border-\[color:var\(--color-border\)\]/);
+    expect(win).toMatch(/bg-transparent/);
+    expect(win).toMatch(/btn-press/);
+    expect(win).toMatch(/<Download/);
   });
 
   it("places the Download CTA between Start the self-audit and Print this page", () => {
@@ -108,23 +119,5 @@ describe("§66 — /compliance/checklist Download the PDF affordance", () => {
     expect(startIdx).toBeGreaterThan(-1);
     expect(downloadIdx).toBeGreaterThan(startIdx);
     expect(printIdx).toBeGreaterThan(downloadIdx);
-  });
-
-  it("PDF asset exists on disk in webdev-static-assets/", () => {
-    // Sanity check that the source PDF artifact is present in the
-    // checked-in static-assets staging area; an upload may rotate its
-    // hash suffix, but the source filename is stable.
-    const assetPath = path.resolve(
-      ROOT,
-      "..",
-      "webdev-static-assets",
-      "RapidHire-24-Point-Compliance-Checklist.pdf",
-    );
-    expect(fs.existsSync(assetPath)).toBe(true);
-    const stat = fs.statSync(assetPath);
-    // PDF should be non-trivial (10kB+) and reasonably small for a
-    // text-only artifact (under 1MB).
-    expect(stat.size).toBeGreaterThan(10_000);
-    expect(stat.size).toBeLessThan(1_000_000);
   });
 });
