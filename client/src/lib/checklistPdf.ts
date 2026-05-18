@@ -74,6 +74,20 @@ export type BuildChecklistPdfArgs = {
    * generator stamps the current local date in `YYYY-MM-DD` form.
    */
   generatedAt?: Date;
+  /**
+   * §109 — optional company / team name to print on the cover as
+   * `Generated for: <name>`. When provided, also gets baked into the
+   * default download filename so audit packets are attributable.
+   */
+  generatedFor?: string;
+  /**
+   * §109 — when true, only items that are NOT checked are rendered, and
+   * surfaces with zero unchecked items are skipped entirely. The cover
+   * eyebrow becomes `00 — UNCHECKED ITEMS ONLY` and the progress headline
+   * shows the count of remaining gaps. Useful for handing the document
+   * to legal/HR for the parts of the audit that still need attention.
+   */
+  uncheckedOnly?: boolean;
 };
 
 const PAGE_WIDTH = 612; // Letter, points
@@ -149,14 +163,42 @@ export async function buildChecklistPdf({
   surfaces,
   checked,
   totalItems,
-  title = "The 24-point employer compliance checklist.",
+  title: titleOverride,
   brandLine = "Rapid Hire Solutions · rapidhiresolutions.com",
   generatedAt = new Date(),
+  generatedFor,
+  uncheckedOnly = false,
 }: BuildChecklistPdfArgs): Promise<Uint8Array> {
+  /*
+    §109 — normalize the optional `generatedFor` string up front so the
+    cover, the metadata, and the filename helper all see the same value.
+    Empty / whitespace-only strings collapse to `undefined` so the cover
+    line is omitted cleanly when the user hasn't filled it in.
+  */
+  const generatedForClean =
+    typeof generatedFor === "string" && generatedFor.trim().length > 0
+      ? generatedFor.trim()
+      : undefined;
+
+  /*
+    §109 — the cover title shifts when uncheckedOnly is on so the
+    document self-describes as a "gaps only" packet, which is what most
+    legal/HR review sessions actually want.
+  */
+  const title =
+    titleOverride ??
+    (uncheckedOnly
+      ? "Outstanding compliance items — 24-point checklist."
+      : "The 24-point employer compliance checklist.");
+
   const pdf = await PDFDocument.create();
   pdf.setTitle(title);
   pdf.setAuthor("Rapid Hire Solutions");
-  pdf.setSubject("Employer compliance self-audit");
+  pdf.setSubject(
+    generatedForClean
+      ? `Employer compliance self-audit — ${generatedForClean}`
+      : "Employer compliance self-audit",
+  );
   pdf.setProducer("Rapid Hire Solutions checklist generator");
 
   const helv = await pdf.embedFont(StandardFonts.Helvetica);
@@ -169,6 +211,22 @@ export async function buildChecklistPdf({
     (acc, s) => acc + s.items.filter((it) => checked[it.id] === true).length,
     0,
   );
+  const uncheckedCount = total - checkedCount;
+
+  /*
+    §109 — in `uncheckedOnly` mode, drop any surface whose items are
+    fully checked so the document doesn't render an empty section. We
+    also project each surface's items down to just the unchecked ones,
+    which the per-item loop below honors.
+  */
+  const renderSurfaces: ReadonlyArray<ChecklistSurface> = uncheckedOnly
+    ? surfaces
+        .map((s) => ({
+          ...s,
+          items: s.items.filter((it) => checked[it.id] !== true),
+        }))
+        .filter((s) => s.items.length > 0)
+    : surfaces;
 
   // ---- shared per-page helpers ----
   let page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
@@ -215,7 +273,10 @@ export async function buildChecklistPdf({
 
   // ---- cover ----
   // Eyebrow
-  page.drawText("00 — 24-POINT CHECKLIST", {
+  const coverEyebrow = uncheckedOnly
+    ? "00 — UNCHECKED ITEMS ONLY"
+    : "00 — 24-POINT CHECKLIST";
+  page.drawText(coverEyebrow, {
     x: MARGIN_X,
     y,
     size: 9.5,
@@ -240,8 +301,12 @@ export async function buildChecklistPdf({
   }
   y -= 14;
 
-  // Progress headline
-  const progressLine = `${checkedCount} of ${total} items checked.`;
+  // Progress headline. In normal mode we show "X of Y items checked.";
+  // in `uncheckedOnly` mode we show "N items still to address." so the
+  // packet self-describes as a gap list.
+  const progressLine = uncheckedOnly
+    ? `${uncheckedCount} item${uncheckedCount === 1 ? "" : "s"} still to address.`
+    : `${checkedCount} of ${total} items checked.`;
   page.drawText(progressLine, {
     x: MARGIN_X,
     y: y - 16,
@@ -250,6 +315,33 @@ export async function buildChecklistPdf({
     color: ACCENT,
   });
   y -= 24;
+
+  /*
+    §109 — "Generated for: <company>" cover line. Sits between the
+    progress headline and the lede so it reads as the audit packet's
+    attribution. We render it in INK (not the muted INK_SOFT) so it
+    stands out as a key piece of metadata.
+  */
+  if (generatedForClean) {
+    const attrLines = wrap(
+      `Generated for: ${generatedForClean}`,
+      12,
+      helvBold,
+      CONTENT_WIDTH,
+    );
+    for (const line of attrLines) {
+      ensureRoom(16);
+      page.drawText(line, {
+        x: MARGIN_X,
+        y: y - 12,
+        size: 12,
+        font: helvBold,
+        color: INK,
+      });
+      y -= 16;
+    }
+    y -= 8;
+  }
 
   // Lede
   const lede =
@@ -277,7 +369,7 @@ export async function buildChecklistPdf({
   y -= 22;
 
   // ---- surfaces ----
-  for (const surface of surfaces) {
+  for (const surface of renderSurfaces) {
     // Surface header block: "01 — SURFACE" + title + accent + intro.
     ensureRoom(140);
 
@@ -416,6 +508,32 @@ export async function buildChecklistPdf({
   });
 
   return pdf.save();
+}
+
+/**
+ * §109 — build a sensible filename for the download. When a company
+ * name is provided, it gets slugified and appended; when `uncheckedOnly`
+ * is on we add `-gaps` so the file is obviously a partial export when
+ * it lands in someone's inbox.
+ *
+ *   buildChecklistFilename({})                                  -> rapid-hire-24-point-compliance-checklist.pdf
+ *   buildChecklistFilename({ generatedFor: "Acme Co." })        -> rapid-hire-24-point-compliance-checklist-acme-co.pdf
+ *   buildChecklistFilename({ generatedFor: "Acme", uncheckedOnly: true })
+ *                                                               -> rapid-hire-24-point-compliance-checklist-acme-gaps.pdf
+ */
+export function buildChecklistFilename(
+  opts: { generatedFor?: string; uncheckedOnly?: boolean } = {},
+): string {
+  const base = "rapid-hire-24-point-compliance-checklist";
+  const slug = (opts.generatedFor ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+  const parts = [base];
+  if (slug) parts.push(slug);
+  if (opts.uncheckedOnly) parts.push("gaps");
+  return `${parts.join("-")}.pdf`;
 }
 
 /**

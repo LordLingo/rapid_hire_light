@@ -42,8 +42,10 @@ import {
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { useSeo } from "@/hooks/useSeo";
-// §108: runtime PDF generator that mirrors the live checked state.
+// §108/§109: runtime PDF generator that mirrors the live checked state
+// and supports per-company attribution + a gaps-only export mode.
 import {
+  buildChecklistFilename,
   buildChecklistPdf,
   triggerChecklistDownload,
 } from "@/lib/checklistPdf";
@@ -261,16 +263,21 @@ const SURFACES: ReadonlyArray<ChecklistSurface> = [
 
 const TOTAL_ITEMS = SURFACES.reduce((acc, s) => acc + s.items.length, 0);
 const STORAGE_KEY = "rhs.compliance-checklist.progress.v1";
+// §109 — separate keys for the new fields so we can keep the v1 schema
+// of the progress map untouched and avoid an accidental data wipe.
+const GENERATED_FOR_KEY = "rhs.compliance-checklist.generated-for.v1";
+const UNCHECKED_ONLY_KEY = "rhs.compliance-checklist.unchecked-only.v1";
 
 /*
-  §108: the static pre-built PDF (CHECKLIST_PDF_URL) is no longer used
-  — it couldn't reflect the user's checked state, which was the bug
-  reported on /compliance/checklist. The download is now generated at
-  click-time by `buildChecklistPdf` from `@/lib/checklistPdf`, which
-  receives the same SURFACES data and the live `checked` map. If you
-  ever need a static fallback again (e.g. for an email funnel), revert
-  this commit's changes to ComplianceChecklist.tsx — the script that
-  produces the static PDF lives at scripts/build-checklist-pdf.mjs.
+  §108/§109: the previous static, pre-built PDF couldn't reflect the
+  user's checked state, which was the bug reported on
+  /compliance/checklist. The download is now generated at click-time by
+  `buildChecklistPdf` from `@/lib/checklistPdf`, which receives the same
+  SURFACES data and the live `checked` map, plus the optional
+  `generatedFor` and `uncheckedOnly` options that the hero-card
+  controls thread in. The dormant `scripts/build-checklist-pdf.mjs`
+  asset-builder + the staged static PDF were removed in §109 to keep
+  the repo lean and remove the temptation to drift back.
 */
 
 /* ---------- progress hook ---------- */
@@ -334,6 +341,42 @@ export default function ComplianceChecklist() {
 
   const { checked, toggle, reset, checkedCount } = useChecklistProgress();
 
+  /*
+    §109 — cover attribution + gaps-only mode. We persist both to
+    localStorage on the same hydrate-then-write pattern as the progress
+    hook so refreshing the page doesn't wipe the company name a user
+    just typed in. Hydration is gated on a flag so SSR-rendered HTML
+    can't be perturbed.
+  */
+  const [generatedFor, setGeneratedFor] = useState<string>("");
+  const [uncheckedOnly, setUncheckedOnly] = useState<boolean>(false);
+  const [optionsHydrated, setOptionsHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const g = window.localStorage.getItem(GENERATED_FOR_KEY);
+      if (typeof g === "string") setGeneratedFor(g);
+      const u = window.localStorage.getItem(UNCHECKED_ONLY_KEY);
+      if (u === "1") setUncheckedOnly(true);
+    } catch {
+      // localStorage unavailable — keep defaults.
+    }
+    setOptionsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!optionsHydrated) return;
+    try {
+      window.localStorage.setItem(GENERATED_FOR_KEY, generatedFor);
+      window.localStorage.setItem(
+        UNCHECKED_ONLY_KEY,
+        uncheckedOnly ? "1" : "0",
+      );
+    } catch {
+      // Quota / private-mode — silently ignore.
+    }
+  }, [generatedFor, uncheckedOnly, optionsHydrated]);
+
   const handlePrint = () => {
     if (typeof window !== "undefined") {
       window.print();
@@ -347,16 +390,33 @@ export default function ComplianceChecklist() {
     the user a recoverable toast instead of a silent click.
   */
   const [downloading, setDownloading] = useState(false);
+  const uncheckedCount = TOTAL_ITEMS - checkedCount;
   const handleDownload = async () => {
     if (downloading) return;
+    /*
+      §109 — if the user has "Unchecked items only" on but everything is
+      already checked, we'd produce an empty packet. Bail with a friendly
+      toast instead of a confusing zero-page PDF.
+    */
+    if (uncheckedOnly && uncheckedCount === 0) {
+      toast.success(
+        "Nothing left to flag — every checklist item is checked. Turn off 'Unchecked items only' to export the full audit.",
+      );
+      return;
+    }
     setDownloading(true);
     try {
       const bytes = await buildChecklistPdf({
         surfaces: SURFACES,
         checked,
         totalItems: TOTAL_ITEMS,
+        generatedFor,
+        uncheckedOnly,
       });
-      triggerChecklistDownload(bytes);
+      triggerChecklistDownload(
+        bytes,
+        buildChecklistFilename({ generatedFor, uncheckedOnly }),
+      );
     } catch (err) {
       console.error("checklist pdf failed", err);
       toast.error(
@@ -438,6 +498,49 @@ export default function ComplianceChecklist() {
                 </li>
               ))}
             </ul>
+            {/*
+              §109 — download options. Sits directly below the trust strip
+              so the relationship to the Download CTA is visually obvious.
+              Both controls feed into the runtime PDF generator and the
+              filename helper, and both persist to localStorage.
+            */}
+            <div
+              data-testid="checklist-download-options"
+              className="mt-6 rounded-2xl border border-[color:var(--color-border)] bg-white/60 p-4 sm:p-5 grid grid-cols-1 sm:grid-cols-[1fr_auto] items-end gap-4"
+            >
+              <label
+                htmlFor="checklist-generated-for"
+                className="flex flex-col gap-1.5"
+              >
+                <span className="text-[10.5px] tracking-[0.2em] uppercase text-[color:var(--color-ink-muted)]">
+                  Generated for
+                </span>
+                <input
+                  id="checklist-generated-for"
+                  data-testid="checklist-generated-for-input"
+                  type="text"
+                  value={generatedFor}
+                  onChange={(e) => setGeneratedFor(e.target.value)}
+                  placeholder="Your company or team (optional)"
+                  maxLength={80}
+                  className="h-10 rounded-lg border border-[color:var(--color-border)] bg-white px-3 text-[14px] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink-muted)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-accent-ink)] focus:border-transparent"
+                />
+              </label>
+              <label
+                htmlFor="checklist-unchecked-only"
+                className="inline-flex items-center gap-2 text-[13.5px] text-[color:var(--color-ink)] cursor-pointer select-none"
+              >
+                <input
+                  id="checklist-unchecked-only"
+                  data-testid="checklist-unchecked-only-toggle"
+                  type="checkbox"
+                  checked={uncheckedOnly}
+                  onChange={(e) => setUncheckedOnly(e.target.checked)}
+                  className="size-4 rounded border-[color:var(--color-border)] text-[color:var(--color-accent-ink)] focus:ring-[color:var(--color-accent-ink)]"
+                />
+                Unchecked items only ({uncheckedCount})
+              </label>
+            </div>
           </>
         }
         visual={
