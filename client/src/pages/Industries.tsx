@@ -71,6 +71,14 @@ type Vertical = {
   stats: ReadonlyArray<{ value: string; label: string; sub: string }>;
   /** Whether this section uses the dark navy band (true) or warm paper (false) */
   dark: boolean;
+  /**
+   * §120 — optional editorial illustration rendered under the icon-circle
+   * in the left rail, mirroring the §117 services treatment. Square 1:1
+   * navy + cream + sage plate framed inside a white inner mat with
+   * paper-shadow and a hover-zoom container. Opt-in: omit to render
+   * icon-only.
+   */
+  heroImage?: { url: string; alt: string };
 };
 
 const VERTICALS: ReadonlyArray<Vertical> = [
@@ -102,6 +110,10 @@ const VERTICALS: ReadonlyArray<Vertical> = [
       { value: "BAA", label: "On request", sub: "HIPAA Business Associate Agreement" },
     ],
     dark: false,
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-healthcare-fFMk6DwHkHxzSYMhCQUuU5.webp",
+      alt: "Editorial illustration of a navy-line clipboard holding a folded medical chart sheet beside a coiled stethoscope and a small navy hospital-cross badge with a soft sage check mark on the chart — representing OIG, SAM, and Medicaid exclusion screening for healthcare hires.",
+    },
   },
   {
     slug: "transportation",
@@ -131,6 +143,10 @@ const VERTICALS: ReadonlyArray<Vertical> = [
       { value: "Part 40", label: "Drug program", sub: "DOT-compliant by default" },
     ],
     dark: true,
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-transportation-KZdHULonsiRyrmpAUxMENU.webp",
+      alt: "Editorial illustration of a long-haul navy-line box truck cab and trailer parked on a soft horizon with a folded MVR abstract sheet tucked under the front wheel showing a sage check mark — representing DOT-compliant MVR pulls, drug program, and continuous driver monitoring.",
+    },
   },
   {
     slug: "staffing",
@@ -160,6 +176,10 @@ const VERTICALS: ReadonlyArray<Vertical> = [
       { value: "0.4%", label: "Dispute rate", sub: "trailing 12 months" },
     ],
     dark: false,
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-staffing-HTsu4GBoGBQEEhfrbQaNmE.webp",
+      alt: "Editorial illustration of a small fan of three navy-line résumé sheets clipped together with a navy paperclip and a faint timeline arc behind, with a soft sage check mark on the top sheet — representing high-volume staffing-agency placements and bulk CSV/ATS invites.",
+    },
   },
   {
     slug: "finance",
@@ -189,6 +209,10 @@ const VERTICALS: ReadonlyArray<Vertical> = [
       { value: "Monthly", label: "Re-screen", sub: "optional fiduciary monitoring" },
     ],
     dark: true,
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-finance-TqENSumzNV7F2YrVh7RnbN.webp",
+      alt: "Editorial illustration of a neoclassical bank pediment façade resting on three slim navy columns, with a folded compliance form leaning against the base showing a soft sage check mark — representing FINRA-aware fiduciary screening with monthly fiduciary monitoring.",
+    },
   },
   {
     slug: "retail",
@@ -218,6 +242,10 @@ const VERTICALS: ReadonlyArray<Vertical> = [
       { value: "Mobile-first", label: "Invite flow", sub: "no portal login required" },
     ],
     dark: false,
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-retail-UKbLZ6XkmWfXgZXs2baQs6.webp",
+      alt: "Editorial illustration of a cream paper shopping bag with thin navy rope handles standing upright, with a small navy receipt rolling off the top edge showing a soft sage check mark — representing same-day mobile-first screening for retail and hospitality hires.",
+    },
   },
   {
     slug: "nonprofit",
@@ -247,6 +275,10 @@ const VERTICALS: ReadonlyArray<Vertical> = [
       { value: "Volunteer", label: "Pricing tier", sub: "separate from employee tier" },
     ],
     dark: true,
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-nonprofit-H25BGxQHARxBvEH3XFcPGz.webp",
+      alt: "Editorial illustration of a navy heart cradled in a pair of cupped open hands beside a folded volunteer sign-in sheet showing a soft sage check mark — representing child-safety-first volunteer screening for nonprofit and faith-based organizations.",
+    },
   },
 ];
 
@@ -633,6 +665,21 @@ function VerticalSection({ v }: { v: Vertical }) {
             >
               <v.Icon aria-hidden className="size-5" />
             </span>
+            {/* §120 — framed editorial illustration matching the §117 service plates. */}
+            {v.heroImage ? (
+              <div
+                data-testid={`industries-section-image-${v.slug}`}
+                className="hover-zoom-image mt-8 aspect-square w-full max-w-[16rem] overflow-hidden rounded-2xl border border-border bg-white p-2 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_8px_24px_-12px_rgba(16,42,75,0.18)]"
+              >
+                <img
+                  src={v.heroImage.url}
+                  alt={v.heroImage.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="block h-full w-full rounded-xl object-cover"
+                />
+              </div>
+            ) : null}
           </div>
           <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
             <h2

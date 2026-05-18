@@ -83,6 +83,22 @@ export default function IndustryDetail() {
     <SiteShell>
       <PageHero
         eyebrow={`Industries · ${industry.name}`}
+        belowEyebrow={
+          industry.heroImage ? (
+            <div
+              data-testid={`industry-detail-image-${industry.slug}`}
+              className="hover-zoom-image mt-6 aspect-square w-full max-w-[16rem] overflow-hidden rounded-2xl border border-border bg-white p-2 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_8px_24px_-12px_rgba(16,42,75,0.18)]"
+            >
+              <img
+                src={industry.heroImage.url}
+                alt={industry.heroImage.alt}
+                loading="lazy"
+                decoding="async"
+                className="block h-full w-full rounded-xl object-cover"
+              />
+            </div>
+          ) : undefined
+        }
         title={
           <>
             <span className="block">{industry.name}</span>

@@ -48,6 +48,18 @@ export type Industry = {
   whenToUse: string;
   relatedChecks: ReadonlyArray<{ slug: string; label: string }>;
   dark: boolean;
+  /**
+   * §120 — optional editorial illustration rendered under the eyebrow
+   * on /industries and /industries/:slug. Same visual treatment as the
+   * §117 service plates: square 1:1 webp on a cream paper background,
+   * navy ink + sage check, framed inside a white inner mat with
+   * paper-shadow and a hover-zoom container. Opt-in: if a future
+   * vertical doesn't have an illustration yet it can omit this field
+   * and the section renders icon-only.
+   *
+   * `alt` is required and must be descriptive (no "image of …" filler).
+   */
+  heroImage?: { url: string; alt: string };
 };
 
 export const INDUSTRIES: ReadonlyArray<Industry> = [
@@ -89,6 +101,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/continuous-monitoring", label: "Continuous monitoring" },
     ],
     dark: false,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-healthcare-fFMk6DwHkHxzSYMhCQUuU5.webp",
+      alt: "Editorial illustration of a navy-line clipboard holding a folded medical chart sheet beside a coiled stethoscope and a small navy hospital-cross badge with a soft sage check mark on the chart — representing OIG, SAM, and Medicaid exclusion screening for healthcare hires.",
+    },
   },
   {
     slug: "transportation",
@@ -128,6 +145,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/criminal-records", label: "Criminal records" },
     ],
     dark: true,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-transportation-KZdHULonsiRyrmpAUxMENU.webp",
+      alt: "Editorial illustration of a long-haul navy-line box truck cab and trailer parked on a soft horizon with a folded MVR abstract sheet tucked under the front wheel showing a sage check mark — representing DOT-compliant MVR pulls, drug program, and continuous driver monitoring.",
+    },
   },
   {
     slug: "staffing",
@@ -167,6 +189,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/identity-verification", label: "Identity verification" },
     ],
     dark: false,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-staffing-HTsu4GBoGBQEEhfrbQaNmE.webp",
+      alt: "Editorial illustration of a small fan of three navy-line résumé sheets clipped together with a navy paperclip and a faint timeline arc behind, with a soft sage check mark on the top sheet — representing high-volume staffing-agency placements and bulk CSV/ATS invites.",
+    },
   },
   {
     slug: "finance",
@@ -206,6 +233,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/identity-verification", label: "Identity verification" },
     ],
     dark: true,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-finance-TqENSumzNV7F2YrVh7RnbN.webp",
+      alt: "Editorial illustration of a neoclassical bank pediment façade resting on three slim navy columns, with a folded compliance form leaning against the base showing a soft sage check mark — representing FINRA-aware fiduciary screening with monthly fiduciary monitoring.",
+    },
   },
   {
     slug: "retail",
@@ -245,6 +277,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/drug-screening", label: "Drug screening" },
     ],
     dark: false,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-retail-UKbLZ6XkmWfXgZXs2baQs6.webp",
+      alt: "Editorial illustration of a cream paper shopping bag with thin navy rope handles standing upright, with a small navy receipt rolling off the top edge showing a soft sage check mark — representing same-day mobile-first screening for retail and hospitality hires.",
+    },
   },
   {
     slug: "nonprofit",
@@ -284,6 +321,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/identity-verification", label: "Identity verification" },
     ],
     dark: true,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-nonprofit-H25BGxQHARxBvEH3XFcPGz.webp",
+      alt: "Editorial illustration of a navy heart cradled in a pair of cupped open hands beside a folded volunteer sign-in sheet showing a soft sage check mark — representing child-safety-first volunteer screening for nonprofit and faith-based organizations.",
+    },
   },
   // §83: NEW vertical — gig/1099 platforms.
   {
@@ -324,6 +366,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/criminal-records", label: "Criminal records" },
     ],
     dark: false,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-gig-1099-ZaEppiBBQed7JkEfbwVA2H.webp",
+      alt: "Editorial illustration of a smartphone showing an abstract route line and a navy map pin beside a folded contractor agreement with a soft sage check mark and a small set of motorbike keys — representing identity-first, ESIGN-compliant onboarding for gig and 1099 marketplace workers.",
+    },
   },
   // §83: NEW vertical — manufacturing & industrial.
   {
@@ -364,6 +411,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/employment-verification", label: "Employment verification" },
     ],
     dark: true,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-manufacturing-D7PmAZYF2xADLUtjD2ktXc.webp",
+      alt: "Editorial illustration of a navy-line industrial hard hat beside a folded safety-checklist sheet with a soft sage check mark and a pair of safety goggles in front — representing OSHA-aware credential verification and safety-sensitive drug screening for manufacturing and warehouse roles.",
+    },
   },
   // §83: NEW vertical — education (K-12 + higher-ed).
   {
@@ -404,6 +456,11 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
       { slug: "/services/continuous-monitoring", label: "Continuous monitoring" },
     ],
     dark: false,
+    // §120 — editorial illustration to match the §117 service plates.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-education-AetotHvhbiXAUhpCCRUXiY.webp",
+      alt: "Editorial illustration of a small navy-line schoolhouse with a peaked roof and a tiny bell tower, with a folded volunteer-fingerprint clearance sheet leaning against the base showing a soft sage check mark — representing fingerprint-aware K-12 and higher-ed staff and volunteer screening with continuous monitoring.",
+    },
   },
 ];
 
