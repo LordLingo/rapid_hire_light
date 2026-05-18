@@ -60,20 +60,6 @@ export default function Integrations() {
     <SiteShell>
       <PageHero
         eyebrow="02 — Integrations"
-        belowEyebrow={
-          <div
-            data-testid="integrations-hero-image"
-            className="hover-zoom-image mt-6 aspect-square w-full max-w-[16rem] overflow-hidden rounded-2xl border border-border bg-white p-2 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_8px_24px_-12px_rgba(16,42,75,0.18)]"
-          >
-            <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/integrations-plate-5gAXFzjQrFTUZZGW4UdbC7.webp"
-              alt="Editorial illustration of two facing navy-line panels — a candidate-list ATS dashboard on the left and a background-check report sheet on the right — connected through two interlocking link rings with a soft sage-green check at their intersection, representing a secure two-way ATS/HRIS sync with Rapid Hire."
-              loading="lazy"
-              decoding="async"
-              className="block h-full w-full rounded-xl object-cover"
-            />
-          </div>
-        }
         title={
           <>
             Plug Rapid Hire into the{" "}
@@ -130,45 +116,51 @@ export default function Integrations() {
         </div>
       </section>
 
-      {/* §121 — Full-bleed infographic section. The portrait-format chart
-          carries a lot of legible copy that doesn't compress well into the
-          eyebrow plate, so we surface it here at native size between
-          "How it works" and the integrations grid. */}
+      {/* §122 — Tall portrait editorial illustration. Replaces the
+          previous small under-eyebrow plate (which was illegible at hero
+          scale) and the user-supplied portrait infographic (which had
+          on-image copy that competed with the page's typography). The
+          illustration tells the same data-flow story — ATS dashboard at
+          top, interlocking link rings at center, background-check report
+          at bottom — at a size where every element actually reads. */}
       <section className="bg-[color:var(--color-paper-soft)] border-y border-border">
         <div className="container py-20 md:py-28">
-          <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-start">
-            <div className="col-span-12 lg:col-span-4 reveal-on-scroll">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-12 items-center">
+            <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
               <p className="eyebrow">04 — The handshake</p>
               <div className="mt-3 hairline" />
-              <h2 className="mt-6 font-display text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.02em] text-[color:var(--color-ink)]">
+              <h2 className="mt-6 font-display text-[32px] md:text-[44px] leading-[1.05] tracking-[-0.025em] text-[color:var(--color-ink)]">
                 One picture of the whole{" "}
                 <span className="italic font-normal text-[color:var(--color-accent-ink)]">
                   data flow.
                 </span>
               </h2>
-              <p className="mt-5 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                ATS/HRIS on one side, our screening engine on the other,
-                with a secure handshake in the middle. The candidate is
-                added once in your system of record, and the rest — identity,
-                criminal records, employment, and education verification —
-                rides through the integration without manual re-entry.
+              <p className="mt-6 text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)] max-w-md">
+                Your ATS or HRIS sits at the top of the flow. A candidate
+                is added once — we take the handshake from there. Identity,
+                criminal records, employment, and education verification all
+                ride through the same secure integration, and the
+                adjudication writes back into the same record without manual
+                re-entry.
               </p>
-              <p className="mt-3 text-[12.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+              <p className="mt-4 text-[13px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                 SOC 2 Type II · GDPR-aligned · end-to-end encrypted in transit
                 and at rest.
               </p>
             </div>
             <div
               data-testid="integrations-handshake-figure"
-              className="col-span-12 lg:col-span-8 reveal-on-scroll"
+              className="col-span-12 lg:col-span-7 reveal-on-scroll"
             >
-              <figure className="mx-auto max-w-[560px] overflow-hidden rounded-[20px] border border-border bg-[color:var(--color-paper)] p-3 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_12px_32px_-16px_rgba(16,42,75,0.22)]">
+              <figure className="hover-zoom-image mx-auto w-full max-w-[440px] overflow-hidden rounded-[24px] border border-border bg-white p-3 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_18px_44px_-22px_rgba(16,42,75,0.28)]">
                 <img
-                  src="/manus-storage/integrations-infographic_ad1c2dd4.png"
-                  alt="Vertical infographic showing how Rapid Hire integrates with ATS and HRIS systems: candidate hire → secure data sync → background check software running identity verification, criminal records, employment verification, and education verification, with status updates flowing back into the ATS/HRIS, ending in saved time, reduced risk, improved efficiency, and a better candidate experience. Footer notes SOC 2 Type II, GDPR compliance, and end-to-end encryption."
+                  src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/integrations-portrait-XH6BidmDFbRqVY2bnuYWAp.webp"
+                  alt="Tall editorial illustration in cream and navy with soft sage accents. At the top, a stylized ATS / HRIS dashboard window shows three candidate rows with avatars and small status pills. A graceful navy arrow flows downward into two interlocking circular link rings at the center, with a small sage-green check pip at their intersection — representing the secure handshake between Rapid Hire and the customer system. A second navy arrow flows from the rings down into a background-check report card at the bottom, showing four icon-led rows (identity, criminal records, employment, education) and a small sage shield-with-check badge in the upper-right corner."
+                  width={1056}
+                  height={1408}
                   loading="lazy"
                   decoding="async"
-                  className="block h-auto w-full rounded-[14px]"
+                  className="block h-auto w-full rounded-[18px]"
                 />
               </figure>
             </div>

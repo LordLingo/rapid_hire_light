@@ -1,21 +1,22 @@
 /**
- * §121 — /integrations editorial plate + native-size handshake infographic.
+ * §122 — /integrations: tall portrait editorial illustration replaces both
+ * the small under-eyebrow plate (illegible at hero scale) and the
+ * user-supplied infographic (had on-image copy that competed with the page
+ * typography).
  *
- * Two assertions live in this file:
+ * The illustration tells the same data-flow story — ATS dashboard at top,
+ * interlocking link rings at center, background-check report at bottom —
+ * inside a "04 — The handshake" section sitting between the white "How
+ * it works" band and the paper integrations grid.
  *
- *   A) The square editorial plate is rendered under the "02 — Integrations"
- *      eyebrow in the left rail of the page hero, framed with the same
- *      white-mat + paper-shadow + hover-zoom-image treatment used on
- *      /services and /industries (§117/§118/§120).
- *
- *   B) The user-supplied portrait infographic is rendered at native size in
- *      a dedicated "04 — The handshake" section between "How it works" and
- *      "Available today", with a self-describing alt text and a `figure`
- *      frame so it reads as legible imagery, not a decorative spot.
- *
- * Both assertions pin the asset URLs and structural classes so a future
- * edit can't silently drop the framing, the hover gesture, the alt text,
- * or the placement.
+ * This invariant pins:
+ *   A)  the small under-eyebrow plate has been removed
+ *   B)  the user-uploaded infographic has been removed
+ *   C)  the new portrait illustration is mounted in the handshake section,
+ *       framed in white-mat + paper-shadow + hover-zoom, with a self-
+ *       descriptive alt text
+ *   D)  the page numbering is monotonic (02 hero → 03 how it works →
+ *       04 handshake → 05 grid)
  */
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
@@ -28,99 +29,104 @@ const SRC = resolve(__dirname, "..");
 
 const PAGE = readFileSync(resolve(SRC, "pages/Integrations.tsx"), "utf-8");
 
-describe("§121.A — square editorial plate under the 02 — Integrations eyebrow", () => {
-  it("PageHero is wired with belowEyebrow + framed hero image testid", () => {
+describe("§122.A — small under-eyebrow plate has been removed", () => {
+  it("PageHero on /integrations no longer ships a belowEyebrow plate", () => {
     expect(PAGE).toContain('eyebrow="02 — Integrations"');
-    expect(PAGE).toContain("belowEyebrow=");
-    expect(PAGE).toContain('data-testid="integrations-hero-image"');
+    expect(PAGE).not.toContain("belowEyebrow=");
   });
 
-  it("plate uses the same framing classes as the services/industries plates", () => {
-    expect(PAGE).toMatch(/hover-zoom-image[^"]*aspect-square/);
-    expect(PAGE).toContain("rounded-2xl");
-    expect(PAGE).toContain("bg-white p-2");
-    expect(PAGE).toMatch(/shadow-\[0_1px_2px/);
-    // Inner image sits inside a rounded-xl clip with object-cover
-    expect(PAGE).toContain('className="block h-full w-full rounded-xl object-cover"');
+  it("the legacy small-plate testid is gone", () => {
+    expect(PAGE).not.toContain('data-testid="integrations-hero-image"');
   });
 
-  it("plate references the §121 cloudfront webp and ships with lazy/async loading", () => {
-    expect(PAGE).toContain(
-      "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/integrations-plate-5gAXFzjQrFTUZZGW4UdbC7.webp",
-    );
-    expect(PAGE).toContain('loading="lazy"');
-    expect(PAGE).toContain('decoding="async"');
+  it("the legacy 16rem aspect-square wrapper class combo is gone", () => {
+    expect(PAGE).not.toMatch(/aspect-square[^"]*max-w-\[16rem\]/);
   });
 
-  it("plate's alt text is self-descriptive — references the link rings + ATS/HRIS hand-off", () => {
-    // Pull the alt content for the plate (avoid the §121.B infographic alt)
-    const plateMatch = PAGE.match(
-      /integrations-plate-5gAXFzjQrFTUZZGW4UdbC7\.webp[^]*?alt="([^"]+)"/,
-    );
-    expect(plateMatch, "could not find alt text for the editorial plate").not.toBeNull();
-    const alt = (plateMatch![1] ?? "").toLowerCase();
-    expect(alt.length).toBeGreaterThanOrEqual(60);
-    expect(alt).not.toMatch(/^image of/);
-    // Mentions both sides of the hand-off
-    expect(alt).toMatch(/ats|hris/);
-    expect(alt).toContain("background");
-    // Mentions the central interlocking link rings + sage-green check
-    expect(alt).toContain("link rings");
+  it("the legacy small-plate webp is no longer referenced", () => {
+    expect(PAGE).not.toContain("integrations-plate-5gAXFzjQrFTUZZGW4UdbC7.webp");
   });
 });
 
-describe("§121.B — full portrait infographic in a dedicated section", () => {
-  it("renders the §121 handshake section with its own eyebrow and figure testid", () => {
-    expect(PAGE).toContain('eyebrow">04 — The handshake</p>');
+describe("§122.B — user-uploaded portrait infographic has been removed", () => {
+  it("the manus-storage infographic asset is no longer referenced", () => {
+    expect(PAGE).not.toContain("integrations-infographic_ad1c2dd4.png");
+  });
+});
+
+describe("§122.C — tall portrait illustration is mounted in the handshake section", () => {
+  it("the handshake figure testid still anchors the section", () => {
     expect(PAGE).toContain('data-testid="integrations-handshake-figure"');
-    expect(PAGE).toMatch(/<figure[^>]*>/);
   });
 
-  it("the user-supplied infographic is referenced via the manus-storage CDN path", () => {
-    expect(PAGE).toContain('src="/manus-storage/integrations-infographic_ad1c2dd4.png"');
-    // Allowed to render at native portrait size — no aspect-square clip on the figure.
+  it("references the §122 portrait cloudfront webp", () => {
+    expect(PAGE).toContain(
+      "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/integrations-portrait-XH6BidmDFbRqVY2bnuYWAp.webp",
+    );
+  });
+
+  it("portrait is wrapped in a hover-zoom-image white-mat figure with paper-shadow", () => {
     const figureSlice = PAGE.slice(
       PAGE.indexOf('data-testid="integrations-handshake-figure"'),
-      PAGE.indexOf('{/* Integrations grid */}'),
+      PAGE.indexOf("{/* Integrations grid */}"),
     );
+    expect(figureSlice).toMatch(/<figure[^>]*hover-zoom-image[^>]*>/);
+    expect(figureSlice).toContain("bg-white");
+    expect(figureSlice).toMatch(/p-3/);
+    expect(figureSlice).toMatch(/shadow-\[0_1px_2px[^\]]*0_18px_44px[^\]]*\]/);
+    // image fills the figure at native portrait ratio (no aspect-square clip)
     expect(figureSlice).not.toMatch(/aspect-square/);
-    expect(figureSlice).toContain('h-auto w-full');
+    expect(figureSlice).toContain("h-auto w-full");
   });
 
-  it("the infographic carries an alt that mirrors its on-image messages", () => {
-    const altMatch = PAGE.match(
-      /integrations-infographic_ad1c2dd4\.png"[^>]*alt="([^"]+)"/s,
+  it("portrait carries explicit width + height to reserve correct layout space (3:4)", () => {
+    const figureSlice = PAGE.slice(
+      PAGE.indexOf('data-testid="integrations-handshake-figure"'),
+      PAGE.indexOf("{/* Integrations grid */}"),
     );
-    expect(altMatch, "could not find alt for handshake infographic").not.toBeNull();
+    expect(figureSlice).toMatch(/width=\{1056\}/);
+    expect(figureSlice).toMatch(/height=\{1408\}/);
+  });
+
+  it("portrait alt text describes the ATS → rings → report flow at length", () => {
+    const altMatch = PAGE.match(
+      /integrations-portrait-XH6BidmDFbRqVY2bnuYWAp\.webp"[^>]*alt="([^"]+)"/s,
+    );
+    expect(altMatch, "could not find alt for portrait").not.toBeNull();
     const alt = (altMatch![1] ?? "").toLowerCase();
-    expect(alt.length).toBeGreaterThanOrEqual(120);
-    // Mentions both connector layers
+    expect(alt.length).toBeGreaterThanOrEqual(140);
+    expect(alt).not.toMatch(/^image of/);
+    // mentions all three layers of the flow
     expect(alt).toMatch(/ats|hris/);
-    expect(alt).toContain("background check");
-    // Mentions at least three of the four sub-checks visible on the image
-    const subCheckHits = [
-      "identity verification",
-      "criminal records",
-      "employment verification",
-      "education verification",
-    ].filter((kw) => alt.includes(kw));
-    expect(subCheckHits.length).toBeGreaterThanOrEqual(3);
-    // Mentions the closing trust line
-    expect(alt).toContain("soc 2");
+    expect(alt).toContain("link rings");
+    expect(alt).toContain("background-check report");
+    // mentions the central handshake/check
+    expect(alt).toMatch(/check pip|sage-green check|secure handshake/);
   });
 
-  it("the dedicated section sits between '03 — How integrations work' and the integrations grid", () => {
-    const howIdx = PAGE.indexOf("03 — How integrations work");
-    const handshakeIdx = PAGE.indexOf("04 — The handshake");
-    const gridIdx = PAGE.indexOf("{/* Integrations grid */}");
-    expect(howIdx).toBeGreaterThan(0);
-    expect(handshakeIdx).toBeGreaterThan(howIdx);
-    expect(gridIdx).toBeGreaterThan(handshakeIdx);
+  it("ships with lazy + async loading", () => {
+    const figureSlice = PAGE.slice(
+      PAGE.indexOf('data-testid="integrations-handshake-figure"'),
+      PAGE.indexOf("{/* Integrations grid */}"),
+    );
+    expect(figureSlice).toContain('loading="lazy"');
+    expect(figureSlice).toContain('decoding="async"');
+  });
+});
+
+describe("§122.D — page numbering is monotonic", () => {
+  it("section ordering: 02 hero → 03 how it works → 04 handshake → 05 grid", () => {
+    const i02 = PAGE.indexOf("02 — Integrations");
+    const i03 = PAGE.indexOf("03 — How integrations work");
+    const i04 = PAGE.indexOf("04 — The handshake");
+    const i05 = PAGE.indexOf("05 — Available today");
+    expect(i02).toBeGreaterThanOrEqual(0);
+    expect(i03).toBeGreaterThan(i02);
+    expect(i04).toBeGreaterThan(i03);
+    expect(i05).toBeGreaterThan(i04);
   });
 
-  it("renumbered the integrations-grid eyebrow to 05 to keep the page numbering monotonic", () => {
-    expect(PAGE).toContain('eyebrow">05 — Available today</p>');
-    // The old 04 — Available today should be gone.
+  it("anti-regression: the old 04 — Available today numbering is gone", () => {
     expect(PAGE).not.toContain('eyebrow">04 — Available today</p>');
   });
 });

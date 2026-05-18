@@ -1242,3 +1242,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §121.5 — Added new "04 — The handshake" paper-soft section between How-it-works and the integrations grid; renumbered Available-today to 05
 - [x] §121.6 — Authored integrationsHeroImage.test.ts (9 specs) + extended paperSoftAudit.test.ts allowlist (§121 audit comment)
 - [x] §121.7 — vitest 841/841 across 67 files; tsc clean
+
+## §122 — /integrations: replace small under-eyebrow plate with a large legible portrait illustration
+- [x] §122.1 — Inventory complete; mounted in the new "04 — The handshake" section beside copy on a paper-soft band
+- [x] §122.2 — Generated 3:4 portrait illustration (1056x1408): ATS dashboard → link rings + sage check → background-check report card
+- [x] §122.3 — Dropped the small 16rem under-eyebrow plate; replaced the user-supplied infographic with the new portrait illustration (sized w/ max-w-[440px], hover-zoom, white inner mat, paper-shadow)
+- [x] §122.4 — Rewrote integrationsHeroImage.test.ts (13 specs): four describe blocks pinning removal, mount, framing, alt, and monotonic page numbering
+- [x] §122.5 — vitest 845/845 across 67 files; tsc clean
