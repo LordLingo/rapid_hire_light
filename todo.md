@@ -1113,3 +1113,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Added `seoAuditScript.test.ts` (6 specs) covering WEIGHTS, perfect-shell at 100, broken-shell under 50 with the right failing checks, and `summarize()` parsing edge-cases
 - [x] Added `heroCopyLength.test.ts` (3 specs) pinning >=150 chars of visible hero copy, the FCRA + U.S.-based + 24-hour proof-point row, and exactly one `<h1>` in Hero.tsx
 - [x] Run vitest + tsc (648/648 across 55 files; tsc clean)
+
+## §103 Remove chat feature (deferrable; re-install later)
+- [x] Inventory complete: only one chat surface existed — the §83 floating sales `ChatLauncher` mounted in `SiteShell.tsx`. No `/chat` route, no chat router on the server, no chat DB tables. Other matches were unrelated copy (StopGambling "no chatbots", a blog post about employer chatbot prompts) and `node_modules` README badges; those stay
+- [x] Deleted `client/src/components/site/ChatLauncher.tsx`
+- [x] Removed the import and `<ChatLauncher />` mount from `SiteShell.tsx`; left a one-line breadcrumb comment so re-installing is a 2-line patch
+- [x] Dropped the `ChatLauncher.tsx` entry from the `paperSoftAudit.test.ts` allowlist
+- [x] Updated the /support hours card from "Live phone, email, and chat" to "Live phone and email" so the visible support copy matches reality
+- [x] Added `chatRemoved.test.ts` (3 specs): file does not exist, SiteShell does not import or mount `<ChatLauncher>` (with JSX-comment-stripping so the explanatory note doesn't false-positive), and Support no longer advertises chat
+- [x] Run vitest + tsc (651/651 across 56 files; tsc clean)

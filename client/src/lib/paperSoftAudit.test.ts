@@ -109,9 +109,8 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // sub-band tint (visually audited; matches PricingCalculator's
       // surrounding section bands).
       "client/src/components/site/RoiCalculator.tsx",
-      // §83: floating chat launcher uses paper-soft as the hover state
-      // for the close button (visually audited).
-      "client/src/components/site/ChatLauncher.tsx",
+      // §103: ChatLauncher.tsx removed by request; entry intentionally
+      // omitted from the allowlist. Re-add when re-installing chat.
       // §83: 2026 benchmark report uses the same alternating section
       // rhythm as the rest of /resources.
       "client/src/pages/ResourcesBenchmarks.tsx",

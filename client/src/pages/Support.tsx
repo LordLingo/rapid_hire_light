@@ -537,7 +537,7 @@ export default function Support() {
                   {
                     label: "Monday – Friday",
                     value: "7:00 AM – 7:00 PM Central",
-                    detail: "Live phone, email, and chat",
+                    detail: "Live phone and email",
                   },
                   {
                     label: "Saturday",
