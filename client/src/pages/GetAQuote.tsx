@@ -24,6 +24,15 @@ import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { ContactCallCard } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
+// §134: shared field-level validation — surfaces inline red borders
+// (.form-field--invalid) and short helper text per field instead of a
+// single page-level toast for missing data.
+import {
+  validateFields,
+  hasErrors,
+  clearFieldError,
+  type FieldErrors,
+} from "@/lib/formValidation";
 
 /** Formspree endpoint for quote requests (provided by site owner). */
 export const QUOTE_FORMSPREE_ENDPOINT = "https://formspree.io/f/mvzyoyoz";
@@ -128,6 +137,9 @@ export default function GetAQuote() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // §134: per-field inline errors. Keyed by `name` attribute so the
+  // markup binding stays trivial. Cleared on input/change.
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   // Re-sync if user navigates between pre-fills within the SPA.
   useEffect(() => {
@@ -147,6 +159,37 @@ export default function GetAQuote() {
     // Honeypot — if filled, silently swallow.
     if (String(fd.get("_gotcha") ?? "").trim().length > 0) {
       setSubmitted(true);
+      return;
+    }
+    // §134: client-side required + email validation BEFORE the network call.
+    const validationValues = {
+      firstName: String(fd.get("firstName") ?? ""),
+      lastName: String(fd.get("lastName") ?? ""),
+      email: String(fd.get("email") ?? ""),
+      company: String(fd.get("company") ?? ""),
+      industry: String(fd.get("industry") ?? ""),
+      volume: String(fd.get("volume") ?? ""),
+    };
+    const errs = validateFields(validationValues, {
+      requiredFields: [
+        "firstName",
+        "lastName",
+        "email",
+        "company",
+        "industry",
+        "volume",
+      ],
+      emailFields: ["email"],
+    });
+    if (hasErrors(errs)) {
+      setFieldErrors(errs);
+      const firstName = Object.keys(errs)[0];
+      const firstEl = formEl.elements.namedItem(firstName) as
+        | HTMLInputElement
+        | HTMLTextAreaElement
+        | HTMLSelectElement
+        | null;
+      firstEl?.focus();
       return;
     }
     const company = String(fd.get("company") ?? "").trim();
@@ -332,7 +375,23 @@ export default function GetAQuote() {
                   </Link>
                 </div>
               ) : (
-                <form onSubmit={onSubmit} className="grid gap-10" data-testid="quote-form">
+                <form
+                  onSubmit={onSubmit}
+                  className="grid gap-10"
+                  noValidate
+                  data-testid="quote-form"
+                  onChange={(e) => {
+                    // §134: clear an individual field's error as soon as
+                    // the user edits it.
+                    const target = e.target as
+                      | HTMLInputElement
+                      | HTMLTextAreaElement
+                      | HTMLSelectElement;
+                    if (target?.name && fieldErrors[target.name]) {
+                      setFieldErrors((cur) => clearFieldError(cur, target.name));
+                    }
+                  }}
+                >
                   {/* Honeypot — hidden from real users, picked up by bots */}
                   <input
                     type="text"
@@ -344,11 +403,11 @@ export default function GetAQuote() {
                   />
 
                   <div className="grid grid-cols-12 gap-x-8 gap-y-8">
-                    <Field label="First name" name="firstName" required autoComplete="given-name" className="col-span-12 md:col-span-6" />
-                    <Field label="Last name" name="lastName" required autoComplete="family-name" className="col-span-12 md:col-span-6" />
-                    <Field label="Work email" name="email" type="email" required autoComplete="email" className="col-span-12 md:col-span-6" />
+                    <Field label="First name" name="firstName" required autoComplete="given-name" className="col-span-12 md:col-span-6" error={fieldErrors.firstName} />
+                    <Field label="Last name" name="lastName" required autoComplete="family-name" className="col-span-12 md:col-span-6" error={fieldErrors.lastName} />
+                    <Field label="Work email" name="email" type="email" required autoComplete="email" className="col-span-12 md:col-span-6" error={fieldErrors.email} />
                     <Field label="Phone" name="phone" type="tel" autoComplete="tel" className="col-span-12 md:col-span-6" />
-                    <Field label="Company" name="company" required autoComplete="organization" className="col-span-12 md:col-span-6" />
+                    <Field label="Company" name="company" required autoComplete="organization" className="col-span-12 md:col-span-6" error={fieldErrors.company} />
                     <Field label="Your role / title" name="role" autoComplete="organization-title" className="col-span-12 md:col-span-6" />
 
                     <SelectField
@@ -358,6 +417,7 @@ export default function GetAQuote() {
                       options={QUOTE_INDUSTRIES}
                       required
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.industry}
                     />
                     <SelectField
                       label="Monthly hiring volume"
@@ -366,6 +426,7 @@ export default function GetAQuote() {
                       options={QUOTE_VOLUMES}
                       required
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.volume}
                     />
                   </div>
 
@@ -489,6 +550,7 @@ function Field({
   required,
   autoComplete,
   className,
+  error,
 }: {
   label: string;
   name: string;
@@ -496,19 +558,40 @@ function Field({
   required?: boolean;
   autoComplete?: string;
   className?: string;
+  /** §134 — inline error message to surface beneath the field. */
+  error?: string;
 }) {
+  const fieldId = `quote-${name}`;
+  const errorId = error ? `${fieldId}-error` : undefined;
   return (
     <div className={className}>
-      <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+      <label
+        htmlFor={fieldId}
+        className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+      >
         {label}{required ? " *" : ""}
       </label>
       <input
+        id={fieldId}
         type={type}
         name={name}
         required={required}
         autoComplete={autoComplete}
-        className="form-field"
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
+        className={["form-field", error ? "form-field--invalid" : ""]
+          .filter(Boolean)
+          .join(" ")}
       />
+      {error && (
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -520,6 +603,7 @@ function SelectField({
   required,
   defaultValue,
   className,
+  error,
 }: {
   label: string;
   name: string;
@@ -527,17 +611,29 @@ function SelectField({
   required?: boolean;
   defaultValue?: string;
   className?: string;
+  /** §134 — inline error message to surface beneath the field. */
+  error?: string;
 }) {
+  const fieldId = `quote-${name}`;
+  const errorId = error ? `${fieldId}-error` : undefined;
   return (
     <div className={className}>
-      <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+      <label
+        htmlFor={fieldId}
+        className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+      >
         {label}{required ? " *" : ""}
       </label>
       <select
+        id={fieldId}
         name={name}
         required={required}
         defaultValue={defaultValue ?? ""}
-        className="form-field"
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
+        className={["form-field", error ? "form-field--invalid" : ""]
+          .filter(Boolean)
+          .join(" ")}
       >
         <option value="" disabled>
           Select…
@@ -548,6 +644,15 @@ function SelectField({
           </option>
         ))}
       </select>
+      {error && (
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }

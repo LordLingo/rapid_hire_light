@@ -48,14 +48,27 @@ describe("§60 — desktop Sign in button", () => {
   });
 
   it("desktop Sign in renders BEFORE the desktop Get a Quote pill in the CTA cluster", () => {
-    // Anchor on the desktop Get a Quote pill specifically (it carries the
-    // hidden md:inline-flex class), not the JSX comment or the mobile
-    // counterpart which both also contain the literal "Get a Quote".
+    /*
+      §136 evolution: anchor ordering on data-testid attributes (which
+      are stable contract surfaces) instead of a literal className
+      substring. The previous "hidden md:inline-flex btn-press items-
+      center gap-2 whitespace-nowrap" anchor broke when §136 split the
+      Get-a-Quote className into a multi-line array for readability.
+      header-get-a-quote is the pinned testid for the desktop pill;
+      header-get-a-quote-mobile is its mobile counterpart — we deliberately
+      use indexOf on the *desktop* testid here.
+    */
     const signInIdx = HEADER_SRC.indexOf('data-testid="header-signin"');
-    const getQuoteIdx = HEADER_SRC.indexOf(
-      'hidden md:inline-flex btn-press items-center gap-2 whitespace-nowrap'
+    const getQuoteIdx = HEADER_SRC.indexOf('data-testid="header-get-a-quote"');
+    const getQuoteMobileIdx = HEADER_SRC.indexOf(
+      'data-testid="header-get-a-quote-mobile"'
     );
     expect(signInIdx).toBeGreaterThan(-1);
+    expect(getQuoteIdx).toBeGreaterThan(-1);
+    // sanity: ensure we picked up the desktop testid, not the mobile one
+    expect(getQuoteIdx).not.toEqual(getQuoteMobileIdx);
+    expect(getQuoteIdx).toBeLessThan(getQuoteMobileIdx);
+    // the actual ordering claim: Sign in markup precedes desktop Get a Quote
     expect(getQuoteIdx).toBeGreaterThan(signInIdx);
   });
 });

@@ -1309,3 +1309,27 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §133.3 — Project-wide swap: replaced all 9 occurrences of the legacy underline className across Contact.tsx (3), GetAQuote.tsx (3), ComplianceAudit.tsx (3) with `className="form-field"` — covers `<input>`, `<textarea>`, and `<select>` field types in every form
 - [x] §133.4 — Authored client/src/lib/formField.test.ts (17 specs) pinning: (a) `.form-field` declared in @layer components, (b) bordered-box rules (full border + radius + paper bg), (c) focus ring with brand-accent border + box-shadow, (d) textarea resize: vertical, (e) `.form-field--invalid` hook, (f) anti-regression: legacy underline className gone from every form page, (g) every form page applies form-field on input/textarea/select
 - [x] §133.5 — vitest 870/870 across 69 files (was 853/68; +17 new specs, +1 new test file); tsc clean; HMR confirmed all 4 files (index.css + 3 page files) reloaded
+
+## §134 — Inline error styling on all three forms
+- [x] §134.1 — Authored `client/src/lib/formValidation.ts` with `validateFields(values, { requiredFields, emailFields })`, `hasErrors`, `clearFieldError`, and `FieldErrors` type — single shared validation contract
+- [x] §134.2 — Wired Contact.tsx: useState<FieldErrors> hook, validation BEFORE the Formspree fetch, `noValidate` form, form-level onChange clearing, focus-first-invalid on submit failure, `error={fieldErrors.X}` forwarded into Field/SelectField, `.form-field--invalid` class + `role="alert"` helper paragraph on every native + helper-rendered field (fullName, email, teamSize, message, company)
+- [x] §134.3 — Wired GetAQuote.tsx: same pattern, validates before Formspree fetch (firstName, lastName, email, company)
+- [x] §134.4 — Wired ComplianceAudit.tsx: same pattern, validates before /api/contact fetch; promoted Field/SelectField primitives to accept an optional `error` prop with aria-invalid + aria-describedby
+- [x] §134.5 — Authored `client/src/lib/inlineFieldErrors.test.ts` — 9 contract checks × 3 forms (27 specs): import shape, error-state hook, validation-before-network-call, abort-on-failure, focus-first-invalid, noValidate, onChange clearing, error-prop forwarding, .form-field--invalid + role=alert rendering
+- [x] §134.6 — Updated `formField.test.ts` to accept the new array-form className (was strict-literal before §134's class-array rewrite)
+
+## §135 — Apply .form-field to the footer newsletter signup
+- [x] §135.1 — SUPERSEDED: there is no newsletter signup on the site. Footer.tsx contains 4 columns (Services / Company / Portals + brand block) and a bottom-bar with Privacy/Terms/RSS links — no email-capture form anywhere. The single "newsletter" reference in the project lives inside the Privacy policy body text ("…subscribe to our newsletter…"). Skipping cleanly.
+- [x] §135.2 — SUPERSEDED
+- [x] §135.3 — SUPERSEDED
+
+## §136 — Navigation menu styling refresh
+- [x] §136.1 — NavLink (desktop primary nav): typography bumped 13.5px→14px, weight medium-default / semibold-active (was regular/medium), accent-ink color transition `200ms ease-out`
+- [x] §136.2 — Active-route indicator: persistent 2.5px rail (`data-testid="nav-active-rail"`) on accent-ink token; replaces the previous static 2px line; the matched link also bumps to `font-semibold`
+- [x] §136.3 — Animated hover underline: separate 2px rail (`data-testid="nav-hover-rail"`) with `origin-center`, `scale-x-0` → `scale-x-100` on `group-hover` + `group-focus-visible`, 180ms `cubic-bezier(0.23, 1, 0.32, 1)` per the design-system animation guide
+- [x] §136.4 — Resources dropdown trigger: parity treatment with NavLink (same typography + animated rail); hover rail latches to `scale-x-100` while the panel is open so closing the panel doesn't feel like the link "un-hits"
+- [x] §136.5 — Get-a-Quote desktop CTA: `font-medium`→`font-semibold`, resting `shadow-[0_2px_8px_-2px_rgba(15,23,42,0.18)]` ramps to `0_8px_22px_-6px_rgba(15,23,42,0.28)` on hover, `hover:-translate-y-px` 1px lift, arrow `→` translates 0.5 on hover via `group/cta` named hover group (so the arrow doesn't bump pill metrics), explicit `focus-visible:ring-2 ring-offset-2`
+- [x] §136.6 — Sign in CTA: matched to Get-a-Quote vertical metrics (px-5 py-2.5 text-[13.5px]) so the two pills read as siblings; subtle `hover:bg-[color:var(--color-paper-soft)]` fill so it has its own hover signature
+- [x] §136.7 — Authored `client/src/lib/headerNavStyling.test.ts` — 16 specs across NavLink typography, active rail, hover rail (origin + curve), Resources trigger parity, hover-rail-on-open behavior, Get-a-Quote shadow + lift + arrow translate + focus ring, Sign in metrics + hover fill
+- [x] §136.8 — Updated `headerSignIn.test.ts` desktop ordering check to anchor on `data-testid="header-get-a-quote"` (stable contract surface) instead of a fragile className substring
+- [x] §136.9 — Final: tsc clean, 912/912 vitest across 71 files, mobile sheet untouched

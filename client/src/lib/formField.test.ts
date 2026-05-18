@@ -124,12 +124,19 @@ describe("§133 — Form field surface", () => {
 
   describe("every form page adopts the .form-field utility", () => {
     for (const { name, src } of FORM_PAGES) {
-      it(`${name} applies className="form-field" to its inputs`, () => {
-        // At minimum each form page must use the new utility on at
-        // least one field. (Most pages use it on 3+ fields.)
-        expect(
-          (src.match(/className="form-field"/g) ?? []).length,
-        ).toBeGreaterThan(0);
+      it(`${name} applies the form-field utility to its inputs`, () => {
+        /*
+          Each form page must use the .form-field utility on at least
+          one field. §134 introduced an alternative array-form className
+          to conditionally append `.form-field--invalid`, so this pin
+          now accepts either of:
+            - className="form-field"      (static, pre-§134)
+            - ["form-field", ...]         (array form, post-§134)
+          We count occurrences of either pattern.
+        */
+        const literalCount = (src.match(/className="form-field"/g) ?? []).length;
+        const arrayCount = (src.match(/\["form-field",/g) ?? []).length;
+        expect(literalCount + arrayCount).toBeGreaterThan(0);
       });
     }
 
@@ -144,15 +151,26 @@ describe("§133 — Form field surface", () => {
         expect(i, `marker "${start}" missing in Contact.tsx`).toBeGreaterThan(-1);
         return CONTACT.slice(i, j > i ? j : CONTACT.length);
       };
+      /*
+        §134 evolution: Contact.tsx now wires per-field invalid styling,
+        so the select / textarea / input className changed from a static
+        `"form-field"` string to a className array that conditionally
+        appends `"form-field--invalid"`. We still pin that the field
+        carries `form-field`, but accept either the old static form or
+        the new array form. Combining the two regex variants keeps this
+        test resilient against future refactors that introduce more
+        variant classes.
+      */
+      const FORM_FIELD_USAGE = /(?:className="form-field")|(?:"form-field"\s*,)|(?:\["form-field")/;
       // <select name="teamSize">
       const selectBlock = slice("<select", "</select>");
-      expect(selectBlock).toMatch(/className="form-field"/);
+      expect(selectBlock).toMatch(FORM_FIELD_USAGE);
       // <textarea name="message">
       const textareaBlock = slice("<textarea", "/>");
-      expect(textareaBlock).toMatch(/className="form-field"/);
+      expect(textareaBlock).toMatch(FORM_FIELD_USAGE);
       // <input> via the Field helper component at the bottom of the file
       const inputBlock = slice("<input\n", "/>");
-      expect(inputBlock).toMatch(/className="form-field"/);
+      expect(inputBlock).toMatch(FORM_FIELD_USAGE);
     });
 
     it("GetAQuote.tsx applies form-field to its visible <textarea>", () => {

@@ -15,6 +15,15 @@ import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { ContactCallCard } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
+// §134: shared field-level validation — surfaces inline red borders
+// (.form-field--invalid) and short helper text per field instead of
+// relying on a single page-level toast for missing data.
+import {
+  validateFields,
+  hasErrors,
+  clearFieldError,
+  type FieldErrors,
+} from "@/lib/formValidation";
 
 /**
  * Service-interest options shown as toggle chips on the Contact form.
@@ -86,6 +95,10 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // §134: per-field inline errors. Keyed by `name` attribute so the
+  // markup binding stays trivial. Cleared on input/change so users see
+  // the red state vanish as they fix the field.
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   // Re-sync if user navigates between calculator quotes within the SPA.
   useEffect(() => {
@@ -105,17 +118,45 @@ export default function Contact() {
     setError(null);
     const formEl = e.currentTarget;
     const fd = new FormData(formEl);
-    // §105: submit to Formspree (xnjrqler) using its JSON endpoint so we keep
-    // structured fields (services as an array, etc). Formspree responds with
-    // { ok: true } on success and surfaces validation errors via { errors }.
-    const payload = {
+    // §134: client-side required + email validation. Runs BEFORE the
+    // network call so users see field-level errors instantly without a
+    // round-trip to Formspree (which would reject empty fields with a
+    // generic message anyway).
+    const values = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
       company: String(fd.get("company") ?? ""),
       teamSize: String(fd.get("teamSize") ?? ""),
       message: String(fd.get("message") ?? ""),
+    };
+    const errs = validateFields(values, {
+      requiredFields: ["name", "email", "company", "teamSize", "message"],
+      emailFields: ["email"],
+    });
+    if (hasErrors(errs)) {
+      setFieldErrors(errs);
+      // Focus the first invalid field so keyboard users land on what
+      // they need to fix rather than scrolling back up themselves.
+      const firstName = Object.keys(errs)[0];
+      const firstEl = formEl.elements.namedItem(firstName) as
+        | HTMLInputElement
+        | HTMLTextAreaElement
+        | HTMLSelectElement
+        | null;
+      firstEl?.focus();
+      return;
+    }
+    // §105: submit to Formspree (xnjrqler) using its JSON endpoint so we keep
+    // structured fields (services as an array, etc). Formspree responds with
+    // { ok: true } on success and surfaces validation errors via { errors }.
+    const payload = {
+      name: values.name,
+      email: values.email,
+      company: values.company,
+      teamSize: values.teamSize,
+      message: values.message,
       services: interests.join(", "),
-      _subject: `New contact request — ${String(fd.get("company") ?? "")}`.trim(),
+      _subject: `New contact request — ${values.company}`.trim(),
     };
     setSubmitting(true);
     try {
@@ -267,7 +308,22 @@ export default function Contact() {
                   </Link>
                 </div>
               ) : (
-                <form onSubmit={onSubmit} className="grid gap-10">
+                <form
+                  onSubmit={onSubmit}
+                  className="grid gap-10"
+                  noValidate
+                  onChange={(e) => {
+                    // §134: as soon as a user edits a field that had an
+                    // error, clear that error so the red state isn't sticky.
+                    const target = e.target as
+                      | HTMLInputElement
+                      | HTMLTextAreaElement
+                      | HTMLSelectElement;
+                    if (target?.name && fieldErrors[target.name]) {
+                      setFieldErrors((cur) => clearFieldError(cur, target.name));
+                    }
+                  }}
+                >
                   <div className="grid grid-cols-12 gap-x-8 gap-y-8">
                     <Field
                       label="Full name"
@@ -275,6 +331,7 @@ export default function Contact() {
                       required
                       autoComplete="name"
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.name}
                     />
                     <Field
                       label="Work email"
@@ -283,6 +340,7 @@ export default function Contact() {
                       required
                       autoComplete="email"
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.email}
                     />
                     <Field
                       label="Company"
@@ -290,16 +348,30 @@ export default function Contact() {
                       required
                       autoComplete="organization"
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.company}
                     />
                     <div className="col-span-12 md:col-span-6">
-                      <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                      <label
+                        htmlFor="contact-teamSize"
+                        className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+                      >
                         Hiring volume
                       </label>
                       <select
+                        id="contact-teamSize"
                         name="teamSize"
                         defaultValue={prefillTeamSize}
                         required
-                        className="form-field"
+                        aria-invalid={fieldErrors.teamSize ? "true" : undefined}
+                        aria-describedby={
+                          fieldErrors.teamSize ? "contact-teamSize-error" : undefined
+                        }
+                        className={[
+                          "form-field",
+                          fieldErrors.teamSize ? "form-field--invalid" : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
                       >
                         <option value="" disabled>
                           Select a range —
@@ -310,6 +382,15 @@ export default function Contact() {
                           </option>
                         ))}
                       </select>
+                      {fieldErrors.teamSize && (
+                        <p
+                          id="contact-teamSize-error"
+                          role="alert"
+                          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+                        >
+                          {fieldErrors.teamSize}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -340,16 +421,38 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                    <label
+                      htmlFor="contact-message"
+                      className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+                    >
                       Tell us about your hiring
                     </label>
                     <textarea
+                      id="contact-message"
                       name="message"
                       rows={5}
                       defaultValue={prefillNote}
                       placeholder="Roles, jurisdictions, ATS in use, anything else we should know."
-                      className="form-field"
+                      aria-invalid={fieldErrors.message ? "true" : undefined}
+                      aria-describedby={
+                        fieldErrors.message ? "contact-message-error" : undefined
+                      }
+                      className={[
+                        "form-field",
+                        fieldErrors.message ? "form-field--invalid" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                     />
+                    {fieldErrors.message && (
+                      <p
+                        id="contact-message-error"
+                        role="alert"
+                        className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+                      >
+                        {fieldErrors.message}
+                      </p>
+                    )}
                     {cameFromCalculator && (
                       <p className="mt-3 text-[12px] text-[color:var(--color-ink-muted)]">
                         Pre-filled from your pricing estimate. Edit anything before sending.
@@ -405,6 +508,7 @@ function Field({
   required,
   autoComplete,
   className,
+  error,
 }: {
   label: string;
   name: string;
@@ -412,19 +516,40 @@ function Field({
   required?: boolean;
   autoComplete?: string;
   className?: string;
+  /** §134 — inline error message to surface beneath the field. */
+  error?: string;
 }) {
+  const fieldId = `contact-${name}`;
+  const errorId = error ? `${fieldId}-error` : undefined;
   return (
     <div className={className}>
-      <label className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+      <label
+        htmlFor={fieldId}
+        className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+      >
         {label}
       </label>
       <input
+        id={fieldId}
         type={type}
         name={name}
         required={required}
         autoComplete={autoComplete}
-        className="form-field"
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
+        className={["form-field", error ? "form-field--invalid" : ""]
+          .filter(Boolean)
+          .join(" ")}
       />
+      {error && (
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }

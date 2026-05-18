@@ -250,18 +250,50 @@ export default function Header() {
               href="https://clients.rapidhiresolutions.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:inline-flex btn-press items-center whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-2.5 text-[13px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)]"
+              /* §136: matched to the new Get-a-Quote pill height (text-[13.5px]
+                 / py-2.5) so the two CTAs read as siblings of equal weight,
+                 with Sign-in clearly the secondary one (transparent fill,
+                 hairline border).
+              */
+              className="hidden md:inline-flex btn-press items-center whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-2.5 text-[13.5px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)] hover:bg-[color:var(--color-paper-soft)]"
             >
               Sign in
             </a>
-{/* §111: Get a Quote CTAs site-wide point at the dedicated /get-a-quote page (Formspree mvzyoyoz). */}
+{/*
+  §111: Get a Quote CTAs site-wide point at the dedicated /get-a-quote page (Formspree mvzyoyoz).
+  §136: premium-pill treatment.
+   - Resting shadow `shadow-[0_2px_8px_-2px_rgba(...)]` lifts the pill
+     subtly off the paper background so it reads as the primary action.
+   - Hover ramps the shadow + nudges it down 1px, simulating a
+     hold-to-press response. Arrow icon translates 2px on hover; a
+     small touch but it telegraphs “forward motion”.
+   - Transition duration 200ms with ease-out keeps the interaction
+     snappy per the design-system animation guide. We avoid `transform:
+     scale` here on the resting/hover states because the row sits
+     directly under the trust strip and a scaled element would push the
+     surrounding nav-row metrics. Translating the arrow inside the pill
+     scratches the same itch without affecting layout.
+*/}
             <Link
               href="/get-a-quote"
               data-testid="header-get-a-quote"
-              className="hidden md:inline-flex btn-press items-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
+              className={[
+                "hidden md:inline-flex btn-press group/cta items-center gap-2 whitespace-nowrap rounded-full",
+                "border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5",
+                "text-[13.5px] font-semibold text-white",
+                "shadow-[0_2px_8px_-2px_rgba(15,23,42,0.18)] transition-[background-color,border-color,box-shadow,transform] duration-200 ease-out",
+                "hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]",
+                "hover:shadow-[0_8px_22px_-6px_rgba(15,23,42,0.28)] hover:-translate-y-px",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[color:var(--color-accent-ink)] focus-visible:ring-offset-[color:var(--color-paper)]",
+              ].join(" ")}
             >
               Get a Quote
-              <span aria-hidden>→</span>
+              <span
+                aria-hidden
+                className="transition-transform duration-200 ease-out group-hover/cta:translate-x-0.5"
+              >
+                →
+              </span>
             </Link>
             <button
               className="lg:hidden grid place-items-center size-10 rounded-full border border-border"
@@ -383,6 +415,25 @@ export default function Header() {
   vertical metrics identical between active and inactive states, so
   the nav row never shifts when the user navigates.
 */
+/*
+  §136 — Nav menu styling refresh.
+
+  Each NavLink now renders two underline spans:
+   - The "active rail" (only mounted when `active`) is the persistent
+     2.5px indicator that names the current section. It anchors the
+     full width of the link — it isn't an animation, it's a tab
+     indicator.
+   - The "hover rail" (always mounted on inactive links) is a 2px
+     underline that scales-X from 0 to 1 on hover/focus-visible, with
+     `transform-origin: center`, so the line grows out from the
+     midpoint of the label rather than wiping in from one edge. Uses
+     180ms cubic-bezier(0.23, 1, 0.32, 1) per the design-system
+     animation guide.
+  Typography: 14px / font-medium (slightly heavier than the previous
+  13.5px / regular default) for stronger presence in the nav, with
+  `tracking-tight`. Active links push to font-semibold so the indicator
+  feels reinforced rather than redundant.
+*/
 function NavLink({
   href,
   children,
@@ -398,17 +449,24 @@ function NavLink({
       aria-current={active ? "page" : undefined}
       data-active={active ? "true" : undefined}
       className={[
-        "ink-link relative whitespace-nowrap text-[13.5px] tracking-tight transition-colors",
+        "group relative whitespace-nowrap text-[14px] tracking-tight transition-colors duration-200 ease-out",
         active
-          ? "font-medium text-[color:var(--color-ink)]"
-          : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
+          ? "font-semibold text-[color:var(--color-ink)]"
+          : "font-medium text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] focus-visible:text-[color:var(--color-ink)]",
       ].join(" ")}
     >
       {children}
-      {active && (
+      {active ? (
         <span
           aria-hidden
-          className="pointer-events-none absolute left-0 right-0 -bottom-1.5 h-[2px] rounded-full bg-[color:var(--color-accent-ink)]"
+          data-testid="nav-active-rail"
+          className="pointer-events-none absolute left-0 right-0 -bottom-1.5 h-[2.5px] rounded-full bg-[color:var(--color-accent-ink)]"
+        />
+      ) : (
+        <span
+          aria-hidden
+          data-testid="nav-hover-rail"
+          className="pointer-events-none absolute left-0 right-0 -bottom-1.5 h-[2px] origin-center rounded-full bg-[color:var(--color-accent-ink)] scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
         />
       )}
     </Link>
@@ -489,10 +547,13 @@ function ResourcesMenu({
         onClick={() => setIsOpen((v) => !v)}
         onFocus={() => setIsOpen(true)}
         className={[
-          "ink-link relative inline-flex items-center gap-1 whitespace-nowrap text-[13.5px] tracking-tight transition-colors",
+          // §136: same typography + animated-rail treatment as NavLink so
+          // the trigger reads as a peer of the other items, not as a
+          // distinct UI primitive.
+          "group relative inline-flex items-center gap-1 whitespace-nowrap text-[14px] tracking-tight transition-colors duration-200 ease-out",
           active
-            ? "font-medium text-[color:var(--color-ink)]"
-            : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
+            ? "font-semibold text-[color:var(--color-ink)]"
+            : "font-medium text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] focus-visible:text-[color:var(--color-ink)]",
         ].join(" ")}
       >
         {label}
@@ -503,10 +564,24 @@ function ResourcesMenu({
           ].join(" ")}
           aria-hidden
         />
-        {active && (
+        {active ? (
           <span
             aria-hidden
-            className="pointer-events-none absolute left-0 right-4 -bottom-1.5 h-[2px] rounded-full bg-[color:var(--color-accent-ink)]"
+            data-testid="nav-active-rail"
+            className="pointer-events-none absolute left-0 right-4 -bottom-1.5 h-[2.5px] rounded-full bg-[color:var(--color-accent-ink)]"
+          />
+        ) : (
+          <span
+            aria-hidden
+            data-testid="nav-hover-rail"
+            className={[
+              "pointer-events-none absolute left-0 right-4 -bottom-1.5 h-[2px] origin-center rounded-full bg-[color:var(--color-accent-ink)] transition-transform duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
+              // §136: keep the hover rail expanded while the panel is
+              // open so closing it doesn't feel like the link "un-hit".
+              isOpen
+                ? "scale-x-100"
+                : "scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100",
+            ].join(" ")}
           />
         )}
       </button>

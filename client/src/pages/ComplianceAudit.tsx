@@ -23,6 +23,15 @@
 */
 import { useState } from "react";
 import { Link } from "wouter";
+// §134: shared field-level validation — surfaces inline red borders
+// (.form-field--invalid) and short helper text per field instead of a
+// single page-level toast for missing data.
+import {
+  validateFields,
+  hasErrors,
+  clearFieldError,
+  type FieldErrors,
+} from "@/lib/formValidation";
 import {
   ArrowUpRight,
   CalendarCheck2,
@@ -187,6 +196,9 @@ export default function ComplianceAudit() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // §134: per-field inline errors. Keyed by `name` attribute so the
+  // markup binding stays trivial. Cleared on input/change.
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -207,6 +219,44 @@ export default function ComplianceAudit() {
     const timing = String(fd.get("timing") ?? "").trim();
     const focus = String(fd.get("focus") ?? "").trim();
     const notes = String(fd.get("notes") ?? "").trim();
+
+    // §134: client-side required + email validation BEFORE the network call.
+    const errs = validateFields(
+      {
+        firstName,
+        lastName,
+        email,
+        company,
+        companySize,
+        industry,
+        timing,
+        focus,
+      },
+      {
+        requiredFields: [
+          "firstName",
+          "lastName",
+          "email",
+          "company",
+          "companySize",
+          "industry",
+          "timing",
+          "focus",
+        ],
+        emailFields: ["email"],
+      },
+    );
+    if (hasErrors(errs)) {
+      setFieldErrors(errs);
+      const firstInvalid = Object.keys(errs)[0];
+      const firstEl = formEl.elements.namedItem(firstInvalid) as
+        | HTMLInputElement
+        | HTMLTextAreaElement
+        | HTMLSelectElement
+        | null;
+      firstEl?.focus();
+      return;
+    }
 
     // Pack audit-specific fields into `message` so the existing /api/contact
     // endpoint (which validates fullName/email/company/message) accepts the
@@ -502,6 +552,18 @@ export default function ComplianceAudit() {
                   onSubmit={onSubmit}
                   data-testid="audit-form"
                   className="grid gap-10"
+                  noValidate
+                  onChange={(e) => {
+                    // §134: clear an individual field's error as soon as
+                    // the user edits it.
+                    const target = e.target as
+                      | HTMLInputElement
+                      | HTMLTextAreaElement
+                      | HTMLSelectElement;
+                    if (target?.name && fieldErrors[target.name]) {
+                      setFieldErrors((cur) => clearFieldError(cur, target.name));
+                    }
+                  }}
                 >
                   <div className="grid grid-cols-12 gap-x-8 gap-y-8">
                     <Field
@@ -510,6 +572,7 @@ export default function ComplianceAudit() {
                       required
                       autoComplete="given-name"
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.firstName}
                     />
                     <Field
                       label="Last name"
@@ -517,6 +580,7 @@ export default function ComplianceAudit() {
                       required
                       autoComplete="family-name"
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.lastName}
                     />
                     <Field
                       label="Work email"
@@ -525,6 +589,7 @@ export default function ComplianceAudit() {
                       required
                       autoComplete="email"
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.email}
                     />
                     <Field
                       label="Phone (optional)"
@@ -539,6 +604,7 @@ export default function ComplianceAudit() {
                       required
                       autoComplete="organization"
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.company}
                     />
                     <Field
                       label="Your role (e.g. Head of Talent)"
@@ -552,6 +618,7 @@ export default function ComplianceAudit() {
                       required
                       options={COMPANY_SIZES}
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.companySize}
                     />
                     <SelectField
                       label="Primary industry"
@@ -559,6 +626,7 @@ export default function ComplianceAudit() {
                       required
                       options={INDUSTRIES}
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.industry}
                     />
                     <Field
                       label="Current screening provider (if any)"
@@ -571,6 +639,7 @@ export default function ComplianceAudit() {
                       required
                       options={TIMING}
                       className="col-span-12 md:col-span-6"
+                      error={fieldErrors.timing}
                     />
                     <SelectField
                       label="What do you most want us to look at?"
@@ -578,6 +647,7 @@ export default function ComplianceAudit() {
                       required
                       options={FOCUS_AREAS}
                       className="col-span-12"
+                      error={fieldErrors.focus}
                     />
                   </div>
 
@@ -788,6 +858,7 @@ function Field({
   required,
   autoComplete,
   className,
+  error,
 }: {
   label: string;
   name: string;
@@ -795,8 +866,11 @@ function Field({
   required?: boolean;
   autoComplete?: string;
   className?: string;
+  /** §134 — inline error message to surface beneath the field. */
+  error?: string;
 }) {
   const id = `audit-${name}`;
+  const errorId = error ? `${id}-error` : undefined;
   return (
     <div className={className}>
       <label
@@ -811,8 +885,21 @@ function Field({
         name={name}
         required={required}
         autoComplete={autoComplete}
-        className="form-field"
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
+        className={["form-field", error ? "form-field--invalid" : ""]
+          .filter(Boolean)
+          .join(" ")}
       />
+      {error && (
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }
@@ -823,14 +910,18 @@ function SelectField({
   options,
   required,
   className,
+  error,
 }: {
   label: string;
   name: string;
   options: ReadonlyArray<string>;
   required?: boolean;
   className?: string;
+  /** §134 — inline error message to surface beneath the field. */
+  error?: string;
 }) {
   const id = `audit-${name}`;
+  const errorId = error ? `${id}-error` : undefined;
   return (
     <div className={className}>
       <label
@@ -844,7 +935,11 @@ function SelectField({
         name={name}
         defaultValue=""
         required={required}
-        className="form-field"
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
+        className={["form-field", error ? "form-field--invalid" : ""]
+          .filter(Boolean)
+          .join(" ")}
       >
         <option value="" disabled>
           Select —
@@ -855,6 +950,15 @@ function SelectField({
           </option>
         ))}
       </select>
+      {error && (
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }
