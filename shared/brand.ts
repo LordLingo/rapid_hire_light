@@ -22,8 +22,8 @@
 // `manus-upload-file --webdev <path>` and replace the URL here when the
 // asset changes; the corresponding *.test.ts files will fail loudly if the
 // constant ever drifts away from "/manus-storage/...".
-export const HEADER_LOGO_URL = "/manus-storage/rapid-hire-logo_83b36d16.png";
-export const FOOTER_LOGO_URL = "/manus-storage/rhs-white-logo_ba46549d.png";
+export const HEADER_LOGO_URL = "/manus-storage/rhs2-color-trimmed_2d3e81d4.png";
+export const FOOTER_LOGO_URL = "/manus-storage/rhs2-white_92490b30.png";
 
 // Homepage hero key visual. Marketing photograph supplied by the brand owner
 // (woman + laptop showing a sample report). Two crops are served via a
@@ -52,19 +52,19 @@ export const HOME_HERO_IMAGE_URL_MOBILE_WEBP =
 
 // Social/share preview card. 1200x630 PNG that composes the color mark on a
 // branded background. Wired into <head> via index.html.
-export const SOCIAL_OG_IMAGE_URL = "/manus-storage/rhs-og-card_22bd2542.png";
+export const SOCIAL_OG_IMAGE_URL = "/manus-storage/rhs2-og-card_1c69f0a7.png";
 
 // Browser tab favicon. Multi-size .ico (16/32/48/64) generated from the
 // color mark only — the wordmark is unreadable at favicon scale.
-export const FAVICON_ICO_URL = "/manus-storage/rhs-favicon_25880e29.ico";
+export const FAVICON_ICO_URL = "/manus-storage/rhs2-favicon_b23da30e.ico";
 
 // iOS home-screen icon. 180x180 PNG, transparent background, color mark
 // only (no wordmark — too small to read at 60pt).
-export const APPLE_TOUCH_ICON_URL = "/manus-storage/rhs-apple-touch-icon_cc5596e5.png";
+export const APPLE_TOUCH_ICON_URL = "/manus-storage/rhs2-apple-touch-icon_a48d34f0.png";
 
 // Android / PWA maskable icons. 192 + 512 PNGs from the same source.
-export const ICON_192_URL = "/manus-storage/rhs-icon-192_f56f7cb1.png";
-export const ICON_512_URL = "/manus-storage/rhs-icon-512_4751a040.png";
+export const ICON_192_URL = "/manus-storage/rhs2-icon-192_1c96da46.png";
+export const ICON_512_URL = "/manus-storage/rhs2-icon-512_9958812c.png";
 
 // Identity strings — kept here so a name/tagline change can't drift between
 // the header link, the footer link, and the document <title>/meta tags.

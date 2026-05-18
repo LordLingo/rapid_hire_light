@@ -1267,3 +1267,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §125.3 — Mounted framed plate via belowEyebrow with hover-zoom-image, aspect-[3/4], max-w-[260px], white inner mat, paper-shadow
 - [x] §125.4 — Authored pricingHeroImage.test.ts (7 specs) locking placement, framing, asset URL, alt vocabulary (coin/ledger/per-check/sage), dimensions, lazy/async
 - [x] §125.5 — vitest 853/853 across 68 files; tsc clean
+
+## §128 — Brand asset rollout from new color lockup
+- [ ] §128.1 — Trim whitespace from new color lockup; re-upload as new HEADER_LOGO_URL
+- [ ] §128.2 — Generate white-on-transparent footer variant; re-upload as new FOOTER_LOGO_URL
+- [ ] §128.3 — Regenerate favicon multi-size .ico from the new mark
+- [ ] §128.4 — Regenerate Apple touch icon (180×180) from the new mark
+- [ ] §128.5 — Regenerate PWA icons (192, 512) from the new mark
+- [ ] §128.6 — Regenerate 1200×630 OG share card from the new mark
+- [ ] §128.7 — Update shared/brand.ts URLs + run vitest + tsc + checkpoint

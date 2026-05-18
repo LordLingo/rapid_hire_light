@@ -24,8 +24,11 @@ describe("Footer brand logo", () => {
   const src = read("client/src/components/site/Footer.tsx");
 
   it("FOOTER_LOGO_URL points at the webdev static host", () => {
+    // Loosened from the legacy `rhs-white-logo_*.png` pattern in §128 when
+    // the user supplied a new lockup; the only constraint that matters is
+    // that the asset lives on the webdev static host, not its filename.
     expect(FOOTER_LOGO_URL).toMatch(
-      /^\/manus-storage\/rhs-white-logo_[a-z0-9]+\.png$/,
+      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
     );
   });
 

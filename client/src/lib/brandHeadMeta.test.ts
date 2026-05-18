@@ -28,27 +28,31 @@ const ROOT = path.resolve(__dirname, "../../..");
 const html = fs.readFileSync(path.join(ROOT, "client/index.html"), "utf8");
 
 describe("Brand head meta", () => {
+  // §128: filename patterns loosened from `rhs-*` literals to a generic
+  // /manus-storage/<asset>.<ext> shape so future re-uploads (which always
+  // produce a new filename) don't fail the suite. The cross-file `index.html`
+  // ↔ `shared/brand.ts` agreement test below is the actual enforcement.
   it("FAVICON_ICO_URL is pinned to a /manus-storage/ .ico", () => {
     expect(FAVICON_ICO_URL).toMatch(
-      /^\/manus-storage\/rhs-favicon_[a-z0-9]+\.ico$/,
+      /^\/manus-storage\/[A-Za-z0-9_-]+\.ico$/,
     );
   });
 
   it("Apple-touch + PWA icon URLs are pinned to /manus-storage/ PNGs", () => {
     expect(APPLE_TOUCH_ICON_URL).toMatch(
-      /^\/manus-storage\/rhs-apple-touch-icon_[a-z0-9]+\.png$/,
+      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
     );
     expect(ICON_192_URL).toMatch(
-      /^\/manus-storage\/rhs-icon-192_[a-z0-9]+\.png$/,
+      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
     );
     expect(ICON_512_URL).toMatch(
-      /^\/manus-storage\/rhs-icon-512_[a-z0-9]+\.png$/,
+      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
     );
   });
 
   it("Social card URL is a 1200x630 /manus-storage/ PNG", () => {
     expect(SOCIAL_OG_IMAGE_URL).toMatch(
-      /^\/manus-storage\/rhs-og-card_[a-z0-9]+\.png$/,
+      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
     );
   });
 
