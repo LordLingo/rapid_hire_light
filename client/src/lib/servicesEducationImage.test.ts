@@ -48,14 +48,66 @@ const catalogSrc = fs.readFileSync(
 
 /**
  * Slugs that have intentionally opted in to the §114 standalone
- * illustration pattern. Education Verification is the pilot. When we
- * roll out to additional services, append the slug here AND add a
- * matching assertion block below.
+ * illustration pattern. §117 rolled the pattern out to all nine
+ * services; if a future ServiceDetail is added without an
+ * illustration, append it to a new EXPECTED_NO_HERO_IMAGE allow-list
+ * rather than silently dropping coverage here.
  */
-const EXPECTED_HERO_IMAGE_SLUGS = ["education-verification"] as const;
+const EXPECTED_HERO_IMAGE_SLUGS = [
+  "criminal-records",
+  "employment-verification",
+  "education-verification",
+  "drug-screening",
+  "motor-vehicle-records",
+  "social-media-screening",
+  "identity-verification",
+  "healthcare-sanctions",
+  "continuous-monitoring",
+] as const;
 
-const EDUCATION_HERO_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-education-verification-eLf9rJEMmN4Suu6ZZ3rCb9.webp";
+/**
+ * Per-slug expected hero-image URLs. Each entry pins the exact
+ * CloudFront WebP path so a refactor can't quietly swap or drop an
+ * illustration without an intentional code edit + test update.
+ */
+const EXPECTED_HERO_URLS: Record<(typeof EXPECTED_HERO_IMAGE_SLUGS)[number], string> = {
+  "criminal-records":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-criminal-records-2uAmRc3MqvTidrc5QCJaxt.webp",
+  "employment-verification":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-employment-verification-3vF5yaK2E2QH7Ma63tzwfY.webp",
+  "education-verification":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-education-verification-eLf9rJEMmN4Suu6ZZ3rCb9.webp",
+  "drug-screening":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-drug-screening-CXbWDQnxTXdT4XRfe6msbM.webp",
+  "motor-vehicle-records":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-motor-vehicle-records-RUm8ra2GQECJsKnC9pHzkb.webp",
+  "social-media-screening":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-social-media-screening-dAnaZhXHGGSwkMpDsDQSn2.webp",
+  "identity-verification":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-identity-verification-gxEzshkVdHAh2LTkgF2c8k.webp",
+  "healthcare-sanctions":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-healthcare-sanctions-ii2ZZMvnAEHkbksuZtR5GR.webp",
+  "continuous-monitoring":
+    "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-continuous-monitoring-9CaUDydXJGB2HM3b9vQtgS.webp",
+};
+
+/**
+ * Per-slug subject keywords the alt text MUST contain. We don't pin
+ * the exact alt strings (they're allowed to evolve for SEO/a11y) but
+ * they MUST mention at least one concrete subject word so the
+ * illustration is meaningfully described to assistive tech.
+ */
+const EXPECTED_ALT_KEYWORDS: Record<(typeof EXPECTED_HERO_IMAGE_SLUGS)[number], RegExp> = {
+  "criminal-records": /gavel|courthouse|county|ledger|case file|criminal/i,
+  "employment-verification": /résumé|resume|telephone|employer|employment/i,
+  "education-verification": /diploma|registrar|degree|graduation|mortarboard|credential/i,
+  "drug-screening": /vial|specimen|chain[- ]of[- ]custody|drug|panel|clipboard/i,
+  "motor-vehicle-records": /driver|license|dmv|mvr|driving|keys/i,
+  "social-media-screening": /smartphone|phone|magnifying|social|public|feed/i,
+  "identity-verification": /passport|fingerprint|identity|shield|document|biometric/i,
+  "healthcare-sanctions": /caduceus|exclusion|credential|medicaid|oig|register/i,
+  "continuous-monitoring": /clock|monitoring|dashboard|waveform|alert|continuous/i,
+};
 
 describe("§114 ServiceDetail.heroImage type — opt-in shape", () => {
   it("ServiceDetail type declares heroImage as an optional { url, alt } pair", () => {
@@ -92,7 +144,7 @@ describe("§114 Education Verification — heroImage data", () => {
 
   it("heroImage.url is the manus webdev static-asset CloudFront WebP", () => {
     expect(education!.heroImage).toBeDefined();
-    expect(education!.heroImage!.url).toBe(EDUCATION_HERO_URL);
+    expect(education!.heroImage!.url).toBe(EXPECTED_HERO_URLS["education-verification"]);
     // Pipeline guards: must be served from the CloudFront host the
     // generate_image tool returns, must end with .webp (compressed
     // variant), and must NOT live under /manus-storage/ or
@@ -222,5 +274,58 @@ describe("§114 follow-up — ServiceDetail.tsx hero image wiring", () => {
     // The conditional must live around the <img>, otherwise services
     // without an illustration would crash on undefined.url.
     expect(serviceDetailSrc).toMatch(/service\.heroImage\s*\?\s*\(/);
+  });
+});
+
+/*
+  §117 — every other service now has a matching framed editorial
+  illustration in the same style as Education. Per-slug assertions live
+  here so the catalog can't silently drop one or swap to a stale URL.
+*/
+describe("§117 — per-slug heroImage data integrity", () => {
+  for (const slug of EXPECTED_HERO_IMAGE_SLUGS) {
+    describe(`service: ${slug}`, () => {
+      const svc = findServiceBySlug(slug);
+
+      it("is registered in the catalog", () => {
+        expect(svc, `expected service slug "${slug}" to exist in SERVICE_CATALOG`).toBeDefined();
+      });
+
+      it("declares heroImage as a { url, alt } pair", () => {
+        expect(svc!.heroImage).toBeDefined();
+        expect(typeof svc!.heroImage!.url).toBe("string");
+        expect(typeof svc!.heroImage!.alt).toBe("string");
+      });
+
+      it("heroImage.url is the expected CloudFront WebP", () => {
+        expect(svc!.heroImage!.url).toBe(EXPECTED_HERO_URLS[slug]);
+        expect(svc!.heroImage!.url).toMatch(
+          /^https:\/\/d2xsxph8kpxj0f\.cloudfront\.net\//,
+        );
+        expect(svc!.heroImage!.url).toMatch(/\.webp$/);
+      });
+
+      it("heroImage.alt is descriptive (no filler, mentions a concrete subject)", () => {
+        const alt = svc!.heroImage!.alt;
+        expect(alt.length).toBeGreaterThan(60);
+        expect(alt.toLowerCase()).not.toMatch(/^image of\b/);
+        expect(alt.toLowerCase()).not.toMatch(/^picture of\b/);
+        expect(alt).toMatch(EXPECTED_ALT_KEYWORDS[slug]);
+      });
+    });
+  }
+
+  it("every catalog entry has a heroImage (no service is left icon-only)", () => {
+    for (const s of SERVICE_CATALOG) {
+      expect(
+        s.heroImage,
+        `expected service slug "${s.slug}" to declare a heroImage (§117 rollout)`,
+      ).toBeDefined();
+    }
+  });
+
+  it("every CloudFront URL is unique — no two services share the same illustration", () => {
+    const urls = SERVICE_CATALOG.map((s) => s.heroImage?.url).filter(Boolean) as string[];
+    expect(new Set(urls).size).toBe(urls.length);
   });
 });

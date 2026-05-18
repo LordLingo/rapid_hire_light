@@ -1213,3 +1213,23 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Render image in left rail of /services article under "03 — Education" eyebrow (rounded-2xl, aspect-square, paper-shadow, lazy + async)
 - [x] Lock with `servicesEducationImage.test.ts` (9 specs: type shape, opt-in semantics, URL + alt content, render wiring, framing classes, left-rail position)
 - [x] vitest 755/755 across 65 files; tsc clean
+
+## §117 — Editorial illustrations for the remaining 8 services
+- [ ] Generate framed illustration for criminal-records-search
+- [ ] Generate framed illustration for employment-verification
+- [ ] Generate framed illustration for drug-screening
+- [ ] Generate framed illustration for healthcare-sanctions
+- [ ] Generate framed illustration for mvr-driving-records
+- [ ] Generate framed illustration for social-media-screening
+- [ ] Generate framed illustration for identity-verification
+- [ ] Generate framed illustration for continuous-monitoring
+- [ ] Wire all 8 heroImage entries in serviceCatalog.ts
+- [ ] Extend §114 vitest invariant: 9 expected slugs + per-slug URL/alt assertions
+- [ ] Run vitest + tsc, save §117 checkpoint
+
+## §117 — Editorial illustrations rolled out to remaining 8 services
+- [x] Generated matching square editorial illustrations for criminal-records, employment-verification, drug-screening, motor-vehicle-records, social-media-screening, identity-verification, healthcare-sanctions, continuous-monitoring (consistent watercolor on cream paper, navy ink, slate gray, single soft-green check accent — referenced off the §114 Education plate)
+- [x] Uploaded via the webdev image pipeline; captured compressed CloudFront WebP URLs (lifecycle-tied)
+- [x] Wired heroImage on every remaining ServiceDetail entry in client/src/lib/serviceCatalog.ts (8 of 9 — Education was already wired in §114)
+- [x] Extended client/src/lib/servicesEducationImage.test.ts to lock per-slug URL + per-slug alt-text subject keywords + uniqueness + universal coverage (51 specs, up from 13)
+- [x] Full suite green: 797/797 across 65 files

@@ -165,6 +165,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "FCRA limits non-conviction records to 7 years; convictions have no federal time limit but several states (CA, NY, MA) cap at 7 years.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-criminal-records-2uAmRc3MqvTidrc5QCJaxt.webp",
+      alt: "Editorial illustration of a manila courthouse case file folder tied with a thin navy ribbon resting on an open county-court ledger, with a small brass gavel across the corner — representing layered county, federal, and nationwide criminal record searches.",
+    },
   },
   {
     slug: "employment-verification",
@@ -222,6 +227,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "Yes. We have direct verifier networks in 200+ countries; international TAT is typically 3–7 business days depending on country.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-employment-verification-3vF5yaK2E2QH7Ma63tzwfY.webp",
+      alt: "Editorial illustration of a folded employment-history résumé sheet beside a vintage rotary desk telephone with a soft green check mark — representing direct verbal verification of prior employment with each former employer's HR.",
+    },
   },
   {
     slug: "education-verification",
@@ -335,6 +345,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "A 5-panel covers the SAMHSA-5 (THC, cocaine, opiates, amphetamines, PCP). A 10-panel adds benzos, barbiturates, methaqualone, methadone, and propoxyphene.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-drug-screening-CXbWDQnxTXdT4XRfe6msbM.webp",
+      alt: "Editorial illustration of a clean clinical specimen vial with a navy cap beside a folded chain-of-custody form with a soft green check mark and a clipboard — representing MRO-reviewed 5-, 10-, and 12-panel drug and occupational health screening.",
+    },
   },
   {
     slug: "motor-vehicle-records",
@@ -390,6 +405,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "Look-back window. 3 years is most common for non-CDL hires; 7 years for CDL and high-risk roles. State law may require a specific minimum.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-motor-vehicle-records-RUm8ra2GQECJsKnC9pHzkb.webp",
+      alt: "Editorial illustration of a state-issued driver's license card overlapping a folded MVR abstract sheet with a small set of car keys on a navy keyring — representing real-time DMV driving-record pulls and CDL Clearinghouse queries.",
+    },
   },
   {
     slug: "social-media-screening",
@@ -443,6 +463,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "No. We only review public-facing content. Reputable CRAs do not impersonate, scrape, or attempt to bypass platform privacy settings.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-social-media-screening-dAnaZhXHGGSwkMpDsDQSn2.webp",
+      alt: "Editorial illustration of a smartphone showing an abstract feed and a speech-bubble icon, beside a printed report sheet with a soft green check mark and a small magnifying glass — representing FCRA-compliant, human-reviewed screening of public online behavior.",
+    },
   },
   {
     slug: "identity-verification",
@@ -495,6 +520,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "No, it's optional. SSN trace + document authentication is the floor; biometric is recommended for fully-remote hire flows where no in-person handoff exists.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-identity-verification-gxEzshkVdHAh2LTkgF2c8k.webp",
+      alt: "Editorial illustration of a navy passport booklet beside a fingerprint card showing a single loop pattern, with a small navy shield holding a soft green check mark — representing SSN trace, document authentication, and biometric identity assurance as the foundation layer.",
+    },
   },
   {
     slug: "healthcare-sanctions",
@@ -548,6 +578,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "If you bill Medicaid in any state, yes. Most CMP enforcement actions in the last 5 years cite state-list misses, not federal.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-healthcare-sanctions-ii2ZZMvnAEHkbksuZtR5GR.webp",
+      alt: "Editorial illustration of a folded healthcare credential certificate marked with a caduceus symbol beside a clipboard register with a soft green check mark and a small navy shield — representing OIG LEIE, SAM.gov, and 50-state Medicaid exclusion screening for healthcare hires.",
+    },
   },
   {
     slug: "continuous-monitoring",
@@ -601,6 +636,11 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "Configurable per client. Most teams route into their HRIS via webhook; some use Slack / Teams; email is the default fallback.",
       },
     ],
+    // §117 — editorial illustration to match §114 Education treatment.
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-continuous-monitoring-9CaUDydXJGB2HM3b9vQtgS.webp",
+      alt: "Editorial illustration of a round analog desk clock with a radar-style ping ring beside a printed monitoring dashboard sheet with a rising waveform and a soft green check mark — representing always-on post-hire monitoring across criminal, MVR, and exclusion data feeds.",
+    },
   },
 ];
 
