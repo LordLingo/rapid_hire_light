@@ -1249,3 +1249,8 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §122.3 — Dropped the small 16rem under-eyebrow plate; replaced the user-supplied infographic with the new portrait illustration (sized w/ max-w-[440px], hover-zoom, white inner mat, paper-shadow)
 - [x] §122.4 — Rewrote integrationsHeroImage.test.ts (13 specs): four describe blocks pinning removal, mount, framing, alt, and monotonic page numbering
 - [x] §122.5 — vitest 845/845 across 67 files; tsc clean
+
+## §123 — Restore the user's infographic in the handshake section (revert §122 swap)
+- [x] §123.1 — Swapped the §122 portrait illustration back to the user-uploaded infographic at the §121 layout (col-span-4 copy + col-span-8 figure, max-w-[560px], paper-bg figure mat)
+- [x] §123.2 — Rewrote integrationsHeroImage.test.ts (13 specs across A/B/C/D blocks) to lock removal of small plate, removal of §122 portrait, restored infographic + framing + 4/8 split + alt, and monotonic section numbering
+- [x] §123.3 — vitest 845/845 across 67 files; tsc clean
