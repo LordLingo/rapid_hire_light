@@ -1285,10 +1285,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §129.6 — vitest 853/853 across 68 files; tsc clean (loosened filename patterns from §128 still hold; brandHeadMeta cross-file enforcement passes against the new URLs)
 
 ## §130 — Regenerate logo to faithfully match the existing brand mark
-- [ ] §130.1 — Use the user's reference image (two figures + heart, bright blue, wordmark + "SOLUTIONS") as the originalImages input to generate_image so the new mark matches the existing branding
-- [ ] §130.2 — Re-run process_brand_assets_v3 (or new v4) to derive trimmed color, white footer variant, favicon multi-size .ico, Apple touch icon, PWA 192/512, OG card
-- [ ] §130.3 — Upload all 7 assets and rewire shared/brand.ts + client/index.html
-- [ ] §130.4 — vitest 853/853 + tsc clean + checkpoint
+- [x] §130.1 — SUPERSEDED by §131: user supplied the actual logo file (newrapidhirelogo.webp) directly instead of having us AI-regenerate, so the variation-based regeneration in v4 was abandoned mid-flight
+- [x] §130.2 — SUPERSEDED by §131 (process_brand_assets_v5.py supersedes v3/v4)
+- [x] §130.3 — SUPERSEDED by §131
+- [x] §130.4 — SUPERSEDED by §131
 ## §131 — Replace logo with user-supplied newrapidhirelogo.webp (three figures, center navy)
 - [x] §131.1 — Staged user upload to webdev-static-assets/rhs5-source.webp (2048×1196), confirmed opaque off-white bg via pixel sampling
 - [x] §131.2 — Authored process_brand_assets_v5.py (near-white knockout at threshold 230, trim+pad, downscale to 1100w, white silhouette, top-55% glyph crop for icons, 1200×630 OG card on cream with navy hairline + tagline)
