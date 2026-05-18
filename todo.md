@@ -1129,3 +1129,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Audited current rapidhire site against the synthesized 12-row buyer checklist; identified 15 concrete gaps (G1–G15) and the pages that already cover the rest
 - [x] Wrote `references/hr-buyer-website-recommendations.md` with executive summary, research foundation, audit, gap analysis, 17 prioritized recommendations (R1–R17) tiered by ROI, sequencing plan, and 11 references
 - [x] Delivered to user
+
+## §105 Wire Contact form to Formspree + rename "Employment Screening" → "Employment Verifications"
+- [x] Located the Contact form (`client/src/pages/Contact.tsx`): SERVICES chip array + ADDON_TO_SERVICE calculator map + onSubmit that previously POSTed to `/api/contact`
+- [x] Replaced the submission path with a JSON POST to `https://formspree.io/f/xnjrqler` (Accept: application/json so Formspree returns JSON instead of an HTML redirect). Payload now includes `name`, `email`, `company`, `teamSize`, `message`, `services` (comma-joined), and an auto-generated `_subject`. Error path reads Formspree's `errors[].message` shape
+- [x] Renamed "Employment Screening" → "Employment Verifications" in both the SERVICES chip list and the calculator's `ADDON_TO_SERVICE.employment` mapping; legacy label only remains in a header comment recording the rename
+- [x] Added `contactFormspree.test.ts` (6 specs): pins the Formspree endpoint constant + fetch usage; asserts the legacy `/api/contact` URL is gone (with comment-stripping); pins `Accept: application/json`; pins the new chip label in SERVICES + ADDON_TO_SERVICE; asserts no rendered "Employment Screening" string survives outside comments
+- [x] Run vitest + tsc (657/657 across 57 files; tsc clean)

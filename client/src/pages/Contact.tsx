@@ -16,8 +16,15 @@ import PageHero from "@/components/site/PageHero";
 import { ContactCallCard } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 
+/**
+ * Service-interest options shown as toggle chips on the Contact form.
+ * Submitted to Formspree as the `services` field (comma-joined). Renamed
+ * "Employment Screening" → "Employment Verifications" per §105.
+ */
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xnjrqler";
+
 const SERVICES = [
-  "Employment Screening",
+  "Employment Verifications",
   "Criminal Records",
   "Drug & Health",
   "Education Verification",
@@ -50,7 +57,7 @@ const ADDON_TO_SERVICE: Record<string, string> = {
   mvr: "Motor Vehicle Reports",
   drug5: "Drug & Health",
   education: "Education Verification",
-  employment: "Employment Screening",
+  employment: "Employment Verifications",
   social: "Social Media Checks",
 };
 
@@ -98,24 +105,35 @@ export default function Contact() {
     setError(null);
     const formEl = e.currentTarget;
     const fd = new FormData(formEl);
+    // §105: submit to Formspree (xnjrqler) using its JSON endpoint so we keep
+    // structured fields (services as an array, etc). Formspree responds with
+    // { ok: true } on success and surfaces validation errors via { errors }.
     const payload = {
-      fullName: String(fd.get("name") ?? ""),
+      name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
       company: String(fd.get("company") ?? ""),
-      volume: String(fd.get("teamSize") ?? ""),
+      teamSize: String(fd.get("teamSize") ?? ""),
       message: String(fd.get("message") ?? ""),
-      services: interests,
+      services: interests.join(", "),
+      _subject: `New contact request — ${String(fd.get("company") ?? "")}`.trim(),
     };
     setSubmitting(true);
     try {
-      const resp = await fetch("/api/contact", {
+      const resp = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(payload),
       });
-      const data = (await resp.json().catch(() => ({}))) as { ok?: boolean; error?: string };
-      if (!resp.ok || !data?.ok) {
-        const msg = data?.error || `Submission failed (${resp.status}). Please try again.`;
+      const data = (await resp
+        .json()
+        .catch(() => ({}))) as { ok?: boolean; errors?: Array<{ message?: string }> };
+      if (!resp.ok) {
+        const msg =
+          data?.errors?.[0]?.message ||
+          `Submission failed (${resp.status}). Please try again.`;
         setError(msg);
         toast.error(msg);
         return;
