@@ -1260,3 +1260,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §124.2 — Kept the user's infographic in "04 — The handshake" untouched (still 4/8 split, max-w-[560px], paper-bg mat)
 - [x] §124.3 — Rewrote integrationsHeroImage.test.ts (14 specs across A/B/C blocks) locking the under-eyebrow plate (asset, aspect, framing, alt, lazy/async, dimensions) AND the handshake infographic AND monotonic numbering
 - [x] §124.4 — vitest 846/846 across 67 files; tsc clean
+
+## §125 — /pricing: portrait savings illustration under the "05 — Pricing" eyebrow
+- [x] §125.1 — Confirmed Pricing.tsx uses PageHero with eyebrow="05 — Pricing"
+- [x] §125.2 — Generated 3:4 portrait (1056x1408): coin stack with $ → open ledger with three line items + dollar amounts → sage check on torn receipt
+- [x] §125.3 — Mounted framed plate via belowEyebrow with hover-zoom-image, aspect-[3/4], max-w-[260px], white inner mat, paper-shadow
+- [x] §125.4 — Authored pricingHeroImage.test.ts (7 specs) locking placement, framing, asset URL, alt vocabulary (coin/ledger/per-check/sage), dimensions, lazy/async
+- [x] §125.5 — vitest 853/853 across 68 files; tsc clean

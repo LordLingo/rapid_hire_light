@@ -155,6 +155,22 @@ export default function Pricing() {
     <SiteShell>
       <PageHero
         eyebrow="05 — Pricing"
+        belowEyebrow={
+          <div
+            data-testid="pricing-hero-image"
+            className="hover-zoom-image mt-6 aspect-[3/4] w-full max-w-[260px] overflow-hidden rounded-2xl border border-border bg-white p-2 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_8px_24px_-12px_rgba(16,42,75,0.18)]"
+          >
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/pricing-portrait-Rvnx7TQfVq3e3BwVcWjdAZ.webp"
+              alt="Tall editorial illustration in cream and navy with soft sage accents. At the top, a tidy stack of three coins with a dollar sign on the front-facing coin. A slim navy line flows downward into an open accountant's ledger with three line items on the left page and corresponding small dollar amounts on the right page, evoking transparent per-check pricing. A second navy line flows from the ledger down into a sage-green check inside a circular badge resting on a torn-edge receipt with subtle ledger lines — representing a tidy, predictable invoice."
+              width={1056}
+              height={1408}
+              loading="lazy"
+              decoding="async"
+              className="block h-full w-full rounded-xl object-cover"
+            />
+          </div>
+        }
         title={
           <>
             Pay only for the{" "}
