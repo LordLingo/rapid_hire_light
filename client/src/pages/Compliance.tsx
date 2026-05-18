@@ -313,7 +313,7 @@ function ComplianceCredibilityBar() {
             </span>
             <p className="text-[13px] leading-[1.45] tracking-[-0.005em]">
               <span className="font-medium text-[color:var(--color-ink)]">
-                800+ HR &amp; staffing teams
+                10,000+ HR &amp; staffing teams
               </span>{" "}
               <span className="text-[color:var(--color-ink-muted)]">
                 · 99.4% on-time

@@ -91,9 +91,9 @@ describe("§68 — Verify links jump to /trust#<slug>", () => {
 });
 
 describe("§68 — items 4 & 5 use Rapid-Hire-truthful copy (not precisehire's)", () => {
-  it("item 4 is the 800+ teams scale-proof line, NOT '22+ years · est. 2003'", () => {
+  it("item 4 is the 10,000+ teams scale-proof line, NOT '22+ years · est. 2003'", () => {
     expect(compliance).toMatch(/data-testid="compliance-cred-scale"/);
-    expect(compliance).toMatch(/800\+\s*HR\s*&amp;\s*staffing\s+teams/);
+    expect(compliance).toMatch(/10,000\+\s*HR\s*&amp;\s*staffing\s+teams/);
     expect(compliance).toMatch(/99\.4%\s+on-time/);
     // Anti-regression: the precisehire-only "22+ years" / "est. 2003" claim
     // must not appear anywhere on the page (we don't publish a founding

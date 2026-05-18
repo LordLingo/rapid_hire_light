@@ -12,7 +12,7 @@
        reference the page was modelled on),
     2) the U.S.-based hours line stays consistent with Support.tsx
        ("7am to 7pm Central"),
-    3) the published "85%+ in 24h" + "800+ HR teams" + "99.4% on-time"
+    3) the published "85%+ in 24h" + "10,000+ HR teams" + "99.4% on-time"
        proof points stay on the hero stat card.
 */
 import { readFileSync } from "node:fs";
@@ -84,7 +84,7 @@ describe("§69 — Industries page", () => {
     // stat card pinned proof points
     expect(industries).toMatch(/data-testid="industries-stat-card"/);
     expect(industries).toMatch(/85%\+\s+of reports cleared inside 24 hours/);
-    expect(industries).toMatch(/>\s*800\+\s*</);
+    expect(industries).toMatch(/>\s*10,000\+\s*</);
     expect(industries).toMatch(/>\s*99\.4%\s*</);
     // §83: hero stat card now reads "9" verticals (added gig-1099, manufacturing, education).
     expect(industries).toMatch(/>\s*9\s*</);

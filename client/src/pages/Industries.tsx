@@ -372,7 +372,7 @@ export default function Industries() {
               </li>
               <li className="rounded-2xl border border-border bg-[color:var(--color-paper)] py-3">
                 <p className="font-display text-[18px] leading-none text-[color:var(--color-ink)]">
-                  800+
+                  10,000+
                 </p>
                 <p className="mt-1 text-[10.5px] tracking-[0.16em] uppercase text-[color:var(--color-ink-muted)]">
                   HR teams

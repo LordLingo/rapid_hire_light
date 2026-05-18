@@ -134,7 +134,7 @@ export default function Footer() {
             </span>
             <span>
               Trusted by{" "}
-              <span className="text-[color:var(--color-accent-halo)]">800+</span>{" "}
+              <span className="text-[color:var(--color-accent-halo)]">10,000+</span>{" "}
               HR &amp; staffing teams
             </span>
           </p>
