@@ -1269,10 +1269,17 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §125.5 — vitest 853/853 across 68 files; tsc clean
 
 ## §128 — Brand asset rollout from new color lockup
-- [ ] §128.1 — Trim whitespace from new color lockup; re-upload as new HEADER_LOGO_URL
-- [ ] §128.2 — Generate white-on-transparent footer variant; re-upload as new FOOTER_LOGO_URL
-- [ ] §128.3 — Regenerate favicon multi-size .ico from the new mark
-- [ ] §128.4 — Regenerate Apple touch icon (180×180) from the new mark
-- [ ] §128.5 — Regenerate PWA icons (192, 512) from the new mark
-- [ ] §128.6 — Regenerate 1200×630 OG share card from the new mark
-- [ ] §128.7 — Update shared/brand.ts URLs + run vitest + tsc + checkpoint
+- [x] §128.1 — Trim whitespace from new color lockup; re-upload as new HEADER_LOGO_URL
+- [x] §128.2 — Generate white-on-transparent footer variant; re-upload as new FOOTER_LOGO_URL
+- [x] §128.3 — Regenerate favicon multi-size .ico from the new mark
+- [x] §128.4 — Regenerate Apple touch icon (180×180) from the new mark
+- [x] §128.5 — Regenerate PWA icons (192, 512) from the new mark
+- [x] §128.6 — Regenerate 1200×630 OG share card from the new mark
+- [x] §128.7 — Update shared/brand.ts URLs + run vitest + tsc + checkpoint
+## §129 — Remake the color logo from scratch (AI-regenerated, same look + colors)
+- [x] §129.1 — Generated new horizontal lockup via generate_image (three navy peaks with circles + sage divider + RAPID HIRE / SOLUTIONS wordmark) at 2560×1440 with transparent bg
+- [x] §129.2 — Authored process_brand_assets_v3.py (alpha + near-white halo knockout, trim, downscale to 1400-wide, white silhouette derivation, glyph-only icon crop, 1200×630 OG composition on cream)
+- [x] §129.3 — Produced rhs3-color-trimmed (1400×458), rhs3-white footer variant, rhs3-favicon.ico (16/32/48/64), rhs3-apple-touch-icon (180), rhs3-icon-192, rhs3-icon-512, rhs3-og-card (1200×630)
+- [x] §129.4 — Verified white footer variant composites legibly on navy (manual on-navy preview)
+- [x] §129.5 — Uploaded all 7 assets via `manus-upload-file --webdev`; wired URLs into shared/brand.ts (HEADER/FOOTER/FAVICON/APPLE/192/512/OG) and client/index.html (favicon, apple-touch, PWA, og:image, twitter:image)
+- [x] §129.6 — vitest 853/853 across 68 files; tsc clean (loosened filename patterns from §128 still hold; brandHeadMeta cross-file enforcement passes against the new URLs)
