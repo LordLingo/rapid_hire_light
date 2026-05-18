@@ -26,8 +26,10 @@ describe("§60 — desktop Sign in button", () => {
   });
 
   it("desktop Sign in is a true outlined pill: transparent bg + ink border + ink text", () => {
+    // §106: pill is now an <a>, not a <button>, since it routes to the
+    // external client portal. Style invariants below remain identical.
     const desktopBlock = HEADER_SRC.match(
-      /data-testid="header-signin"[\s\S]*?>\s*Sign in\s*<\/button>/
+      /data-testid="header-signin"[\s\S]*?>\s*Sign in\s*<\/a>/
     );
     expect(desktopBlock).toBeTruthy();
     const block = desktopBlock![0];
@@ -64,13 +66,16 @@ describe("§60 — mobile Sign in button", () => {
   });
 
   it("mobile Sign in inherits the same outlined pill treatment + closes the drawer on tap", () => {
+    // §106: pill is now an <a> routing to the client portal; the only
+    // remaining click side-effect is closing the mobile drawer.
     const mobileBlock = HEADER_SRC.match(
-      /data-testid="header-signin-mobile"[\s\S]*?>\s*Sign in\s*<\/button>/
+      /data-testid="header-signin-mobile"[\s\S]*?>\s*Sign in\s*<\/a>/
     );
     expect(mobileBlock).toBeTruthy();
     const block = mobileBlock![0];
     expect(block).toMatch(/setOpen\(false\)/);
-    expect(block).toMatch(/notImplemented\("Sign in"\)/);
+    // The placeholder toast must be gone now that we have a real target.
+    expect(block).not.toMatch(/notImplemented\("Sign in"\)/);
     expect(block).toMatch(/border border-\[color:var\(--color-border\)\]/);
     expect(block).toMatch(/bg-transparent/);
     expect(block).toMatch(/btn-press/);

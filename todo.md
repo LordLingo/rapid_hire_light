@@ -1136,3 +1136,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Renamed "Employment Screening" → "Employment Verifications" in both the SERVICES chip list and the calculator's `ADDON_TO_SERVICE.employment` mapping; legacy label only remains in a header comment recording the rename
 - [x] Added `contactFormspree.test.ts` (6 specs): pins the Formspree endpoint constant + fetch usage; asserts the legacy `/api/contact` URL is gone (with comment-stripping); pins `Accept: application/json`; pins the new chip label in SERVICES + ADDON_TO_SERVICE; asserts no rendered "Employment Screening" string survives outside comments
 - [x] Run vitest + tsc (657/657 across 57 files; tsc clean)
+
+## §106 Wire header "Sign in" button to the client portal
+- [x] Located both Sign-in pills in `Header.tsx` (desktop `header-signin` + mobile-drawer `header-signin-mobile`); both previously fired a `notImplemented("Sign in")` toast
+- [x] Converted both `<button>` placeholders to `<a>` anchors pointing at `https://clients.rapidhiresolutions.com/` with `target="_blank"` and `rel="noopener noreferrer"`. Mobile pill still calls `setOpen(false)` to close the drawer cleanly on tap
+- [x] Added `headerSignin.test.ts` (5 specs) pinning: anchor element (not button), exact portal URL, target/rel attributes, and mobile-drawer close-on-click
+- [x] Updated existing §60 `headerSignIn.test.ts` so its style invariants now look for `</a>` instead of `</button>` and assert the placeholder toast is gone
+- [x] Run vitest + tsc (662/662 across 58 files; tsc clean)

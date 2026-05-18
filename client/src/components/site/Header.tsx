@@ -240,19 +240,20 @@ export default function Header() {
           <div className="flex items-center gap-3">
             {/*
               §60: outlined "Sign in" pill, sibling of Get a Quote.
-              Transparent background + hairline ink border so it reads as
-              a true outline counterpart to the filled brand-blue CTA.
-              Routes to #login + toast for now (no auth surface yet);
-              when a real auth route lands this becomes a one-line href.
+              §106: now a real anchor pointing at the existing client portal
+              at clients.rapidhiresolutions.com. Opens in a new tab so the
+              marketing site doesn't lose state, with rel="noopener
+              noreferrer" for tab-nabbing protection.
             */}
-            <button
-              type="button"
+            <a
               data-testid="header-signin"
-              onClick={() => notImplemented("Sign in")}
+              href="https://clients.rapidhiresolutions.com/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="hidden md:inline-flex btn-press items-center whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-2.5 text-[13px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)]"
             >
               Sign in
-            </button>
+            </a>
             <Link
               href="/contact"
               className="hidden md:inline-flex btn-press items-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
@@ -350,18 +351,18 @@ export default function Header() {
             >
               Get a Quote
             </Link>
-            {/* §60: mobile counterpart to the desktop outlined Sign in pill. */}
-            <button
-              type="button"
+            {/* §60/§106: mobile counterpart — same client-portal target,
+                closes the mobile drawer on click for a clean handoff. */}
+            <a
               data-testid="header-signin-mobile"
-              onClick={() => {
-                setOpen(false);
-                notImplemented("Sign in");
-              }}
+              href="https://clients.rapidhiresolutions.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
               className="btn-press inline-flex items-center justify-center rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] hover:border-[color:var(--color-ink-soft)]"
             >
               Sign in
-            </button>
+            </a>
           </div>
         </div>
       )}
