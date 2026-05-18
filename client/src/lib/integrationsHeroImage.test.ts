@@ -1,20 +1,18 @@
 /**
- * §123 — /integrations: user's portrait infographic restored in the
- * "04 — The handshake" section at the §121 layout (4-col copy + 8-col
- * figure, max-w-[560px], paper-bg figure mat). The §122 editorial
- * portrait was rolled back per user feedback ("looked good in the center
- * of the page"). The small under-eyebrow plate from earlier rounds stays
- * dropped — the handshake section carries the visual on its own.
+ * §124 — /integrations: dual-illustration layout.
  *
- * This invariant pins:
- *   A)  the small under-eyebrow plate stays removed (legacy testid + URL
- *       gone, PageHero ships no belowEyebrow plate)
- *   B)  the §122 editorial portrait is gone
- *   C)  the user's portrait infographic is mounted inside the handshake
- *       section's figure with the §121 framing (paper-bg, p-3 mat,
- *       max-w-[560px] cap, descriptive alt text)
- *   D)  the page numbering is monotonic (02 hero → 03 how it works →
- *       04 handshake → 05 grid)
+ *   1) The §122 portrait editorial illustration is mounted vertically under
+ *      the "02 — Integrations" eyebrow on the PageHero left rail (portrait
+ *      aspect 3/4, white inner mat, paper-shadow, hover-zoom, max-w-[260px])
+ *      so the empty space below the eyebrow carries weight without
+ *      overpowering the headline column.
+ *
+ *   2) The user's portrait infographic stays in the "04 — The handshake"
+ *      section at the §121 layout (4-col copy + 8-col figure,
+ *      max-w-[560px], paper-bg figure mat). The full version with embedded
+ *      type still reads at native size where it has the room.
+ *
+ * This invariant pins both placements + monotonic page numbering.
  */
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
@@ -27,34 +25,68 @@ const SRC = resolve(__dirname, "..");
 
 const PAGE = readFileSync(resolve(SRC, "pages/Integrations.tsx"), "utf-8");
 
-describe("§123.A — small under-eyebrow plate stays removed", () => {
-  it("PageHero on /integrations ships no belowEyebrow plate", () => {
+describe("§124.A — under-eyebrow portrait plate is mounted on the PageHero", () => {
+  it("PageHero declares a belowEyebrow slot with the §124 testid", () => {
     expect(PAGE).toContain('eyebrow="02 — Integrations"');
-    expect(PAGE).not.toContain("belowEyebrow=");
+    expect(PAGE).toContain("belowEyebrow={");
+    expect(PAGE).toContain('data-testid="integrations-hero-image"');
   });
 
-  it("the legacy small-plate testid is gone", () => {
-    expect(PAGE).not.toContain('data-testid="integrations-hero-image"');
-  });
-
-  it("the legacy 16rem aspect-square wrapper class combo is gone", () => {
-    expect(PAGE).not.toMatch(/aspect-square[^"]*max-w-\[16rem\]/);
-  });
-
-  it("the legacy small-plate webp is no longer referenced", () => {
-    expect(PAGE).not.toContain("integrations-plate-5gAXFzjQrFTUZZGW4UdbC7.webp");
-  });
-});
-
-describe("§123.B — §122 editorial portrait is gone", () => {
-  it("does not reference the §122 portrait webp", () => {
-    expect(PAGE).not.toContain(
-      "integrations-portrait-XH6BidmDFbRqVY2bnuYWAp.webp",
+  it("plate references the §122 portrait cloudfront webp", () => {
+    expect(PAGE).toContain(
+      "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/integrations-portrait-XH6BidmDFbRqVY2bnuYWAp.webp",
     );
   });
+
+  it("plate is portrait-shaped (aspect-[3/4]) and capped to fit the left rail", () => {
+    const slice = PAGE.slice(
+      PAGE.indexOf('data-testid="integrations-hero-image"'),
+      PAGE.indexOf("title={"),
+    );
+    expect(slice).toMatch(/aspect-\[3\/4\]/);
+    expect(slice).toMatch(/max-w-\[260px\]/);
+    // explicitly NOT the legacy 16rem square
+    expect(slice).not.toMatch(/aspect-square[^"]*max-w-\[16rem\]/);
+  });
+
+  it("plate ships with hover-zoom, white inner mat, and paper-shadow", () => {
+    const slice = PAGE.slice(
+      PAGE.indexOf('data-testid="integrations-hero-image"'),
+      PAGE.indexOf("title={"),
+    );
+    expect(slice).toMatch(/hover-zoom-image/);
+    expect(slice).toMatch(/bg-white/);
+    expect(slice).toMatch(/p-2/);
+    expect(slice).toMatch(/shadow-\[0_1px_2px[^\]]*0_8px_24px[^\]]*\]/);
+    expect(slice).toMatch(/border border-border/);
+  });
+
+  it("plate alt text is descriptive, mentions the full ATS → rings → report flow", () => {
+    const altMatch = PAGE.match(
+      /integrations-portrait-XH6BidmDFbRqVY2bnuYWAp\.webp"[\s\S]*?alt="([^"]+)"/,
+    );
+    expect(altMatch, "could not find alt for portrait plate").not.toBeNull();
+    const alt = (altMatch![1] ?? "").toLowerCase();
+    expect(alt.length).toBeGreaterThanOrEqual(140);
+    expect(alt).not.toMatch(/^image of/);
+    expect(alt).toMatch(/ats|hris/);
+    expect(alt).toContain("link rings");
+    expect(alt).toContain("background-check report");
+  });
+
+  it("plate carries explicit width + height + lazy + async loading", () => {
+    const slice = PAGE.slice(
+      PAGE.indexOf('data-testid="integrations-hero-image"'),
+      PAGE.indexOf("title={"),
+    );
+    expect(slice).toMatch(/width=\{1056\}/);
+    expect(slice).toMatch(/height=\{1408\}/);
+    expect(slice).toContain('loading="lazy"');
+    expect(slice).toContain('decoding="async"');
+  });
 });
 
-describe("§123.C — user's portrait infographic is mounted in the handshake section", () => {
+describe("§124.B — user's infographic stays in the handshake section", () => {
   it("the handshake figure testid still anchors the section", () => {
     expect(PAGE).toContain('data-testid="integrations-handshake-figure"');
   });
@@ -72,25 +104,22 @@ describe("§123.C — user's portrait infographic is mounted in the handshake se
     expect(figureSlice).toMatch(/bg-\[color:var\(--color-paper\)\]/);
     expect(figureSlice).toMatch(/p-3/);
     expect(figureSlice).toMatch(/shadow-\[0_1px_2px[^\]]*0_12px_32px[^\]]*\]/);
-    // honest portrait — no square clip, no hard scaling
     expect(figureSlice).not.toMatch(/aspect-square/);
     expect(figureSlice).toContain("h-auto w-full");
   });
 
-  it("layout is 4-col copy + 8-col figure (the §121 split the user wants)", () => {
+  it("layout is 4-col copy + 8-col figure (the §121 split)", () => {
     expect(PAGE).toMatch(/lg:col-span-4 reveal-on-scroll[\s\S]*?eyebrow">04 — The handshake/);
     expect(PAGE).toMatch(/data-testid="integrations-handshake-figure"\s+className="col-span-12 lg:col-span-8/);
   });
 
-  it("alt text is informative (mentions ATS/HRIS, the four checks, and security footer)", () => {
+  it("alt text is informative (mentions ATS/HRIS, the four checks, security footer)", () => {
     const altMatch = PAGE.match(
-      /integrations-infographic_ad1c2dd4\.png"[^>]*alt="([^"]+)"/s,
+      /integrations-infographic_ad1c2dd4\.png"[\s\S]*?alt="([^"]+)"/,
     );
-    expect(altMatch, "could not find alt for the user infographic").not.toBeNull();
+    expect(altMatch).not.toBeNull();
     const alt = (altMatch![1] ?? "").toLowerCase();
     expect(alt.length).toBeGreaterThanOrEqual(140);
-    expect(alt).not.toMatch(/^image of/);
-    expect(alt).toMatch(/ats|hris/);
     expect(alt).toContain("identity verification");
     expect(alt).toContain("criminal records");
     expect(alt).toContain("employment verification");
@@ -108,7 +137,7 @@ describe("§123.C — user's portrait infographic is mounted in the handshake se
   });
 });
 
-describe("§123.D — page numbering is monotonic", () => {
+describe("§124.C — page numbering is monotonic", () => {
   it("section ordering: 02 hero → 03 how it works → 04 handshake → 05 grid", () => {
     const i02 = PAGE.indexOf("02 — Integrations");
     const i03 = PAGE.indexOf("03 — How integrations work");

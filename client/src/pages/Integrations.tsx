@@ -60,6 +60,22 @@ export default function Integrations() {
     <SiteShell>
       <PageHero
         eyebrow="02 — Integrations"
+        belowEyebrow={
+          <div
+            data-testid="integrations-hero-image"
+            className="hover-zoom-image mt-6 aspect-[3/4] w-full max-w-[260px] overflow-hidden rounded-2xl border border-border bg-white p-2 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_8px_24px_-12px_rgba(16,42,75,0.18)]"
+          >
+            <img
+              src="https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/integrations-portrait-XH6BidmDFbRqVY2bnuYWAp.webp"
+              alt="Tall editorial illustration in cream and navy with soft sage accents. At the top, a stylized ATS / HRIS dashboard window shows three candidate rows with avatars and small status pills. A graceful navy arrow flows downward into two interlocking circular link rings at the center, with a small sage-green check pip at their intersection — representing the secure handshake between Rapid Hire and the customer system. A second navy arrow flows from the rings down into a background-check report card at the bottom, showing four icon-led rows (identity, criminal records, employment, education) and a small sage shield-with-check badge in the upper-right corner."
+              width={1056}
+              height={1408}
+              loading="lazy"
+              decoding="async"
+              className="block h-full w-full rounded-xl object-cover"
+            />
+          </div>
+        }
         title={
           <>
             Plug Rapid Hire into the{" "}

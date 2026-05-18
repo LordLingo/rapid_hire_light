@@ -1254,3 +1254,9 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §123.1 — Swapped the §122 portrait illustration back to the user-uploaded infographic at the §121 layout (col-span-4 copy + col-span-8 figure, max-w-[560px], paper-bg figure mat)
 - [x] §123.2 — Rewrote integrationsHeroImage.test.ts (13 specs across A/B/C/D blocks) to lock removal of small plate, removal of §122 portrait, restored infographic + framing + 4/8 split + alt, and monotonic section numbering
 - [x] §123.3 — vitest 845/845 across 67 files; tsc clean
+
+## §124 — Mount the §122 portrait illustration vertically under the "02 — Integrations" eyebrow
+- [x] §124.1 — Mounted the §122 portrait via PageHero belowEyebrow with portrait aspect-[3/4], max-w-[260px], white inner mat (bg-white + p-2), paper-shadow, hover-zoom
+- [x] §124.2 — Kept the user's infographic in "04 — The handshake" untouched (still 4/8 split, max-w-[560px], paper-bg mat)
+- [x] §124.3 — Rewrote integrationsHeroImage.test.ts (14 specs across A/B/C blocks) locking the under-eyebrow plate (asset, aspect, framing, alt, lazy/async, dimensions) AND the handshake infographic AND monotonic numbering
+- [x] §124.4 — vitest 846/846 across 67 files; tsc clean
