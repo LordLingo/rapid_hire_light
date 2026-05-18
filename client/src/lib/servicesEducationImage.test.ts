@@ -152,14 +152,19 @@ describe("§114 Services.tsx render wiring", () => {
     expect(imgIdx).toBeLessThan(middleColIdx);
   });
 
-  it("uses a square, rounded, bordered editorial frame (not a raw bleed)", () => {
+  it("uses a square, rounded, bordered editorial frame with a white inner mat", () => {
     // The visual treatment matches the rest of the editorial design
-    // language: rounded-2xl, border, paper soft background fallback,
-    // and a paper-shadow lift. Pin the class string so a refactor
-    // can't quietly downgrade the framing.
+    // language: rounded-2xl, border, white inner mat (so the
+    // illustration reads as a framed piece of art on the paper page),
+    // padding to expose that mat, and a paper-shadow lift. Pin the
+    // class string so a refactor can't quietly downgrade the framing.
     expect(servicesSrc).toMatch(/rounded-2xl[\s\S]*?border[\s\S]*?border-border/);
     expect(servicesSrc).toMatch(/aspect-square/);
     expect(servicesSrc).toMatch(/object-cover/);
     expect(servicesSrc).toMatch(/paper-shadow/);
+    // §114 follow-up — white mat + padding = the "nice white border"
+    // around the image the user requested.
+    expect(servicesSrc).toMatch(/bg-white/);
+    expect(servicesSrc).toMatch(/\bp-2\b/);
   });
 });

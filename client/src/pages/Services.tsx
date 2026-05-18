@@ -90,7 +90,7 @@ export default function Services() {
                       loading="lazy"
                       decoding="async"
                       data-testid={`service-hero-image-${s.slug}`}
-                      className="mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-[color:var(--color-paper-soft)] object-cover paper-shadow"
+                      className="mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-white p-2 object-cover paper-shadow"
                     />
                   ) : null}
                 </div>
