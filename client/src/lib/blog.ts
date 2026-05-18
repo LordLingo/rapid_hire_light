@@ -185,6 +185,8 @@ import { post as postMvrMonitoring } from "@/content/blog/mvr-continuous-monitor
 import { post as postHcExclusionCm } from "@/content/blog/healthcare-exclusion-continuous-monitoring";
 import { post as postCmLookback } from "@/content/blog/continuous-monitoring-lookback-policy";
 import { post as postCmDriftDetect } from "@/content/blog/continuous-monitoring-drift-detection";
+// §115 — financial services / FINRA Rule 3110(e) gap-filler
+import { post as postFinra3110 } from "@/content/blog/finra-rule-3110-background-check-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -307,6 +309,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postHcExclusionCm,
   postCmLookback,
   postCmDriftDetect,
+  postFinra3110,
 ]);
 
 /**

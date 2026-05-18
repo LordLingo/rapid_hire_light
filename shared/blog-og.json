@@ -590,6 +590,11 @@
       "slug": "continuous-monitoring-drift-detection",
       "title": "Continuous Monitoring Drift Detection: Catching the Program That's Slipping",
       "tag": "continuous-monitoring"
+    },
+    {
+      "slug": "finra-rule-3110-background-check-employer-guide",
+      "title": "FINRA Rule 3110(e) Background Checks: Form U4 Fingerprinting and Investigation Duties",
+      "tag": "finra"
     }
   ]
 }
