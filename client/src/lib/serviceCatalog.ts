@@ -90,6 +90,17 @@ export type ServiceDetail = {
   relatedServiceSlugs: string[];
   /** A 14-21 word FAQ Q&A pair pinned to the bottom of the detail page. */
   faqs: { q: string; a: string }[];
+  /**
+   * §114 — optional standalone editorial illustration rendered in the
+   * left rail of the /services hub article (under the icon + tag
+   * pill). Opt-in per service; entries without `heroImage` render the
+   * existing icon-only left rail unchanged.
+   *
+   * `url` MUST be the manus webdev static-asset CloudFront URL
+   * returned by `manus-upload-file --webdev` / `generate_image`.
+   * `alt` is required and must be descriptive (no "image of …" filler).
+   */
+  heroImage?: { url: string; alt: string };
 };
 
 export const SERVICE_CATALOG: ServiceDetail[] = [
@@ -263,6 +274,13 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
         a: "Typically 5–10 business days, depending on country. We provide a US-equivalency evaluation alongside the verification.",
       },
     ],
+    // §114 — first service to opt in to the standalone left-rail
+    // illustration. Editorial diploma + mortarboard + ledger study,
+    // generated via the webdev image pipeline (compressed WebP).
+    heroImage: {
+      url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/services-education-verification-eLf9rJEMmN4Suu6ZZ3rCb9.webp",
+      alt: "Editorial illustration of a rolled diploma tied with a green ribbon resting on a navy mortarboard cap, beside an open registrar ledger with a single check mark — representing direct registrar verification of degrees and credentials.",
+    },
   },
   {
     slug: "drug-screening",

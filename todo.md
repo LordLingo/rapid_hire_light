@@ -1197,3 +1197,19 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Rendered the chip on the GetAQuote left rail above the lede list, behind an `isFresh` guard so stale claims auto-hide. Pill styling matches the design language: tinted background (`--color-tint`), border, Timer icon at accent-ink, eyebrow micro-label, bold display value, muted subline (`Healthcare staffing · X ago`). `data-testid="quote-last-turnaround-chip"` + `aria-live="polite"`
 - [x] Added `lastQuoteTurnaround.test.ts` (22 specs across 6 describes): A) JSON shape (minutes integer, recordedAt parses, default freshness window); B) formatter rules (combined hr+min, clean hr boundary, minutes-only, sub-minute / negative / NaN); B2) relative subline rules (just-now, singular/plural, weeks rollover); C) freshness gate (fresh, 2-year-stale, custom-window, industry/no-industry sublines); D) GetAQuote wiring (import path, isFresh guard, testid, slots, label text, aria-live colocation); E) runtime singleton sanity
 - [x] Run vitest + tsc (746/746 across 64 files; tsc clean); dev server healthy after HMR
+
+## §114 Education Verification hero — standalone image under the 03 eyebrow (test pattern)
+- [ ] Locate the Education Verification service detail page and understand the current hero layout
+- [ ] Source or generate an editorial education-themed image (caps, diplomas, blueprint-style line art, or stylized transcript — not a stock cliché)
+- [ ] Upload the image via the webdev static-assets pipeline so it never bloats the bundle
+- [ ] Render the image at the documented testid slot under the 03 eyebrow with appropriate alt text + responsive sizing
+- [ ] Lock with a vitest pinning the slot, the testid, the alt-text shape, and that the image is referenced via the manus-storage CDN URL (not a local path)
+- [ ] Run vitest + tsc + checkpoint
+
+## §114 — Education Verification standalone illustration on /services
+- [x] Generate editorial diploma + mortarboard + ledger illustration via webdev image pipeline (compressed WebP)
+- [x] Extend ServiceDetail with optional `heroImage?: { url, alt }` field (opt-in per service)
+- [x] Wire `education-verification` catalog entry with `heroImage` (URL + descriptive alt)
+- [x] Render image in left rail of /services article under "03 — Education" eyebrow (rounded-2xl, aspect-square, paper-shadow, lazy + async)
+- [x] Lock with `servicesEducationImage.test.ts` (9 specs: type shape, opt-in semantics, URL + alt content, render wiring, framing classes, left-rail position)
+- [x] vitest 755/755 across 65 files; tsc clean

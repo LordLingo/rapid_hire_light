@@ -28,6 +28,8 @@ const SERVICES = SERVICE_CATALOG.map((s, i) => ({
   body: s.summary,
   includes: s.includes.slice(0, 5),
   sla: s.sla,
+  // §114 — opt-in standalone illustration for the article left rail.
+  heroImage: s.heroImage,
 }));
 
 // Legacy literal removed: the original 6-entry array used inline
@@ -74,6 +76,23 @@ export default function Services() {
                     </span>
                     <span className="eyebrow">{s.tag}</span>
                   </div>
+                  {/*
+                    §114 — optional standalone editorial illustration.
+                    Renders directly under the icon + tag eyebrow when
+                    the catalog entry opts in via `heroImage`. Services
+                    without `heroImage` keep the original icon-only rail
+                    untouched.
+                  */}
+                  {s.heroImage ? (
+                    <img
+                      src={s.heroImage.url}
+                      alt={s.heroImage.alt}
+                      loading="lazy"
+                      decoding="async"
+                      data-testid={`service-hero-image-${s.slug}`}
+                      className="mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-[color:var(--color-paper-soft)] object-cover paper-shadow"
+                    />
+                  ) : null}
                 </div>
                 <div className="col-span-12 lg:col-span-6">
                   <h2 className="font-display text-[28px] md:text-[36px] leading-tight text-[color:var(--color-ink)]">
