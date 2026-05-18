@@ -232,7 +232,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: GraduationCap,
     topic: "verifications",
     summary:
-      "Direct verification of degrees, diplomas, and technical certifications — including foreign-credential evaluation for international hires.",
+      "Direct education verification of degrees, diplomas, technical certifications, and professional credentials to help employers confirm applicant qualifications with confidence. Our education verification services validate graduation status, attendance dates, earned degrees, and specialized certifications directly with schools and institutions. We also provide foreign credential evaluations for international hires, ensuring fast, accurate education verification background checks that reduce hiring risk and support confident hiring decisions.",
     hero:
       "Roughly 40% of resumes have at least one inaccuracy in the education section, and the gap between 'attended' and 'graduated' is the single most common one. We verify degree, major, dates of attendance, and graduation status directly with the registrar — through the National Student Clearinghouse where available and direct-to-institution where it isn't — and run a foreign-credential evaluation for international degrees.",
     sla: "Avg. 2 business days",
