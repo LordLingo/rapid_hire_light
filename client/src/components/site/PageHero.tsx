@@ -24,6 +24,8 @@ type Props = {
   belowVisual?: React.ReactNode;
   /** Optional slot rendered DIRECTLY UNDER the lede paragraph in the headline column. Used for hero CTA + trust-strip clusters. */
   afterLede?: React.ReactNode;
+  /** Optional slot rendered DIRECTLY UNDER the eyebrow + hairline in the LEFT rail. Used for editorial illustrations on detail pages (§114 follow-up). */
+  belowEyebrow?: React.ReactNode;
   /**
    * When `true`, PageHero renders `visual` WITHOUT its default rounded
    * `overflow-hidden` frame. The visual node is then responsible for its
@@ -44,6 +46,7 @@ export default function PageHero({
   visual,
   belowVisual,
   afterLede,
+  belowEyebrow,
   visualBleed = false,
   image,
   imageAlt,
@@ -77,6 +80,9 @@ export default function PageHero({
           <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
             <p className="eyebrow">{eyebrow}</p>
             <div className="mt-3 hairline" />
+            {belowEyebrow ? (
+              <div data-testid="page-hero-below-eyebrow">{belowEyebrow}</div>
+            ) : null}
           </div>
 
           {rightSlot ? (

@@ -168,3 +168,59 @@ describe("§114 Services.tsx render wiring", () => {
     expect(servicesSrc).toMatch(/\bp-2\b/);
   });
 });
+
+/*
+  §114 follow-up — mirror the same illustration onto the dedicated
+  detail page at /services/<slug> (e.g. /services/education-verification).
+  We render it under the eyebrow + hairline of the left rail in PageHero
+  via the new `belowEyebrow` slot, using the SAME framing classes the
+  /services list view uses, so the brand language stays consistent.
+*/
+const serviceDetailSrc = fs.readFileSync(
+  path.join(ROOT, "client/src/pages/ServiceDetail.tsx"),
+  "utf8",
+);
+const pageHeroSrc = fs.readFileSync(
+  path.join(ROOT, "client/src/components/site/PageHero.tsx"),
+  "utf8",
+);
+
+describe("§114 follow-up — ServiceDetail.tsx hero image wiring", () => {
+  it("PageHero exposes a `belowEyebrow` slot for left-rail editorial illustrations", () => {
+    expect(pageHeroSrc).toMatch(/belowEyebrow\?:\s*React\.ReactNode/);
+    // Slot must render under the hairline in the left rail.
+    expect(pageHeroSrc).toMatch(/data-testid="page-hero-below-eyebrow"/);
+    expect(pageHeroSrc).toMatch(/{belowEyebrow}/);
+  });
+
+  it("ServiceDetail.tsx forwards heroImage into the PageHero `belowEyebrow` slot", () => {
+    expect(serviceDetailSrc).toMatch(/belowEyebrow=\{[\s\S]*?service\.heroImage/);
+    // The img tag binds to the catalog data, not a hardcoded URL, so it
+    // automatically picks up additional opt-ins later.
+    expect(serviceDetailSrc).toMatch(/<img\b[\s\S]*?src=\{service\.heroImage\.url\}/);
+    expect(serviceDetailSrc).toMatch(/alt=\{service\.heroImage\.alt\}/);
+    expect(serviceDetailSrc).toMatch(/loading="lazy"/);
+    expect(serviceDetailSrc).toMatch(/decoding="async"/);
+    expect(serviceDetailSrc).toMatch(
+      /data-testid=\{`service-hero-image-\$\{service\.slug\}`\}/,
+    );
+  });
+
+  it("the detail-page frame matches the /services list-view treatment exactly", () => {
+    // Same rounded square + border + white inner mat + paper-shadow as
+    // the catalog page — so the user gets identical visual rhythm when
+    // they click into a service.
+    expect(serviceDetailSrc).toMatch(/rounded-2xl[\s\S]*?border[\s\S]*?border-border/);
+    expect(serviceDetailSrc).toMatch(/aspect-square/);
+    expect(serviceDetailSrc).toMatch(/object-cover/);
+    expect(serviceDetailSrc).toMatch(/paper-shadow/);
+    expect(serviceDetailSrc).toMatch(/bg-white/);
+    expect(serviceDetailSrc).toMatch(/\bp-2\b/);
+  });
+
+  it("the image renders only when service.heroImage is defined (opt-in)", () => {
+    // The conditional must live around the <img>, otherwise services
+    // without an illustration would crash on undefined.url.
+    expect(serviceDetailSrc).toMatch(/service\.heroImage\s*\?\s*\(/);
+  });
+});

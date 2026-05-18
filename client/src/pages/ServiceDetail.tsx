@@ -106,6 +106,18 @@ export default function ServiceDetail() {
       {/* 01 — HERO */}
       <PageHero
         eyebrow={`Services · ${service.tag}`}
+        belowEyebrow={
+          service.heroImage ? (
+            <img
+              src={service.heroImage.url}
+              alt={service.heroImage.alt}
+              loading="lazy"
+              decoding="async"
+              data-testid={`service-hero-image-${service.slug}`}
+              className="mt-5 w-full max-w-[260px] aspect-square rounded-2xl border border-border bg-white p-2 object-cover paper-shadow"
+            />
+          ) : null
+        }
         title={
           <>
             {service.title.split(" ").slice(0, -1).join(" ")}{" "}
