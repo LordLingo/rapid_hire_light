@@ -1143,3 +1143,10 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Added `headerSignin.test.ts` (5 specs) pinning: anchor element (not button), exact portal URL, target/rel attributes, and mobile-drawer close-on-click
 - [x] Updated existing §60 `headerSignIn.test.ts` so its style invariants now look for `</a>` instead of `</button>` and assert the placeholder toast is gone
 - [x] Run vitest + tsc (662/662 across 58 files; tsc clean)
+
+## §107 Wire footer "Client login" link to the client portal
+- [x] Located the footer Client Login entry in `Footer.tsx` (PORTALS array — previously the placeholder `{ label: "Client Login" }` shape that fell through to the preview-only toast)
+- [x] Extended `FooterItem` with an optional `external?: string` field so the same data shape can carry external destinations alongside internal `to` routes; added a third render branch that emits `<a href={it.external} target="_blank" rel="noopener noreferrer">` with a `data-testid` derived from the label
+- [x] Wired Client Login to `https://clients.rapidhiresolutions.com/`; preserved the toast escape hatch for future preview-only entries
+- [x] Added `footerClientLogin.test.ts` (5 specs) pinning: external URL on the Client Login entry, removal of the legacy placeholder shape, presence of the `external?: string` type, the JSX branch's `target=_blank` + `rel=noopener noreferrer`, and the surviving toast fallback
+- [x] Run vitest + tsc (667/667 across 59 files; tsc clean)

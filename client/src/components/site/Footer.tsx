@@ -9,7 +9,14 @@ import { Rss, ShieldCheck } from "lucide-react";
 import { BRAND_NAME, FOOTER_LOGO_URL } from "@shared/brand";
 import { isActivePath } from "./Header";
 
-type FooterItem = { label: string; to?: string };
+/*
+  §107: FooterItem now also supports an external href via `external`.
+  Used by "Client Login" to open the existing client portal at
+  clients.rapidhiresolutions.com in a new tab. Internal routes still
+  use `to` (wouter <Link>); items with neither field fall through to a
+  preview-only toast (kept as a developer escape hatch).
+*/
+type FooterItem = { label: string; to?: string; external?: string };
 
 // §83: each footer service link now resolves to its own detail page
 // at /services/<slug>. See client/src/lib/serviceCatalog.ts for the
@@ -51,7 +58,8 @@ const COMPANY: FooterItem[] = [
   { label: "Contact", to: "/contact" },
 ];
 const PORTALS: FooterItem[] = [
-  { label: "Client Login" },
+  // §107: Client Login routes to the existing customer-facing portal.
+  { label: "Client Login", external: "https://clients.rapidhiresolutions.com/" },
   { label: "Get A Quote", to: "/contact" },
 ];
 
@@ -206,6 +214,21 @@ function FooterCol({
                 >
                   {it.label}
                 </Link>
+              ) : it.external ? (
+                /*
+                  §107: external link — opens in a new tab so the
+                  marketing site doesn't lose state, with rel="noopener
+                  noreferrer" for tab-nabbing protection.
+                */
+                <a
+                  data-testid={`footer-external-${it.label.toLowerCase().replace(/\s+/g, "-")}`}
+                  href={it.external}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer-link text-[14px] text-[color:var(--color-footer-soft-text)]"
+                >
+                  {it.label}
+                </a>
               ) : (
                 <button
                   onClick={() => toast(`${it.label} — preview only`)}
