@@ -321,12 +321,28 @@ function useChecklistProgress() {
     setChecked({});
   };
 
+  /*
+    §110 — mark every checklist item as checked at once. Receives the
+    canonical SURFACES list so the hook stays decoupled from the page
+    constants. We rebuild the map (rather than mutate) so React's
+    referential equality fires the persistence effect.
+  */
+  const markAllChecked = (surfaces: ReadonlyArray<ChecklistSurface>) => {
+    const next: Record<string, boolean> = {};
+    for (const s of surfaces) {
+      for (const it of s.items) {
+        next[it.id] = true;
+      }
+    }
+    setChecked(next);
+  };
+
   const checkedCount = useMemo(
     () => Object.values(checked).filter(Boolean).length,
     [checked],
   );
 
-  return { checked, toggle, reset, checkedCount, hydrated };
+  return { checked, toggle, reset, markAllChecked, checkedCount, hydrated };
 }
 
 /* ---------- page ---------- */
@@ -339,7 +355,8 @@ export default function ComplianceChecklist() {
       "Rapid Hire Solutions' free 24-point employer compliance checklist. Six litigated surfaces — disclosure and authorization, pre-adverse workflow, waiting-period cushion, EEOC individualized assessment, dispute handling, and continuous-monitoring posture — with the FCRA section, regulation, or case-law citation behind every line. Free, no email required, save progress on your device.",
   });
 
-  const { checked, toggle, reset, checkedCount } = useChecklistProgress();
+  const { checked, toggle, reset, markAllChecked, checkedCount } =
+    useChecklistProgress();
 
   /*
     §109 — cover attribution + gaps-only mode. We persist both to
@@ -347,6 +364,14 @@ export default function ComplianceChecklist() {
     hook so refreshing the page doesn't wipe the company name a user
     just typed in. Hydration is gated on a flag so SSR-rendered HTML
     can't be perturbed.
+
+    §110 — the generatedFor field is now ALSO mirrored to the URL as
+    `?for=<company>` so a finished audit packet can be shared as a link
+    with all state intact. Source-of-truth precedence on hydration:
+      URL (?for=) > localStorage (GENERATED_FOR_KEY) > empty default
+    Writes go to both URL (`history.replaceState`) and localStorage on
+    every change. Empty values strip the param entirely so the URL stays
+    clean for users who never set a company.
   */
   const [generatedFor, setGeneratedFor] = useState<string>("");
   const [uncheckedOnly, setUncheckedOnly] = useState<boolean>(false);
@@ -354,12 +379,20 @@ export default function ComplianceChecklist() {
 
   useEffect(() => {
     try {
-      const g = window.localStorage.getItem(GENERATED_FOR_KEY);
-      if (typeof g === "string") setGeneratedFor(g);
+      // §110 — URL takes precedence so a shared link wins over a
+      // device-local localStorage value from a prior session.
+      const url = new URL(window.location.href);
+      const fromUrl = url.searchParams.get("for");
+      const fromStorage = window.localStorage.getItem(GENERATED_FOR_KEY);
+      if (typeof fromUrl === "string" && fromUrl.trim().length > 0) {
+        setGeneratedFor(fromUrl);
+      } else if (typeof fromStorage === "string") {
+        setGeneratedFor(fromStorage);
+      }
       const u = window.localStorage.getItem(UNCHECKED_ONLY_KEY);
       if (u === "1") setUncheckedOnly(true);
     } catch {
-      // localStorage unavailable — keep defaults.
+      // localStorage / URL unavailable — keep defaults.
     }
     setOptionsHydrated(true);
   }, []);
@@ -374,6 +407,23 @@ export default function ComplianceChecklist() {
       );
     } catch {
       // Quota / private-mode — silently ignore.
+    }
+    // §110 — URL sync. Strip the param when the field is empty so the
+    // URL stays clean. Use replaceState so we don't pollute history.
+    try {
+      const url = new URL(window.location.href);
+      const trimmed = generatedFor.trim();
+      if (trimmed.length === 0) {
+        url.searchParams.delete("for");
+      } else {
+        url.searchParams.set("for", trimmed);
+      }
+      const qs = url.searchParams.toString();
+      const next = url.pathname + (qs ? `?${qs}` : "") + url.hash;
+      window.history.replaceState(null, "", next);
+    } catch {
+      // history.replaceState unavailable (very old browsers / SSR) —
+      // ignore; localStorage is still the durable store.
     }
   }, [generatedFor, uncheckedOnly, optionsHydrated]);
 
@@ -391,6 +441,13 @@ export default function ComplianceChecklist() {
   */
   const [downloading, setDownloading] = useState(false);
   const uncheckedCount = TOTAL_ITEMS - checkedCount;
+  /*
+    §110 — export count surfaces in two places: the preview chip next
+    to the Download button ("Will export N item(s)") and the empty-export
+    guard inside handleDownload. Computed from the same data the PDF
+    generator uses so chip text and PDF contents can never disagree.
+  */
+  const exportCount = uncheckedOnly ? uncheckedCount : TOTAL_ITEMS;
   const handleDownload = async () => {
     if (downloading) return;
     /*
@@ -452,20 +509,42 @@ export default function ComplianceChecklist() {
                 <Check aria-hidden className="size-4" strokeWidth={2.5} />
                 Start the self-audit
               </a>
-              {/* §108: PDF is now built at click-time from the live state. */}
-              <button
-                type="button"
-                onClick={handleDownload}
-                disabled={downloading}
-                data-testid="checklist-cta-download"
-                className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)] disabled:opacity-60 disabled:cursor-progress"
-              >
-                <Download
-                  aria-hidden
-                  className="size-4 text-[color:var(--color-accent-ink)]"
-                />
-                {downloading ? "Building your PDF…" : "Download the PDF"}
-              </button>
+              {/*
+                §108/§110: PDF is built at click-time from the live state,
+                with a preview chip showing the export count immediately
+                next to the button so users see exactly what they'll get
+                before clicking.
+              */}
+              <div className="inline-flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  disabled={downloading}
+                  data-testid="checklist-cta-download"
+                  className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-border)] bg-transparent px-5 py-3 text-[14px] font-medium text-[color:var(--color-ink)] transition-colors duration-200 ease-out hover:border-[color:var(--color-ink-soft)] disabled:opacity-60 disabled:cursor-progress"
+                >
+                  <Download
+                    aria-hidden
+                    className="size-4 text-[color:var(--color-accent-ink)]"
+                  />
+                  {downloading ? "Building your PDF…" : "Download the PDF"}
+                </button>
+                {!downloading ? (
+                  <span
+                    data-testid="checklist-export-count-chip"
+                    aria-live="polite"
+                    className="hidden sm:inline-flex items-center rounded-full border border-[color:var(--color-border)] bg-white px-2.5 py-1 text-[11.5px] font-medium text-[color:var(--color-ink-soft)]"
+                    title={
+                      uncheckedOnly
+                        ? "Only items still to address will be in the PDF."
+                        : "Every checklist item will be in the PDF."
+                    }
+                  >
+                    Will export {exportCount}{" "}
+                    {exportCount === 1 ? "item" : "items"}
+                  </span>
+                ) : null}
+              </div>
               <button
                 type="button"
                 onClick={handlePrint}
@@ -540,6 +619,47 @@ export default function ComplianceChecklist() {
                 />
                 Unchecked items only ({uncheckedCount})
               </label>
+            </div>
+            {/*
+              §110 — bulk actions row. Sits directly under the download
+              options so the relationship is obvious: bulk-edit your
+              progress, then export. Both buttons are intentionally low
+              weight (text-link affordance, not pill CTAs) so they don't
+              compete with the primary download/print actions above.
+            */}
+            <div
+              data-testid="checklist-bulk-actions"
+              className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-[color:var(--color-ink-soft)]"
+            >
+              <span className="text-[10.5px] tracking-[0.2em] uppercase text-[color:var(--color-ink-muted)]">
+                Bulk actions
+              </span>
+              <button
+                type="button"
+                onClick={() => markAllChecked(SURFACES)}
+                data-testid="checklist-mark-all"
+                disabled={checkedCount === TOTAL_ITEMS}
+                className="btn-press inline-flex items-center gap-1.5 underline-offset-4 hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Check
+                  aria-hidden
+                  className="size-3.5 text-[color:var(--color-accent-ink)]"
+                />
+                Mark all 24 as checked
+              </button>
+              <button
+                type="button"
+                onClick={reset}
+                data-testid="checklist-reset-bulk"
+                disabled={checkedCount === 0}
+                className="btn-press inline-flex items-center gap-1.5 underline-offset-4 hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <RotateCcw
+                  aria-hidden
+                  className="size-3.5 text-[color:var(--color-accent-ink)]"
+                />
+                Reset progress
+              </button>
             </div>
           </>
         }
