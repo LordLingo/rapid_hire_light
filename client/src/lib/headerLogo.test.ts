@@ -26,8 +26,12 @@ describe("Header brand logo", () => {
   const src = read("client/src/components/site/Header.tsx");
 
   it("HEADER_LOGO_URL points at the webdev static host", () => {
+    // §127: brand owner supplied a new color lockup (rapid-hire-logo).
+    // The constraint is that the asset must be served from /manus-storage/
+    // (the webdev static host) and end in .png; the specific filename slug
+    // is allowed to change whenever the brand asset is re-uploaded.
     expect(HEADER_LOGO_URL).toMatch(
-      /^\/manus-storage\/rhs-color-logo_[a-z0-9]+\.png$/,
+      /^\/manus-storage\/[a-zA-Z0-9._-]+\.png$/,
     );
   });
 

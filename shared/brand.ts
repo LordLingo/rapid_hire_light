@@ -22,7 +22,7 @@
 // `manus-upload-file --webdev <path>` and replace the URL here when the
 // asset changes; the corresponding *.test.ts files will fail loudly if the
 // constant ever drifts away from "/manus-storage/...".
-export const HEADER_LOGO_URL = "/manus-storage/rhs-color-logo_038dbc01.png";
+export const HEADER_LOGO_URL = "/manus-storage/rapid-hire-logo_83b36d16.png";
 export const FOOTER_LOGO_URL = "/manus-storage/rhs-white-logo_ba46549d.png";
 
 // Homepage hero key visual. Marketing photograph supplied by the brand owner
