@@ -299,7 +299,7 @@ export default function Contact() {
                         name="teamSize"
                         defaultValue={prefillTeamSize}
                         required
-                        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+                        className="form-field"
                       >
                         <option value="" disabled>
                           Select a range —
@@ -348,7 +348,7 @@ export default function Contact() {
                       rows={5}
                       defaultValue={prefillNote}
                       placeholder="Roles, jurisdictions, ATS in use, anything else we should know."
-                      className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] leading-[1.7] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink-muted)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors resize-none"
+                      className="form-field"
                     />
                     {cameFromCalculator && (
                       <p className="mt-3 text-[12px] text-[color:var(--color-ink-muted)]">
@@ -423,7 +423,7 @@ function Field({
         name={name}
         required={required}
         autoComplete={autoComplete}
-        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+        className="form-field"
       />
     </div>
   );

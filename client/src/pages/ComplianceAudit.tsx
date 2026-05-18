@@ -594,7 +594,7 @@ export default function ComplianceAudit() {
                       name="notes"
                       rows={5}
                       placeholder="A jurisdiction, a recent dispute, an ATS migration, an internal audit finding — whatever you want the compliance desk to spend the 15 minutes on."
-                      className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] leading-[1.7] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink-muted)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors resize-none"
+                      className="form-field"
                     />
                   </div>
 
@@ -811,7 +811,7 @@ function Field({
         name={name}
         required={required}
         autoComplete={autoComplete}
-        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+        className="form-field"
       />
     </div>
   );
@@ -844,7 +844,7 @@ function SelectField({
         name={name}
         defaultValue=""
         required={required}
-        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+        className="form-field"
       >
         <option value="" disabled>
           Select —

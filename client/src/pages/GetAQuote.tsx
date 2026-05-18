@@ -437,7 +437,7 @@ export default function GetAQuote() {
                       rows={4}
                       defaultValue={prefillNote}
                       placeholder="Optional — but the more you share, the more accurate the quote."
-                      className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] leading-[1.7] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink-muted)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors resize-none"
+                      className="form-field"
                     />
                   </div>
 
@@ -507,7 +507,7 @@ function Field({
         name={name}
         required={required}
         autoComplete={autoComplete}
-        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+        className="form-field"
       />
     </div>
   );
@@ -537,7 +537,7 @@ function SelectField({
         name={name}
         required={required}
         defaultValue={defaultValue ?? ""}
-        className="mt-2 w-full bg-transparent border-0 border-b border-[color:var(--color-rule)] py-2.5 text-[15px] text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] transition-colors"
+        className="form-field"
       >
         <option value="" disabled>
           Select…

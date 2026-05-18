@@ -706,3 +706,99 @@
     }
   }
 }
+
+/* ---------------------------------------------------------------------
+   §133 — Form field surface
+   --------------------------------------------------------------------- */
+/* Per user request: the original underline-only field treatment
+   (`border-0 border-b border-[color:var(--color-rule)]`) made forms
+   read like a list of labels — users couldn't tell where to type.
+
+   This utility replaces that pattern with a proper bordered-box field
+   so every <input>, <textarea>, and <select> in the Contact, Get a
+   Quote, and Compliance Audit forms is immediately recognizable as
+   fillable. The box uses:
+
+     • A full hairline border at `--color-rule` for the resting state
+       (~oklch(0.86 ...) — visibly grey against the warm paper bg).
+     • The page paper as the field surface (slight contrast against
+       the sectioned-white wrapper that hosts the form on most pages).
+     • Soft 8px rounded corners (matches the rest of the site's
+       button/card radius vocabulary).
+     • A 2px brand-accent ring + thicker border on focus, replacing
+       the previous focus-color-on-bottom-edge behavior.
+     • An optional `.form-field--invalid` modifier hook for future
+       client-side validation (red border + red ring).
+
+   Apply by replacing the long underline className with `form-field`.
+   The utility is stateful (resting / hover / focus / disabled) so
+   page-level overrides are unnecessary in 99% of cases.
+--------------------------------------------------------------------- */
+@layer components {
+  .form-field {
+    /* sizing kept identical to the prior pattern (mt-2 + py-2.5 +
+       text-[15px]) so the surrounding label rhythm is unchanged */
+    margin-top: 0.5rem;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-rule);
+    border-radius: 8px;
+    box-shadow: inset 0 1px 0 rgba(15, 23, 42, 0.02);
+    transition:
+      border-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color 180ms cubic-bezier(0.23, 1, 0.32, 1);
+    outline: none;
+    appearance: none;
+  }
+  .form-field::placeholder {
+    color: var(--color-ink-muted);
+  }
+  .form-field:hover:not(:disabled):not(:focus) {
+    border-color: color-mix(in oklab, var(--color-rule) 50%, var(--color-ink) 50%);
+    background-color: #ffffff;
+  }
+  .form-field:focus,
+  .form-field:focus-visible {
+    border-color: var(--color-accent-ink);
+    background-color: #ffffff;
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--color-accent-halo) 35%, transparent 65%),
+      inset 0 1px 0 rgba(15, 23, 42, 0.02);
+  }
+  .form-field:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background-color: var(--color-paper-soft, var(--color-paper));
+  }
+  /* Textareas keep resize affordance but stay vertical-only so the
+     form layout doesn't break on narrow viewports. */
+  textarea.form-field {
+    resize: vertical;
+    min-height: 7rem;
+    line-height: 1.7;
+  }
+  /* Native <select> dropdown chevron — replace the platform default
+     so the dropdown matches the rest of the field family. */
+  select.form-field {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.875rem center;
+    padding-right: 2.25rem;
+  }
+  /* Validation hook — page-level state can toggle this class on the
+     field when an inline error message is shown. */
+  .form-field--invalid {
+    border-color: var(--color-destructive, #dc2626);
+  }
+  .form-field--invalid:focus,
+  .form-field--invalid:focus-visible {
+    border-color: var(--color-destructive, #dc2626);
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--color-destructive, #dc2626) 25%, transparent 75%);
+  }
+}
