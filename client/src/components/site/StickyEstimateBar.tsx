@@ -193,10 +193,11 @@ export default function StickyEstimateBar({
           <span className="sm:hidden">Edit</span>
         </a>
 
-        {/* Right — CTA + dismiss */}
+        {/* Right — CTA + dismiss. §111: dedicated quote page (Formspree mvzyoyoz). */}
         {estimate && (
           <Link
-            href={`/contact?${buildQuery(estimate, matchedTierLabel ?? "Custom")}`}
+            href={`/get-a-quote?${buildQuery(estimate, matchedTierLabel ?? "Custom")}`}
+            data-testid="sticky-estimate-quote-desktop"
             className="btn-press hidden sm:inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-4 py-2 text-[12.5px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong,var(--color-accent-ink))] shrink-0"
           >
             Get this quote
@@ -205,7 +206,8 @@ export default function StickyEstimateBar({
         )}
         {estimate && (
           <Link
-            href={`/contact?${buildQuery(estimate, matchedTierLabel ?? "Custom")}`}
+            href={`/get-a-quote?${buildQuery(estimate, matchedTierLabel ?? "Custom")}`}
+            data-testid="sticky-estimate-quote-mobile"
             className="btn-press sm:hidden inline-flex items-center gap-1 rounded-full bg-[color:var(--color-accent-ink)] px-3 py-2 text-[12px] font-medium text-white shrink-0"
           >
             Get quote

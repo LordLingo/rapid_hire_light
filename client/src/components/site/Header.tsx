@@ -254,8 +254,10 @@ export default function Header() {
             >
               Sign in
             </a>
+{/* §111: Get a Quote CTAs site-wide point at the dedicated /get-a-quote page (Formspree mvzyoyoz). */}
             <Link
-              href="/contact"
+              href="/get-a-quote"
+              data-testid="header-get-a-quote"
               className="hidden md:inline-flex btn-press items-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
             >
               Get a Quote
@@ -344,8 +346,9 @@ export default function Header() {
                 </button>
               );
             })}
-            <Link
-              href="/contact"
+<Link
+              href="/get-a-quote"
+              data-testid="header-get-a-quote-mobile"
               onClick={() => setOpen(false)}
               className="mt-2 btn-press inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent-ink)] px-5 py-3 text-[14px] font-medium text-white"
             >

@@ -90,10 +90,11 @@ describe("§69 — Industries page", () => {
     expect(industries).toMatch(/>\s*9\s*</);
   });
 
-  it("hero CTA pair links to /contact and to the #sectors anchor on the same page", () => {
+  it("hero CTA pair links to /get-a-quote (§111) and to the #sectors anchor on the same page", () => {
     // hero CTAs are written with literal data-testid + href attrs
+    // §111: quote CTA repointed from /contact to the dedicated /get-a-quote page
     expect(industries).toMatch(
-      /href="\/contact"\s+data-testid="industries-cta-quote"/,
+      /href="\/get-a-quote"\s+data-testid="industries-cta-quote"/,
     );
     expect(industries).toMatch(
       /href="#sectors"\s+data-testid="industries-cta-jump"/,

@@ -249,8 +249,10 @@ export default function Services() {
               </h2>
             </div>
             <div className="col-span-12 md:col-span-4 flex md:justify-end items-end relative">
+              {/* §111: dedicated quote page (Formspree mvzyoyoz). */}
               <Link
-                href="/contact"
+                href="/get-a-quote"
+                data-testid="services-cta-banner-quote"
                 className="cta-banner-cta btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
               >
                 Get a quote

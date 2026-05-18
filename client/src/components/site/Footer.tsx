@@ -60,7 +60,8 @@ const COMPANY: FooterItem[] = [
 const PORTALS: FooterItem[] = [
   // §107: Client Login routes to the existing customer-facing portal.
   { label: "Client Login", external: "https://clients.rapidhiresolutions.com/" },
-  { label: "Get A Quote", to: "/contact" },
+  // §111: "Get A Quote" routes to the dedicated /get-a-quote page (Formspree mvzyoyoz).
+  { label: "Get A Quote", to: "/get-a-quote" },
 ];
 
 export default function Footer() {

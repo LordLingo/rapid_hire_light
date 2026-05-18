@@ -89,9 +89,11 @@ describe("§60 — anti-regression on the existing Get a Quote CTA", () => {
     );
   });
 
-  it("Get a Quote still routes to /contact", () => {
+  it("Get a Quote routes to /get-a-quote (§111: dedicated quote page)", () => {
     expect(HEADER_SRC).toMatch(
-      /href="\/contact"[\s\S]*?>\s*Get a Quote/
+      /href="\/get-a-quote"[\s\S]*?>\s*Get a Quote/
     );
+    // and explicitly NOT to /contact anymore
+    expect(HEADER_SRC).not.toMatch(/href="\/contact"[\s\S]*?>\s*Get a Quote/);
   });
 });

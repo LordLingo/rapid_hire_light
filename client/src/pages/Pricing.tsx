@@ -66,7 +66,8 @@ const TIERS: Tier[] = [
       "Global watchlist (OFAC)",
     ],
     cta: "Get an Essential quote",
-    ctaHref: "/contact?tier=essential&note=Interested+in+the+Essential+package",
+    // §111: tier-aware quote pre-fill on the dedicated /get-a-quote page.
+    ctaHref: "/get-a-quote?tier=essential&note=Interested+in+the+Essential+package",
   },
   {
     id: "professional",
@@ -90,7 +91,7 @@ const TIERS: Tier[] = [
       "Federal criminal search",
     ],
     cta: "Get a Professional quote",
-    ctaHref: "/contact?tier=professional&note=Interested+in+the+Professional+package",
+    ctaHref: "/get-a-quote?tier=professional&note=Interested+in+the+Professional+package",
     featured: true,
   },
   {
@@ -115,7 +116,7 @@ const TIERS: Tier[] = [
       "Civil records search",
     ],
     cta: "Get a Comprehensive quote",
-    ctaHref: "/contact?tier=comprehensive&note=Interested+in+the+Comprehensive+package",
+    ctaHref: "/get-a-quote?tier=comprehensive&note=Interested+in+the+Comprehensive+package",
   },
 ];
 
@@ -477,8 +478,10 @@ export default function Pricing() {
               </h3>
             </div>
             <div className="col-span-12 md:col-span-4 md:text-right">
+              {/* §111: dedicated quote page (Formspree mvzyoyoz). */}
               <Link
-                href="/contact"
+                href="/get-a-quote"
+                data-testid="pricing-closing-cta-quote"
                 className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
               >
                 Request a quote

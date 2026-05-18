@@ -14,6 +14,7 @@ import CustomerDetail from "./pages/CustomerDetail";
 import ResourcesBenchmarks from "./pages/ResourcesBenchmarks";
 import Integrations from "./pages/Integrations";
 import Contact from "./pages/Contact";
+import GetAQuote from "./pages/GetAQuote";
 import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import Blog from "./pages/Blog";
@@ -59,6 +60,7 @@ function Router() {
       <Route path={"/pricing"} component={Pricing} />
       <Route path={"/about"} component={About} />
       <Route path={"/contact"} component={Contact} />
+      <Route path={"/get-a-quote"} component={GetAQuote} />
       <Route path={"/blog"} component={Blog} />
       <Route path={"/blog/tag/:tag"} component={BlogTag} />
       <Route path={"/blog/year/:year"} component={BlogYear} />

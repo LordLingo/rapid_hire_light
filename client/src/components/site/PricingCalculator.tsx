@@ -3,7 +3,10 @@
   Stateful estimator built on top of transparent, demo-only price assumptions
   (we surface the assumptions in the fine print so visitors don't mistake the
   estimate for a binding quote — that's still gated by the "Get this quote"
-  CTA which routes to /contact pre-filled with the configuration).
+  CTA which routes to /get-a-quote pre-filled with the configuration. §111
+  moved this from /contact to the dedicated quote page so calculator-driven
+  intent lands on the Formspree mvzyoyoz form rather than the generic
+  Contact xnjrqler form).
 
   Pricing model (illustrative, mirrors the public Pricing page tier story):
     Base SSN trace + nationwide criminal: $24 / check (Starter base)
@@ -210,7 +213,7 @@ export default function PricingCalculator({
     });
   }, [perCheckNet, perCheckList, monthly, annual, hires, selected, pkg, onEstimateChange]);
 
-  // Build pre-filled query string for /contact
+  // Build pre-filled query string for /get-a-quote (§111)
   const quoteQuery = useMemo(() => {
     const params = new URLSearchParams();
     params.set("volume", String(hires));
@@ -543,7 +546,8 @@ export default function PricingCalculator({
               </div>
 
               <Link
-                href={`/contact?${quoteQuery}`}
+                href={`/get-a-quote?${quoteQuery}`}
+                data-testid="calculator-quote-cta"
                 className="mt-8 btn-press inline-flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-7 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
               >
                 Get this quote in writing

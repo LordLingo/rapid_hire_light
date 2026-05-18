@@ -1176,3 +1176,12 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] Added the `Will export N item(s)` preview chip next to the Download button. Live count = `uncheckedOnly ? uncheckedCount : TOTAL_ITEMS`, `aria-live="polite"`, hidden via `!downloading` ternary while building, with a tooltip clarifying which set is being exported. Singular/plural respected
 - [x] Added `checklistFollowups110.test.ts` (15 specs across 3 describes): A) hook + bulk-action wiring + button labels + disabled states (5 specs); B) URL precedence, replaceState (not pushState), strip-on-empty, dependency-array shape (5 specs); C) exportCount math, chip testid + aria-live, pluralization, hide-while-downloading, tooltip strings (5 specs)
 - [x] Run vitest + tsc (707/707 across 62 files; tsc clean); dev server healthy after HMR
+
+## §111 Dedicated /get-a-quote page + repoint every CTA + Formspree mvzyoyoz
+- [ ] Capture the precisehire.com /get-a-quote form structure (fields, copy, sectioning) as the inspiration reference
+- [ ] Inventory every site-wide `Get a Quote` CTA so the repoint catches them all (header, footer, hero CTA band, services, industries, pricing, integrations, ROI calculator, blog, support, individual service detail pages, mobile drawer)
+- [ ] Build `/get-a-quote` page: dedicated form modeled on precisehire (services-needed checkboxes, hires/year, ATS, contact info, message), wired via JSON POST to `https://formspree.io/f/mvzyoyoz` with `Accept: application/json`, honeypot field, success state, error toast on failure
+- [ ] Register the route in `App.tsx` and add the page to nav surfaces where appropriate
+- [ ] Repoint every CTA found in the inventory from its current target (e.g. `/contact`, `/pricing#calculator`, `?service=…`) to `/get-a-quote`. Preserve any pre-fill data via `?service=…` querystring so the new page can hydrate the right service checkboxes
+- [ ] Add vitests: page renders the form with the documented fields, submits to the right Formspree endpoint, repoint invariant counts every Get a Quote CTA and asserts each points at `/get-a-quote`
+- [ ] Run vitest + tsc + checkpoint

@@ -294,8 +294,9 @@ export default function Industries() {
         lede="Different sectors face different risks, different regulators, and different timelines. Our specialists pre-build screening packages that reflect each one — so you are not paying for what you do not need, and not missing what you should."
         afterLede={
           <div className="flex flex-col sm:flex-row gap-3">
+            {/* §111: dedicated quote page (Formspree mvzyoyoz). */}
             <Link
-              href="/contact"
+              href="/get-a-quote"
               data-testid="industries-cta-quote"
               className="btn-press inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] px-5 py-3 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] hover:border-[color:var(--color-accent-ink-strong)]"
             >
