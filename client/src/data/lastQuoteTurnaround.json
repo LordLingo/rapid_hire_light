@@ -1,0 +1,8 @@
+{
+  "$schema": "./lastQuoteTurnaround.schema.json",
+  "minutes": 887,
+  "recordedAt": "2026-05-18T13:00:00.000Z",
+  "industry": "Healthcare staffing",
+  "freshnessHours": 168,
+  "comment": "Owner-editable. Source of truth for the social-proof chip on /get-a-quote. The site reads minutes (integer) + recordedAt (ISO UTC). 14h47m == 887. The chip auto-hides if recordedAt is older than freshnessHours (default 168 = 7 days) so a stale claim never appears."
+}

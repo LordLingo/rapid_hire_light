@@ -17,7 +17,8 @@
 */
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearch } from "wouter";
-import { ArrowUpRight, Mail, Phone, Check, Loader2, Clock } from "lucide-react";
+import { ArrowUpRight, Mail, Phone, Check, Loader2, Clock, Timer } from "lucide-react";
+import { LAST_QUOTE_TURNAROUND } from "@/lib/lastQuoteTurnaround";
 import { toast } from "sonner";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
@@ -229,6 +230,36 @@ export default function GetAQuote() {
             >
               <p className="eyebrow">04 — What's in the quote</p>
               <div className="mt-3 hairline" />
+
+              {/* §113: owner-editable last-quote-turnaround social-proof chip.
+                  Source: client/src/data/lastQuoteTurnaround.json. Auto-hides
+                  if the recorded measurement is stale (default >7 days). */}
+              {LAST_QUOTE_TURNAROUND.isFresh && (
+                <div
+                  data-testid="quote-last-turnaround-chip"
+                  role="status"
+                  aria-live="polite"
+                  className="mt-6 inline-flex items-start gap-3 rounded-full border border-border bg-[color:var(--color-tint)] pl-3 pr-4 py-2"
+                >
+                  <Timer
+                    className="size-4 mt-0.5 text-[color:var(--color-accent-ink)]"
+                    strokeWidth={1.75}
+                    aria-hidden="true"
+                  />
+                  <div className="text-[12.5px] leading-tight">
+                    <span className="uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+                      Last quote turnaround
+                    </span>
+                    <span className="mx-1.5 text-[color:var(--color-ink-muted)]">:</span>
+                    <strong className="text-[color:var(--color-ink)]">
+                      {LAST_QUOTE_TURNAROUND.display}
+                    </strong>
+                    <span className="block mt-1 text-[11.5px] tracking-wide text-[color:var(--color-ink-muted)]">
+                      {LAST_QUOTE_TURNAROUND.subline}
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <ul className="mt-8 space-y-4 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                 <li className="flex items-start gap-3">
