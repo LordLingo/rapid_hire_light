@@ -113,7 +113,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: Gavel,
     topic: "criminal",
     summary:
-      "Federal, state, and county criminal history searches built for every U.S. jurisdiction, with adverse-action workflow baked in.",
+      "Comprehensive criminal background checks with federal, state, and county criminal history searches across all U.S. jurisdictions. Our criminal record search services deliver fast, accurate results with built-in adverse action workflows to support compliance and help employers make confident hiring decisions.",
     hero:
       "A real criminal background check is a layered search — nationwide database for breadth, county courthouse for depth, federal docket for white-collar matters, and the sex-offender registry as a separate national pull. We run all four by default on every Standard package and surface the supporting court records in the report so your adjudicator can see the source, not just the flag.",
     sla: "85% complete < 24h",
@@ -180,7 +180,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: BriefcaseBusiness,
     topic: "verifications",
     summary:
-      "Past employer verification with title, dates, reason for leaving, and gap analysis — direct from the source HR system, not a stale database.",
+      "Comprehensive employment verification services that confirm previous employers, job titles, dates of employment, and employment history directly from the source. Our employment verification background checks help identify gaps in work history, reduce hiring risk, and provide employers with fast, accurate information instead of relying on outdated databases.",
     hero:
       "Employment verification is one of the fastest signal-rich checks in the report — a candidate's claimed work history measured against what the prior employer's HR or payroll system actually says. We verify directly with the source (HR, third-party verifier like The Work Number, or written confirmation), surface gaps for candidate explanation, and flag titles that drift more than one level above what the employer confirms.",
     sla: "Avg. 18h turnaround",
@@ -301,7 +301,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: FlaskConical,
     topic: "drug",
     summary:
-      "5-, 10-, and 12-panel drug testing plus occupational health screens at 12,000+ collection sites nationwide, with MRO-reviewed results.",
+      "Reliable drug testing services with 5-panel, 10-panel, and 12-panel drug screens plus occupational health testing available through 12,000+ collection sites nationwide. Our employment drug testing solutions provide fast, accurate, MRO-reviewed results to help employers maintain compliance and make safer hiring decisions.",
     hero:
       "A modern drug-screening program is more than a 5-panel cup. It is a panel-design decision (which substances), a specimen-type decision (urine / hair / oral fluid), a state-law overlay (cannabis legalization changes the math in 24 states), and an MRO review to convert lab results into legally defensible adjudication. We run all four together and document each step in the report.",
     sla: "Negative results in 24h",
@@ -360,7 +360,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: Car,
     topic: "driving",
     summary:
-      "Real-time driving records across all 50 states for any role behind the wheel — paired with continuous MVR monitoring for fleet teams.",
+      "Comprehensive MVR background checks and motor vehicle record searches with real-time driving records across all 50 states for employees in driving-related roles. Our MVR monitoring services help fleet managers and employers track driver activity, reduce risk, and maintain safer, more compliant operations.",
     hero:
       "Motor vehicle records are the lowest-friction, fastest-return check in the catalog. We pull a 3-, 5-, or 7-year driving history directly from each state's DMV, surface license status / class / endorsements, list every violation and accident on file, and run a CDL Clearinghouse query for FMCSA-regulated drivers. For fleet operators we layer continuous monitoring so violations between hire-date and renewal don't slip past you.",
     sla: "Instant in 47 states",
@@ -420,7 +420,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: Globe,
     topic: "social",
     summary:
-      "FCRA-compliant screening of public online behavior — with category opt-ins, human review, and protected-class data filtered out before adjudication.",
+      "Professional social media background screening designed to help employers identify potential risks through publicly available online activity. Our social media screening services are FCRA-compliant and include human review, customizable screening categories, and filtering of protected-class information before hiring decisions are made.",
     hero:
       "Social media screening is the most-misunderstood check on the menu. Done right, it is FCRA-compliant: a third-party CRA reviews public posts only, flags only the categories you opt in to, filters out protected-class data (race, religion, national origin, sexual orientation, etc.) before the report ever reaches you, and surfaces an evidence packet so the adjudicator sees the source, not just an opaque score. We do not run AI-only adjudication; every flag is human-reviewed.",
     sla: "Avg. 2 business days",
@@ -477,7 +477,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: ShieldCheck,
     topic: "identity",
     summary:
-      "Document, biometric, and SSN-trace identity assurance — the foundation layer that every downstream check depends on.",
+      "Advanced identity verification services using document validation, biometric authentication, and SSN trace searches to help confirm applicant identity with confidence. Our identity verification background checks create a strong foundation for accurate screening, reducing fraud risk and supporting more reliable hiring decisions.",
     hero:
       "Identity verification is the foundation every downstream check depends on. If the SSN trace turns up a name that does not match the candidate, every subsequent criminal, employment, and education check is searching the wrong person. We run SSN trace, address-history reconciliation, government-ID document authentication, and (optionally) a biometric face-match against the ID, all before a single county court is queried.",
     sla: "Real-time decision",
@@ -534,7 +534,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: HeartPulse,
     topic: "healthcare",
     summary:
-      "OIG LEIE, SAM.gov, and 50-state Medicaid exclusion screening for any role billing federal or state healthcare programs.",
+      "Comprehensive healthcare exclusion screening with checks against OIG LEIE, SAM, and all 50-state Medicaid exclusion databases for employees working in healthcare and federally funded programs. Our exclusion screening services help employers maintain compliance, reduce risk, and ensure qualified candidates meet healthcare hiring requirements.",
     hero:
       "Hiring an excluded individual into a Medicare- or Medicaid-billing role triggers civil monetary penalties of up to $10,000 per item or service furnished, plus mandatory restitution. The OIG LEIE, SAM.gov debarment list, and each of the 50 state Medicaid exclusion lists must all be checked at hire and re-checked monthly thereafter. We run all 52 lists at hire and continuously monitor for the duration of employment.",
     sla: "Real-time on hire, monthly continuous",
@@ -593,7 +593,7 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     icon: Activity,
     topic: "monitoring",
     summary:
-      "Always-on post-hire monitoring across criminal, MVR, and exclusion data feeds — so an event that happens on Tuesday doesn't surface in your annual rescreen.",
+      "Proactive continuous monitoring services that provide ongoing post-hire screening across criminal records, MVR monitoring, and exclusion databases. Our continuous background monitoring helps employers receive timely alerts on reportable changes, reducing risk and ensuring important events are identified quickly instead of waiting for annual rescreening.",
     hero:
       "Annual rescreens are a relic of the era when criminal court records were paper. Today, the same data feeds we use at hire are queryable continuously — and a real-time monitoring feed catches a license suspension, a DUI, or an OIG exclusion within days, not 11 months later. We run continuous monitoring as a thin annualized add-on across every package, and route alerts to the adjudicator your team already uses.",
     sla: "Alerts within 48h of source-record update",
