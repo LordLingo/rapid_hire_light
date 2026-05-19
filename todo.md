@@ -1642,3 +1642,13 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Write k12ComplianceGuide.test.ts (24 specs): matrix data integrity (10 rows, unique codes, alphabetical state coverage), federal-layer count, k12MatrixCounts derivation consistency, App.tsx route registration, Resources PILLARS wiring, K-12 archetype href alignment with the new path, PageHero contract (afterLede + visual, no ctas/breadcrumb), useSeo full-URL canonical, no dead-letter `void X` workarounds, workflow array length=5, companion array length=3, all structural testids present, matrix-row + federal-layer testid templates, disclaimer text, exported K12_COMPLIANCE_GUIDE_PATH constant
 - [x] tsc --noEmit clean
 - [x] Full vitest suite green: 1220/1220 across 80 files (was 1196/1196 across 79 files — +24 specs from this checkpoint, +1 spec file)
+
+
+## §153 — K-12 compliance guide PDF download
+
+- [x] Build `client/src/lib/k12Pdf.ts` — pdf-lib generator (Letter, multi-page) that mirrors the on-screen guide: cover, state matrix (10 rows), federal layers (4 cards), district workflow (5 moves), companion-reading rail. Reuses helper patterns from `checklistPdf.ts` (wrap, ensureRoom, footer with brand line + generated date + page numbers).
+- [x] Export `buildK12CompliancePdf()`, `buildK12CompliancePdfFilename()`, and `triggerK12CompliancePdfDownload()` so generator is jsdom-unit-testable independent of the DOM download path.
+- [x] Wire a "Download PDF" button into the K-12 page hero `afterLede` slot next to the existing two CTAs. Reuses the same outlined-button styling as the compliance checklist Print button. Disabled state during build; uses lucide `Download` icon.
+- [x] Author `client/src/lib/k12Pdf.test.ts` (vitest) verifying: valid `%PDF-` bytes, contains every matrix state code + statute, every federal layer citation, every workflow step, the page testids + source-pinned button wiring, the filename helper output.
+- [x] tsc clean + full vitest suite green
+- [x] Checkpoint

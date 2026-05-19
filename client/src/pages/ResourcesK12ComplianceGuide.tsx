@@ -25,6 +25,7 @@ import { Link } from "wouter";
 import {
   ArrowRight,
   ChevronRight,
+  Download,
   Fingerprint,
   Layers,
   ScrollText,
@@ -41,6 +42,11 @@ import {
   K12_FEDERAL_LAYERS,
   k12MatrixCounts,
 } from "@/lib/k12ComplianceMatrix";
+import {
+  buildK12CompliancePdf,
+  buildK12CompliancePdfFilename,
+  triggerK12CompliancePdfDownload,
+} from "@/lib/k12Pdf";
 
 const WORKFLOW: {
   n: string;
@@ -126,6 +132,31 @@ export default function ResourcesK12ComplianceGuide() {
 
   const counts = k12MatrixCounts();
 
+  /*
+    §153 — Click-to-download PDF export. The PDF is generated at click
+    time from the same K12_COMPLIANCE_MATRIX / K12_FEDERAL_LAYERS source
+    of truth the page renders, so the export cannot drift from the on-
+    screen guide. The button sits in the hero `afterLede` slot next to
+    the existing two CTAs and uses the same outlined-button styling as
+    the Compliance Checklist page's Print/Download controls.
+  */
+  const [downloadingPdf, setDownloadingPdf] = React.useState(false);
+  const handleDownloadPdf = React.useCallback(async () => {
+    if (downloadingPdf) return;
+    setDownloadingPdf(true);
+    try {
+      const bytes = await buildK12CompliancePdf();
+      triggerK12CompliancePdfDownload(bytes, buildK12CompliancePdfFilename());
+    } catch (err) {
+      // Keep the failure visible in dev tools; the button re-enables so
+      // the user can retry. We deliberately don't pull in the toast
+      // system here because the Resources surface doesn't already use it.
+      console.error("k12 compliance guide pdf failed", err);
+    } finally {
+      setDownloadingPdf(false);
+    }
+  }, [downloadingPdf]);
+
   return (
     <SiteShell>
       {/* 01 — HERO */}
@@ -143,6 +174,19 @@ export default function ResourcesK12ComplianceGuide() {
               Schedule a district consultation
               <ArrowRight className="h-4 w-4" />
             </Link>
+            <button
+              type="button"
+              onClick={handleDownloadPdf}
+              disabled={downloadingPdf}
+              data-testid="k12-guide-cta-download"
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-ink)]/15 bg-transparent px-5 py-2.5 text-sm font-medium text-[color:var(--color-ink)] transition-colors hover:bg-[color:var(--color-paper-soft)] disabled:opacity-60 disabled:cursor-progress"
+            >
+              <Download
+                aria-hidden
+                className="h-4 w-4 text-[color:var(--color-brand-blue)]"
+              />
+              {downloadingPdf ? "Building your PDF…" : "Download PDF"}
+            </button>
             <Link
               href="/blog/k12-school-employee-background-check-requirements"
               className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-ink)]/15 px-5 py-2.5 text-sm font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-paper-soft)] transition"
