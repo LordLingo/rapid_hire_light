@@ -62,9 +62,11 @@ describe("§139 — SHRM event constants (lib/shrm.ts)", () => {
     expect(SHRM_EVENT.city.length).toBeGreaterThan(0);
     expect(SHRM_EVENT.venue.length).toBeGreaterThan(0);
     expect(SHRM_EVENT.dateRange).toMatch(/2026/);
-    // Booth may be a literal "TBA" until the user supplies the real number;
-    // we just lock that the field is non-empty.
-    expect(SHRM_EVENT.booth.length).toBeGreaterThan(0);
+    // Booth number is the user-confirmed assignment on the SHRM 2026
+    // expo floor (1619). Locking the exact value so a future refactor
+    // can't silently stub it back to a placeholder.
+    expect(SHRM_EVENT.booth).toBe("1619");
+    expect(SHRM_EVENT.booth).toMatch(/^\d{3,5}$/);
   });
 
   it("locks SHRM_ROUTE to /shrm", () => {

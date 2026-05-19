@@ -36,8 +36,9 @@ export type ShrmEvent = {
   /** Convention center / venue. */
   venue: string;
   /**
-   * Booth number. Stubbed as "TBA" in v1 — when the user supplies
-   * the real booth number, this is a one-line edit.
+   * Booth number on the SHRM 2026 expo floor. Confirmed by the user
+   * on 2026-05-19 as 1619. Read everywhere through SHRM_EVENT.booth
+   * so this stays the single source of truth.
    */
   booth: string;
 };
@@ -56,7 +57,7 @@ export const SHRM_EVENT: ShrmEvent = {
   year: 2026,
   city: "Orlando, FL",
   venue: "Orange County Convention Center",
-  booth: "TBA",
+  booth: "1619",
 } as const;
 
 /**
@@ -100,7 +101,7 @@ export const SHRM_TAGLINE =
  * certification strip. Designed to read in a single glance: who, when,
  * where, action.
  */
-export const SHRM_STRIP_COPY = `Meeting at SHRM 2026, ${SHRM_EVENT.dateRange}, ${SHRM_EVENT.city} — Book your slot →` as const;
+export const SHRM_STRIP_COPY = `Meeting at SHRM 2026, ${SHRM_EVENT.dateRange}, ${SHRM_EVENT.city} · Booth ${SHRM_EVENT.booth} — Book your slot →` as const;
 
 /**
  * Returns true if `now` is on or before the last day of the conference.
