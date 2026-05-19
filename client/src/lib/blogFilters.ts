@@ -160,6 +160,109 @@ export function sortPosts(
 }
 
 /**
+ * §149 — Page size for the /blog grid. Matches the existing 12-card
+ * rhythm so a default unfiltered page lands one screen tall on desktop.
+ */
+export const BLOG_POSTS_PER_PAGE = 12 as const;
+
+/** §149 — Return shape for `paginatePosts`. */
+export type BlogPagination = {
+  /** The slice of posts visible on `page`. */
+  posts: BlogPost[];
+  /** The clamped, 1-indexed page actually returned. */
+  page: number;
+  /** Total page count across the full filtered+sorted set. */
+  totalPages: number;
+  /** Total post count across the full filtered+sorted set. */
+  total: number;
+  /** 1-indexed inclusive index of the first post on this page. */
+  firstIndex: number;
+  /** 1-indexed inclusive index of the last post on this page. */
+  lastIndex: number;
+};
+
+/**
+ * §149 — 1-indexed page slice with safe clamping.
+ *
+ * - `page` < 1 or non-finite clamps to 1.
+ * - `page` > totalPages clamps to the last page so a deep link survives
+ *   the corpus shrinking.
+ * - Empty corpus returns `{ posts: [], page: 1, totalPages: 1, total: 0,
+ *   firstIndex: 0, lastIndex: 0 }` so the UI can render an empty state
+ *   without divide-by-zero issues.
+ */
+export function paginatePosts(
+  posts: BlogPost[],
+  page: number,
+  perPage: number = BLOG_POSTS_PER_PAGE,
+): BlogPagination {
+  const total = posts.length;
+  const size = Math.max(1, Math.trunc(perPage));
+  if (total === 0) {
+    return {
+      posts: [],
+      page: 1,
+      totalPages: 1,
+      total: 0,
+      firstIndex: 0,
+      lastIndex: 0,
+    };
+  }
+  const totalPages = Math.max(1, Math.ceil(total / size));
+  const safe = Number.isFinite(page) ? Math.trunc(page) : 1;
+  const clamped = Math.min(Math.max(1, safe), totalPages);
+  const start = (clamped - 1) * size;
+  const end = Math.min(start + size, total);
+  return {
+    posts: posts.slice(start, end),
+    page: clamped,
+    totalPages,
+    total,
+    firstIndex: start + 1,
+    lastIndex: end,
+  };
+}
+
+/**
+ * §149 — Build a compact pager window of page-number slots with
+ * sentinel `"…"` entries for collapsed ranges. The window always
+ * surfaces the first and last page, the current page, and the current
+ * page ±1, with ellipses in between when there is a gap > 1.
+ *
+ * Examples (current page = X, total = Y):
+ *   buildPagerWindow(1, 5)  -> [1, 2, 3, 4, 5]
+ *   buildPagerWindow(1, 10) -> [1, 2, 3, "…", 10]
+ *   buildPagerWindow(5, 10) -> [1, "…", 4, 5, 6, "…", 10]
+ *   buildPagerWindow(10, 10) -> [1, "…", 8, 9, 10]
+ *   buildPagerWindow(7, 7)  -> [1, 2, 3, 4, 5, 6, 7]
+ */
+export function buildPagerWindow(
+  current: number,
+  totalPages: number,
+): Array<number | "\u2026"> {
+  if (totalPages <= 1) return [1];
+  const safe = Math.min(Math.max(1, Math.trunc(current) || 1), totalPages);
+  // For <=7 pages, render the full strip so the pager doesn't collapse
+  // unnecessarily on small corpora.
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+  const pages = new Set<number>([1, totalPages, safe, safe - 1, safe + 1]);
+  const ordered = Array.from(pages)
+    .filter((p) => p >= 1 && p <= totalPages)
+    .sort((a, b) => a - b);
+  const out: Array<number | "\u2026"> = [];
+  for (let i = 0; i < ordered.length; i++) {
+    out.push(ordered[i]);
+    const next = ordered[i + 1];
+    if (next !== undefined && next - ordered[i] > 1) {
+      out.push("\u2026");
+    }
+  }
+  return out;
+}
+
+/**
  * Read-only shape of the index's URL-synced filter state. Each field is
  * independently nullable so we can drop unset params from the URL.
  */
@@ -167,6 +270,8 @@ export type BlogIndexFilters = {
   tag: string | null;
   query: string | null;
   sort: BlogSortKey;
+  /** §149 — 1-indexed current page; 1 (the default) is suppressed from the URL. */
+  page: number;
 };
 
 /**
@@ -183,7 +288,20 @@ export function parseFiltersFromSearch(search: string): BlogIndexFilters {
   const sort: BlogSortKey = isBlogSortKey(rawSort)
     ? rawSort
     : DEFAULT_BLOG_SORT;
-  return { tag, query, sort };
+  const page = parsePageFromSearch(search);
+  return { tag, query, sort, page };
+}
+
+/**
+ * §149 — Parse the 1-indexed `page` param. Non-numeric, zero, negative,
+ * and missing values fall back to 1 so deep links survive bad input.
+ */
+export function parsePageFromSearch(search: string): number {
+  const raw = new URLSearchParams(search).get("page");
+  if (!raw) return 1;
+  const parsed = Number.parseInt(raw, 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return 1;
+  return parsed;
 }
 
 /** Type-guard used by parseFiltersFromSearch to reject unknown sort keys. */
@@ -212,6 +330,9 @@ export function buildFiltersSearch(filters: BlogIndexFilters): string {
   if (filters.sort && filters.sort !== DEFAULT_BLOG_SORT) {
     params.set("sort", filters.sort);
   }
+  if (filters.page && filters.page > 1) {
+    params.set("page", String(Math.trunc(filters.page)));
+  }
   return params.toString();
 }
 
@@ -224,4 +345,19 @@ export function buildFiltersSearch(filters: BlogIndexFilters): string {
 export function blogSortLabel(key: BlogSortKey): string {
   const found = BLOG_SORT_OPTIONS.find((o) => o.value === key);
   return found ? found.label : BLOG_SORT_OPTIONS[0].label;
+}
+
+/**
+ * §149 — Pager-aware page-range suffix. Appended to the existing
+ * formatResultCount() output so paginated pages disclose their slice
+ * without making the unpaginated case noisier. Caller is responsible
+ * for joining (" · ") so the spec can pin both halves independently.
+ *
+ *   formatPageRange({ page: 1, totalPages: 1, ... })  -> ""
+ *   formatPageRange({ page: 2, totalPages: 10, firstIndex: 13, lastIndex: 24 })
+ *     -> "showing 13–24 · page 2 of 10"
+ */
+export function formatPageRange(p: BlogPagination): string {
+  if (p.totalPages <= 1 || p.total === 0) return "";
+  return `showing ${p.firstIndex}\u2013${p.lastIndex} \u00b7 page ${p.page} of ${p.totalPages}`;
 }

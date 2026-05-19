@@ -9,9 +9,9 @@
   - Grid of post cards.
   - On-page SEO: dynamic title, meta description, canonical, Blog JSON-LD.
 */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Search as SearchIcon, X as XIcon } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Search as SearchIcon, X as XIcon } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { useSeo } from "@/hooks/useSeo";
@@ -31,6 +31,10 @@ import {
   parseFiltersFromSearch,
   buildFiltersSearch,
   sortPosts,
+  paginatePosts,
+  buildPagerWindow,
+  formatPageRange,
+  BLOG_POSTS_PER_PAGE,
   BLOG_SORT_OPTIONS,
   DEFAULT_BLOG_SORT,
   blogSortLabel,
@@ -47,7 +51,7 @@ function parseInitialRange(): DateRange {
 
 function parseInitialFilters() {
   if (typeof window === "undefined")
-    return { tag: null, query: null, sort: DEFAULT_BLOG_SORT };
+    return { tag: null, query: null, sort: DEFAULT_BLOG_SORT, page: 1 };
   return parseFiltersFromSearch(window.location.search);
 }
 
@@ -60,11 +64,14 @@ export default function Blog() {
   // `?range=` query param so links remain shareable.
   const [range, setRange] = useState<DateRange>(parseInitialRange);
 
-  // New category + search + sort filter state, URL-synced via ?tag=&q=&sort=.
+  // New category + search + sort filter state, URL-synced via ?tag=&q=&sort=&page=.
   const initial = useMemo(parseInitialFilters, []);
   const [tag, setTag] = useState<string | null>(initial.tag);
   const [query, setQuery] = useState<string>(initial.query ?? "");
   const [sort, setSort] = useState<BlogSortKey>(initial.sort);
+  const [page, setPage] = useState<number>(initial.page);
+  // Anchor we scroll to when a page button is clicked.
+  const gridAnchorRef = useRef<HTMLDivElement | null>(null);
 
   // Tag counts — drive the category pill row + the topics-by-depth grid.
   const tagsByDepth = useMemo(() => {
@@ -92,6 +99,29 @@ export default function Blog() {
     return out;
   }, [allPosts, range, tag, query, sort]);
 
+  // §149 — page-aware slice of the filtered+sorted result set.
+  const pagination = useMemo(
+    () => paginatePosts(visiblePosts, page, BLOG_POSTS_PER_PAGE),
+    [visiblePosts, page],
+  );
+
+  // §149 — reset page to 1 whenever the filtered set itself changes so a
+  // reader filtering down from page 8 doesn't land on an empty page.
+  // We diff on the *length* + first slug + sort key so a no-op render
+  // (e.g. a typo'd query that still matches the same set) doesn't reset.
+  const filterSignatureRef = useRef<string>("");
+  useEffect(() => {
+    const sig = `${visiblePosts.length}:${visiblePosts[0]?.slug ?? ""}:${sort}`;
+    if (filterSignatureRef.current === "") {
+      filterSignatureRef.current = sig;
+      return;
+    }
+    if (filterSignatureRef.current !== sig) {
+      filterSignatureRef.current = sig;
+      setPage(1);
+    }
+  }, [visiblePosts, sort]);
+
   // Keep the URL in sync with every filter change so deep links work and
   // the browser back button restores filter state.
   useEffect(() => {
@@ -103,21 +133,37 @@ export default function Blog() {
       tag,
       query: query.trim() || null,
       sort,
+      page: pagination.page,
     });
     url.searchParams.delete("tag");
     url.searchParams.delete("q");
     url.searchParams.delete("sort");
+    url.searchParams.delete("page");
     if (filtersSearch) {
       const params = new URLSearchParams(filtersSearch);
       params.forEach((v, k) => url.searchParams.set(k, v));
     }
     window.history.replaceState(null, "", url.toString());
-  }, [range, tag, query, sort]);
+  }, [range, tag, query, sort, pagination.page]);
 
   function clearFilters() {
     setTag(null);
     setQuery("");
     setSort(DEFAULT_BLOG_SORT);
+    setPage(1);
+  }
+
+  function goToPage(nextPage: number) {
+    setPage(nextPage);
+    if (typeof window !== "undefined" && gridAnchorRef.current) {
+      const prefersReducedMotion =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      gridAnchorRef.current.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    }
   }
 
   // ItemList JSON-LD helps Google understand the index as a structured
@@ -152,10 +198,15 @@ export default function Blog() {
     activeFilterLabel,
     query.trim() || null,
   );
-  const resultCountLabel =
+  const sortedSuffix =
     sort !== DEFAULT_BLOG_SORT && visiblePosts.length > 0
-      ? `${baseResultCount}, sorted ${blogSortLabel(sort).toLowerCase()}`
-      : baseResultCount;
+      ? `, sorted ${blogSortLabel(sort).toLowerCase()}`
+      : "";
+  const pageSuffix = formatPageRange(pagination);
+  const resultCountLabel = pageSuffix
+    ? `${baseResultCount}${sortedSuffix} \u00b7 ${pageSuffix}`
+    : `${baseResultCount}${sortedSuffix}`;
+  const pagerWindow = buildPagerWindow(pagination.page, pagination.totalPages);
 
   return (
     <SiteShell>
@@ -446,8 +497,10 @@ export default function Blog() {
               </button>
             </div>
           ) : (
+            <>
+            <div ref={gridAnchorRef} id="blog-grid" aria-hidden="true" />
             <div className="grid grid-cols-12 gap-x-8 gap-y-12 md:gap-y-16">
-              {visiblePosts.map((p, i) => (
+              {pagination.posts.map((p, i) => (
                 <article
                   key={p.slug}
                   className={[
@@ -500,6 +553,71 @@ export default function Blog() {
                 </article>
               ))}
             </div>
+            {pagination.totalPages > 1 && (
+              <nav
+                data-testid="blog-pager"
+                aria-label="Blog pagination"
+                className="mt-16 flex flex-wrap items-center justify-center gap-2"
+              >
+                <button
+                  type="button"
+                  data-testid="blog-pager-prev"
+                  onClick={() => goToPage(pagination.page - 1)}
+                  disabled={pagination.page <= 1}
+                  aria-label="Previous page"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-4 py-2 text-[13.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border disabled:hover:text-[color:var(--color-ink-soft)]"
+                >
+                  <ChevronLeft className="size-3.5" />
+                  <span className="hidden sm:inline">Previous</span>
+                </button>
+                {pagerWindow.map((slot, idx) => {
+                  if (slot === "\u2026") {
+                    return (
+                      <span
+                        key={`ellipsis-${idx}`}
+                        data-testid="blog-pager-ellipsis"
+                        aria-hidden="true"
+                        className="px-2 text-[14px] text-[color:var(--color-ink-muted)]"
+                      >
+                        …
+                      </span>
+                    );
+                  }
+                  const isActive = slot === pagination.page;
+                  return (
+                    <button
+                      key={`page-${slot}`}
+                      type="button"
+                      data-testid={isActive ? "blog-pager-page-active" : "blog-pager-page"}
+                      data-page={slot}
+                      onClick={() => goToPage(slot)}
+                      aria-current={isActive ? "page" : undefined}
+                      aria-label={isActive ? `Page ${slot}, current page` : `Go to page ${slot}`}
+                      className={[
+                        "min-w-[2.5rem] rounded-full border px-3.5 py-2 text-[13.5px] tabular-nums tracking-tight transition-colors",
+                        isActive
+                          ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] text-white"
+                          : "border-border bg-white text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)]",
+                      ].join(" ")}
+                    >
+                      {slot}
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  data-testid="blog-pager-next"
+                  onClick={() => goToPage(pagination.page + 1)}
+                  disabled={pagination.page >= pagination.totalPages}
+                  aria-label="Next page"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-4 py-2 text-[13.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border disabled:hover:text-[color:var(--color-ink-soft)]"
+                >
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight className="size-3.5" />
+                </button>
+              </nav>
+            )}
+            </>
           )}
         </div>
       </section>

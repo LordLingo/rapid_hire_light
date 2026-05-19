@@ -8,8 +8,13 @@ import {
   filterByQuery,
   formatResultCount,
   parseFiltersFromSearch,
+  parsePageFromSearch,
   buildFiltersSearch,
   sortPosts,
+  paginatePosts,
+  buildPagerWindow,
+  formatPageRange,
+  BLOG_POSTS_PER_PAGE,
   BLOG_SORT_OPTIONS,
   DEFAULT_BLOG_SORT,
   blogSortLabel,
@@ -134,11 +139,12 @@ describe("blogFilters.formatResultCount", () => {
 });
 
 describe("blogFilters URL round-trip", () => {
-  it("parses an empty search as nulls + default sort", () => {
+  it("parses an empty search as nulls + default sort + page 1", () => {
     expect(parseFiltersFromSearch("")).toEqual({
       tag: null,
       query: null,
       sort: DEFAULT_BLOG_SORT,
+      page: 1,
     });
   });
 
@@ -147,11 +153,13 @@ describe("blogFilters URL round-trip", () => {
       tag: "fcra",
       query: "fair chance",
       sort: DEFAULT_BLOG_SORT,
+      page: 1,
     });
     expect(parseFiltersFromSearch("?tag=%20fcra%20&q=%20%20")).toEqual({
       tag: "fcra",
       query: null,
       sort: DEFAULT_BLOG_SORT,
+      page: 1,
     });
   });
 
@@ -165,26 +173,29 @@ describe("blogFilters URL round-trip", () => {
     );
   });
 
-  it("ignores unknown params", () => {
-    expect(parseFiltersFromSearch("?range=30d&page=2")).toEqual({
+  it("ignores unknown params (page now recognized)", () => {
+    // Note: `page` is now a recognized param; ?page=2 surfaces page=2.
+    expect(parseFiltersFromSearch("?range=30d&foo=bar")).toEqual({
       tag: null,
       query: null,
       sort: DEFAULT_BLOG_SORT,
+      page: 1,
     });
   });
 
-  it("builds a canonical search string and drops empty filters + default sort", () => {
+  it("builds a canonical search string and drops empty filters + default sort + page=1", () => {
     expect(
-      buildFiltersSearch({ tag: null, query: null, sort: DEFAULT_BLOG_SORT }),
+      buildFiltersSearch({ tag: null, query: null, sort: DEFAULT_BLOG_SORT, page: 1 }),
     ).toBe("");
     expect(
-      buildFiltersSearch({ tag: "fcra", query: null, sort: DEFAULT_BLOG_SORT }),
+      buildFiltersSearch({ tag: "fcra", query: null, sort: DEFAULT_BLOG_SORT, page: 1 }),
     ).toBe("tag=fcra");
     expect(
       buildFiltersSearch({
         tag: null,
         query: "fair chance",
         sort: DEFAULT_BLOG_SORT,
+        page: 1,
       }),
     ).toBe("q=fair+chance");
     expect(
@@ -192,26 +203,28 @@ describe("blogFilters URL round-trip", () => {
         tag: "fcra",
         query: "fair chance",
         sort: DEFAULT_BLOG_SORT,
+        page: 1,
       }),
     ).toBe("tag=fcra&q=fair+chance");
     expect(
-      buildFiltersSearch({ tag: null, query: null, sort: "alphabetical" }),
+      buildFiltersSearch({ tag: null, query: null, sort: "alphabetical", page: 1 }),
     ).toBe("sort=alphabetical");
     expect(
-      buildFiltersSearch({ tag: "fcra", query: null, sort: "depth" }),
+      buildFiltersSearch({ tag: "fcra", query: null, sort: "depth", page: 1 }),
     ).toBe("tag=fcra&sort=depth");
   });
 
-  it("round-trips arbitrary state including sort", () => {
+  it("round-trips arbitrary state including sort + page", () => {
     const cases: {
       tag: string | null;
       query: string | null;
       sort: typeof DEFAULT_BLOG_SORT;
+      page: number;
     }[] = [
-      { tag: null, query: null, sort: DEFAULT_BLOG_SORT },
-      { tag: "fcra", query: null, sort: "alphabetical" },
-      { tag: null, query: "drug screening", sort: "oldest" },
-      { tag: "k12-education", query: "ESSA", sort: "depth" },
+      { tag: null, query: null, sort: DEFAULT_BLOG_SORT, page: 1 },
+      { tag: "fcra", query: null, sort: "alphabetical", page: 1 },
+      { tag: null, query: "drug screening", sort: "oldest", page: 3 },
+      { tag: "k12-education", query: "ESSA", sort: "depth", page: 5 },
     ];
     for (const c of cases) {
       const qs = buildFiltersSearch(c);
@@ -378,5 +391,272 @@ describe("Blog.tsx wires the new filter stack", () => {
     // accidentally hard-code a subset.
     expect(src).toMatch(/tagsByDepth\.map\(\(\{ tag: t, count \}\) =>/);
     expect(getAllTags().length).toBeGreaterThan(10);
+  });
+});
+
+
+// ---------------------------------------------------------------------------
+// §149 — Pagination helpers
+// ---------------------------------------------------------------------------
+describe("§149 BLOG_POSTS_PER_PAGE", () => {
+  it("is the canonical page size of 12", () => {
+    expect(BLOG_POSTS_PER_PAGE).toBe(12);
+  });
+});
+
+describe("§149 paginatePosts", () => {
+  const posts = listPosts();
+
+  it("page 1 returns the first BLOG_POSTS_PER_PAGE posts", () => {
+    const r = paginatePosts(posts, 1);
+    expect(r.page).toBe(1);
+    expect(r.posts).toHaveLength(Math.min(posts.length, BLOG_POSTS_PER_PAGE));
+    expect(r.total).toBe(posts.length);
+    expect(r.totalPages).toBe(
+      Math.max(1, Math.ceil(posts.length / BLOG_POSTS_PER_PAGE)),
+    );
+    expect(r.firstIndex).toBe(1);
+    expect(r.lastIndex).toBe(Math.min(posts.length, BLOG_POSTS_PER_PAGE));
+    expect(r.posts[0]).toEqual(posts[0]);
+  });
+
+  it("page 2 returns the second slice when corpus is larger than one page", () => {
+    if (posts.length <= BLOG_POSTS_PER_PAGE) return;
+    const r = paginatePosts(posts, 2);
+    expect(r.page).toBe(2);
+    expect(r.firstIndex).toBe(BLOG_POSTS_PER_PAGE + 1);
+    expect(r.posts[0]).toEqual(posts[BLOG_POSTS_PER_PAGE]);
+  });
+
+  it("clamps page < 1 to 1", () => {
+    expect(paginatePosts(posts, 0).page).toBe(1);
+    expect(paginatePosts(posts, -5).page).toBe(1);
+    expect(paginatePosts(posts, Number.NaN).page).toBe(1);
+  });
+
+  it("clamps page > totalPages to the last page", () => {
+    const r = paginatePosts(posts, 9999);
+    expect(r.page).toBe(r.totalPages);
+    expect(r.lastIndex).toBe(posts.length);
+  });
+
+  it("handles empty corpus without divide-by-zero", () => {
+    const r = paginatePosts([], 1);
+    expect(r).toEqual({
+      posts: [],
+      page: 1,
+      totalPages: 1,
+      total: 0,
+      firstIndex: 0,
+      lastIndex: 0,
+    });
+  });
+
+  it("honors a custom perPage when provided", () => {
+    const r = paginatePosts(posts, 1, 5);
+    expect(r.posts).toHaveLength(Math.min(posts.length, 5));
+    expect(r.totalPages).toBe(Math.max(1, Math.ceil(posts.length / 5)));
+  });
+
+  it("returns a slice that is non-mutating", () => {
+    const before = posts.map((p) => p.slug);
+    paginatePosts(posts, 1);
+    paginatePosts(posts, 9999);
+    paginatePosts(posts, -1);
+    expect(posts.map((p) => p.slug)).toEqual(before);
+  });
+});
+
+describe("§149 parsePageFromSearch", () => {
+  it("returns 1 when page param is missing", () => {
+    expect(parsePageFromSearch("")).toBe(1);
+    expect(parsePageFromSearch("?tag=fcra")).toBe(1);
+  });
+
+  it("returns the integer page when present and valid", () => {
+    expect(parsePageFromSearch("?page=2")).toBe(2);
+    expect(parsePageFromSearch("?page=10")).toBe(10);
+  });
+
+  it("falls back to 1 for zero, negative, non-numeric, or malformed", () => {
+    expect(parsePageFromSearch("?page=0")).toBe(1);
+    expect(parsePageFromSearch("?page=-3")).toBe(1);
+    expect(parsePageFromSearch("?page=abc")).toBe(1);
+    expect(parsePageFromSearch("?page=")).toBe(1);
+  });
+
+  it("truncates decimals (parseInt-style)", () => {
+    expect(parsePageFromSearch("?page=3.7")).toBe(3);
+  });
+});
+
+describe("§149 buildPagerWindow", () => {
+  it("returns a single slot when totalPages <= 1", () => {
+    expect(buildPagerWindow(1, 1)).toEqual([1]);
+    expect(buildPagerWindow(1, 0)).toEqual([1]);
+  });
+
+  it("returns the full strip when totalPages <= 7", () => {
+    expect(buildPagerWindow(1, 5)).toEqual([1, 2, 3, 4, 5]);
+    expect(buildPagerWindow(3, 7)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+  });
+
+  it("collapses with ellipsis on the right when current is near the start", () => {
+    expect(buildPagerWindow(1, 10)).toEqual([1, 2, "\u2026", 10]);
+    expect(buildPagerWindow(2, 10)).toEqual([1, 2, 3, "\u2026", 10]);
+  });
+
+  it("collapses with ellipsis on both sides when current is in the middle", () => {
+    expect(buildPagerWindow(5, 10)).toEqual([1, "\u2026", 4, 5, 6, "\u2026", 10]);
+  });
+
+  it("collapses with ellipsis on the left when current is near the end", () => {
+    expect(buildPagerWindow(9, 10)).toEqual([1, "\u2026", 8, 9, 10]);
+    expect(buildPagerWindow(10, 10)).toEqual([1, "\u2026", 9, 10]);
+  });
+
+  it("clamps current to the valid range", () => {
+    expect(buildPagerWindow(0, 10)).toEqual([1, 2, "\u2026", 10]);
+    expect(buildPagerWindow(99, 10)).toEqual([1, "\u2026", 9, 10]);
+  });
+
+  it("never produces consecutive ellipsis sentinels", () => {
+    for (let total = 2; total <= 20; total++) {
+      for (let cur = 1; cur <= total; cur++) {
+        const w = buildPagerWindow(cur, total);
+        for (let i = 1; i < w.length; i++) {
+          expect(!(w[i - 1] === "\u2026" && w[i] === "\u2026")).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("always includes 1 and totalPages and the current page", () => {
+    for (let total = 1; total <= 20; total++) {
+      for (let cur = 1; cur <= total; cur++) {
+        const w = buildPagerWindow(cur, total);
+        expect(w).toContain(1);
+        expect(w).toContain(total);
+        expect(w).toContain(cur);
+      }
+    }
+  });
+});
+
+describe("§149 formatPageRange", () => {
+  it("returns empty string for single-page or empty corpora", () => {
+    expect(
+      formatPageRange({
+        posts: [],
+        page: 1,
+        totalPages: 1,
+        total: 0,
+        firstIndex: 0,
+        lastIndex: 0,
+      }),
+    ).toBe("");
+    expect(
+      formatPageRange({
+        posts: [],
+        page: 1,
+        totalPages: 1,
+        total: 5,
+        firstIndex: 1,
+        lastIndex: 5,
+      }),
+    ).toBe("");
+  });
+
+  it("renders the canonical 'showing X-Y · page P of T' suffix", () => {
+    expect(
+      formatPageRange({
+        posts: [],
+        page: 2,
+        totalPages: 10,
+        total: 120,
+        firstIndex: 13,
+        lastIndex: 24,
+      }),
+    ).toBe("showing 13\u201324 \u00b7 page 2 of 10");
+  });
+
+  it("renders correct range on the last (partial) page", () => {
+    expect(
+      formatPageRange({
+        posts: [],
+        page: 10,
+        totalPages: 10,
+        total: 117,
+        firstIndex: 109,
+        lastIndex: 117,
+      }),
+    ).toBe("showing 109\u2013117 \u00b7 page 10 of 10");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// §149 — Blog.tsx wiring source pins
+// ---------------------------------------------------------------------------
+describe("§149 Blog.tsx wires the pager UI", () => {
+  const src = read("client/src/pages/Blog.tsx");
+
+  it("imports paginatePosts, buildPagerWindow, formatPageRange, BLOG_POSTS_PER_PAGE", () => {
+    expect(src).toMatch(/paginatePosts/);
+    expect(src).toMatch(/buildPagerWindow/);
+    expect(src).toMatch(/formatPageRange/);
+    expect(src).toMatch(/BLOG_POSTS_PER_PAGE/);
+  });
+
+  it("derives pagination via the helper, not an ad-hoc slice", () => {
+    expect(src).toMatch(/paginatePosts\(visiblePosts,\s*page/);
+    expect(src).toMatch(/pagination\.posts\.map/);
+  });
+
+  it("renders the pager nav with stable testids when totalPages > 1", () => {
+    expect(src).toMatch(/totalPages\s*>\s*1/);
+    expect(src).toMatch(/data-testid="blog-pager"/);
+    expect(src).toMatch(/data-testid="blog-pager-prev"/);
+    expect(src).toMatch(/data-testid="blog-pager-next"/);
+    // Active vs inactive testid is conditional, so match the underlying
+    // string literals used by the ternary rather than the JSX shape.
+    expect(src).toMatch(/"blog-pager-page"/);
+    expect(src).toMatch(/"blog-pager-page-active"/);
+    expect(src).toMatch(/data-testid="blog-pager-ellipsis"/);
+  });
+
+  it("includes aria-label='Blog pagination' on the pager nav", () => {
+    expect(src).toMatch(/aria-label="Blog pagination"/);
+  });
+
+  it("disables Prev on page 1 and Next on the last page", () => {
+    expect(src).toMatch(/disabled=\{pagination\.page\s*<=\s*1\}/);
+    expect(src).toMatch(/disabled=\{pagination\.page\s*>=\s*pagination\.totalPages\}/);
+  });
+
+  it("sets aria-current='page' on the active page button", () => {
+    expect(src).toMatch(/aria-current=\{isActive \? "page" : undefined\}/);
+  });
+
+  it("resets page state when the filtered set changes", () => {
+    expect(src).toMatch(/setPage\(1\)/);
+    expect(src).toMatch(/filterSignatureRef/);
+  });
+
+  it("clearFilters resets page to 1 too", () => {
+    expect(src).toMatch(/function clearFilters\(\)[\s\S]+setPage\(1\)/);
+  });
+
+  it("syncs the page param into the URL via buildFiltersSearch", () => {
+    expect(src).toMatch(/page:\s*pagination\.page/);
+    expect(src).toMatch(/url\.searchParams\.delete\("page"\)/);
+  });
+
+  it("scrolls back to the grid anchor on page change and honors reduced motion", () => {
+    expect(src).toMatch(/gridAnchorRef\.current\?\.scrollIntoView|gridAnchorRef\.current\.scrollIntoView/);
+    expect(src).toMatch(/prefers-reduced-motion: reduce/);
+  });
+
+  it("renders a #blog-grid anchor so external deep-links can target the grid", () => {
+    expect(src).toMatch(/id="blog-grid"/);
   });
 });
