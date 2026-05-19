@@ -1333,3 +1333,55 @@ legible because the dark-band variant inherits warm-paper light-mode colours.
 - [x] §136.7 — Authored `client/src/lib/headerNavStyling.test.ts` — 16 specs across NavLink typography, active rail, hover rail (origin + curve), Resources trigger parity, hover-rail-on-open behavior, Get-a-Quote shadow + lift + arrow translate + focus ring, Sign in metrics + hover fill
 - [x] §136.8 — Updated `headerSignIn.test.ts` desktop ordering check to anchor on `data-testid="header-get-a-quote"` (stable contract surface) instead of a fragile className substring
 - [x] §136.9 — Final: tsc clean, 912/912 vitest across 71 files, mobile sheet untouched
+
+## §137 — TAT + Support trust system (PAUSED — awaiting user data, ETA this week per user 2026-05-18)
+
+> **Strategic frame (locked in conversation 2026-05-18 after the $100k-recommendation exercise):** The two real moats of Rapid Hire Solutions are (1) **faster turnaround time** vs. competitors, and (2) **U.S.-based, FCRA-accredited customer support with zero offshore staff**. TAT gets prospects in the door; the moment a buyer needs support is the moment they realize what "full-service" actually means and they lock in. Both moats are currently invisible on the marketing site — "85%+ within 24 hours" appears as small caption text in the hero, "U.S.-based support" appears once as gray micro-text, no support page shows what support actually looks like, no rep photos, no FCRA accreditation badges, no live TAT signal anywhere. The $100k change is to make these two moats the loudest things on the site.
+
+> **Why this is defensible:** No competitor (Checkr, Sterling, GoodHire, HireRight) exposes a live TAT number, names their support reps, or lets a prospect talk to a real human in under 30 seconds without a form first. They can't credibly do any of it because their TAT isn't fast enough, their support is offshore or queued, and their reps aren't FCRA-accredited. Rapid Hire can do all three — and doing all three on the home page IS the moat made visible.
+
+> **Earlier candidate ideas considered and rejected during the conversation:**
+> - **Self-serve "Run your first check" e-commerce flow** (Stripe checkout, candidate consent invite, customer dashboard) — REJECTED by user: "no one comes and just selects a pre-determined package. they are already using a provider and would have a specific package built for the type of hiring they do." The market is switch-from-competitor, not net-new SMB.
+> - **"Match Your Current Package" comparison tool** (paste competitor invoice → get line-by-line comparison + real price + switching plan) — Considered but superseded once user clarified the two real moats are TAT and support, not pricing transparency.
+
+### §137.1 — Phase 1: Live Turnaround Time signal (highest-leverage slice — recommended first)
+
+- [ ] §137.1.1 — Build a TAT data feed contract: a small JSON snapshot file (`/api/tat-snapshot` or static `/tat-snapshot.json` updated on a schedule) with shape `{ updatedAt, medianTatMinutes, p95TatMinutes, percentCompleteIn24h, perPackage: { essential, professional, comprehensive }, perScreen: { countyCriminal, mvr, employmentVerification, drug5Panel, ... }, last30Days: [{ date, medianMinutes, completedCount, ... }] }`. Stub it locally with realistic synthetic data first; swap in the real feed when user provides the data source.
+- [ ] §137.1.2 — Add a persistent **live TAT strip** just under the header (or as a slim band inside the header) on every page: *"Median TAT today: 4h 12m · 89% complete in 24h · updated 5 min ago"*. Should respect prefers-reduced-motion (no pulse animation when reduced). Hide gracefully if the feed is stale (>30 minutes old).
+- [ ] §137.1.3 — Build the **`/turnaround` page**: hero with the live number, a real chart of the last 30 days (median + p95), per-package breakdown table, per-screen breakdown table, **competitor comparison section** ("Sterling Q1 2026 published median: ___ · Checkr Q1 2026 published median: ___ · Rapid Hire today: ___"), methodology footnote explaining how we measure (start = candidate consent received; end = report delivered to customer; excludes self-disclosed items pending candidate response).
+- [ ] §137.1.4 — Wire the live TAT strip on every page to be a clickable surface that routes to `/turnaround`.
+- [ ] §137.1.5 — SEO: target the queries "background check turnaround time", "fastest background check service", "background check TAT comparison". Strong on-page H1/H2, schema.org Service + AggregateRating where applicable, internal links from `/pricing` and `/services` and `/compliance`.
+- [ ] §137.1.6 — Vitest specs locking: feed contract shape, strip presence on every page, strip stale-state hiding, `/turnaround` page rendering chart + competitor table + methodology, route registration in App.tsx.
+
+### §137.2 — Phase 2: "Meet your support team" page (the lock-in moment)
+
+- [ ] §137.2.1 — Build the **`/support` page** (replacing or extending the current Support.tsx). Hero: "Your call is answered by a human in under 60 seconds. Every rep is FCRA-accredited. Zero offshore staff." Underneath: a grid of **rep cards** showing photo, first name, FCRA accreditation cert number + date, years at the company, languages spoken, time-zone coverage, areas of specialty (drug screening, MVR, international, healthcare credentialing, etc.), and a **live availability indicator** ("Sarah is online · typical reply 8 minutes" / "Maria is in a call · next available rep: Marcus").
+- [ ] §137.2.2 — **The SLA in plain English** below the rep grid: "We answer the phone in under 60 seconds. We answer chat in under 5 minutes. We answer email same business day. Every rep is FCRA-accredited. We have zero offshore staff. If you escalate, you reach a director within 1 hour."
+- [ ] §137.2.3 — **Scenario walkthroughs** (this is the "full-service" reveal): "If a candidate disputes a record" → exactly what we do, who handles it, timeline. "If you need a custom package built" → the rep who'll do it, typical turnaround. "If a hiring manager needs ad-hoc help reading a report" → the line they call. Show 3–5 of these as expandable cards.
+- [ ] §137.2.4 — Rep availability data feed (similar contract to TAT snapshot): a small JSON `{ reps: [{ id, firstName, photoUrl, status: 'online' | 'in-call' | 'off-shift', typicalReplyMinutes, fcraCertNumber, fcraCertDate, yearsAtCompany, languages, specialties }] }`. Stub locally, swap in real feed (probably from Intercom/Drift/HubSpot Chat presence API or a simple internal status board).
+- [ ] §137.2.5 — Vitest specs locking: rep card structure, FCRA cert number rendering, SLA copy presence, scenario walkthroughs rendering, availability indicator rendering against the feed contract.
+
+### §137.3 — Phase 3: Dual header CTA + "Talk to a rep right now" flow
+
+- [ ] §137.3.1 — Replace the current single "Get a Quote" header pill with a **dual CTA**: primary `Talk to a rep now` (opens live chat / click-to-call directly to an on-duty rep, NO form first) + secondary `Get a quote` (existing flow, kept verbatim). Mobile sheet should mirror the same dual CTA.
+- [ ] §137.3.2 — The "Talk to a rep now" button should surface **the actual on-duty rep's photo and first name** based on the §137.2.4 availability feed, plus the actual estimated wait ("Sarah · 12 sec to reply").
+- [ ] §137.3.3 — When clicked, opens a chat surface (Drift / Intercom / HubSpot Chat / a simple internal one — wired to whatever the user already uses) **manned by a real human, not a bot**. The first message from the rep must NOT be "How can I help you?"; it should be the rep's full credential: *"Hi, I'm Sarah, FCRA-accredited rep, 8 years at Rapid Hire. What package are you running today and what's slowing you down?"* (Configure the canned greeting on whatever chat tool we wire.)
+- [ ] §137.3.4 — Off-hours fallback: if no rep is on duty, the button changes to "Schedule a call · next available 8:30 AM CT" with a calendar picker.
+- [ ] §137.3.5 — Vitest specs locking: dual-CTA presence in Header.tsx + mobile sheet, rep-name + photo surfaced from the availability feed, off-hours fallback rendering, ordering of the two pills (Talk-to-rep first, Get-a-quote second).
+
+### §137.4 — Data shopping list owed by user (compiling this week per 2026-05-18 message)
+
+The next session cannot proceed past stub data without these. Email or paste into chat when ready.
+
+- [ ] §137.4.1 — **TAT data feed.** Either (a) an API endpoint on the operational system we can poll (preferred — auth model + sample payload), (b) a daily CSV export to a known location, or (c) a manual "log in once a day and refresh a JSON file" workflow. Realer the feed, the more powerful the signal. Whatever shape, we map it to the §137.1.1 contract.
+- [ ] §137.4.2 — **Reps' info** for the §137.2 page: names (first names are fine), photos (headshots, ideally consistent style), FCRA accreditation cert numbers + dates, years at Rapid Hire, languages spoken, time-zone coverage, areas of specialty. Sweet spot is 6–12 reps for a credible "we're real humans" feel without padding.
+- [ ] §137.4.3 — **Real SLA numbers**: phone answer time, chat first-response, email first-response, escalation path (who to whom), escalation timeline (how long until a director picks up). If undocumented, a 15-minute call to dictate them is fine; we'll write them up and user signs off.
+- [ ] §137.4.4 — **Current chat / phone stack**: Intercom, Drift, HubSpot Chat, RingCentral, raw phone, custom — so we wire the dual CTA into existing infrastructure rather than forcing a migration.
+- [ ] §137.4.5 — **Permission decision** to name competitors on `/turnaround` (Sterling, Checkr, HireRight, GoodHire) with their published TAT numbers. Legally fine (nominative use); user just needs to confirm comfort posture. Default if no answer: ship without competitor names, swap them in later.
+- [ ] §137.4.6 — **Permission decision** on whether the live TAT strip can show actual real-time numbers publicly, or whether we need a 30-day rolling median (less risk of a bad-day number being weaponized by competitors). Default: 30-day rolling median for the always-visible strip; today's live number on `/turnaround` only.
+
+### §137.5 — Resume protocol when user returns
+
+- [ ] §137.5.1 — On user's next message after the pause, re-read this §137 block first to reload context (the conversation history may have been compacted away).
+- [ ] §137.5.2 — Confirm which of §137.4.1–§137.4.6 the user has answers for; for any still missing, stub realistic data and proceed (do not block on missing data — the value is shipping Phase 1 against a stub and swapping the feed later).
+- [ ] §137.5.3 — Recommended first slice when resuming: §137.1 (Phase 1 — live TAT strip + `/turnaround` page) entirely against stub data. That alone, shipped well, is probably the single highest-leverage change on the site and validates the visual + content shape before the real feed is wired.
