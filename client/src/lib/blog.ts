@@ -187,6 +187,8 @@ import { post as postCmLookback } from "@/content/blog/continuous-monitoring-loo
 import { post as postCmDriftDetect } from "@/content/blog/continuous-monitoring-drift-detection";
 // §115 — financial services / FINRA Rule 3110(e) gap-filler
 import { post as postFinra3110 } from "@/content/blog/finra-rule-3110-background-check-employer-guide";
+// §143 — K-12 / education vertical gap-filler (ESSA §8546 + state fingerprint statutes)
+import { post as postK12School } from "@/content/blog/k12-school-employee-background-check-requirements";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -310,6 +312,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postCmLookback,
   postCmDriftDetect,
   postFinra3110,
+  postK12School,
 ]);
 
 /**
