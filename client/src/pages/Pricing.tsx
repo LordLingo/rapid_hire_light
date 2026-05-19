@@ -11,9 +11,14 @@
 */
 import { useCallback, useRef, useState } from "react";
 import { Link } from "wouter";
-import { ArrowUpRight, Check, ChevronRight } from "lucide-react";
+import { ArrowUpRight, Check, ChevronRight, Sparkles } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
+import {
+  SPA_COMPACT,
+  SPA_ROUTE,
+  SPA_TAGLINE,
+} from "@/lib/spa";
 import { PricingLineItem } from "@/components/heroes/HeroCards";
 import SampleReportImage from "@/components/site/SampleReportImage";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
@@ -184,6 +189,71 @@ export default function Pricing() {
         visual={<PricingLineItem />}
         belowVisual={<HeroMiniStats page="pricing" />}
       />
+
+      {/*
+        §138.4.2 — SPA banner. One-line band immediately under the page
+        hero that reframes the page around the SPA Standard. Sits in the
+        existing alternating-rhythm slot (paper-soft band between the
+        white hero and the white tiers section), so it doesn't break the
+        page's visual cadence — it just gives the SPA framework a
+        prominent foothold above the tier cards.
+
+        Pattern matches the home-page section bands (eyebrow + headline
+        + supporting line + tertiary link). Kept tight: one row of copy
+        + a "Why we call it SPA" link to /spa for buyers who haven't
+        read the brand hook yet.
+      */}
+      <section
+        id="pricing-spa-banner"
+        data-testid="pricing-spa-banner"
+        className="border-t border-[color:var(--color-rule)] bg-[color:var(--color-paper-soft)]"
+      >
+        <div className="container py-10 md:py-14">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-6 items-center">
+            <div className="col-span-12 lg:col-span-2">
+              <span
+                className="eyebrow inline-flex items-center gap-2"
+                data-testid="pricing-spa-banner-eyebrow"
+              >
+                <Sparkles
+                  aria-hidden
+                  className="size-3.5 text-[color:var(--color-accent-ink)]"
+                />
+                {SPA_COMPACT}
+              </span>
+            </div>
+            <div className="col-span-12 lg:col-span-8">
+              <p
+                className="font-display text-[22px] leading-[1.3] tracking-[-0.01em] text-[color:var(--color-ink)] md:text-[26px]"
+                data-testid="pricing-spa-banner-headline"
+              >
+                Pricing built around the SPA Standard —{" "}
+                <span className="italic font-light text-[color:var(--color-accent-ink)]">
+                  Speed, Price, Accuracy.
+                </span>
+              </p>
+              <p
+                className="mt-2 max-w-2xl text-[14.5px] leading-[1.6] text-[color:var(--color-ink-soft)]"
+                data-testid="pricing-spa-banner-tagline"
+              >
+                {SPA_TAGLINE} Per-check pricing, published openly, with no
+                setup fees, no seat licenses, and no minimums — the same
+                three commitments we run the rest of the company on.
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-2 lg:text-right">
+              <Link
+                href={SPA_ROUTE}
+                data-testid="pricing-spa-banner-link"
+                className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[color:var(--color-accent-ink)] hover:underline underline-offset-4"
+              >
+                Why we call it SPA
+                <ChevronRight className="size-3.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Tiers — 3 cards: Essential / Professional (MOST CHOSEN) / Comprehensive */}
       <section className="bg-white border-y border-border">

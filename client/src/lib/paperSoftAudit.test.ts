@@ -140,6 +140,12 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // (white hero → paper-soft "what to expect" → white SPA pillars →
       // paper-soft virtual → white final CTA). Visually audited.
       "client/src/pages/Shrm.tsx",
+      // §140.1: /pricing gained a one-line SPA banner under PageHero
+      // that uses the same paper-soft alternating-rhythm tint as the
+      // existing add-ons / FAQ bands. Visually audited — the banner
+      // sits between the white hero and the white tiers section, so
+      // the band cadence is preserved.
+      "client/src/pages/Pricing.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

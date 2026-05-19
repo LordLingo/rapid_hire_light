@@ -24,6 +24,64 @@ import {
   clearFieldError,
   type FieldErrors,
 } from "@/lib/formValidation";
+import { SHRM_UTM_KEY } from "@/lib/shrm";
+
+/*
+  §140.3 — UTM attribution helper.
+
+  Reads any UTM params previously captured into sessionStorage by
+  /shrm (Shrm.tsx#captureUtmParams) and returns them as a flat
+  Record<string, string>. Returns an empty object if storage is
+  blocked, the entry is missing, or the entry is malformed.
+
+  Exported as a named function-style constant so the vitest spec can
+  import and exercise it without rendering the React tree.
+*/
+export function readShrmUtm(): Record<string, string> {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = window.sessionStorage.getItem(SHRM_UTM_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return {};
+    }
+    const out: Record<string, string> = {};
+    for (const [k, v] of Object.entries(parsed)) {
+      if (typeof v === "string" && v.length > 0) out[k] = v;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+/*
+  §140.3 — Build a one-line attribution footer from a UTM map.
+  Returns an empty string when the map is empty so call sites can
+  conditionally append. Keys are emitted in a stable canonical order
+  so the spec can pin the exact string.
+*/
+export function formatUtmAttribution(
+  utm: Record<string, string>,
+): string {
+  const ORDER = [
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_content",
+    "utm_term",
+  ];
+  const parts: string[] = [];
+  for (const k of ORDER) {
+    const v = utm[k];
+    if (typeof v === "string" && v.length > 0) {
+      parts.push(`${k}=${v}`);
+    }
+  }
+  if (parts.length === 0) return "";
+  return `\n\n— via ${parts.join(", ")}`;
+}
 
 /**
  * Service-interest options shown as toggle chips on the Contact form.
@@ -91,6 +149,44 @@ export default function Contact() {
   );
   const cameFromCalculator = Boolean(prefillNote || prefillVolumeRaw || prefillServiceIds.length);
 
+  /*
+    §140.2 — SHRM 2026 attribution. /shrm CTAs build their /contact
+    URL via buildShrmContactUrl(), which sets `subject=SHRM 2026 —
+    request meeting&source=shrm-2026`. We read those here so the
+    contact form can render a "from SHRM 2026" eyebrow and so the
+    Formspree _subject reflects the SHRM funnel rather than a generic
+    contact request.
+  */
+  const prefillSubject = params.get("subject") ?? "";
+  const prefillSource = params.get("source") ?? "";
+  const cameFromShrm = prefillSource === "shrm-2026";
+
+  /*
+    §140.3 — SHRM UTM attribution. Hydrate any UTM params previously
+    captured on /shrm into local state so the message body can include
+    a one-line attribution footer ("— via utm_source=…, utm_medium=…")
+    without the user having to type or paste it. The map is also sent
+    as a top-level `utm` JSON string in the Formspree payload so
+    structured downstream parsing is possible.
+
+    Read once on mount so a mid-session sessionStorage clear doesn't
+    cause the prefilled textarea to lurch.
+  */
+  const [shrmUtm] = useState<Record<string, string>>(() => readShrmUtm());
+  const utmAttribution = useMemo(
+    () => formatUtmAttribution(shrmUtm),
+    [shrmUtm],
+  );
+  const prefillMessage = useMemo(() => {
+    if (!prefillNote && !cameFromShrm && !utmAttribution) return prefillNote;
+    let base = prefillNote;
+    if (cameFromShrm && !base) {
+      base =
+        "Hi — I stopped by your booth at SHRM 2026 and would like to book a 15-minute SPA Treatment.";
+    }
+    return base + utmAttribution;
+  }, [prefillNote, cameFromShrm, utmAttribution]);
+
   const [interests, setInterests] = useState<string[]>(prefillInterests);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -156,7 +252,22 @@ export default function Contact() {
       teamSize: values.teamSize,
       message: values.message,
       services: interests.join(", "),
-      _subject: `New contact request — ${values.company}`.trim(),
+      // §140.2 — if this submission came from a SHRM CTA, surface that
+      // in the Formspree subject line so the user can immediately tell
+      // SHRM-funnel leads apart from generic web traffic.
+      _subject: cameFromShrm
+        ? `SHRM 2026 — meeting request — ${values.company}`.trim()
+        : `New contact request — ${values.company}`.trim(),
+      // §140.2 — carry source through as a structured field so it can
+      // be filtered server-side without scraping the subject line.
+      ...(prefillSource ? { source: prefillSource } : {}),
+      ...(prefillSubject ? { subject: prefillSubject } : {}),
+      // §140.3 — attach UTM map as a JSON string. Empty map omitted to
+      // keep submissions clean. Downstream consumers can JSON.parse() to
+      // get the structured Record<string, string>.
+      ...(Object.keys(shrmUtm).length > 0
+        ? { utm: JSON.stringify(shrmUtm) }
+        : {}),
     };
     setSubmitting(true);
     try {
@@ -431,7 +542,7 @@ export default function Contact() {
                       id="contact-message"
                       name="message"
                       rows={5}
-                      defaultValue={prefillNote}
+                      defaultValue={prefillMessage}
                       placeholder="Roles, jurisdictions, ATS in use, anything else we should know."
                       aria-invalid={fieldErrors.message ? "true" : undefined}
                       aria-describedby={
@@ -456,6 +567,15 @@ export default function Contact() {
                     {cameFromCalculator && (
                       <p className="mt-3 text-[12px] text-[color:var(--color-ink-muted)]">
                         Pre-filled from your pricing estimate. Edit anything before sending.
+                      </p>
+                    )}
+                    {cameFromShrm && (
+                      <p
+                        data-testid="contact-shrm-attribution-note"
+                        className="mt-3 text-[12px] text-[color:var(--color-ink-muted)]"
+                      >
+                        Routed from SHRM 2026. We'll prioritize this in our
+                        booth queue — edit anything before sending.
                       </p>
                     )}
                   </div>
