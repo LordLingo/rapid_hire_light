@@ -9,6 +9,11 @@ import {
   formatResultCount,
   parseFiltersFromSearch,
   buildFiltersSearch,
+  sortPosts,
+  BLOG_SORT_OPTIONS,
+  DEFAULT_BLOG_SORT,
+  blogSortLabel,
+  isBlogSortKey,
 } from "./blogFilters";
 
 const ROOT = resolve(__dirname, "..", "..", "..");
@@ -129,54 +134,176 @@ describe("blogFilters.formatResultCount", () => {
 });
 
 describe("blogFilters URL round-trip", () => {
-  it("parses an empty search as both nulls", () => {
-    expect(parseFiltersFromSearch("")).toEqual({ tag: null, query: null });
+  it("parses an empty search as nulls + default sort", () => {
+    expect(parseFiltersFromSearch("")).toEqual({
+      tag: null,
+      query: null,
+      sort: DEFAULT_BLOG_SORT,
+    });
   });
 
   it("parses tag and q params, trimming whitespace", () => {
     expect(parseFiltersFromSearch("?tag=fcra&q=fair+chance")).toEqual({
       tag: "fcra",
       query: "fair chance",
+      sort: DEFAULT_BLOG_SORT,
     });
     expect(parseFiltersFromSearch("?tag=%20fcra%20&q=%20%20")).toEqual({
       tag: "fcra",
       query: null,
+      sort: DEFAULT_BLOG_SORT,
     });
+  });
+
+  it("parses a known sort param and ignores unknown", () => {
+    expect(parseFiltersFromSearch("?sort=alphabetical").sort).toBe(
+      "alphabetical",
+    );
+    expect(parseFiltersFromSearch("?sort=depth").sort).toBe("depth");
+    expect(parseFiltersFromSearch("?sort=bogus").sort).toBe(
+      DEFAULT_BLOG_SORT,
+    );
   });
 
   it("ignores unknown params", () => {
     expect(parseFiltersFromSearch("?range=30d&page=2")).toEqual({
       tag: null,
       query: null,
+      sort: DEFAULT_BLOG_SORT,
     });
   });
 
-  it("builds a canonical search string and drops empty filters", () => {
-    expect(buildFiltersSearch({ tag: null, query: null })).toBe("");
-    expect(buildFiltersSearch({ tag: "fcra", query: null })).toBe("tag=fcra");
-    expect(buildFiltersSearch({ tag: null, query: "fair chance" })).toBe(
-      "q=fair+chance",
-    );
-    expect(buildFiltersSearch({ tag: "fcra", query: "fair chance" })).toBe(
-      "tag=fcra&q=fair+chance",
+  it("builds a canonical search string and drops empty filters + default sort", () => {
+    expect(
+      buildFiltersSearch({ tag: null, query: null, sort: DEFAULT_BLOG_SORT }),
+    ).toBe("");
+    expect(
+      buildFiltersSearch({ tag: "fcra", query: null, sort: DEFAULT_BLOG_SORT }),
+    ).toBe("tag=fcra");
+    expect(
+      buildFiltersSearch({
+        tag: null,
+        query: "fair chance",
+        sort: DEFAULT_BLOG_SORT,
+      }),
+    ).toBe("q=fair+chance");
+    expect(
+      buildFiltersSearch({
+        tag: "fcra",
+        query: "fair chance",
+        sort: DEFAULT_BLOG_SORT,
+      }),
+    ).toBe("tag=fcra&q=fair+chance");
+    expect(
+      buildFiltersSearch({ tag: null, query: null, sort: "alphabetical" }),
+    ).toBe("sort=alphabetical");
+    expect(
+      buildFiltersSearch({ tag: "fcra", query: null, sort: "depth" }),
+    ).toBe("tag=fcra&sort=depth");
+  });
+
+  it("round-trips arbitrary state including sort", () => {
+    const cases: {
+      tag: string | null;
+      query: string | null;
+      sort: typeof DEFAULT_BLOG_SORT;
+    }[] = [
+      { tag: null, query: null, sort: DEFAULT_BLOG_SORT },
+      { tag: "fcra", query: null, sort: "alphabetical" },
+      { tag: null, query: "drug screening", sort: "oldest" },
+      { tag: "k12-education", query: "ESSA", sort: "depth" },
+    ];
+    for (const c of cases) {
+      const qs = buildFiltersSearch(c);
+      const round = parseFiltersFromSearch(qs ? "?" + qs : "");
+      expect(round).toEqual(c);
+    }
+  });
+});
+
+describe("§147 sortPosts", () => {
+  const posts = listPosts();
+
+  it("returns a non-mutating copy", () => {
+    const before = posts.map((p) => p.slug);
+    const sorted = sortPosts(posts, "alphabetical");
+    // Source array unchanged.
+    expect(posts.map((p) => p.slug)).toEqual(before);
+    // Same set of slugs, just possibly reordered.
+    expect(sorted.length).toBe(posts.length);
+    expect(new Set(sorted.map((p) => p.slug))).toEqual(
+      new Set(before),
     );
   });
 
-  it("round-trips arbitrary state", () => {
-    const cases = [
-      { tag: null, query: null },
-      { tag: "fcra", query: null },
-      { tag: null, query: "drug screening" },
-      { tag: "k12-education", query: "ESSA" },
-    ];
-    for (const c of cases) {
-      const round = parseFiltersFromSearch("?" + buildFiltersSearch(c));
-      // parse normalizes empty query strings to null; account for that.
-      expect(round).toEqual({
-        tag: c.tag,
-        query: c.query,
-      });
+  it("sorts newest first by publishedAt descending", () => {
+    const sorted = sortPosts(posts, "newest");
+    for (let i = 1; i < sorted.length; i++) {
+      expect(sorted[i - 1].publishedAt >= sorted[i].publishedAt).toBe(true);
     }
+  });
+
+  it("sorts oldest first by publishedAt ascending", () => {
+    const sorted = sortPosts(posts, "oldest");
+    for (let i = 1; i < sorted.length; i++) {
+      expect(sorted[i - 1].publishedAt <= sorted[i].publishedAt).toBe(true);
+    }
+  });
+
+  it("sorts alphabetically case-insensitively", () => {
+    const sorted = sortPosts(posts, "alphabetical");
+    for (let i = 1; i < sorted.length; i++) {
+      const a = sorted[i - 1].title.toLocaleLowerCase();
+      const b = sorted[i].title.toLocaleLowerCase();
+      expect(a.localeCompare(b) <= 0).toBe(true);
+    }
+  });
+
+  it("sorts by readingMinutes desc, ties broken newest first", () => {
+    const sorted = sortPosts(posts, "depth");
+    for (let i = 1; i < sorted.length; i++) {
+      const prev = sorted[i - 1];
+      const cur = sorted[i];
+      if (prev.readingMinutes === cur.readingMinutes) {
+        expect(prev.publishedAt >= cur.publishedAt).toBe(true);
+      } else {
+        expect(prev.readingMinutes >= cur.readingMinutes).toBe(true);
+      }
+    }
+  });
+
+  it("defaults to newest when called without a key", () => {
+    const a = sortPosts(posts);
+    const b = sortPosts(posts, "newest");
+    expect(a.map((p) => p.slug)).toEqual(b.map((p) => p.slug));
+  });
+});
+
+describe("§147 sort metadata", () => {
+  it("exposes exactly four ordered options", () => {
+    expect(BLOG_SORT_OPTIONS.map((o) => o.value)).toEqual([
+      "newest",
+      "oldest",
+      "alphabetical",
+      "depth",
+    ]);
+  });
+
+  it("isBlogSortKey accepts the four canonical values and rejects others", () => {
+    expect(isBlogSortKey("newest")).toBe(true);
+    expect(isBlogSortKey("oldest")).toBe(true);
+    expect(isBlogSortKey("alphabetical")).toBe(true);
+    expect(isBlogSortKey("depth")).toBe(true);
+    expect(isBlogSortKey("foo")).toBe(false);
+    expect(isBlogSortKey(null)).toBe(false);
+    expect(isBlogSortKey(undefined)).toBe(false);
+  });
+
+  it("blogSortLabel returns the option label for known keys", () => {
+    expect(blogSortLabel("newest")).toBe("Newest first");
+    expect(blogSortLabel("oldest")).toBe("Oldest first");
+    expect(blogSortLabel("alphabetical")).toBe("A – Z");
+    expect(blogSortLabel("depth")).toBe("Longest reads first");
   });
 });
 
@@ -196,6 +323,8 @@ describe("Blog.tsx wires the new filter stack", () => {
     expect(src).toMatch(/formatResultCount/);
     expect(src).toMatch(/parseFiltersFromSearch/);
     expect(src).toMatch(/buildFiltersSearch/);
+    expect(src).toMatch(/sortPosts/);
+    expect(src).toMatch(/BLOG_SORT_OPTIONS/);
   });
 
   it("renders the search input + clear button with stable testids", () => {
@@ -223,10 +352,23 @@ describe("Blog.tsx wires the new filter stack", () => {
   });
 
   it("syncs filter state to the URL via history.replaceState", () => {
-    // The useEffect that rewrites the URL must be present and read both
-    // tag and query state so a future refactor can't drop one silently.
+    // The useEffect that rewrites the URL must be present and read tag,
+    // query and sort state so a future refactor can't drop one silently.
     expect(src).toMatch(/history\.replaceState/);
-    expect(src).toMatch(/buildFiltersSearch\(\{ tag, query/);
+    expect(src).toMatch(/buildFiltersSearch\(/);
+    expect(src).toMatch(/tag,\s*\n?\s*query/);
+    expect(src).toMatch(/\bsort\b/);
+  });
+
+  it("renders the sort dropdown wired to BLOG_SORT_OPTIONS", () => {
+    expect(src).toMatch(/data-testid="blog-sort-select"/);
+    // The dropdown must iterate over BLOG_SORT_OPTIONS (not a local copy)
+    // so future option edits flow through automatically.
+    expect(src).toMatch(/BLOG_SORT_OPTIONS\.map/);
+    expect(src).toMatch(/data-value=\{opt\.value\}/);
+    // The sort pass must be the final transform in the pipeline so the
+    // visible list respects the chosen order.
+    expect(src).toMatch(/sortPosts\(out, sort\)/);
   });
 
   it("exposes every getAllTags() entry as a pill (data-tag attribute)", () => {

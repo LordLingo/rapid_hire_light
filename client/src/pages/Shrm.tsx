@@ -41,6 +41,7 @@ import {
 } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import SpaPillars from "@/components/site/SpaPillars";
+import ShrmBookingPicker from "@/components/site/ShrmBookingPicker";
 import { useSeo } from "@/hooks/useSeo";
 import { SPA_TAGLINE, SPA_TREATMENT_CTA } from "@/lib/spa";
 import {
@@ -265,7 +266,10 @@ export default function Shrm() {
         </div>
       </section>
 
-      {/* ---------- 03 — SPA pillars (the substance) ---------- */}
+      {/* ---------- 03 — Booking picker (§148) ---------- */}
+      <ShrmBookingPicker />
+
+      {/* ---------- 04 — SPA pillars (the substance) ---------- */}
       <section
         id="shrm-pillars"
         data-testid="shrm-pillars-section"
@@ -274,7 +278,7 @@ export default function Shrm() {
         <div className="container py-20 md:py-24">
           <div className="grid grid-cols-12 gap-x-8 gap-y-8">
             <div className="col-span-12 lg:col-span-2 reveal-on-scroll">
-              <span className="eyebrow">02 — Why we're worth the walk</span>
+              <span className="eyebrow">03 — Why we're worth the walk</span>
               <span className="hidden lg:block hairline mt-3" />
             </div>
             <div className="col-span-12 lg:col-span-10 reveal-on-scroll">
@@ -296,7 +300,7 @@ export default function Shrm() {
         </div>
       </section>
 
-      {/* ---------- 04 — Virtual fallback ---------- */}
+      {/* ---------- 05 — Virtual fallback ---------- */}
       <section
         id="shrm-virtual"
         data-testid="shrm-virtual-section"
@@ -305,7 +309,7 @@ export default function Shrm() {
         <div className="container py-20 md:py-24">
           <div className="grid grid-cols-12 gap-x-8 gap-y-8">
             <div className="col-span-12 lg:col-span-2 reveal-on-scroll">
-              <span className="eyebrow">03 — Can't make it?</span>
+              <span className="eyebrow">04 — Can't make it?</span>
               <span className="hidden lg:block hairline mt-3" />
             </div>
             <div className="col-span-12 lg:col-span-10 reveal-on-scroll">
@@ -360,7 +364,7 @@ export default function Shrm() {
         </div>
       </section>
 
-      {/* ---------- 05 — Final CTA ---------- */}
+      {/* ---------- 06 — Final CTA ---------- */}
       <section
         id="shrm-final-cta"
         data-testid="shrm-final-cta"

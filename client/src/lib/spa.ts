@@ -116,3 +116,18 @@ export const SPA_TREATMENT_CTA = "Book your SPA Treatment" as const;
  * header nav link or footer references.
  */
 export const SPA_ROUTE = "/spa" as const;
+
+/**
+ * §146 — Compact metric badges derived from SPA_PILLARS. Used in trust
+ * strips, the SHRM booking picker confirmation panel, and any other
+ * surface that needs a single-line metric callout without the full
+ * pillar grid. Derived (not hardcoded) so SPA_PILLARS stays the only
+ * place per-pillar numbers live — a future tweak to "8 hours" or
+ * "99.9%" flows everywhere automatically.
+ */
+export const SPA_TRUST_BADGES: readonly { letter: SpaLetter; label: string; badge: string }[] =
+  SPA_PILLARS.map((p) => ({
+    letter: p.letter,
+    label: p.label,
+    badge: p.metric,
+  }));

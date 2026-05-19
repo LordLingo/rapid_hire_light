@@ -30,6 +30,11 @@ import {
   formatResultCount,
   parseFiltersFromSearch,
   buildFiltersSearch,
+  sortPosts,
+  BLOG_SORT_OPTIONS,
+  DEFAULT_BLOG_SORT,
+  blogSortLabel,
+  type BlogSortKey,
 } from "@/lib/blogFilters";
 
 type DateRange = "all" | "90d" | "30d";
@@ -41,7 +46,8 @@ function parseInitialRange(): DateRange {
 }
 
 function parseInitialFilters() {
-  if (typeof window === "undefined") return { tag: null, query: null };
+  if (typeof window === "undefined")
+    return { tag: null, query: null, sort: DEFAULT_BLOG_SORT };
   return parseFiltersFromSearch(window.location.search);
 }
 
@@ -54,10 +60,11 @@ export default function Blog() {
   // `?range=` query param so links remain shareable.
   const [range, setRange] = useState<DateRange>(parseInitialRange);
 
-  // New category + search filter state, URL-synced via ?tag=&q=.
+  // New category + search + sort filter state, URL-synced via ?tag=&q=&sort=.
   const initial = useMemo(parseInitialFilters, []);
   const [tag, setTag] = useState<string | null>(initial.tag);
   const [query, setQuery] = useState<string>(initial.query ?? "");
+  const [sort, setSort] = useState<BlogSortKey>(initial.sort);
 
   // Tag counts — drive the category pill row + the topics-by-depth grid.
   const tagsByDepth = useMemo(() => {
@@ -81,8 +88,9 @@ export default function Blog() {
     }
     out = filterByTag(out, tag);
     out = filterByQuery(out, query);
+    out = sortPosts(out, sort);
     return out;
-  }, [allPosts, range, tag, query]);
+  }, [allPosts, range, tag, query, sort]);
 
   // Keep the URL in sync with every filter change so deep links work and
   // the browser back button restores filter state.
@@ -91,19 +99,25 @@ export default function Blog() {
     const url = new URL(window.location.href);
     if (range === "all") url.searchParams.delete("range");
     else url.searchParams.set("range", range);
-    const filtersSearch = buildFiltersSearch({ tag, query: query.trim() || null });
+    const filtersSearch = buildFiltersSearch({
+      tag,
+      query: query.trim() || null,
+      sort,
+    });
     url.searchParams.delete("tag");
     url.searchParams.delete("q");
+    url.searchParams.delete("sort");
     if (filtersSearch) {
       const params = new URLSearchParams(filtersSearch);
       params.forEach((v, k) => url.searchParams.set(k, v));
     }
     window.history.replaceState(null, "", url.toString());
-  }, [range, tag, query]);
+  }, [range, tag, query, sort]);
 
   function clearFilters() {
     setTag(null);
     setQuery("");
+    setSort(DEFAULT_BLOG_SORT);
   }
 
   // ItemList JSON-LD helps Google understand the index as a structured
@@ -132,12 +146,16 @@ export default function Blog() {
   });
 
   const activeFilterLabel = tag ? formatTag(tag) : null;
-  const resultCountLabel = formatResultCount(
+  const baseResultCount = formatResultCount(
     visiblePosts.length,
     allPosts.length,
     activeFilterLabel,
     query.trim() || null,
   );
+  const resultCountLabel =
+    sort !== DEFAULT_BLOG_SORT && visiblePosts.length > 0
+      ? `${baseResultCount}, sorted ${blogSortLabel(sort).toLowerCase()}`
+      : baseResultCount;
 
   return (
     <SiteShell>
@@ -243,8 +261,9 @@ export default function Blog() {
               </p>
             </div>
 
-            {/* Search input */}
-            <div className="relative max-w-2xl">
+              {/* Search input + sort dropdown sit side-by-side on wide screens. */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="relative flex-1 max-w-2xl">
               <SearchIcon
                 aria-hidden="true"
                 className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-[color:var(--color-ink-muted)]"
@@ -269,6 +288,31 @@ export default function Blog() {
                   <XIcon className="size-3.5" />
                 </button>
               )}
+            </div>
+            <div className="sm:w-56">
+              <label htmlFor="blog-sort" className="sr-only">Sort articles</label>
+              <select
+                id="blog-sort"
+                data-testid="blog-sort-select"
+                value={sort}
+                onChange={(e) => setSort(e.target.value as BlogSortKey)}
+                aria-label="Sort articles"
+                className="w-full rounded-full border border-border bg-white py-3 pl-5 pr-9 text-[14.5px] leading-[1.4] tracking-tight text-[color:var(--color-ink)] focus:outline-none focus:border-[color:var(--color-accent-ink)] focus:ring-2 focus:ring-[color:var(--color-accent-ink)]/20 transition-colors appearance-none"
+                style={{
+                  backgroundImage:
+                    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23667085' stroke-width='1.5'><path d='M3 4.5l3 3 3-3'/></svg>\")",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "right 14px center",
+                  backgroundSize: "12px 12px",
+                }}
+              >
+                {BLOG_SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} data-value={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
             </div>
 
             {/* Category pill row */}

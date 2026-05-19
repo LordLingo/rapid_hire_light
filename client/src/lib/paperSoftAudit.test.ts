@@ -151,6 +151,12 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // from the white results grid without breaking the alternating
       // band rhythm of the page.
       "client/src/pages/Blog.tsx",
+      // §148: SHRM booking picker uses paper-soft on the selection
+      // summary card (sits below the day-tab/slot grid) and on the
+      // "taken slot" disabled-cell tint so the picker reads as one
+      // contiguous panel inside the existing /shrm alternating rhythm.
+      // The hosting section is otherwise white. Visually audited.
+      "client/src/components/site/ShrmBookingPicker.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

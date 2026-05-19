@@ -142,12 +142,15 @@ export const SHRM_UTM_KEY = "rh:shrm-2026-utm" as const;
 
 /**
  * Builds the /contact URL for a SHRM CTA, with subject pre-filled.
- * Used by both the strip and the /shrm page CTAs.
+ * Used by the strip, the /shrm page CTAs, and the new §148 booking
+ * picker (which passes the selected slot id through to Contact.tsx so
+ * the prefilled message + Formspree payload carry the requested time).
  */
-export function buildShrmContactUrl(): string {
+export function buildShrmContactUrl(options?: { slotId?: string }): string {
   const params = new URLSearchParams({
     subject: SHRM_MEETING_SUBJECT,
     source: "shrm-2026",
   });
+  if (options?.slotId) params.set("slot", options.slotId);
   return `/contact?${params.toString()}`;
 }

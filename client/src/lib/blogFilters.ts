@@ -102,12 +102,71 @@ export function formatResultCount(
 }
 
 /**
+ * §147 — sort keys for the blog index sort dropdown. `"newest"` is the
+ * default and matches the original index order; the other three give
+ * the reader real control without us needing real analytics yet.
+ */
+export type BlogSortKey = "newest" | "oldest" | "alphabetical" | "depth";
+
+export const DEFAULT_BLOG_SORT: BlogSortKey = "newest";
+
+/**
+ * §147 — ordered list of sort options surfaced in the dropdown. Order
+ * is the order pinned by vitest so the UI can iterate without losing
+ * the canonical ordering.
+ */
+export const BLOG_SORT_OPTIONS: readonly { value: BlogSortKey; label: string }[] = [
+  { value: "newest", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+  { value: "alphabetical", label: "A – Z" },
+  { value: "depth", label: "Longest reads first" },
+];
+
+/**
+ * §147 — non-mutating sort over a BlogPost[] keyed by BlogSortKey.
+ *
+ * - `newest` / `oldest` sort by `date` (ISO yyyy-mm-dd, lexicographic
+ *   ordering is safe).
+ * - `alphabetical` sorts by lowercased title for case-insensitive A–Z.
+ * - `depth` sorts by `readingMinutes` (longest first); ties broken by
+ *   newer date so the rank feels stable.
+ */
+export function sortPosts(
+  posts: BlogPost[],
+  key: BlogSortKey = DEFAULT_BLOG_SORT,
+): BlogPost[] {
+  const out = posts.slice();
+  switch (key) {
+    case "newest":
+      out.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+      break;
+    case "oldest":
+      out.sort((a, b) => a.publishedAt.localeCompare(b.publishedAt));
+      break;
+    case "alphabetical":
+      out.sort((a, b) =>
+        a.title.toLocaleLowerCase().localeCompare(b.title.toLocaleLowerCase()),
+      );
+      break;
+    case "depth":
+      out.sort((a, b) => {
+        const diff = b.readingMinutes - a.readingMinutes;
+        if (diff !== 0) return diff;
+        return b.publishedAt.localeCompare(a.publishedAt);
+      });
+      break;
+  }
+  return out;
+}
+
+/**
  * Read-only shape of the index's URL-synced filter state. Each field is
  * independently nullable so we can drop unset params from the URL.
  */
 export type BlogIndexFilters = {
   tag: string | null;
   query: string | null;
+  sort: BlogSortKey;
 };
 
 /**
@@ -118,9 +177,23 @@ export function parseFiltersFromSearch(search: string): BlogIndexFilters {
   const params = new URLSearchParams(search);
   const rawTag = params.get("tag");
   const rawQuery = params.get("q");
+  const rawSort = params.get("sort");
   const tag = rawTag && rawTag.trim() ? rawTag.trim() : null;
   const query = rawQuery && rawQuery.trim() ? rawQuery.trim() : null;
-  return { tag, query };
+  const sort: BlogSortKey = isBlogSortKey(rawSort)
+    ? rawSort
+    : DEFAULT_BLOG_SORT;
+  return { tag, query, sort };
+}
+
+/** Type-guard used by parseFiltersFromSearch to reject unknown sort keys. */
+export function isBlogSortKey(value: unknown): value is BlogSortKey {
+  return (
+    value === "newest" ||
+    value === "oldest" ||
+    value === "alphabetical" ||
+    value === "depth"
+  );
 }
 
 /**
@@ -136,5 +209,19 @@ export function buildFiltersSearch(filters: BlogIndexFilters): string {
   const params = new URLSearchParams();
   if (filters.tag) params.set("tag", filters.tag);
   if (filters.query) params.set("q", filters.query);
+  if (filters.sort && filters.sort !== DEFAULT_BLOG_SORT) {
+    params.set("sort", filters.sort);
+  }
   return params.toString();
+}
+
+/**
+ * Human-readable label for a sort key. Mirrors BLOG_SORT_OPTIONS so the
+ * dropdown and the result-count line stay in sync, and so the
+ * formatResultCount() helper can surface the active sort without
+ * needing to re-derive it.
+ */
+export function blogSortLabel(key: BlogSortKey): string {
+  const found = BLOG_SORT_OPTIONS.find((o) => o.value === key);
+  return found ? found.label : BLOG_SORT_OPTIONS[0].label;
 }

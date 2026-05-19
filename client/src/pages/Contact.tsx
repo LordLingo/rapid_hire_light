@@ -25,6 +25,7 @@ import {
   type FieldErrors,
 } from "@/lib/formValidation";
 import { SHRM_UTM_KEY } from "@/lib/shrm";
+import { getShrmSlot, formatShrmSlot } from "@/lib/shrmSlots";
 
 /*
   §140.3 — UTM attribution helper.
@@ -162,6 +163,21 @@ export default function Contact() {
   const cameFromShrm = prefillSource === "shrm-2026";
 
   /*
+    §148 — SHRM booking-picker slot. /shrm CTAs may pass
+    `?slot=mon-0930` after the user picks a specific 15-minute block.
+    We look the id up in the static catalog so we can render the full
+    "Mon Jun 22, 9:30 – 9:45 am ET" string in the prefilled message,
+    success card, and Formspree payload. Stale/unknown ids resolve to
+    undefined and fall back to the generic SHRM prefill copy.
+  */
+  const prefillSlotId = params.get("slot") ?? "";
+  const prefillSlot = useMemo(
+    () => getShrmSlot(prefillSlotId || null),
+    [prefillSlotId],
+  );
+  const prefillSlotLabel = prefillSlot ? formatShrmSlot(prefillSlot) : "";
+
+  /*
     §140.3 — SHRM UTM attribution. Hydrate any UTM params previously
     captured on /shrm into local state so the message body can include
     a one-line attribution footer ("— via utm_source=…, utm_medium=…")
@@ -181,11 +197,14 @@ export default function Contact() {
     if (!prefillNote && !cameFromShrm && !utmAttribution) return prefillNote;
     let base = prefillNote;
     if (cameFromShrm && !base) {
-      base =
-        "Hi — I stopped by your booth at SHRM 2026 and would like to book a 15-minute SPA Treatment.";
+      base = prefillSlot
+        ? `Hi — I'd like to lock in the ${formatShrmSlot(prefillSlot)} slot at your SHRM 2026 booth (Booth 1619) for a 15-minute SPA Treatment.`
+        : "Hi — I stopped by your booth at SHRM 2026 and would like to book a 15-minute SPA Treatment.";
+    } else if (cameFromShrm && prefillSlot && !base.includes(formatShrmSlot(prefillSlot))) {
+      base = `${base}\n\nRequested slot: ${formatShrmSlot(prefillSlot)} (Booth 1619).`;
     }
     return base + utmAttribution;
-  }, [prefillNote, cameFromShrm, utmAttribution]);
+  }, [prefillNote, cameFromShrm, prefillSlot, utmAttribution]);
 
   const [interests, setInterests] = useState<string[]>(prefillInterests);
   const [submitted, setSubmitted] = useState(false);
@@ -266,6 +285,15 @@ export default function Contact() {
       // be filtered server-side without scraping the subject line.
       ...(prefillSource ? { source: prefillSource } : {}),
       ...(prefillSubject ? { subject: prefillSubject } : {}),
+      // §148 — if the visitor picked a specific slot via the SHRM
+      // booking picker, carry the id + the human-readable label
+      // through so the rep can confirm without parsing the message.
+      ...(prefillSlot
+        ? {
+            shrmSlotId: prefillSlot.id,
+            shrmSlot: formatShrmSlot(prefillSlot),
+          }
+        : {}),
       // §140.3 — attach UTM map as a JSON string. Empty map omitted to
       // keep submissions clean. Downstream consumers can JSON.parse() to
       // get the structured Record<string, string>.
@@ -411,6 +439,7 @@ export default function Contact() {
                 <ContactSuccess
                   company={submittedCompany}
                   fromShrm={cameFromShrm}
+                  shrmSlotLabel={prefillSlotLabel || null}
                 />
               ) : (
                 <form
@@ -649,9 +678,11 @@ export default function Contact() {
 function ContactSuccess({
   company,
   fromShrm,
+  shrmSlotLabel,
 }: {
   company: string;
   fromShrm: boolean;
+  shrmSlotLabel: string | null;
 }) {
   // §141.4 — personalize the lede when we have a company name. We
   // intentionally fall back to neutral phrasing when company is empty
@@ -661,10 +692,11 @@ function ContactSuccess({
 
   // §141.3 — SHRM branch headline + lede.
   const title = fromShrm ? "Booth queue confirmed." : "Request received.";
+  const slotPhrase = fromShrm && shrmSlotLabel ? ` for ${shrmSlotLabel} at Booth 1619` : "";
   const lede = fromShrm
     ? personalized
-      ? `We've routed ${trimmedCompany} into the SHRM 2026 booth queue. Expect a confirmation email the same business day with your 15-minute SPA Treatment slot.`
-      : "We've routed your meeting request into the SHRM 2026 booth queue. Expect a confirmation email the same business day with your 15-minute SPA Treatment slot."
+      ? `We've routed ${trimmedCompany} into the SHRM 2026 booth queue${slotPhrase}. Expect a confirmation email the same business day with your 15-minute SPA Treatment slot.`
+      : `We've routed your meeting request into the SHRM 2026 booth queue${slotPhrase}. Expect a confirmation email the same business day with your 15-minute SPA Treatment slot.`
     : personalized
       ? `A specialist is preparing a tailored screening package for ${trimmedCompany} and will follow up the same business day with pricing.`
       : "A specialist will follow up the same business day with a tailored screening package and pricing.";
