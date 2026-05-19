@@ -146,6 +146,11 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // sits between the white hero and the white tiers section, so
       // the band cadence is preserved.
       "client/src/pages/Pricing.tsx",
+      // §144: Blog index empty-state uses --color-paper-soft for the
+      // "No posts match these filters" card so it visually steps down
+      // from the white results grid without breaking the alternating
+      // band rhythm of the page.
+      "client/src/pages/Blog.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {
