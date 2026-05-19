@@ -189,6 +189,10 @@ export default function Contact() {
 
   const [interests, setInterests] = useState<string[]>(prefillInterests);
   const [submitted, setSubmitted] = useState(false);
+  // §141.4 — keep the submitted company name around so the success
+  // block can address the user by their organization ("… routed your
+  // request for {company}…") instead of a generic message.
+  const [submittedCompany, setSubmittedCompany] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // §134: per-field inline errors. Keyed by `name` attribute so the
@@ -290,8 +294,13 @@ export default function Contact() {
         toast.error(msg);
         return;
       }
+      setSubmittedCompany(values.company);
       setSubmitted(true);
-      toast.success("Request received — we'll be in touch the same business day.");
+      toast.success(
+        cameFromShrm
+          ? "Booth queue confirmed — we'll email your meeting slot the same business day."
+          : "Request received — we'll be in touch the same business day.",
+      );
     } catch {
       const msg = "Network error. Please try again.";
       setError(msg);
@@ -399,25 +408,10 @@ export default function Contact() {
             {/* Form */}
             <div className="col-span-12 lg:col-span-8 reveal-on-scroll">
               {submitted ? (
-                <div className="rounded-[20px] border border-border bg-[color:var(--color-paper)] px-8 py-16 text-center">
-                  <div className="mx-auto grid place-items-center size-12 rounded-full bg-[color:var(--color-tint)] text-[color:var(--color-accent-ink)]">
-                    <Check className="size-5" strokeWidth={2} />
-                  </div>
-                  <h3 className="mt-6 font-display text-[32px] leading-tight text-[color:var(--color-ink)]">
-                    Request received.
-                  </h3>
-                  <p className="mt-3 max-w-md mx-auto text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                    A specialist will follow up the same business day with a
-                    tailored screening package and pricing.
-                  </p>
-                  <Link
-                    href="/"
-                    className="ink-link mt-8 inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)]"
-                  >
-                    Back to home
-                    <ArrowUpRight className="size-3.5" />
-                  </Link>
-                </div>
+                <ContactSuccess
+                  company={submittedCompany}
+                  fromShrm={cameFromShrm}
+                />
               ) : (
                 <form
                   onSubmit={onSubmit}
@@ -618,6 +612,222 @@ export default function Contact() {
         </div>
       </section>
     </SiteShell>
+  );
+}
+
+/* --------------------------------------------------------------------------
+   §141 — ContactSuccess
+
+   The animated success state we swap in once a submission completes.
+   This component is intentionally co-located in Contact.tsx (rather
+   than promoted to its own file) because:
+     - the SHRM branch and the calculator branch share the same data
+       (cameFromShrm, submittedCompany) that already lives in the
+       parent's render scope, and
+     - the success block is a single render path — there is no other
+       page that needs to reuse it.
+
+   Animation choreography lives entirely in `client/src/index.css`
+   under the `.contact-success-*` selectors. This component just
+   stamps the markup and the `--contact-success-delay` custom
+   properties that orchestrate the staggered fade-up.
+
+   Stable testids exposed to vitest:
+     - contact-success                        (root)
+     - contact-success-icon                   (the animated icon container)
+     - contact-success-icon-halo              (the soft halo span)
+     - contact-success-check                  (the SVG element)
+     - contact-success-title                  (h3)
+     - contact-success-message                (p)
+     - contact-success-timeline               (ol)
+     - contact-success-timeline-item          (each li)
+     - contact-success-actions                (footer actions wrapper)
+     - contact-success-cta-home               (primary back-to-home link)
+     - contact-success-cta-calendar           (SHRM-only "Add to Calendar")
+     - contact-success-cta-sample             (non-SHRM "View sample report")
+-------------------------------------------------------------------------- */
+function ContactSuccess({
+  company,
+  fromShrm,
+}: {
+  company: string;
+  fromShrm: boolean;
+}) {
+  // §141.4 — personalize the lede when we have a company name. We
+  // intentionally fall back to neutral phrasing when company is empty
+  // so the success state never reads like "… for .".
+  const trimmedCompany = company.trim();
+  const personalized = trimmedCompany.length > 0;
+
+  // §141.3 — SHRM branch headline + lede.
+  const title = fromShrm ? "Booth queue confirmed." : "Request received.";
+  const lede = fromShrm
+    ? personalized
+      ? `We've routed ${trimmedCompany} into the SHRM 2026 booth queue. Expect a confirmation email the same business day with your 15-minute SPA Treatment slot.`
+      : "We've routed your meeting request into the SHRM 2026 booth queue. Expect a confirmation email the same business day with your 15-minute SPA Treatment slot."
+    : personalized
+      ? `A specialist is preparing a tailored screening package for ${trimmedCompany} and will follow up the same business day with pricing.`
+      : "A specialist will follow up the same business day with a tailored screening package and pricing.";
+
+  // §141.5 — "What's next" three-step mini-timeline. Pure visual,
+  // no logic. The SHRM branch reflects the booth flow; the default
+  // branch reflects the standard intro flow.
+  const timeline: Array<{ id: string; label: string; detail: string }> = fromShrm
+    ? [
+        {
+          id: "reply",
+          label: "Same-day reply",
+          detail: "A U.S.-based, FCRA-certified rep emails your meeting slot.",
+        },
+        {
+          id: "booth",
+          label: "15-min SPA Treatment",
+          detail: "Quick booth visit — we tailor a package to your hiring volume.",
+        },
+        {
+          id: "sample",
+          label: "Sample report",
+          detail: "You leave with a real sample report and written quote.",
+        },
+      ]
+    : [
+        {
+          id: "reply",
+          label: "Same-day reply",
+          detail: "A U.S.-based, FCRA-certified rep reviews your request.",
+        },
+        {
+          id: "call",
+          label: "15-min intro call",
+          detail: "We learn the roles, jurisdictions, and ATS you're using.",
+        },
+        {
+          id: "quote",
+          label: "Sample report + quote",
+          detail: "You receive a tailored package, sample report, and pricing.",
+        },
+      ];
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      data-testid="contact-success"
+      data-from-shrm={fromShrm ? "true" : "false"}
+      className="rounded-[20px] border border-border bg-[color:var(--color-paper)] px-8 py-16 text-center"
+    >
+      {/* §141.2 — animated icon: pop + halo + stroke-drawn check */}
+      <div
+        data-testid="contact-success-icon"
+        className="contact-success-icon"
+      >
+        <span
+          aria-hidden
+          data-testid="contact-success-icon-halo"
+          className="sr-only"
+        >
+          {/* Visually hidden; the halo itself is rendered via the
+              `.contact-success-icon::after` pseudo-element. This span
+              exists only so a vitest static-analysis spec can verify
+              the halo affordance is intentional. */}
+          success halo
+        </span>
+        <svg
+          data-testid="contact-success-check"
+          className="contact-success-check"
+          viewBox="0 0 24 24"
+          aria-hidden
+          focusable="false"
+        >
+          {/* Standard checkmark path; matches the lucide "Check" geometry
+             so it reads as the same icon family as the rest of the site. */}
+          <path d="M5 12.5 L10 17.5 L19 7.5" />
+        </svg>
+      </div>
+
+      {/* §141.2 — staggered body. Each direct child opts in to the
+          fade-up animation; we pace them with --contact-success-delay
+          so they arrive after the icon settles. */}
+      <div className="contact-success-body mt-8">
+        <h3
+          data-testid="contact-success-title"
+          className="font-display text-[32px] leading-tight text-[color:var(--color-ink)]"
+          style={{ "--contact-success-delay": "260ms" } as React.CSSProperties}
+        >
+          {title}
+        </h3>
+        <p
+          data-testid="contact-success-message"
+          className="mt-3 max-w-md mx-auto text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]"
+          style={{ "--contact-success-delay": "320ms" } as React.CSSProperties}
+        >
+          {lede}
+        </p>
+
+        <ol
+          data-testid="contact-success-timeline"
+          className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-3 text-left sm:grid-cols-3 sm:gap-4"
+          style={{ "--contact-success-delay": "380ms" } as React.CSSProperties}
+        >
+          {timeline.map((step, i) => (
+            <li
+              key={step.id}
+              data-testid="contact-success-timeline-item"
+              className="rounded-[14px] border border-border bg-white px-4 py-3"
+            >
+              <p className="text-[10.5px] uppercase tracking-[0.18em] text-[color:var(--color-accent-ink)]">
+                Step {i + 1}
+              </p>
+              <p className="mt-1 text-[14px] font-medium text-[color:var(--color-ink)]">
+                {step.label}
+              </p>
+              <p className="mt-1 text-[12.5px] leading-[1.55] text-[color:var(--color-ink-muted)]">
+                {step.detail}
+              </p>
+            </li>
+          ))}
+        </ol>
+
+        <div
+          data-testid="contact-success-actions"
+          className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3"
+          style={{ "--contact-success-delay": "440ms" } as React.CSSProperties}
+        >
+          <Link
+            href="/"
+            data-testid="contact-success-cta-home"
+            className="ink-link inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)]"
+          >
+            Back to home
+            <ArrowUpRight className="size-3.5" />
+          </Link>
+          {fromShrm ? (
+            // §141.3 — SHRM-only Add-to-Calendar shortcut. Points at
+            // the static .ics in `client/public` so it works without a
+            // server round-trip. The file is generated under public/
+            // and gives the user a calendar block they can drop into
+            // their day at the conference.
+            <a
+              href="/shrm-2026.ics"
+              data-testid="contact-success-cta-calendar"
+              className="ink-link inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)]"
+            >
+              Add SHRM 2026 to calendar
+              <ArrowUpRight className="size-3.5" />
+            </a>
+          ) : (
+            <Link
+              href="/sample-report"
+              data-testid="contact-success-cta-sample"
+              className="ink-link inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)]"
+            >
+              View sample report
+              <ArrowUpRight className="size-3.5" />
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
