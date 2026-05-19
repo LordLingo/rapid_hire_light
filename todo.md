@@ -1617,3 +1617,28 @@ Ship one BlogPostCta component on every /blog/{slug} detail page. Default archet
   - paper-soft audit allowlist updated with `§150` rationale entry for BlogPostCta.
   - 1196/1196 specs across 79 files (+45 from this batch); `tsc --noEmit` clean.
 
+
+## §152 — K-12 compliance guide page
+
+The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide →" to a /resources/k12-compliance-guide page that does not yet exist. Either the link needs to resolve or the CTA needs to drop the secondary link. Build the page since K-12 is a real target vertical and the content compounds (the SHRM crowd has school-district HR directors in it).
+
+- [ ] §152.1 — Author client/src/pages/resources/K12ComplianceGuide.tsx with: (a) PageHero ("12 — Resources"), (b) what-this-covers TL;DR card, (c) state-by-state jurisdictional table for the highest-volume states (CA §44830.1, TX SB 9 + §22.0832, NY §3035 SAVE, FL §1012.32 Jessica Lunsford Act, IL 105 ILCS 5/10-21.9), (d) federal layer summary (Adam Walsh Act, ESSA §8546 employment history checks), (e) Rapid Hire workflow checklist (initial hire / volunteer / contractor / re-fingerprint cadence), (f) downloadable PDF hook (placeholder href, no real PDF yet), (g) closing CTA linking back to /contact?source=resources&topic=k12-compliance.
+- [ ] §152.2 — Register the route /resources/k12-compliance-guide in App.tsx so it actually resolves.
+- [ ] §152.3 — Add the new URL to the sitemap source so search engines can find it; add an entry on the /resources index page if one exists; otherwise add a slim related-link on the existing K-12 blog post.
+- [ ] §152.4 — Vitest: lib/k12ComplianceGuide.test.ts covering (a) route registration in App.tsx source, (b) page source pins (eyebrow, headline, table presence, every required state, federal acts, checklist testids, CTA target = matchArchetype('k12').hrefBuilder()), (c) sitemap entry, (d) /resources index link (if applicable), (e) blogCta.k12.secondary.href === '/resources/k12-compliance-guide' (locks the CTA target).
+- [ ] §152.5 — Run full vitest + tsc; webdev_check_status; webdev_save_checkpoint and deliver.
+
+
+## §152 — K-12 compliance guide resource page
+
+- [x] Build /resources/k12-compliance-guide page (ResourcesK12ComplianceGuide.tsx) using canonical PageHero contract (afterLede slot for CTAs, visual slot for 4-stat band — NOT the non-existent `ctas`/`breadcrumb` props)
+- [x] Mirror Resources inner-page section rhythm (01 paper hero → 02 paper-soft why → 03 paper state matrix → 04 paper-soft federal layers → 05 paper district workflow → 06 paper-soft companion reading → CtaBanner)
+- [x] Read counts from k12MatrixCounts() so future row insertions auto-update the hero stat band
+- [x] useSeo canonical set to full https URL (`https://www.rapidhiresolutions.com/resources/k12-compliance-guide`)
+- [x] Register /resources/k12-compliance-guide in App.tsx with import
+- [x] Add K-12 entry to Resources.tsx PILLARS array (positioned after Marijuana laws)
+- [x] Update K-12 blog CTA archetype secondary link in blogCta.ts to point at /resources/k12-compliance-guide (was the blog post slug — now they're sibling links)
+- [x] Add ResourcesK12ComplianceGuide.tsx to paperSoftAudit allowlist (sections 02, 04, 06)
+- [x] Write k12ComplianceGuide.test.ts (24 specs): matrix data integrity (10 rows, unique codes, alphabetical state coverage), federal-layer count, k12MatrixCounts derivation consistency, App.tsx route registration, Resources PILLARS wiring, K-12 archetype href alignment with the new path, PageHero contract (afterLede + visual, no ctas/breadcrumb), useSeo full-URL canonical, no dead-letter `void X` workarounds, workflow array length=5, companion array length=3, all structural testids present, matrix-row + federal-layer testid templates, disclaimer text, exported K12_COMPLIANCE_GUIDE_PATH constant
+- [x] tsc --noEmit clean
+- [x] Full vitest suite green: 1220/1220 across 80 files (was 1196/1196 across 79 files — +24 specs from this checkpoint, +1 spec file)

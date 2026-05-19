@@ -163,6 +163,11 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // without breaking the page's alternating rhythm. Same intent
       // as the SHRM booking-picker summary card. Visually audited.
       "client/src/components/blog/BlogPostCta.tsx",
+      // §152: K-12 compliance guide reuses the same alternating section
+      // rhythm as the other Resources inner pages (Marijuana, Ban the
+      // Box) — sections 02, 04, and 06 sit on --color-paper-soft.
+      // Visually audited.
+      "client/src/pages/ResourcesK12ComplianceGuide.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

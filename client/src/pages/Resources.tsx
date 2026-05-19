@@ -55,6 +55,15 @@ const PILLARS: {
       "State-by-state cannabis testing, off-duty protections, and safety-sensitive carve-outs — with the 2024 statute changes flagged for fast review.",
     href: "/resources/marijuana-laws",
   },
+  // §152: K-12 compliance guide — vertical reference linked from the
+  // K-12 blog CTA archetype and from the school-district companion post.
+  {
+    eyebrow: "Vertical guide",
+    title: "K-12 compliance guide",
+    body:
+      "State-by-state K-12 employment screening reference — fingerprint mandates, re-print cadence, statutory tier handling, and the federal layer (Adam Walsh, ESSA §8546, FCRA).",
+    href: "/resources/k12-compliance-guide",
+  },
   {
     eyebrow: "Living feed",
     title: "Legislative updates",

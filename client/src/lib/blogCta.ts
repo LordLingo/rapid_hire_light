@@ -128,7 +128,7 @@ export const CTA_ARCHETYPES: readonly BlogCtaArchetype[] = [
     },
     secondary: {
       label: "Read the K-12 compliance guide",
-      href: "/blog/k12-school-employee-background-check-requirements",
+      href: "/resources/k12-compliance-guide",
     },
     contactSubject: "K-12 / school-district screening request",
   },
