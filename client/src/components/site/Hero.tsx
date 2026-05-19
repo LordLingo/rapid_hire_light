@@ -5,12 +5,14 @@
    - Main column: large Fraunces 300 headline with italic accent word
      "trusted", subhead in Inter, twin CTAs (ink primary + ghost),
      and a tiny meta line of trust signals.
-   - Right column on desktop: a supplied marketing photograph
-     (HOME_HERO_IMAGE_URL) that already includes its own composed
-     headline ("TRUSTED RESULTS. FAST.") and tagline. Because the photo
-     carries that copy, we intentionally drop the on-page eyebrow row
-     ("THE INTELLIGENT HIRING PLATFORM") so the page doesn't compete
-     with the image's baked-in headline.
+   - Right column on desktop: the supplied SPA brand artwork
+     (HOME_HERO_IMAGE_URL) which composes the Rapid Hire Solutions
+     wordmark, the SPA acronym (Speed / Price / Accuracy), the
+     "You relax while we do the work" tagline, and a service strip
+     (Staffing / Recruiting / Temp-to-Hire / Direct Hire). Because the
+     artwork carries that copy, we intentionally drop the on-page
+     eyebrow row ("THE INTELLIGENT HIRING PLATFORM") so the page
+     doesn't compete with the image's baked-in headline.
 */
 import { ArrowRight, FileText } from "lucide-react";
 import { Link } from "wouter";
@@ -167,10 +169,13 @@ export default function Hero() {
 }
 
 function HeroKeyVisual() {
-  // Marketing photograph supplied by the brand owner. The image already
-  // contains a composed headline ("TRUSTED RESULTS. FAST.") and tagline,
-  // so we don't overlay any additional text here. The soft halo behind it
-  // mirrors the editorial palette without competing with the photo.
+  // §142 — SPA brand artwork supplied by the brand owner. The image
+  // already composes the Rapid Hire Solutions wordmark, the SPA acronym
+  // (Speed / Price / Accuracy), the "You relax while we do the work"
+  // tagline, and a service strip (Staffing / Recruiting / Temp-to-Hire
+  // / Direct Hire), so we don't overlay any additional text here. The
+  // soft halo behind it mirrors the editorial palette without competing
+  // with the artwork.
   return (
     <div className="relative">
       <div className="hover-zoom-image relative rounded-[20px] border border-border bg-white paper-shadow">
@@ -234,7 +239,7 @@ function HeroKeyVisual() {
           />
           <img
             src={HOME_HERO_IMAGE_URL}
-            alt="Hiring leader reviewing a Rapid Hire Solutions background check report on her laptop, with a pull-quote that reads: Trusted Results. Fast. Right People. Safe Choices. Stronger Teams."
+            alt="Rapid Hire Solutions brand artwork over a serene poolside spa scene. The Rapid Hire Solutions wordmark sits centered above the SPA acronym — Speed (rapid results when you need them most), Price (competitive rates, real value), Accuracy (accuracy you can trust). Below, a script tagline reads: SPA — you relax while we do the work. A service strip across the bottom calls out Staffing, Recruiting, Temp-to-Hire, and Direct Hire, with the line: Fast. Fair. Focused on you."
             width={1254}
             height={1003}
             decoding="async"

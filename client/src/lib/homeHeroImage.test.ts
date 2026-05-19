@@ -69,13 +69,20 @@ const pricingSrc = fs.readFileSync(
   "utf8",
 );
 
+// §142 — the homepage hero artwork was swapped from the original
+// "rhs-home-hero-*" photograph to the new SPA brand artwork uploaded
+// as "spa-hero-{desktop,mobile}.{png,avif,webp}". The asset prefix
+// pattern below allows either historical filename so a future re-upload
+// of either generation continues to satisfy the spec.
+const HERO_ASSET_PREFIX = /^\/manus-storage\/(?:rhs-home-hero|spa-hero)[a-z0-9-]*_[a-z0-9]+/;
+
 describe("Home hero key visual — URL constants", () => {
   it("desktop + mobile PNG URLs both live on the webdev static host", () => {
     expect(HOME_HERO_IMAGE_URL).toMatch(
-      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.png$/,
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.png$"),
     );
     expect(HOME_HERO_IMAGE_URL_MOBILE).toMatch(
-      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.png$/,
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.png$"),
     );
   });
 
@@ -87,16 +94,16 @@ describe("Home hero key visual — URL constants", () => {
       HOME_HERO_IMAGE_URL_MOBILE_WEBP,
     ];
     expect(HOME_HERO_IMAGE_URL_AVIF).toMatch(
-      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.avif$/,
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.avif$"),
     );
     expect(HOME_HERO_IMAGE_URL_WEBP).toMatch(
-      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.webp$/,
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.webp$"),
     );
     expect(HOME_HERO_IMAGE_URL_MOBILE_AVIF).toMatch(
-      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.avif$/,
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.avif$"),
     );
     expect(HOME_HERO_IMAGE_URL_MOBILE_WEBP).toMatch(
-      /^\/manus-storage\/rhs-home-hero[a-z0-9-]*_[a-z0-9]+\.webp$/,
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.webp$"),
     );
     // Six unique URLs total — none of them collide.
     const set = new Set([HOME_HERO_IMAGE_URL, HOME_HERO_IMAGE_URL_MOBILE, ...all]);

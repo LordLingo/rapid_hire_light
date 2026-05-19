@@ -25,30 +25,36 @@
 export const HEADER_LOGO_URL = "/manus-storage/rhs5-color-trimmed_5cbbb11f.png";
 export const FOOTER_LOGO_URL = "/manus-storage/rhs5-white_4026a964.png";
 
-// Homepage hero key visual. Marketing photograph supplied by the brand owner
-// (woman + laptop showing a sample report). Two crops are served via a
-// <picture> element so the baked-in copy stays legible at every viewport:
-//   - Desktop (>= sm): 5:4 crop, vertical dead space trimmed (1254x1003).
-//   - Mobile (< sm):   original 1:1 source so neither baked-in copy region
-//                      gets clipped on a narrow phone screen.
+// Homepage hero key visual. §142 — swapped to the new SPA brand artwork
+// supplied by the brand owner. The image composes the Rapid Hire Solutions
+// wordmark, the SPA acronym (Speed / Price / Accuracy), the "You relax
+// while we do the work" tagline, and a service strip (Staffing / Recruiting
+// / Temp-to-Hire / Direct Hire) over a serene resort/spa scene. Because the
+// artwork carries baked-in copy, two crops are served via a `<picture>`
+// element so legibility holds at every viewport:
+//   - Desktop (>= sm): 5:4 center crop, sliver trimmed from each side
+//                      (1254x1003).
+//   - Mobile (< sm):   centered 1:1 crop so neither the SPA pillars nor
+//                      the service strip get clipped on a narrow phone
+//                      screen (1254x1254).
 //
 // Each crop is encoded three ways for `<picture>` source negotiation:
 //   AVIF (best compression on modern browsers) -> WebP (broad support) ->
 //   PNG (universal fallback / used by the <img> element). The PNG URLs
-//   below remain the canonical "truth" of which crop is which; the AVIF
-//   and WebP variants are produced by `webdev-static-assets/encode_hero_modern.py`.
+//   below remain the canonical "truth" of which crop is which; all six
+//   variants are produced by `webdev-static-assets/build_spa_hero.py`.
 export const HOME_HERO_IMAGE_URL =
-  "/manus-storage/rhs-home-hero-desktop_463c89fa.png";
+  "/manus-storage/spa-hero-desktop_980e0ed2.png";
 export const HOME_HERO_IMAGE_URL_AVIF =
-  "/manus-storage/rhs-home-hero-desktop_ad433090.avif";
+  "/manus-storage/spa-hero-desktop_4bda91fd.avif";
 export const HOME_HERO_IMAGE_URL_WEBP =
-  "/manus-storage/rhs-home-hero-desktop_ba3383b8.webp";
+  "/manus-storage/spa-hero-desktop_b01f329e.webp";
 export const HOME_HERO_IMAGE_URL_MOBILE =
-  "/manus-storage/rhs-home-hero_16a035cf.png";
+  "/manus-storage/spa-hero-mobile_18b585fe.png";
 export const HOME_HERO_IMAGE_URL_MOBILE_AVIF =
-  "/manus-storage/rhs-home-hero_2d59da93.avif";
+  "/manus-storage/spa-hero-mobile_a1e6ba0f.avif";
 export const HOME_HERO_IMAGE_URL_MOBILE_WEBP =
-  "/manus-storage/rhs-home-hero_017a8af6.webp";
+  "/manus-storage/spa-hero-mobile_2a681c1f.webp";
 
 // Social/share preview card. 1200x630 PNG that composes the color mark on a
 // branded background. Wired into <head> via index.html.
