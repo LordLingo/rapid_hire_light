@@ -80,10 +80,10 @@ export default function ConferenceStrip() {
             <span className="text-center">
               <span className="hidden sm:inline">
                 Meeting at SHRM 2026, {SHRM_EVENT.dateRange}, {SHRM_EVENT.city}
-                {" "}— book your slot
+                {" "}· Booth #{SHRM_EVENT.booth} — book your slot
               </span>
               <span className="sm:hidden">
-                SHRM 2026 — book your slot
+                SHRM 2026 · Booth #{SHRM_EVENT.booth} — book your slot
               </span>
             </span>
             <ArrowRight
