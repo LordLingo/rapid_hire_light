@@ -1,12 +1,15 @@
 /*
   Editorial Calm — Blog index
   - PageHero with eyebrow "09 — Blog" + italic accent.
-  - Topics-by-depth section: every tag rendered as a depth-ranked badge
-    that still links to the dedicated /blog/tag/{slug} page (preserves
-    every existing SEO surface).
-  - Live filter row (search input + category pills) over the same
-    listPosts() source, URL-synced via ?tag=…&q=…&range=…
-  - Grid of post cards.
+  - Slim year-archives utility strip directly below the hero so the
+    /blog/year/{y} routes keep a discoverable entry point without
+    duplicating the interactive tag pill row below.
+  - Live filter row (search input + sort dropdown + category pills +
+    date-range chips) over the same listPosts() source, URL-synced via
+    ?tag=…&q=…&sort=…&page=…&range=… Each pill still carries an
+    "Open as standalone page →" affordance to /blog/tag/{slug} so the
+    dedicated SEO surfaces remain crawlable.
+  - Grid of post cards + pager.
   - On-page SEO: dynamic title, meta description, canonical, Blog JSON-LD.
 */
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -224,73 +227,33 @@ export default function Blog() {
         lede="Practical, jurisdiction-aware writing on background checks, FCRA compliance, drug screening, MVR/DOT, and the hiring workflow that surrounds them — by the Rapid Hire Solutions team."
       />
 
-      {/* Topics by depth — a one-glance overview of every cluster, sorted
-          by post count. Each pill links to the dedicated /blog/tag/{slug}
-          page so we keep that SEO surface intact. */}
-      <section
-        className="bg-[color:var(--color-paper)] border-y border-border"
-        aria-labelledby="topics-by-depth-heading"
-      >
-        <div className="container py-14 md:py-16">
-          <div className="flex flex-wrap items-baseline justify-between gap-4">
-            <div>
-              <p className="eyebrow">Topics by depth</p>
-              <h2
-                id="topics-by-depth-heading"
-                className="mt-3 font-display tracking-[-0.02em] text-[28px] sm:text-[34px] md:text-[40px] leading-[1.08] text-[color:var(--color-ink)]"
-              >
-                Where the editorial weight sits.
-              </h2>
-            </div>
-            <p className="max-w-md text-[14.5px] leading-[1.65] text-[color:var(--color-ink-soft)]">
-              {tagsByDepth.length} active topics, sorted by post count. The
-              clusters at the top are where we have the deepest, most cross-linked
-              coverage — a useful place to start when researching a workflow.
-            </p>
-          </div>
-          <ul className="mt-8 flex flex-wrap gap-2">
-            {tagsByDepth.map(({ tag: t, count }) => (
-              <li key={t}>
+      {yearArchives.length > 1 && (
+        <section
+          className="bg-white border-b border-border"
+          aria-label="Year archives"
+          data-testid="blog-year-archives"
+        >
+          <div className="container flex flex-wrap items-center gap-x-3 gap-y-2 py-3 text-[12.5px] tracking-wider uppercase text-[color:var(--color-ink-muted)]">
+            <span className="font-medium">Archives</span>
+            {yearArchives.map((y) => {
+              const count = allPosts.filter((p) => p.publishedAt.startsWith(`${y}-`)).length;
+              return (
                 <Link
-                  href={`/blog/tag/${t}`}
-                  aria-label={`${formatTag(t)} — ${count} ${count === 1 ? "article" : "articles"}`}
-                  className="group inline-flex items-center gap-2 rounded-full border border-border bg-white px-3.5 py-1.5 text-[13.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-ink)] transition-colors"
+                  key={y}
+                  href={`/blog/year/${y}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1 text-[12.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-ink)] transition-colors"
+                  aria-label={`${y} archive — ${count} ${count === 1 ? "article" : "articles"}`}
                 >
-                  <span>{formatTag(t)}</span>
-                  <span
-                    aria-hidden="true"
-                    className="text-[12px] font-medium tabular-nums text-[color:var(--color-ink-muted)] group-hover:text-[color:var(--color-accent-ink)]"
-                  >
-                    {count}
+                  <span className="font-medium tabular-nums">{y}</span>
+                  <span aria-hidden="true" className="text-[color:var(--color-ink-muted)]">
+                    ({count})
                   </span>
                 </Link>
-              </li>
-            ))}
-          </ul>
-
-          {yearArchives.length > 1 && (
-            <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] tracking-wider uppercase text-[color:var(--color-ink-muted)]">
-              <span className="font-medium">Archives</span>
-              {yearArchives.map((y) => {
-                const count = allPosts.filter((p) => p.publishedAt.startsWith(`${y}-`)).length;
-                return (
-                  <Link
-                    key={y}
-                    href={`/blog/year/${y}`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1 text-[12.5px] tracking-tight text-[color:var(--color-ink-soft)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-ink)] transition-colors"
-                    aria-label={`${y} archive — ${count} ${count === 1 ? "article" : "articles"}`}
-                  >
-                    <span className="font-medium tabular-nums">{y}</span>
-                    <span aria-hidden="true" className="text-[color:var(--color-ink-muted)]">
-                      ({count})
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       <section className="bg-white border-y border-border">
         <div className="container py-20 md:py-24">
