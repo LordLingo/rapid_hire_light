@@ -1385,3 +1385,109 @@ The next session cannot proceed past stub data without these. Email or paste int
 - [ ] §137.5.1 — On user's next message after the pause, re-read this §137 block first to reload context (the conversation history may have been compacted away).
 - [ ] §137.5.2 — Confirm which of §137.4.1–§137.4.6 the user has answers for; for any still missing, stub realistic data and proceed (do not block on missing data — the value is shipping Phase 1 against a stub and swapping the feed later).
 - [ ] §137.5.3 — Recommended first slice when resuming: §137.1 (Phase 1 — live TAT strip + `/turnaround` page) entirely against stub data. That alone, shipped well, is probably the single highest-leverage change on the site and validates the visual + content shape before the real feed is wired.
+
+## §138 — SPA brand hook (Speed · Price · Accuracy) — bake everywhere
+
+> **Strategic frame (locked in conversation 2026-05-18 from user-supplied trade-show booth artwork):** The SPA acronym (Speed · Price · Accuracy) is Rapid Hire's existing trade-show hook. It works because (1) it's a memorable mnemonic that hits the three things buyers actually care about, (2) it reframes a stressful purchase decision into something calming ("relax, we've got it handled"), and (3) it's already battle-tested at trade shows and validated by user feedback. User decision: go ALL IN — refit the home hero around it, ship a dedicated /spa landing page, seed the language across the site.
+
+> **Execution discipline:** Going "all in" on a metaphor is the kind of decision where doing it right makes the brand feel inevitable and doing it wrong makes it feel gimmicky. The discipline: (a) carry the SPA *framework* into the website, (b) do NOT carry the booth's literal spa visuals (waterfalls, candles, infinity pools) onto the website — those are calibrated for stopping foot traffic on a noisy expo floor, not for serious B2B research on a phone. The website's existing editorial / law-firm aesthetic is doing real work; SPA enriches it, doesn't replace it. Hero stays serif-led, paper-toned, restrained motion. SPA is the THINKING; editorial is the LOOK.
+
+> **Per-pillar metrics (taken verbatim from the user's booth, treated as canonical for now; can be tightened later when the §137 TAT feed lands):**
+> - SPEED — "Median TAT 8 hours" (booth says "Average Turnaround Time 8 Hours"; using "median" since it's both more truthful and stronger)
+> - PRICE — "Competitive rates, better value" (vague, will tighten with a numeric anchor when user supplies real per-check or vs-competitor numbers in §138.4)
+> - ACCURACY — "99.9% data accuracy rate"
+
+### §138.1 — Design system + reusable SpaPillars component
+
+- [ ] §138.1.1 — Author `client/src/components/site/SpaPillars.tsx` — a single reusable block that renders the three SPA pillars in three styles via a `variant` prop: `"editorial"` (home page, restrained, big serif S/P/A drop caps in accent-ink, body in editorial typography), `"hero"` (the /spa landing page hero, larger, more confident), `"compact"` (single-line variant for footer / sidebars / OG cards). All variants share the same data source (one `SPA_PILLARS` constant in `client/src/lib/spa.ts`) so the metrics are edited in exactly one place.
+- [ ] §138.1.2 — Author `client/src/lib/spa.ts` — single source of truth for SPA brand language: `SPA_PILLARS` array with `{ letter: 'S' | 'P' | 'A', label: 'Speed' | 'Price' | 'Accuracy', metric: string, supportingCopy: string, icon: LucideIcon }`. Plus `SPA_TAGLINE = "Relax — we've got it handled."` and `SPA_HEADLINE = "Speed. Price. Accuracy."`. Using a constants module so vitest can pin the canonical copy and a future copy-tweak can't quietly drift.
+- [ ] §138.1.3 — Pillar icon choice: `Gauge` for Speed, `Tag` for Price, `Target` for Accuracy (Lucide). Same icons the booth used (speedometer, price-tag, target). Icon goes inside a brand-blue circle for editorial variant, on accent-paper background for hero variant.
+- [ ] §138.1.4 — Vitest spec `client/src/lib/spa.test.ts` pinning the canonical pillar data + headline + tagline + per-pillar metric strings.
+
+### §138.2 — Refit Home hero around SPA framing
+
+- [ ] §138.2.1 — Re-anchor the H1 from "The trusted standard in background checks" to a SPA-framed headline. Two finalists: (a) "Speed. Price. Accuracy. Relax — we've got it handled." (b) Keep "The trusted standard in background checks." as a kicker line + use SPA as the subhead. Will ship (a) — it's the bolder swing and matches the user's "all in" directive. Keep the existing serif italics styling on one of the three SPA letters as a typographic accent.
+- [ ] §138.2.2 — Replace the current sub-headline ("Scale your hiring team with a platform built for speed, compliance, and accurate results that don't slow you down.") with: "The full-service background check experience your hiring team has been waiting for. Faster than your current vendor. Better priced. More accurate. And when you need help, a U.S.-based, FCRA-accredited rep picks up the phone."
+- [ ] §138.2.3 — Replace the current trio of micro-stats under the CTAs ("FCRA CERTIFIED · U.S.-BASED SUPPORT · 85%+ WITHIN 24 HOURS") with the three SPA pillars rendered via SpaPillars in `editorial` variant. This is the single most important change — it visualizes SPA in the part of the page everyone sees first.
+- [ ] §138.2.4 — Keep the existing hero image (woman + laptop) — it visualizes the *outcome* (a relaxed buyer reading clean reports) which complements the SPA framing perfectly. No need to change.
+- [ ] §138.2.5 — Keep the existing CTAs ("Start Screening" + "View Sample Report"). They work with the new framing. Optionally add a third tertiary link "Why we call it SPA →" routing to /spa.
+- [ ] §138.2.6 — Bump section eyebrow from "01 — PLATFORM" to "01 — THE SPA STANDARD" to anchor the language site-wide from the very top.
+
+### §138.3 — Dedicated /spa landing page (trade-show + outbound destination)
+
+- [ ] §138.3.1 — Create `client/src/pages/Spa.tsx`. This page is intentionally a **switch-from-competitor** page, not a generic feature page. Hero: SPA H1 + SPA subhead + a single primary CTA ("Book your SPA Treatment" — a 15-minute call where a rep walks them through how Rapid Hire beats their current vendor on each of S, P, A).
+- [ ] §138.3.2 — Section 02: SpaPillars in `hero` variant — three large pillars with the metric + a 2-3 sentence supporting story per pillar. This is where each of S/P/A gets fully argued.
+- [ ] §138.3.3 — Section 03: "How most legacy vendors fall short" — three rows, one per pillar, format `{pillar} | typical legacy vendor | Rapid Hire`. Generic ("typical legacy vendor") rather than naming Sterling/Checkr by name in v1 — keeps the page broadly applicable. Can swap to named comparisons later if user gives the green light.
+- [ ] §138.3.4 — Section 04: A compact testimonial / proof-quote block — pull 2-3 customer quotes that map to S/P/A respectively (need real quotes from user; stub for now with `[REPLACE WITH CUSTOMER QUOTE]` placeholders that vitest enforces aren't shipped).
+- [ ] §138.3.5 — Section 05: Final CTA — "Step into the SPA" with the same primary CTA ("Book your SPA Treatment") + secondary ("See live turnaround times" → /turnaround once §137 ships, or /pricing for now).
+- [ ] §138.3.6 — Route /spa in App.tsx with PageTransition wrapper.
+- [ ] §138.3.7 — useSeo: title "The SPA Standard — Speed, Price, Accuracy | Rapid Hire Solutions", meta description with the SPA tagline, OG image (will need a custom 1200×630 OG card; v1 reuses the existing brand OG card, swap later).
+
+### §138.4 — Seed SPA language across supporting touchpoints
+
+- [ ] §138.4.1 — Footer: append the SPA tagline ("Speed · Price · Accuracy. Relax — we've got it handled.") under the brand block. Keep existing Footer structure intact; this is one extra line, not a rebuild.
+- [ ] §138.4.2 — Pricing page: add a one-line SPA banner above the pricing tiers ("Pricing built around the SPA Standard — Speed, Price, Accuracy.") and rename the page eyebrow to reference SPA. Light touch; do not redo the calculator.
+- [ ] §138.4.3 — Header: "Why SPA?" link in primary nav (between Compliance and About). Sends user to /spa.
+- [ ] §138.4.4 — Document title (page-level) and OG default: append " · The SPA Standard" to brand-default page title in shared/brand.ts (or wherever it's centralized) so every page tab/preview reinforces the language.
+
+### §138.5 — Vitest contract for the SPA hook
+
+- [ ] §138.5.1 — `client/src/lib/spaHero.test.ts` — pin Home hero refit: H1 contains "Speed. Price. Accuracy.", subhead contains the new copy, SpaPillars `editorial` variant rendered with all 3 pillars, eyebrow renumbered, no leftover "85%+ WITHIN 24 HOURS" trio.
+- [ ] §138.5.2 — `client/src/lib/spaPage.test.ts` — pin /spa page contract: route registered, all 5 sections rendered, SpaPillars `hero` variant rendered, primary CTA exists with the right text, no `[REPLACE WITH CUSTOMER QUOTE]` placeholders shipped, useSeo title contains "SPA".
+- [ ] §138.5.3 — `client/src/lib/spaTouchpoints.test.ts` — pin Footer SPA tagline, Pricing SPA banner, Header "Why SPA?" link presence + route.
+- [ ] §138.5.4 — Extend `spa.test.ts` (from §138.1.4) to lock the canonical pillar data shape so a copy edit can't break shape silently.
+
+### §138.6 — Ship checklist
+
+- [ ] §138.6.1 — Run tsc + full vitest suite; expect all new specs green and zero regressions on existing 912 specs.
+- [ ] §138.6.2 — webdev_check_status; visually confirm hero, /spa, footer, pricing, header link.
+- [ ] §138.6.3 — webdev_save_checkpoint with §138 description; deliver to user with the checkpoint as attachment + summary.
+
+## §139 — SHRM 2026 Annual Conference promotion (Orlando, June 21-24)
+
+> **Strategic frame:** SHRM Annual is the largest concentration of HR / TA buyers in the calendar (~15-20k attendees). The opportunity is bigger than just "announce we'll be there": (a) booth visitors who scan a QR code land on a tailored page that picks up where the booth left off, not the generic homepage; (b) pre-event prospecting drives pre-booked meetings (3-5x conversion vs cold walk-ups); (c) post-event follow-up needs a destination that doesn't feel like a list.
+
+> **Open questions stubbed v1 (one-line edits when data lands):**
+> - Booth number → "Booth #TBA" (will update when user provides)
+> - On-booth rep names/photos → generic "your Rapid Hire team" (will personalize when user supplies; same data as §137 Support Wall)
+> - Calendar tool → fallback to /contact with auto-filled subject ("SHRM 2026 — request meeting") until user picks Calendly/Chili Piper/HubSpot Meetings/etc.
+
+- [ ] §139.1 — Author `client/src/lib/shrm.ts`: SHRM_EVENT (name, dates, city, venue, booth, isUpcoming derived from current date), SHRM_ROUTE = "/shrm", SHRM_ALIASES = ["/shrm-2026", "/booth"], SHRM_MEETING_SUBJECT, SHRM_HEADLINE / SHRM_TAGLINE copy. Treats the page as a SHRM-flavored extension of the SPA brand.
+- [ ] §139.2 — Build `/shrm` landing page (`client/src/pages/Shrm.tsx`): hero (event details + booth number + CTAs), "what to expect" 3-bullet section, "book your SPA Treatment at the booth" CTA → /contact?subject=…, "can't make it" virtual fallback, SPA pillars hero variant repeated (so the page reads as a SHRM-flavored extension of the SPA brand, not a microsite), small "what we're showing" section.
+- [ ] §139.3 — Register /shrm + /shrm-2026 + /booth aliases in App.tsx.
+- [ ] §139.4 — Site-wide ConferenceStrip component above the certification strip: dismissible per-session via sessionStorage flag (auto-clears on browser close, more privacy-friendly than cookie), auto-hides after isUpcoming returns false (date >= June 24, 2026 EOD ET), single line copy "Meeting at SHRM 2026, June 21-24, Orlando — Book your slot →" linking to /shrm.
+- [ ] §139.5 — UTM-friendly: the /shrm page reads `?utm_source/medium/campaign` params and stores them in sessionStorage so the eventual /contact form submission can include them in the message body (gives user attribution data without needing a real analytics platform).
+- [ ] §139.6 — useSeo on /shrm: title "Meet Rapid Hire at SHRM 2026 — Orlando, June 21-24", description with SPA framing + booth details.
+- [ ] §139.7 — Vitest specs: `shrm.test.ts` (constants + isUpcoming logic with mocked dates), `shrmPage.test.ts` (page renders all sections, CTA links to /contact with subject pre-filled, aliases all route to same component), `conferenceStrip.test.ts` (dismissal persists across re-renders within session, hides automatically when isUpcoming=false, link target /shrm).
+
+## §138 — completion summary (shipped)
+- [x] §138.1 — `client/src/lib/spa.ts` written (SPA_HEADLINE, SPA_TAGLINE, SPA_COMPACT, SPA_ROUTE, SPA_TREATMENT_CTA, SPA_PILLARS array of 3 pillars with metric + supportingCopy + lucide icon).
+- [x] §138.2 — `client/src/components/site/SpaPillars.tsx` written with three variants (editorial / hero / compact).
+- [x] §138.3 — `client/src/components/site/Hero.tsx` refit with SPA framing: H1 renders "Speed. Price. Accuracy." in three blocks (Accuracy in italic accent ink), SPA_TAGLINE kicker, SpaPillars editorial variant under the CTA row, "Why we call it SPA" tertiary link, eyebrow renumbered to "01 — The SPA Standard".
+- [x] §138.4 — `client/src/pages/Spa.tsx` shipped: hero with both CTAs (Start Screening + Book SPA Treatment), pillars (hero variant), comparison block (per-pillar competitor contrast), proof block (per-pillar customer quotes), final CTA. /spa route registered in App.tsx.
+- [x] §138.4.1 — Footer carries SPA tagline + SPA_COMPACT eyebrow with stable testids `footer-spa-eyebrow` / `footer-spa-tagline`.
+- [x] §138.4.3 — Header NAV array carries "Why SPA?" routed at SPA_ROUTE (between Services and Industries on desktop primary nav).
+- [x] §138.4.4 — index.html `<meta description>`, `<meta og:description>`, and `<meta twitter:description>` updated to lead with "Speed · Price · Accuracy — the Rapid Hire Solutions difference. …" so search snippets and social shares carry the SPA hook.
+- [x] §138.5 — `client/src/lib/spaTouchpoints.test.ts` (24 specs) locks lib/spa exports + Hero refit + /spa page contract + Footer SPA strip + Header NAV + App route registration.
+
+## §139 — completion summary (shipped)
+- [x] §139.1 — `client/src/lib/shrm.ts` written (SHRM_EVENT with year/dates/dateRange/city/venue/booth, SHRM_ROUTE, SHRM_ALIASES, SHRM_MEETING_SUBJECT, SHRM_HEADLINE / SHRM_TAGLINE, SHRM_STRIP_DISMISSED_KEY, SHRM_UTM_KEY, isUpcoming() helper with end-of-day grace, buildShrmContactUrl()).
+- [x] §139.2 — `client/src/pages/Shrm.tsx` shipped (hero with event meta + booth + CTAs, "what to expect" section, SPA pillars hero variant, virtual fallback, post-event notice via isUpcoming, final CTA).
+- [x] §139.3 — /shrm + /shrm-2026 + /booth registered in App.tsx (all three resolve to the Shrm component).
+- [x] §139.4 — `client/src/components/site/ConferenceStrip.tsx` written: dismissible (sessionStorage), auto-hides post-event via isUpcoming(), renders null on first paint to avoid hydration flash, single-line copy on desktop with mobile fallback, dismiss button with aria-label. Mounted at the very top of Header.tsx above the trust strip.
+- [x] §139.7 — `client/src/lib/conferenceStrip.test.ts` (31 specs) locks SHRM event constants, isUpcoming() across pre/during/post timestamps, buildShrmContactUrl(), ConferenceStrip testids + behavior, /shrm page testids, Header mount, App route registration, conditional Footer SHRM 2026 link (gated by isUpcoming).
+
+## §138 + §139 — ship status
+- 967/967 vitest specs across 73 files (was 912/71 at §136 baseline; +55 new specs from §138/§139). tsc --noEmit clean.
+- Stubbed data still pending user input (one-line edits when supplied):
+  - Booth number → currently `SHRM_EVENT.booth = "TBA"` in `client/src/lib/shrm.ts`.
+  - On-booth rep info → /shrm copy uses generic "your Rapid Hire team".
+  - Calendar tool → CTAs route to /contact with auto-filled subject (Calendly / Chili Piper / HubSpot Meetings can drop in later via buildShrmContactUrl).
+- Pre-existing tests touched (only because §138 added "Why SPA?" entry to the COMPANY footer array and rewrote the hero copy):
+  - `heroCopyLength.test.ts` — replaced "trusted/24 hour" assertions with "speed/accuracy" + FCRA + U.S.; SPA pillars are visible copy, just no longer the "85%+ within 24 hours" string verbatim.
+  - `complianceFooterAndPdf.test.ts` — order-of-labels assertion now slices to the COMPANY array's `];` instead of a fixed 1500-byte window.
+  - `footerActiveRoute.test.ts` — FooterCol regex switched to `[\s\S]*?` so it spans the multi-line conditional Portals invocation.
+  - `paperSoftAudit.test.ts` — added Spa.tsx + Shrm.tsx to the visually-audited allowlist (both follow the same alternating-band rhythm as Pricing/Compliance).
+- Deferred (intentional, can ship as separate batch):
+  - §138.4.2 — Pricing-page SPA banner (one-liner above tiers).
+  - §139.5 — UTM capture on /shrm into sessionStorage for /contact form body.

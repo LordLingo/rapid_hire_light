@@ -18,6 +18,8 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import { Link, useLocation } from "wouter";
 import { BRAND_NAME, HEADER_LOGO_URL } from "@shared/brand";
+import ConferenceStrip from "@/components/site/ConferenceStrip";
+import { SPA_ROUTE } from "@/lib/spa";
 
 type ResourceChild = {
   label: string;
@@ -95,6 +97,7 @@ const RESOURCES_CHILDREN: ResourceChild[] = [
 
 const NAV: NavItem[] = [
   { kind: "route", label: "Services", href: "/services" },
+  { kind: "route", label: "Why SPA?", href: SPA_ROUTE },
   { kind: "route", label: "Industries", href: "/industries" },
   { kind: "route", label: "Integrations", href: "/integrations" },
   { kind: "route", label: "Pricing", href: "/pricing" },
@@ -159,6 +162,13 @@ export default function Header() {
           : "bg-transparent border-b border-transparent shadow-none",
       ].join(" ")}
     >
+      {/* §139.6 — Site-wide SHRM 2026 announcement strip, placed
+           above the trust strip so it's the very first thing every
+           visitor sees. Component handles its own visibility (auto-
+           hides post-event + per-session dismissal) so this insertion
+           is unconditional. */}
+      <ConferenceStrip />
+
       {/* Trust strip — §83 upgrade. The competitor audit found that
            Sterling/HireRight surface 4–6 attestations in their persistent
            top bar; we previously surfaced two. Adding FCRA-certified +

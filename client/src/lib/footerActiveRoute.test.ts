@@ -40,8 +40,11 @@ describe("Footer.tsx — §49 active-route indicator", () => {
 
   it("passes the current location into FooterCol for each routed column", () => {
     // All three column invocations must thread `location` through so
-    // the column children can compute their own active state.
-    const matches = FOOTER_SRC.match(/<FooterCol [^/]*location=\{location\}/g);
+    // the column children can compute their own active state. §138
+    // expanded the Portals FooterCol to a multi-line JSX (conditional
+    // SHRM 2026 link), so we use a non-greedy DOTALL match instead of
+    // the previous single-line regex.
+    const matches = FOOTER_SRC.match(/<FooterCol[\s\S]*?location=\{location\}/g);
     expect(matches).not.toBeNull();
     expect((matches ?? []).length).toBeGreaterThanOrEqual(3);
   });

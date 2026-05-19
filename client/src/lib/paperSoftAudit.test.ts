@@ -131,6 +131,15 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // grid. Visually audited — matches the same alternating rhythm used
       // on Pricing / Compliance / Resources.
       "client/src/pages/Integrations.tsx",
+      // §138: /spa landing page uses the same alternating section
+      // rhythm (white hero → paper-soft pillars → white comparison →
+      // paper-soft proof → white CTA) as the rest of the marketing
+      // pages. Visually audited.
+      "client/src/pages/Spa.tsx",
+      // §139: /shrm landing page mirrors the Spa.tsx alternating rhythm
+      // (white hero → paper-soft "what to expect" → white SPA pillars →
+      // paper-soft virtual → white final CTA). Visually audited.
+      "client/src/pages/Shrm.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

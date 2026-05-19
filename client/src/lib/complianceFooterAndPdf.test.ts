@@ -50,7 +50,13 @@ describe("§66 — Footer 'Company' column surfaces the compliance funnel", () =
   it("renders the new entries in the documented order: Compliance → 24-point checklist → Free 15-min audit → Contact", () => {
     const arrIdx = FOOTER_SRC.indexOf("const COMPANY");
     expect(arrIdx).toBeGreaterThan(-1);
-    const arrSlice = FOOTER_SRC.slice(arrIdx, arrIdx + 1500);
+    // §138 added 'Why SPA?' near the top of COMPANY plus an inline
+    // comment, so the array is bigger than the original 1500-byte
+    // window. Walk to the array's closing `];` instead of using a
+    // fixed slice length.
+    const arrEnd = FOOTER_SRC.indexOf("];", arrIdx);
+    expect(arrEnd).toBeGreaterThan(arrIdx);
+    const arrSlice = FOOTER_SRC.slice(arrIdx, arrEnd + 2);
     const i1 = arrSlice.indexOf('label: "Compliance"');
     const i2 = arrSlice.indexOf('label: "24-point checklist"');
     const i3 = arrSlice.indexOf('label: "Free 15-min audit"');

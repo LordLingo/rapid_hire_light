@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import { Rss, ShieldCheck } from "lucide-react";
 import { BRAND_NAME, FOOTER_LOGO_URL } from "@shared/brand";
 import { isActivePath } from "./Header";
+import { SPA_COMPACT, SPA_ROUTE, SPA_TAGLINE } from "@/lib/spa";
+import { SHRM_EVENT, SHRM_ROUTE, isUpcoming } from "@/lib/shrm";
 
 /*
   §107: FooterItem now also supports an external href via `external`.
@@ -33,6 +35,11 @@ const SERVICES: FooterItem[] = [
 ];
 const COMPANY: FooterItem[] = [
   { label: "About Us", to: "/about" },
+  // §138.4 — surface the dedicated SPA landing page from every footer
+  // so the brand hook is one click away regardless of where the visitor
+  // lands. Goes near the top of the column so it reads as a primary
+  // pillar, not a tucked-away link.
+  { label: "Why SPA?", to: SPA_ROUTE },
   { label: "Blog", to: "/blog" },
   { label: "Pricing", to: "/pricing" },
   // §69: surface Industries from the global footer alongside the other
@@ -105,10 +112,31 @@ export default function Footer() {
                 draggable={false}
               />
             </Link>
-            <p className="mt-6 max-w-md text-[15px] leading-[1.7] text-[color:var(--color-footer-soft-text)]">
-              Scale your hiring team with a platform built for speed,
-              compliance, and accurate results that don&apos;t slow you down.
-            </p>
+            {/* §138.4 — brand description rebuilt around SPA. The
+                 "Speed · Price · Accuracy" line sits as a small-caps
+                 eyebrow above the description so the framework reads
+                 even at a glance, then the description prose makes the
+                 promise tangible. */}
+            <div className="mt-6 max-w-md">
+              <p
+                data-testid="footer-spa-eyebrow"
+                className="eyebrow text-[color:var(--color-footer-muted)]"
+              >
+                {SPA_COMPACT}
+              </p>
+              <p
+                data-testid="footer-spa-tagline"
+                className="mt-3 font-display text-[20px] sm:text-[22px] leading-[1.3] tracking-[-0.01em] text-[color:var(--color-footer-foreground)]"
+              >
+                {SPA_TAGLINE}
+              </p>
+              <p className="mt-4 text-[15px] leading-[1.7] text-[color:var(--color-footer-soft-text)]">
+                Built around three non-negotiables your hiring team
+                actually feels — faster reports, transparent prices, and
+                a U.S.-based, FCRA-accredited rep on the other end of
+                the line when you need help.
+              </p>
+            </div>
             <div className="mt-6 flex items-center gap-3 eyebrow text-[color:var(--color-footer-muted)]">
               <span>HIPAA Compliant</span>
               <span aria-hidden>·</span>
@@ -120,7 +148,22 @@ export default function Footer() {
 
           <FooterCol title="Services" items={SERVICES} location={location} className="col-span-6 md:col-span-3" />
           <FooterCol title="Company" items={COMPANY} location={location} className="col-span-6 md:col-span-2" />
-          <FooterCol title="Portals" items={PORTALS} location={location} className="col-span-6 md:col-span-2" />
+          <FooterCol
+            title="Portals"
+            items={
+              isUpcoming()
+                ? [
+                    ...PORTALS,
+                    {
+                      label: `SHRM ${SHRM_EVENT.year} →`,
+                      to: SHRM_ROUTE,
+                    },
+                  ]
+                : PORTALS
+            }
+            location={location}
+            className="col-span-6 md:col-span-2"
+          />
         </div>
 
         {/* social-proof anchor above the bottom bar */}

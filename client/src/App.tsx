@@ -39,6 +39,8 @@ import ResourcesStatePage from "./pages/ResourcesStatePage";
 import ResourcesMarijuanaLaws from "./pages/ResourcesMarijuanaLaws";
 import ResourcesLegislativeUpdates from "./pages/ResourcesLegislativeUpdates";
 import ResourcesWhitePapers from "./pages/ResourcesWhitePapers";
+import Spa from "./pages/Spa";
+import Shrm from "./pages/Shrm";
 
 
 function Router() {
@@ -72,6 +74,10 @@ function Router() {
       <Route path={"/compliance/checklist"} component={ComplianceChecklist} />
       <Route path={"/compliance"} component={Compliance} />
       <Route path={"/trust"} component={Trust} />
+      <Route path={"/spa"} component={Spa} />
+      <Route path={"/shrm"} component={Shrm} />
+      <Route path={"/shrm-2026"} component={Shrm} />
+      <Route path={"/booth"} component={Shrm} />
       <Route path={"/resources/ban-the-box"} component={ResourcesBanTheBox} />
       <Route path={"/resources/marijuana-laws"} component={ResourcesMarijuanaLaws} />
       <Route path={"/resources/legislative-updates"} component={ResourcesLegislativeUpdates} />

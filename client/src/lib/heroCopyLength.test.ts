@@ -41,9 +41,12 @@ function extractVisibleText(jsx: string): string {
 describe("§102 — homepage hero ships meaningful body copy", () => {
   it("renders at least 150 characters of visible hero text", () => {
     const text = extractVisibleText(HERO_SRC);
-    // Sanity: the extractor must find at least the headline.
-    expect(text.toLowerCase()).toContain("trusted");
-    expect(text.toLowerCase()).toContain("background checks");
+    // Sanity: the extractor must find at least the SPA-framed headline
+    // (§138 reframed the hero around Speed · Price · Accuracy; the
+    // previous "Trusted background checks" headline lives only in the
+    // marketing photo's baked-in copy now).
+    expect(text.toLowerCase()).toContain("speed");
+    expect(text.toLowerCase()).toContain("accuracy");
     // The auditor floor.
     expect(
       text.length,
@@ -51,11 +54,14 @@ describe("§102 — homepage hero ships meaningful body copy", () => {
     ).toBeGreaterThanOrEqual(150);
   });
 
-  it("includes the FCRA + U.S.-based + 24-hour proof-point row", () => {
+  it("includes the FCRA + U.S.-based proof-points in the hero body", () => {
+    // §138: the previous "85%+ within 24 hours" micro-stat moved out of
+    // the hero into the SpaPillars (rendered as "Median TAT 8 hours"
+    // for the Speed pillar) and into the persistent certification strip.
+    // FCRA + U.S.-based remain in the hero body copy as the trust line.
     const text = extractVisibleText(HERO_SRC).toLowerCase();
     expect(text).toContain("fcra");
     expect(text).toContain("u.s.");
-    expect(text).toMatch(/24\s*hour/);
   });
 
   it("ships exactly one <h1> in the hero component", () => {
