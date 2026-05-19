@@ -1594,3 +1594,26 @@ The blog has 120 published posts so /blog needs progressive navigation that pair
 - [x] §149.3 — Blog.tsx wires the new helpers: `paginatePosts(visiblePosts, page)` runs after tag → query → sort. Pager nav rendered when `totalPages > 1` with stable testids `blog-pager`, `blog-pager-prev`, `blog-pager-next`, `blog-pager-page` / `blog-pager-page-active`, `blog-pager-ellipsis`. `aria-label="Blog pagination"` on the nav, `aria-current="page"` on the active button, Prev/Next disabled at the edges. Filter changes reset page to 1 via `filterSignatureRef`; `clearFilters()` also resets page. Page changes update the URL through `buildFiltersSearch` and scroll back to the `#blog-grid` anchor, gated on `prefers-reduced-motion: reduce`.
 - [x] §149.4 — `blogIndexFilters.test.ts` gained 34 new specs covering page-size constant, paginatePosts paths, parsePageFromSearch, buildPagerWindow invariants, formatPageRange, URL round-trip with the new page field, and Blog.tsx source pins for the pager UI.
 - [x] §149.5 — 1151/1151 vitest specs across 78 files; tsc clean; checkpoint saved.
+
+## §150 — Universal blog CTA + 6 tag-driven archetype overrides
+
+Ship one BlogPostCta component on every /blog/{slug} detail page. Default archetype shows two CTAs ("Get a quote in 24 hours" + "Try the pricing estimator"); 5 specialized archetypes override based on the post's tags. Attribution params (source=blog, archetype, slug) flow to /contact for clean inbox routing.
+
+- [ ] §150.1 — `client/src/lib/blogCta.ts`: define `CTA_ARCHETYPES` (default, healthcare, k12, dot, pricing-cost, switching-rfp), each carrying `{ id, eyebrow, headline, primary: { label, hrefBuilder }, secondary?: { label, href } }`. Export `matchArchetype(post)` that scans the post's tags against an ordered priority list and returns the first matching archetype (or default). Export `buildBlogCtaContactUrl(post, archetypeId)` that produces `/contact?source=blog&archetype={id}&slug={slug}&subject=...`.
+- [ ] §150.2 — `client/src/components/blog/BlogPostCta.tsx`: stateless component, takes `post` prop, looks up archetype via matcher, renders eyebrow + headline + primary CTA + optional secondary CTA. Paper-soft band with hairline rules to match site rhythm. Stable testids: `blog-cta`, `blog-cta-eyebrow`, `blog-cta-headline`, `blog-cta-primary`, `blog-cta-secondary` (when present), plus `data-archetype="{id}"` on root.
+- [ ] §150.3 — Mount BlogPostCta near the bottom of `client/src/pages/BlogPost.tsx`, above the existing related-posts rail. Keep the existing inline closing CTA if any so we don't lose any conversion surface — the new component is additive.
+- [ ] §150.4 — Vitest `client/src/lib/blogCta.test.ts`: (a) every archetype id is unique and matches the canonical 6, (b) matchArchetype priority — k12 > healthcare > dot > switching-rfp > pricing-cost > default, (c) matchArchetype returns default for posts with none of the trigger tags, (d) at least one real blog post in listPosts() resolves to each non-default archetype (or document why not), (e) buildBlogCtaContactUrl produces the expected params + URL encoding, (f) BlogPostCta source pins (component imports matcher + builder, every archetype rendered for fixture posts, testids present, data-archetype attribute carries the id, secondary CTA only renders when archetype defines one).
+- [ ] §150.5 — Run full vitest + tsc; webdev_check_status; webdev_save_checkpoint and deliver.
+
+### §150 completion summary
+
+- [x] §150 — Universal blog CTA framework shipped.
+  - `client/src/lib/blogCta.ts` defines 6 archetypes (`default`, `healthcare`, `k12`, `dot`, `switching-rfp`, `pricing-cost`) with eyebrow/headline/body/primary/secondary copy + contactSubject + hrefBuilder.
+  - `matchArchetype()` walks `CTA_MATCH_PRIORITY` (`k12 > healthcare > dot > switching-rfp > pricing-cost`) using `CTA_TAG_TRIGGERS` first, then `CTA_SLUG_TRIGGERS` as fallback; falls back to `default` when nothing matches.
+  - `buildBlogCtaContactUrl(post, archetypeId?)` builds `/contact?source=blog&archetype={id}&slug={slug}&subject={…}` — except `pricing-cost`, which short-circuits to `/pricing#estimate`.
+  - `client/src/components/blog/BlogPostCta.tsx` renders the chosen archetype as a paper-soft band with stable testids (`blog-cta`, `blog-cta-eyebrow`, `blog-cta-headline`, `blog-cta-body`, `blog-cta-primary`, `blog-cta-secondary`) and `data-archetype="{id}"` for analytics targeting.
+  - `BlogPost.tsx` mounts `<BlogPostCta post={post} />` in place of the previous static "Talk to our team" CTA; old hardcoded copy removed.
+  - `client/src/lib/blogCta.test.ts` ships 45 specs covering catalog shape, priority order, tag triggers, slug fallback triggers, real-registry coverage (every non-default archetype reached by at least one of the 120 posts; >25% land on default so the framework isn't over-specialized), URL builder (params, encoding, pricing-cost short-circuit, archetypeId override), and component + page source pins.
+  - paper-soft audit allowlist updated with `§150` rationale entry for BlogPostCta.
+  - 1196/1196 specs across 79 files (+45 from this batch); `tsc --noEmit` clean.
+

@@ -7,7 +7,7 @@
 */
 import { useMemo } from "react";
 import { Link, useRoute } from "wouter";
-import { ArrowUpRight, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import NotFound from "@/pages/NotFound";
 import { useSeo } from "@/hooks/useSeo";
@@ -15,6 +15,7 @@ import { PostBody, getHeadings } from "@/components/site/PostBody";
 import PostToc from "@/components/site/PostToc";
 import ShareButtons from "@/components/site/ShareButtons";
 import ReadingProgressBar from "@/components/site/ReadingProgressBar";
+import { BlogPostCta } from "@/components/blog/BlogPostCta";
 import {
   formatPublishedDate,
   getPostBySlug,
@@ -188,19 +189,9 @@ export default function BlogPost() {
               ))}
             </div>
 
-            {/* CTA */}
-            <div className="mt-14 border-t border-border pt-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-              <p className="font-display text-[22px] leading-snug text-[color:var(--color-ink)]">
-                Ready to talk through your screening workflow?
-              </p>
-              <Link
-                href="/contact"
-                className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
-              >
-                Talk to our team
-                <ArrowUpRight className="size-4" />
-              </Link>
-            </div>
+            {/* CTA — universal blog CTA framework. Picks one of 6 archetypes
+                based on the post's tags + slug. See client/src/lib/blogCta.ts. */}
+            <BlogPostCta post={post} />
           </div>
         </div>
       </section>

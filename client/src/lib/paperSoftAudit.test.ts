@@ -157,6 +157,12 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // contiguous panel inside the existing /shrm alternating rhythm.
       // The hosting section is otherwise white. Visually audited.
       "client/src/components/site/ShrmBookingPicker.tsx",
+      // §150: universal blog CTA framework. The closing CTA on every
+      // /blog/{slug} page uses paper-soft as the band tint to step
+      // the conversion module away from the white article body
+      // without breaking the page's alternating rhythm. Same intent
+      // as the SHRM booking-picker summary card. Visually audited.
+      "client/src/components/blog/BlogPostCta.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {
