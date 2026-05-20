@@ -189,6 +189,8 @@ import { post as postCmDriftDetect } from "@/content/blog/continuous-monitoring-
 import { post as postFinra3110 } from "@/content/blog/finra-rule-3110-background-check-employer-guide";
 // §143 — K-12 / education vertical gap-filler (ESSA §8546 + state fingerprint statutes)
 import { post as postK12School } from "@/content/blog/k12-school-employee-background-check-requirements";
+// §155 — Social media screening gap-filler (NLRA §7 + Title VII + GINA + state password-protection statutes + FCRA §603(d))
+import { post as postSocialMedia } from "@/content/blog/social-media-screening-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -313,6 +315,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postCmDriftDetect,
   postFinra3110,
   postK12School,
+  postSocialMedia,
 ]);
 
 /**
