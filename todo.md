@@ -1654,3 +1654,50 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Author `client/src/lib/k12Pdf.test.ts` (vitest) verifying: valid `%PDF-` bytes, contains every matrix state code + statute, every federal layer citation, every workflow step, the page testids + source-pinned button wiring, the filename helper output.
 - [x] tsc clean + full vitest suite green
 - [x] Checkpoint
+
+
+---
+
+# External Dependencies
+
+> **Purpose:** Living index of everything Rapid Hire's website work is blocked on or waiting to receive from outside this repo — user-supplied data, third-party integrations, vendor decisions, legal review, design assets. Items here are *not* engineering tasks; they're pre-conditions for engineering tasks. When a dependency lands, flip it to `[x]`, link the section it unblocks, and move the unblocked work back into an active `§` section.
+>
+> **Format per item:** `- [ ] [OWNER] short title — what we need · why it's blocking · which §section unblocks · status as of YYYY-MM-DD`
+> Owners: `[USER]` = needs Rapid Hire's team, `[VENDOR]` = needs an outside provider, `[LEGAL]` = needs counsel review, `[DESIGN]` = needs a design asset, `[DATA]` = needs a real data feed.
+
+## Active blockers
+
+### §137 — TAT + Support trust system (the largest current dependency surface)
+- [ ] [DATA] Live TAT feed shape + source — need the JSON contract for `/api/tat-snapshot` (or a static snapshot URL) with median/p95/percent-complete-in-24h, per-package, per-screen, and last-30-days arrays · blocks §137.1.1 → §137.1.6 (live TAT strip + `/turnaround` page) · status 2026-05-19: awaiting user, ETA "this week" per 2026-05-18 conversation
+- [ ] [USER] Support rep roster — first names, photos (cropped 1:1), FCRA accreditation cert numbers + dates, years at company, languages spoken, time-zone coverage, areas of specialty · blocks §137.2.1 → §137.2.7 (`/support` rep grid + scenario walkthroughs + live availability) · status 2026-05-19: awaiting user
+- [ ] [DATA] Live rep availability signal — pick the source (Intercom presence webhook, custom heartbeat, or polled status JSON) and decide the green/yellow/red thresholds · blocks the "Sarah is online · typical reply 8 minutes" surface inside §137.2.1 · status 2026-05-19: awaiting user decision
+- [ ] [USER] Competitor TAT data — Sterling / Checkr / GoodHire / HireRight published Q1 2026 medians (or whatever the user wants surfaced) for the comparison table on `/turnaround` · blocks §137.1.3 competitor-comparison section · status 2026-05-19: awaiting user; if user prefers we *not* name competitors directly, we'll pivot to "industry median (PBSA 2025 benchmark)" instead
+- [ ] [LEGAL] FCRA-accreditation claim review — confirm we can publicly publish each rep's individual cert number and that "Zero offshore staff" is a defensible blanket claim (no contractor edge cases) · blocks shipping §137.2.* even after the data lands · status 2026-05-19: not yet started
+
+### §139 / §148 — SHRM 2026 booth (June 21–24, Orlando)
+- [x] [USER] Booth number — resolved 2026-05 (Booth #1619, baked into `SHRM_EVENT.booth` and the conference strip)
+- [ ] [USER] On-booth rep names + photos for `/shrm` — page currently uses the generic "your Rapid Hire team" copy · blocks personalizing §139.2 hero · status 2026-05-19: awaiting user; auto-resolves once §137 rep roster lands (same data, different surface)
+- [ ] [VENDOR] Calendar tool decision — Calendly / Chili Piper / HubSpot Meetings / SavvyCal · blocks replacing the static §148 slot picker (`lib/shrmSlots.ts`) with a live calendar feed; `buildShrmContactUrl({ slotId })` already supports a real provider drop-in · status 2026-05-19: awaiting user; static picker is good enough for the booth
+
+## Watch list (not currently blocking, but flag if scope expands)
+
+- [ ] [DESIGN] /spa page custom 1200×630 OG card — currently reuses the brand default; only matters when paid social spend on the SPA framing kicks in · references §138.3.7
+- [ ] [USER] Real customer quotes for /spa (one each tied to S, P, A) — currently rendered with the bracketed `[REPLACE WITH CUSTOMER QUOTE]` placeholders that vitest enforces aren't shipped · references §138.3.4
+- [ ] [DATA] Real `last30Days` history seed for the TAT chart — once §137.1.1 lands, we'll need a backfilled month of data so the `/turnaround` chart isn't empty on day 1
+- [ ] [LEGAL] K-12 compliance guide review — the `/resources/k12-compliance-guide` page (§152) cites state statutes and federal acts; recommend a quick legal pass before adding it to paid-search landing pages · references §152
+- [ ] [VENDOR] Background-check API/integration partner list — if/when the site needs to render a "supported integrations" page deeper than the current /integrations placeholder, we'll need the canonical partner list + logos with usage rights
+
+## Recently resolved (kept here for audit trail; promote to active section when a follow-up surfaces)
+
+- [x] [USER] SHRM 2026 booth number — resolved 2026-05 (Booth #1619); see `SHRM_EVENT.booth` and conferenceStrip copy
+- [x] [USER] SPA brand framework decision — resolved 2026-05-18 conversation; user chose "all in" on Speed · Price · Accuracy, see §138 completion summary
+
+
+## §154 — K-12 compliance guide PDF cosmetic polish
+
+- [x] §154.1 — Add a branded cover treatment to the PDF: hairline brand-blue rule above the eyebrow + a subtle "RHS" monogram watermark in the bottom-right of the cover page only (low-opacity, never bleeds onto content pages).
+- [x] §154.2 — Tune type rhythm: bump body line-height for readability, normalize paragraph spacing across the matrix / federal / workflow / companion sections, and align section eyebrow color + tracking with the on-screen guide.
+- [x] §154.3 — Smarter section breaks: introduce a `requireSpaceForHeader(minLinesAfter)` guard so a section eyebrow + title never appear as the last thing on a page (no orphaned headers).
+- [x] §154.4 — Refine the footer: add a hairline rule above the footer band, set the brand line in a slightly heavier weight, keep the page-number on the right and the generated date on the left so they don't compete visually.
+- [x] §154.5 — Extend k12Pdf.test.ts: assert the cover watermark glyphs render, assert the orphan-header guard returns the expected y when triggered, assert the footer hairline + brand-weight, and re-pin the filename builder.
+- [x] §154.6 — tsc clean + full vitest green; webdev_save_checkpoint and deliver.

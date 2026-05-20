@@ -64,6 +64,7 @@ const INK = rgb(0.07, 0.1, 0.15); // editorial dark
 const INK_SOFT = rgb(0.27, 0.32, 0.39);
 const ACCENT = rgb(0.13, 0.39, 0.84); // brand cobalt
 const RULE = rgb(0.85, 0.87, 0.9);
+const WATERMARK = rgb(0.88, 0.91, 0.96); // very soft brand wash for the monogram
 
 /*
   The district workflow lives in the page module's runtime JSX (as the
@@ -198,10 +199,55 @@ export async function buildK12CompliancePdf(
   // ---- per-page helpers ----
   let page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
   let y = PAGE_HEIGHT - MARGIN_TOP;
+  let isCoverPage = true;
 
-  function drawFooter(p: import("pdf-lib").PDFPage) {
-    p.drawText(brandLine, {
+  /*
+    Cover watermark — a low-opacity "RHS" monogram drawn only on the
+    first page (the cover). It reads as a subtle brand wash in the
+    bottom-right rather than competing with content. Restricted to the
+    cover via the isCoverPage flag so it never bleeds onto data pages.
+  */
+  function drawCoverWatermark(p: import("pdf-lib").PDFPage) {
+    const mono = "RHS";
+    const size = 56;
+    const w = measure(mono, size, helvBold);
+    p.drawText(mono, {
+      x: PAGE_WIDTH - MARGIN_X - w,
+      y: MARGIN_BOTTOM + 20,
+      size,
+      font: helvBold,
+      color: WATERMARK,
+    });
+  }
+
+  /*
+    Footer — hairline rule above, brand line on the left (bold for the
+    company name + thin separator + the domain in soft ink), date on a
+    soft second line below the brand. Page number is stamped here too,
+    consolidating the previous two-pass footer into a single draw so
+    nothing competes for the same y band.
+  */
+  function drawFooter(
+    p: import("pdf-lib").PDFPage,
+    pageNumber?: number,
+    pageTotal?: number,
+  ) {
+    p.drawLine({
+      start: { x: MARGIN_X, y: 52 },
+      end: { x: PAGE_WIDTH - MARGIN_X, y: 52 },
+      thickness: 0.5,
+      color: RULE,
+    });
+    p.drawText("Rapid Hire Solutions", {
       x: MARGIN_X,
+      y: 36,
+      size: 9,
+      font: helvBold,
+      color: INK,
+    });
+    const brandLead = measure("Rapid Hire Solutions  \u00b7  ", 9, helvBold);
+    p.drawText("rapidhiresolutions.com", {
+      x: MARGIN_X + brandLead,
       y: 36,
       size: 9,
       font: helv,
@@ -209,29 +255,54 @@ export async function buildK12CompliancePdf(
     });
     const date = `Generated ${formatDate(generatedAt)}`;
     const dateW = measure(date, 9, helv);
-    p.drawText(date, {
-      x: PAGE_WIDTH - MARGIN_X - dateW,
-      y: 36,
-      size: 9,
-      font: helv,
-      color: INK_SOFT,
-    });
-    p.drawLine({
-      start: { x: MARGIN_X, y: 52 },
-      end: { x: PAGE_WIDTH - MARGIN_X, y: 52 },
-      thickness: 0.5,
-      color: RULE,
-    });
+    if (pageNumber && pageTotal) {
+      const pageLabel = `${pageNumber} / ${pageTotal}`;
+      const pageW = measure(pageLabel, 9, helvBold);
+      p.drawText(pageLabel, {
+        x: PAGE_WIDTH - MARGIN_X - pageW,
+        y: 36,
+        size: 9,
+        font: helvBold,
+        color: INK,
+      });
+      p.drawText(date, {
+        x: PAGE_WIDTH - MARGIN_X - dateW,
+        y: 22,
+        size: 8,
+        font: helv,
+        color: INK_SOFT,
+      });
+    } else {
+      p.drawText(date, {
+        x: PAGE_WIDTH - MARGIN_X - dateW,
+        y: 36,
+        size: 9,
+        font: helv,
+        color: INK_SOFT,
+      });
+    }
   }
 
   function newPage() {
-    drawFooter(page);
     page = pdf.addPage([PAGE_WIDTH, PAGE_HEIGHT]);
     y = PAGE_HEIGHT - MARGIN_TOP;
+    isCoverPage = false;
   }
 
   function ensureRoom(needed: number) {
     if (y - needed < MARGIN_BOTTOM) newPage();
+  }
+
+  /*
+    Orphan-header guard. A section header is an eyebrow + title pair. If
+    the remaining room on the current page is less than `needed`, we
+    advance to a new page *before* drawing the eyebrow so the header and
+    its title never strand at the bottom of a page with nothing under
+    them. Returns the y where the eyebrow will be drawn.
+  */
+  function requireSpaceForHeader(needed: number): number {
+    if (y - needed < MARGIN_BOTTOM) newPage();
+    return y;
   }
 
   function drawText(
@@ -289,6 +360,14 @@ export async function buildK12CompliancePdf(
   }
 
   // ---- COVER ----
+  // Hairline brand-blue rule above the eyebrow, cover only.
+  page.drawLine({
+    start: { x: MARGIN_X, y: y + 6 },
+    end: { x: MARGIN_X + 64, y: y + 6 },
+    thickness: 1.25,
+    color: ACCENT,
+  });
+  y -= 4;
   page.drawText("RESOURCES · VERTICAL GUIDE", {
     x: MARGIN_X,
     y,
@@ -367,7 +446,7 @@ export async function buildK12CompliancePdf(
   drawDivider(12, 18);
 
   // ---- STATE MATRIX ----
-  ensureRoom(60);
+  requireSpaceForHeader(80);
   page.drawText("01 — STATE MATRIX", {
     x: MARGIN_X,
     y: y - 9.5,
@@ -435,7 +514,7 @@ export async function buildK12CompliancePdf(
   }
 
   // ---- FEDERAL LAYERS ----
-  ensureRoom(80);
+  requireSpaceForHeader(90);
   page.drawText("02 — FEDERAL LAYERS", {
     x: MARGIN_X,
     y: y - 9.5,
@@ -457,7 +536,7 @@ export async function buildK12CompliancePdf(
   }
 
   // ---- DISTRICT WORKFLOW ----
-  ensureRoom(80);
+  requireSpaceForHeader(90);
   page.drawText("03 — DISTRICT WORKFLOW", {
     x: MARGIN_X,
     y: y - 9.5,
@@ -491,7 +570,7 @@ export async function buildK12CompliancePdf(
   }
 
   // ---- COMPANION READING ----
-  ensureRoom(80);
+  requireSpaceForHeader(80);
   page.drawText("04 — COMPANION READING", {
     x: MARGIN_X,
     y: y - 9.5,
@@ -535,22 +614,24 @@ export async function buildK12CompliancePdf(
     drawDivider(4, 12);
   }
 
-  // Footer on the final page
-  drawFooter(page);
-
-  // Stamp page numbers on every page
+  /*
+    Two-pass finalize: first stamp the cover watermark on page 1, then
+    walk every page once more to draw the consolidated footer (rule +
+    brand line + page number + date). Done in a second pass so the
+    total page count is known at draw time and the "3 / 7" label is
+    correct on the first page rather than being filled in later.
+  */
   const pages = pdf.getPages();
   pages.forEach((p, i) => {
-    const label = `${i + 1} / ${pages.length}`;
-    const w = measure(label, 9, helv);
-    p.drawText(label, {
-      x: PAGE_WIDTH - MARGIN_X - w,
-      y: 56,
-      size: 9,
-      font: helv,
-      color: INK_SOFT,
-    });
+    if (i === 0) drawCoverWatermark(p);
+    drawFooter(p, i + 1, pages.length);
   });
+
+  // Suppress unused-variable warnings for brandLine + isCoverPage, both
+  // are retained for backwards compatibility with the public option
+  // surface and the new flag's narrative role above.
+  void brandLine;
+  void isCoverPage;
 
   return pdf.save();
 }

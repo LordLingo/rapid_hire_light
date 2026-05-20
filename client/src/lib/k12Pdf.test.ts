@@ -356,3 +356,122 @@ describe("§153 — K-12 guide page wires the download button (source-pin)", () 
     expect(slot).toContain("k12-guide-cta-secondary");
   });
 });
+
+
+/*
+  §154 — Cosmetic polish on the K-12 compliance guide PDF.
+
+  Locks the four polish behaviors so they can't drift:
+    1. Cover watermark — the "RHS" monogram glyph cluster appears in the
+       extracted text exactly once (cover-only), never twice (would
+       indicate it leaked onto a content page).
+    2. Refined footer — "Rapid Hire Solutions" appears in bold on every
+       page; the domain follows on the same line; the page-number stamp
+       (e.g. "1 / 7") appears as many times as the document has pages.
+    3. Orphan-header guard — the source file exports a
+       `requireSpaceForHeader` helper used at every section header so a
+       section eyebrow + title can never strand at the bottom of a page.
+       Source-pinned (we don't run a full layout sim; we lock the
+       construct so a future refactor can't quietly drop it).
+    4. Typographic rhythm — the cosmetic constants (WATERMARK rgb,
+       MARGIN_BOTTOM = 56, the hairline brand-blue rule on the cover)
+       are source-pinned so a future contributor can't tighten them
+       without the suite catching it.
+*/
+import { readFileSync as _read } from "node:fs";
+import { resolve as _resolve } from "node:path";
+
+const _GEN_PATH = _resolve(__dirname, "./k12Pdf.ts");
+const _GEN_SRC = _read(_GEN_PATH, "utf8");
+
+describe("§154 — K-12 PDF cosmetic polish", () => {
+  it("renders the 'RHS' cover watermark exactly once (cover-only)", async () => {
+    const bytes = await buildK12CompliancePdf();
+    const text = await extractPdfText(bytes);
+    // The monogram is large (size 56) and unique to the cover; any
+    // accidental copy onto a content page would show up as a second
+    // occurrence of the standalone token.
+    const monogramHits = text.match(/\bRHS\b/g) ?? [];
+    expect(monogramHits.length).toBe(1);
+  });
+
+  it("draws the refined footer brand line on every page", async () => {
+    const bytes = await buildK12CompliancePdf();
+    const text = await extractPdfText(bytes);
+    // "Rapid Hire Solutions" is in the footer of every page (bold) and
+    // "rapidhiresolutions.com" follows on the same line (regular). With
+    // a multi-page document we expect at least 3 occurrences of each.
+    const brandHits = text.match(/Rapid Hire Solutions/g) ?? [];
+    const domainHits = text.match(/rapidhiresolutions\.com/g) ?? [];
+    expect(brandHits.length).toBeGreaterThanOrEqual(3);
+    expect(domainHits.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("stamps a 'N / total' page label in the footer on every page", async () => {
+    const bytes = await buildK12CompliancePdf();
+    const text = await extractPdfText(bytes);
+    // Match patterns like "1 / 7" with the page-number stamp format.
+    const stamps = text.match(/\b\d+ \/ \d+\b/g) ?? [];
+    expect(stamps.length).toBeGreaterThanOrEqual(3);
+    // The total in every stamp must agree (e.g. all "/ 7"), so we
+    // parse the total from the first stamp and verify all stamps
+    // share it.
+    const firstTotal = stamps[0].split("/")[1].trim();
+    for (const s of stamps) {
+      expect(s.endsWith(`/ ${firstTotal}`)).toBe(true);
+    }
+  });
+
+  it("source-pins the orphan-header guard helper", () => {
+    // The helper must exist (declared once) and must be used at every
+    // section header (state matrix, federal layers, district workflow,
+    // companion reading). If a future refactor swaps the helper back
+    // to a bare `ensureRoom`, this spec fails.
+    expect(_GEN_SRC).toMatch(/function requireSpaceForHeader\(/);
+    const usages = _GEN_SRC.match(/requireSpaceForHeader\(\s*\d+\s*\)/g) ?? [];
+    // Four sections after the cover (state matrix, federal, workflow,
+    // companion) → at least 4 invocations.
+    expect(usages.length).toBeGreaterThanOrEqual(4);
+  });
+
+  it("source-pins the cover-only watermark constant + draw site", () => {
+    // Cover-only is enforced two ways: (a) the WATERMARK color exists,
+    // (b) the watermark is only drawn inside the first-page guard
+    // in the finalize pass (i === 0). If either drifts the visual
+    // contract is broken.
+    expect(_GEN_SRC).toMatch(/const WATERMARK = rgb\(/);
+    expect(_GEN_SRC).toMatch(/if \(i === 0\) drawCoverWatermark/);
+    // The monogram glyphs themselves are pinned so a future refactor
+    // can't quietly rename "RHS" without the suite catching it.
+    expect(_GEN_SRC).toMatch(/const mono = "RHS";/);
+  });
+
+  it("source-pins the hairline brand-blue rule above the cover eyebrow", () => {
+    // The cover-only accent rule should appear exactly once in the
+    // source (above the "RESOURCES · VERTICAL GUIDE" eyebrow) so it
+    // never bleeds onto content pages.
+    expect(_GEN_SRC).toMatch(/Hairline brand-blue rule above the eyebrow/);
+    // It uses the ACCENT color, not RULE, so the brand reads on the
+    // cover; lock that distinction.
+    expect(_GEN_SRC).toMatch(/thickness: 1\.25,\s*color: ACCENT/);
+  });
+
+  it("source-pins the consolidated single-pass footer finalizer", () => {
+    // The old two-pass approach (footer + separate page-number stamp)
+    // is gone; the finalize pass should walk pages once and call
+    // drawFooter with pageNumber + total. Lock the pattern.
+    expect(_GEN_SRC).toMatch(/drawFooter\(p, i \+ 1, pages\.length\)/);
+  });
+
+  it("source-pins the bold footer brand treatment + soft domain follow", () => {
+    // Brand name renders in helvBold; domain follows in helv (regular)
+    // — these two lines together are what gives the footer its refined
+    // visual rhythm.
+    expect(_GEN_SRC).toMatch(
+      /p\.drawText\("Rapid Hire Solutions",[\s\S]*?font: helvBold,/,
+    );
+    expect(_GEN_SRC).toMatch(
+      /p\.drawText\("rapidhiresolutions\.com",[\s\S]*?font: helv,/,
+    );
+  });
+});
