@@ -191,6 +191,8 @@ import { post as postFinra3110 } from "@/content/blog/finra-rule-3110-background
 import { post as postK12School } from "@/content/blog/k12-school-employee-background-check-requirements";
 // §155 — Social media screening gap-filler (NLRA §7 + Title VII + GINA + state password-protection statutes + FCRA §603(d))
 import { post as postSocialMedia } from "@/content/blog/social-media-screening-employer-guide";
+// §156 — Massachusetts CORI state-compliance gap-filler (M.G.L. c.6 §§167–178B, iCORI, §171A, 803 CMR 2.00)
+import { post as postMaCori } from "@/content/blog/massachusetts-cori-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -316,6 +318,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFinra3110,
   postK12School,
   postSocialMedia,
+  postMaCori,
 ]);
 
 /**
