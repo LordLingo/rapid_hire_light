@@ -195,6 +195,8 @@ import { post as postSocialMedia } from "@/content/blog/social-media-screening-e
 import { post as postMaCori } from "@/content/blog/massachusetts-cori-employer-guide";
 // §157 — Gig-economy / TNC vertical gap-filler (FCRA + CPUC D.13-09-045 + NYC TLC 35 RCNY §59B + MA c.159A½)
 import { post as postGigEconomy } from "@/content/blog/gig-economy-background-check-compliance";
+// §158 — OFAC sanctions screening for employment (31 C.F.R. Parts 501–598 + SDN list + 50% Rule + EO 13694 + §501.601)
+import { post as postOfacEmployment } from "@/content/blog/ofac-sanctions-screening-employment";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -322,6 +324,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postSocialMedia,
   postMaCori,
   postGigEconomy,
+  postOfacEmployment,
 ]);
 
 /**
