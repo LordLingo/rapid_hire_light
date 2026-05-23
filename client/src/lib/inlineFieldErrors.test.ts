@@ -62,10 +62,10 @@ describe("§134 — inline field-level errors across all forms", () => {
       /*
         The validation block must precede the network round-trip so we
         don't burn a request on data the client could have caught.
-        Different forms post to different endpoints (Formspree for
-        Contact + GetAQuote, /api/contact for ComplianceAudit), so we
-        anchor the locator on the generic `fetch(` token rather than a
-        specific URL prefix.
+        After §159 all quote/contact/audit forms post to the same shared
+        Formspree endpoint (@/lib/formspree), so we anchor the locator on
+        the generic `fetch(` token rather than a specific URL prefix to
+        stay endpoint-agnostic.
       */
       const validateIdx = src.indexOf("validateFields");
       const fetchIdx = src.indexOf("await fetch(");

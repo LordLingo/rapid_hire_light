@@ -5,8 +5,8 @@
   estimate for a binding quote — that's still gated by the "Get this quote"
   CTA which routes to /get-a-quote pre-filled with the configuration. §111
   moved this from /contact to the dedicated quote page so calculator-driven
-  intent lands on the Formspree mvzyoyoz form rather than the generic
-  Contact xnjrqler form).
+  intent lands on the shared Formspree mvzyoyoz inbox. §159 unified the
+  Contact form onto the same endpoint so all surfaces converge to one inbox).
 
   Pricing model (illustrative, mirrors the public Pricing page tier story):
     Base SSN trace + nationwide criminal: $24 / check (Starter base)

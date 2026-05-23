@@ -1,11 +1,12 @@
 /*
-  §105 — Contact form invariants
+  §105 / §159 — Contact form invariants
 
   Two things must hold on the Contact page:
 
-    1. The form submits to Formspree at https://formspree.io/f/xnjrqler.
-       If anyone swaps the endpoint, points it back at /api/contact, or
-       fat-fingers the form id, this test fails before deploy.
+    1. The form submits to the shared Formspree endpoint imported from
+       @/lib/formspree (mvzyoyoz). If anyone swaps the endpoint, points it
+       back at /api/contact, or fat-fingers the form id, this test fails
+       before deploy.
 
     2. The Employment-Verifications option is the only employment-themed
        service chip — the legacy "Employment Screening" label must not
@@ -26,13 +27,30 @@ const CONTACT = readFileSync(
   "utf8",
 );
 
-describe("§105 Contact form Formspree wiring", () => {
-  it("posts to https://formspree.io/f/xnjrqler", () => {
+describe("§105 / §159 Contact form Formspree wiring", () => {
+  it("imports the shared FORMSPREE_ENDPOINT from @/lib/formspree", () => {
     expect(CONTACT).toMatch(
-      /FORMSPREE_ENDPOINT\s*=\s*"https:\/\/formspree\.io\/f\/xnjrqler"/,
+      /import \{ FORMSPREE_ENDPOINT \} from "@\/lib\/formspree"/,
     );
     // The fetch call must actually use the endpoint constant
     expect(CONTACT).toMatch(/fetch\(\s*FORMSPREE_ENDPOINT\b/);
+  });
+
+  it("the shared endpoint resolves to https://formspree.io/f/mvzyoyoz", () => {
+    const FORMSPREE_LIB = readFileSync(
+      resolve(__dirname, "formspree.ts"),
+      "utf8",
+    );
+    expect(FORMSPREE_LIB).toMatch(
+      /FORMSPREE_FORM_ID\s*=\s*"mvzyoyoz"/,
+    );
+    expect(FORMSPREE_LIB).toMatch(
+      /FORMSPREE_ENDPOINT\s*=\s*[\s\S]*?formspree\.io\/f\/\$\{FORMSPREE_FORM_ID\}/,
+    );
+  });
+
+  it("no longer hard-codes a local Formspree literal (legacy xnjrqler removed)", () => {
+    expect(CONTACT).not.toMatch(/formspree\.io\/f\/xnjrqler/);
   });
 
   it("does not submit to the legacy /api/contact endpoint", () => {

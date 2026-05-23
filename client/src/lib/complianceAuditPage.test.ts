@@ -2,9 +2,9 @@
   Vitest pins for the /compliance/audit booking page (§64).
 
   These pins protect the page's structure, form fields, and the integration
-  with the existing /api/contact endpoint. They also enforce that the
-  Compliance hero CTA points at /compliance/audit (not /contact) and that the
-  route is registered in App.tsx.
+  with the shared Formspree endpoint (§159 — migrated from /api/contact).
+  They also enforce that the Compliance hero CTA points at /compliance/audit
+  (not /contact) and that the route is registered in App.tsx.
 */
 import { describe, it, expect } from "vitest";
 import fs from "node:fs";
@@ -149,9 +149,14 @@ describe("/compliance/audit — booking form", () => {
     expect(block).toMatch(/scroll-mt-24/);
   });
 
-  it("form posts to /api/contact with JSON body", () => {
-    expect(auditFile).toMatch(/await fetch\("\/api\/contact"/);
+  it("form posts to the shared Formspree endpoint with JSON body (§159)", () => {
+    expect(auditFile).toMatch(/await fetch\(FORMSPREE_ENDPOINT/);
+    expect(auditFile).toMatch(
+      /import \{ FORMSPREE_ENDPOINT \} from "@\/lib\/formspree"/,
+    );
     expect(auditFile).toMatch(/"Content-Type":\s*"application\/json"/);
+    // Anti-regression: the legacy /api/contact endpoint must NOT be present.
+    expect(auditFile).not.toMatch(/fetch\("\/api\/contact"/);
   });
 
   it("payload prefixes message with [Compliance Audit Request] so submissions are searchable", () => {

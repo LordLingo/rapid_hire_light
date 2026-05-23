@@ -33,9 +33,13 @@ import {
   clearFieldError,
   type FieldErrors,
 } from "@/lib/formValidation";
+// §159 — Endpoint centralized in @/lib/formspree. Re-exported under the
+// original name so the existing §111 tests + downstream importers keep
+// working without a rename.
+import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
 
 /** Formspree endpoint for quote requests (provided by site owner). */
-export const QUOTE_FORMSPREE_ENDPOINT = "https://formspree.io/f/mvzyoyoz";
+export const QUOTE_FORMSPREE_ENDPOINT = FORMSPREE_ENDPOINT;
 
 /** Industries shown in the Industry select. Matches /industries hub. */
 export const QUOTE_INDUSTRIES = [

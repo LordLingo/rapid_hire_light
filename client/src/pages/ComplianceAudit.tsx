@@ -11,15 +11,16 @@
   Sections:
     PageHero (00 — Free Audit, italic accent on "adverse-action workflow")
     Section 01 — Six surfaces we actually audit (6 cards)
-    Section 02 — Booking form (id="book") — posts to /api/contact
+    Section 02 — Booking form (id="book") — posts to shared Formspree (§159)
     Section 03 — How the 15 minutes goes (3 steps)
     Section 04 — Frequently asked (5 Q&A, native <details>)
     Closing dark CTA band (back to /contact for non-audit needs)
 
-  Form posts to the existing /api/contact endpoint. Audit-specific fields
-  are packed into the `message` body with a `[Compliance Audit Request]`
-  prefix so the existing JSON store keeps booking submissions in the same
-  inbox as standard contact requests, but visibly differentiated.
+  Form posts to the shared Formspree endpoint (§159, @/lib/formspree).
+  Audit-specific fields are packed into the `message` body with a
+  `[Compliance Audit Request]` prefix and a `_subject` line, so audit
+  bookings land in the same inbox as quote + contact submissions but
+  remain trivially identifiable.
 */
 import { useState } from "react";
 import { Link } from "wouter";
@@ -32,6 +33,10 @@ import {
   clearFieldError,
   type FieldErrors,
 } from "@/lib/formValidation";
+// §159 — Formspree endpoint centralized so audit bookings land in the
+// same mvzyoyoz inbox as quote + contact submissions. Previously posted
+// to the local /api/contact JSON store.
+import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
 import {
   ArrowUpRight,
   CalendarCheck2,
@@ -258,11 +263,11 @@ export default function ComplianceAudit() {
       return;
     }
 
-    // Pack audit-specific fields into `message` so the existing /api/contact
-    // endpoint (which validates fullName/email/company/message) accepts the
-    // submission without a backend schema migration. The `[Compliance Audit
-    // Request]` prefix makes audit bookings trivially searchable in the
-    // contact_submissions.json store.
+    // Pack audit-specific fields into `message` so the audit booking lands
+    // in the shared Formspree inbox alongside quote + contact submissions.
+    // The `[Compliance Audit Request]` prefix and `_subject` line make audit
+    // bookings trivially identifiable in the inbox.
+    // §159 — Migrated from /api/contact to the shared Formspree endpoint.
     const messageLines: string[] = [
       "[Compliance Audit Request]",
       "",
@@ -282,27 +287,33 @@ export default function ComplianceAudit() {
       fullName: `${firstName} ${lastName}`.trim(),
       email,
       company,
-      // Map company size into the `volume` slot the endpoint already expects
+      // Map company size into the `volume` slot kept for inbox parity.
       volume: companySize,
-      // The focus area travels in `services` as a single-item array
+      // The focus area travels in `services` as a single-item array.
       services: focus ? [focus] : [],
       message: messageLines.join("\n"),
+      _subject: company
+        ? `Compliance audit request — ${company}`
+        : "Compliance audit request",
     };
 
     setSubmitting(true);
     try {
-      const resp = await fetch("/api/contact", {
+      const resp = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(payload),
       });
       const data = (await resp.json().catch(() => ({}))) as {
         ok?: boolean;
-        error?: string;
+        errors?: Array<{ message?: string }>;
       };
-      if (!resp.ok || !data?.ok) {
+      if (!resp.ok) {
         const msg =
-          data?.error ||
+          data?.errors?.[0]?.message ||
           `Submission failed (${resp.status}). Please try again.`;
         setError(msg);
         toast.error(msg);

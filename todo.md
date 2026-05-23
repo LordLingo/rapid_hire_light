@@ -1701,3 +1701,12 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] §154.4 — Refine the footer: add a hairline rule above the footer band, set the brand line in a slightly heavier weight, keep the page-number on the right and the generated date on the left so they don't compete visually.
 - [x] §154.5 — Extend k12Pdf.test.ts: assert the cover watermark glyphs render, assert the orphan-header guard returns the expected y when triggered, assert the footer hairline + brand-weight, and re-pin the filename builder.
 - [x] §154.6 — tsc clean + full vitest green; webdev_save_checkpoint and deliver.
+
+
+## §159 — Formspree mvzyoyoz site-wide wiring
+
+- [x] Audit every form/quote/contact CTA entry point on the site
+- [x] Centralize the Formspree endpoint into a single source-of-truth module
+- [x] Rewire all forms to post to the shared endpoint
+- [x] Add vitest coverage so the endpoint can't drift
+- [x] Run full vitest suite + tsc; checkpoint

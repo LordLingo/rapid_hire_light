@@ -26,6 +26,9 @@ import {
 } from "@/lib/formValidation";
 import { SHRM_UTM_KEY } from "@/lib/shrm";
 import { getShrmSlot, formatShrmSlot } from "@/lib/shrmSlots";
+// §159 — Formspree endpoint centralized in @/lib/formspree so all
+// quote/contact forms post to the same mvzyoyoz inbox and cannot drift.
+import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
 
 /*
   §140.3 — UTM attribution helper.
@@ -88,8 +91,10 @@ export function formatUtmAttribution(
  * Service-interest options shown as toggle chips on the Contact form.
  * Submitted to Formspree as the `services` field (comma-joined). Renamed
  * "Employment Screening" → "Employment Verifications" per §105.
+ *
+ * §159 — The previous local literal (xnjrqler) was replaced by the
+ * shared @/lib/formspree endpoint so every form posts to mvzyoyoz.
  */
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xnjrqler";
 
 const SERVICES = [
   "Employment Verifications",
@@ -265,9 +270,10 @@ export default function Contact() {
       firstEl?.focus();
       return;
     }
-    // §105: submit to Formspree (xnjrqler) using its JSON endpoint so we keep
-    // structured fields (services as an array, etc). Formspree responds with
-    // { ok: true } on success and surfaces validation errors via { errors }.
+    // §105 / §159: submit to the shared Formspree endpoint (mvzyoyoz, see
+    // @/lib/formspree) using its JSON endpoint so we keep structured fields
+    // (services as an array, etc). Formspree responds with { ok: true } on
+    // success and surfaces validation errors via { errors }.
     const payload = {
       name: values.name,
       email: values.email,
