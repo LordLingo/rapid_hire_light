@@ -1710,3 +1710,13 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Rewire all forms to post to the shared endpoint
 - [x] Add vitest coverage so the endpoint can't drift
 - [x] Run full vitest suite + tsc; checkpoint
+
+
+## §160 — Integrations page: integration-request form + API documentation
+
+- [x] Scrape and structure the precisehire docs (https://dot.precisehire.com/docs/home.php?overview) into a Rapid Hire-branded API reference data model
+- [x] Build an in-page API reference section on /integrations (Endpoints, Auth, Request shape, Sample payloads, Status codes)
+- [x] Add a "Download API Documentation" PDF button that generates the reference at runtime (same pdf-lib pattern as the K-12 compliance guide)
+- [x] Add a dedicated "Request an integration" form on /integrations (who builds it, ATS name + version, monthly volume, contact fields, notes) posting to the shared Formspree endpoint with subject "Integration request — {ATS}"
+- [x] Add vitest coverage for the new form, the PDF generator, and the API reference data model
+- [x] Run full vitest suite + tsc; checkpoint

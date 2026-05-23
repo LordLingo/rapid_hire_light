@@ -4,17 +4,54 @@
    - PageHero with eyebrow "Integrations" and italic accent on "tools".
    - "How it works" 3-step horizontal flow (Connect → Trigger → Sync) using
      the same DiagramCard cadence as the homepage workflow.
+   - The handshake editorial figure (§121/§123).
    - ATS / HRIS / Payroll grid: card per integration with category chip,
      short body, and "Docs" / "Request" inline link.
-   - Closing CTA strip.
+   - §160 — API Reference section: card-per-resource index of the Rapid
+     Hire Solutions API v2, plus a Download PDF button (powered by
+     @/lib/apiDocsPdf, which mirrors the same data model so the export
+     can never drift from the on-screen surface).
+   - §160 — Dedicated Integration Request form: a /#request-integration
+     anchored block that POSTs to the shared Formspree endpoint with
+     integration-specific fields (ATS name, who builds it, monthly
+     volume) so submissions arrive tagged in the same inbox as quote
+     and contact forms but stay easy to triage.
+   - Closing CTA strip now scrolls to the in-page form (not /contact).
 */
+import { useState } from "react";
 import { Link } from "wouter";
-import { Plug, Zap, RefreshCcw, ArrowUpRight } from "lucide-react";
+import {
+  ArrowUpRight,
+  BookOpen,
+  Download,
+  Loader2,
+  Plug,
+  RefreshCcw,
+  Zap,
+} from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { IntegrationsGrid } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import integrationsData from "@shared/integrations.json";
+import {
+  API_ENDPOINT_TOTAL,
+  API_HOST_PRODUCTION,
+  API_OVERVIEW,
+  API_RESOURCES,
+} from "@/lib/apiReference";
+import {
+  buildApiDocsPdf,
+  buildApiDocsPdfFilename,
+  triggerApiDocsPdfDownload,
+} from "@/lib/apiDocsPdf";
+import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import {
+  clearFieldError,
+  hasErrors,
+  validateFields,
+  type FieldErrors,
+} from "@/lib/formValidation";
 
 type IntegrationCategory = "ATS" | "HRIS" | "Payroll" | "CRM";
 type IntegrationStatus = "Live" | "Beta" | "Request";
@@ -55,7 +92,143 @@ const STEPS = [
 
 const CATS = ["All", "ATS", "HRIS", "Payroll", "CRM"] as const;
 
+/** §160 — fixed-position option lists for the Integration Request form. */
+export const INTEGRATION_DIRECTIONS = [
+  "We build to your API",
+  "You build to our API",
+  "Joint build (paired engineering)",
+  "Not sure yet — please advise",
+] as const;
+
+export const INTEGRATION_VOLUMES = [
+  "Under 50 / month",
+  "50–250 / month",
+  "250–1,000 / month",
+  "1,000–5,000 / month",
+  "5,000+ / month",
+] as const;
+
+export const INTEGRATION_TIMELINES = [
+  "Within 30 days",
+  "30–60 days",
+  "60–90 days",
+  "Exploratory (90+ days)",
+] as const;
+
 export default function Integrations() {
+  // §160 — Download PDF state. Mirrors the K-12 guide pattern.
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
+
+  async function handleDownloadPdf() {
+    if (downloading) return;
+    setDownloadError(null);
+    setDownloading(true);
+    try {
+      const bytes = await buildApiDocsPdf();
+      triggerApiDocsPdfDownload(bytes, buildApiDocsPdfFilename());
+    } catch (err) {
+      setDownloadError(
+        err instanceof Error ? err.message : "Could not build PDF.",
+      );
+    } finally {
+      setDownloading(false);
+    }
+  }
+
+  // §160 — Integration Request form state. Posts to FORMSPREE_ENDPOINT
+  // with `_subject: "Integration request — {ATS}"` so submissions stay
+  // easy to triage in the shared inbox.
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
+  async function handleIntegrationSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+  ) {
+    e.preventDefault();
+    if (submitting) return;
+    setSubmitError(null);
+    const formEl = e.currentTarget;
+    const fd = new FormData(formEl);
+    const values = {
+      name: String(fd.get("name") ?? "").trim(),
+      email: String(fd.get("email") ?? "").trim(),
+      company: String(fd.get("company") ?? "").trim(),
+      ats: String(fd.get("ats") ?? "").trim(),
+      direction: String(fd.get("direction") ?? "").trim(),
+      volume: String(fd.get("volume") ?? "").trim(),
+    };
+    const errs = validateFields(values, {
+      requiredFields: ["name", "email", "company", "ats", "direction", "volume"],
+      emailFields: ["email"],
+    });
+    if (hasErrors(errs)) {
+      setFieldErrors(errs);
+      const firstName = Object.keys(errs)[0];
+      const firstEl = formEl.elements.namedItem(firstName) as
+        | HTMLInputElement
+        | HTMLSelectElement
+        | HTMLTextAreaElement
+        | null;
+      if (firstEl) firstEl.focus();
+      return;
+    }
+    setFieldErrors({});
+    const payload: Record<string, string> = {
+      name: values.name,
+      email: values.email,
+      company: values.company,
+      role: String(fd.get("role") ?? "").trim(),
+      phone: String(fd.get("phone") ?? "").trim(),
+      ats: values.ats,
+      ats_version: String(fd.get("ats_version") ?? "").trim(),
+      direction: values.direction,
+      volume: values.volume,
+      timeline: String(fd.get("timeline") ?? "").trim(),
+      api_docs_link: String(fd.get("api_docs_link") ?? "").trim(),
+      notes: String(fd.get("notes") ?? "").trim(),
+      _subject: `Integration request — ${values.ats}`,
+      _source: "Integrations page · /integrations#request-integration",
+    };
+    setSubmitting(true);
+    try {
+      const resp = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = (await resp.json().catch(() => ({}))) as {
+        errors?: { message?: string }[];
+      };
+      if (!resp.ok) {
+        const msg =
+          data?.errors?.[0]?.message ??
+          "Something went wrong. Please try again.";
+        setSubmitError(msg);
+        return;
+      }
+      setSubmitted(true);
+      formEl.reset();
+    } catch {
+      setSubmitError("Network error. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function clearFieldOnChange(name: string) {
+    return () => {
+      if (fieldErrors[name]) {
+        setFieldErrors((prev) => clearFieldError(prev, name));
+      }
+    };
+  }
+
   return (
     <SiteShell>
       <PageHero
@@ -132,11 +305,7 @@ export default function Integrations() {
         </div>
       </section>
 
-      {/* §123 — Restored: user's portrait infographic at the §121 layout
-          (4-col copy + 8-col figure, max-w-[560px], paper-bg figure mat).
-          Replaces the §122 editorial portrait — user feedback was that
-          the original infographic read better in the page's center even
-          if it carries embedded type. */}
+      {/* §123 — handshake editorial figure */}
       <section className="bg-[color:var(--color-paper-soft)] border-y border-border">
         <div className="container py-20 md:py-28">
           <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-start">
@@ -246,19 +415,366 @@ export default function Integrations() {
                 <p className="mt-2 text-[14px] leading-[1.7] text-[color:var(--color-ink-soft)]">
                   {it.body}
                 </p>
-                <Link
-                  href="/contact"
+                <a
+                  href="#request-integration"
                   className="ink-link mt-5 inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)]"
                 >
                   {it.status === "Request" ? "Request access" : "Talk to sales"}
                   <ArrowUpRight className="size-3.5" />
-                </Link>
+                </a>
               </article>
             ))}
           </div>
         </div>
       </section>
 
+      {/* §160 — API REFERENCE */}
+      <section
+        id="api-reference"
+        data-testid="integrations-api-reference"
+        className="bg-white border-y border-border"
+      >
+        <div className="container py-20 md:py-28">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-10 items-end">
+            <div className="col-span-12 lg:col-span-3 reveal-on-scroll">
+              <p className="eyebrow">06 — Developer reference</p>
+              <div className="mt-3 hairline" />
+            </div>
+            <div className="col-span-12 lg:col-span-6 reveal-on-scroll">
+              <h2 className="font-display text-[32px] md:text-[44px] leading-[1.05] tracking-[-0.025em] text-[color:var(--color-ink)]">
+                Build straight to our{" "}
+                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+                  REST API.
+                </span>
+              </h2>
+              <p className="mt-5 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)] max-w-xl">
+                {API_OVERVIEW.summary}{" "}
+                Authentication is HTTP Basic; transport is HTTPS only.
+                Every resource below links to the same source of truth
+                used by the downloadable PDF reference.
+              </p>
+            </div>
+            <div className="col-span-12 lg:col-span-3 reveal-on-scroll flex flex-col items-stretch gap-3 lg:items-end">
+              <button
+                type="button"
+                onClick={handleDownloadPdf}
+                disabled={downloading}
+                data-testid="api-docs-download-btn"
+                className="btn-press inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-5 py-3 text-[13.5px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] disabled:opacity-60"
+              >
+                {downloading ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Building your PDF…
+                  </>
+                ) : (
+                  <>
+                    <Download className="size-4" />
+                    Download API documentation
+                  </>
+                )}
+              </button>
+              <a
+                href={API_HOST_PRODUCTION}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ink-link inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)] lg:justify-end"
+              >
+                <BookOpen className="size-3.5" />
+                Production host
+                <ArrowUpRight className="size-3.5" />
+              </a>
+              {downloadError ? (
+                <p
+                  role="alert"
+                  data-testid="api-docs-download-error"
+                  className="text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+                >
+                  {downloadError}
+                </p>
+              ) : null}
+            </div>
+          </div>
+
+          <div
+            data-testid="api-overview-band"
+            className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-[16px] border border-border bg-border"
+          >
+            {(
+              [
+                ["Version", API_OVERVIEW.version],
+                ["Resources", String(API_RESOURCES.length)],
+                ["Endpoints", String(API_ENDPOINT_TOTAL)],
+                ["Auth", "HTTP Basic"],
+              ] as const
+            ).map(([label, value]) => (
+              <div key={label} className="bg-white p-5">
+                <p className="eyebrow text-[10.5px]">{label}</p>
+                <p className="mt-2 font-display text-[24px] leading-none text-[color:var(--color-ink)]">
+                  {value}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-12 grid grid-cols-12 gap-6">
+            {API_RESOURCES.map((r) => (
+              <article
+                key={r.slug}
+                data-testid={`api-resource-${r.slug}`}
+                className="hover-lift-card reveal-on-scroll col-span-12 md:col-span-6 lg:col-span-4 rounded-[16px] border border-border bg-[color:var(--color-paper)] p-6"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="eyebrow text-[10px]">{r.slug}</span>
+                  <span className="text-[10.5px] uppercase tracking-wider px-2 py-1 rounded-full border border-[color:var(--color-accent-ink)]/25 text-[color:var(--color-accent-ink)] bg-[color:var(--color-tint)]">
+                    {r.endpoints.length} endpoint
+                    {r.endpoints.length === 1 ? "" : "s"}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-[20px] leading-tight text-[color:var(--color-ink)]">
+                  {r.name}
+                </h3>
+                <p className="mt-2 text-[13.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                  {r.shortDescription}
+                </p>
+                <ul className="mt-4 space-y-1.5">
+                  {r.endpoints.map((ep) => (
+                    <li
+                      key={`${ep.verb} ${ep.path}`}
+                      className="flex items-center gap-2 text-[12.5px]"
+                    >
+                      <span className="font-mono font-semibold uppercase tracking-wider text-[11px] rounded-full border border-[color:var(--color-accent-ink)]/30 bg-white px-2 py-0.5 text-[color:var(--color-accent-ink)]">
+                        {ep.verb}
+                      </span>
+                      <code className="font-mono text-[12.5px] text-[color:var(--color-ink)]">
+                        {ep.path}
+                      </code>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* §160 — REQUEST AN INTEGRATION */}
+      <section
+        id="request-integration"
+        data-testid="request-integration-section"
+        className="bg-[color:var(--color-paper-soft)] border-b border-border"
+      >
+        <div className="container py-20 md:py-28">
+          <div className="grid grid-cols-12 gap-x-8 gap-y-12">
+            <div className="col-span-12 lg:col-span-4 reveal-on-scroll">
+              <p className="eyebrow">07 — Request an integration</p>
+              <div className="mt-3 hairline" />
+              <h2 className="mt-6 font-display text-[32px] md:text-[40px] leading-[1.08] tracking-[-0.02em] text-[color:var(--color-ink)]">
+                Don&apos;t see your tool?{" "}
+                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
+                  Tell us about it.
+                </span>
+              </h2>
+              <p className="mt-5 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                Tell us the ATS or HRIS you use, who&apos;s building (us
+                to you, you to us, or paired), and your monthly volume.
+                We&apos;ll scope the work and reply within one business
+                day. If you have an API doc link we should review, drop
+                it in the form and we&apos;ll come back with a build plan.
+              </p>
+              <p className="mt-5 text-[13px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                Already have our API docs?{" "}
+                <button
+                  type="button"
+                  onClick={handleDownloadPdf}
+                  data-testid="api-docs-download-btn-inline"
+                  className="ink-link inline-flex items-center gap-1.5 text-[13px] font-medium text-[color:var(--color-accent-ink)]"
+                >
+                  <Download className="size-3.5" />
+                  Download the PDF reference
+                </button>
+                .
+              </p>
+            </div>
+
+            <div className="col-span-12 lg:col-span-8 reveal-on-scroll">
+              {submitted ? (
+                <div
+                  data-testid="integration-request-success"
+                  className="rounded-[20px] border border-[color:var(--color-accent-ink)]/30 bg-white p-8 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_12px_32px_-16px_rgba(16,42,75,0.22)]"
+                >
+                  <p className="eyebrow text-[color:var(--color-accent-ink)]">
+                    Received
+                  </p>
+                  <h3 className="mt-3 font-display text-[28px] leading-tight text-[color:var(--color-ink)]">
+                    Thanks — we&apos;ll be in touch within one business
+                    day.
+                  </h3>
+                  <p className="mt-4 text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                    A solutions engineer will review your request and
+                    follow up with a scoped build plan. If you also
+                    downloaded the PDF reference, you&apos;re ready to
+                    walk through it together on the first call.
+                  </p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <Link
+                      href="/pricing"
+                      className="btn-press inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-5 py-2.5 text-[13.5px] text-[color:var(--color-ink)] hover:bg-[color:var(--color-paper)]"
+                    >
+                      See pricing
+                      <ArrowUpRight className="size-3.5" />
+                    </Link>
+                    <Link
+                      href="/contact"
+                      className="btn-press inline-flex items-center gap-1.5 rounded-full bg-[color:var(--color-accent-ink)] px-5 py-2.5 text-[13.5px] text-white hover:bg-[color:var(--color-accent-ink-strong)]"
+                    >
+                      General contact
+                      <ArrowUpRight className="size-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <form
+                  noValidate
+                  onSubmit={handleIntegrationSubmit}
+                  data-testid="integration-request-form"
+                  className="rounded-[20px] border border-border bg-white p-8 shadow-[0_1px_2px_rgba(16,42,75,0.06),0_10px_28px_-18px_rgba(16,42,75,0.18)]"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <IntField
+                      label="Name"
+                      name="name"
+                      required
+                      autoComplete="name"
+                      onChange={clearFieldOnChange("name")}
+                      error={fieldErrors.name}
+                    />
+                    <IntField
+                      label="Work email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                      onChange={clearFieldOnChange("email")}
+                      error={fieldErrors.email}
+                    />
+                    <IntField
+                      label="Company"
+                      name="company"
+                      required
+                      autoComplete="organization"
+                      onChange={clearFieldOnChange("company")}
+                      error={fieldErrors.company}
+                    />
+                    <IntField
+                      label="Role"
+                      name="role"
+                      autoComplete="organization-title"
+                    />
+                    <IntField
+                      label="ATS / HRIS name"
+                      name="ats"
+                      required
+                      onChange={clearFieldOnChange("ats")}
+                      error={fieldErrors.ats}
+                    />
+                    <IntField
+                      label="ATS version (if known)"
+                      name="ats_version"
+                    />
+                    <IntSelect
+                      label="Who builds it?"
+                      name="direction"
+                      options={INTEGRATION_DIRECTIONS}
+                      required
+                      onChange={clearFieldOnChange("direction")}
+                      error={fieldErrors.direction}
+                    />
+                    <IntSelect
+                      label="Estimated monthly volume"
+                      name="volume"
+                      options={INTEGRATION_VOLUMES}
+                      required
+                      onChange={clearFieldOnChange("volume")}
+                      error={fieldErrors.volume}
+                    />
+                    <IntSelect
+                      label="Target timeline"
+                      name="timeline"
+                      options={INTEGRATION_TIMELINES}
+                    />
+                    <IntField
+                      label="Phone (optional)"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                    />
+                    <IntField
+                      label="Your API documentation link (optional)"
+                      name="api_docs_link"
+                      type="url"
+                      className="sm:col-span-2"
+                    />
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="int-notes"
+                        className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+                      >
+                        Notes
+                      </label>
+                      <textarea
+                        id="int-notes"
+                        name="notes"
+                        rows={4}
+                        className="form-field mt-1.5 w-full resize-y"
+                        placeholder="What are you trying to automate? Any edge cases (multi-tenant, branch-level scoping, custom statuses) we should know about?"
+                      />
+                    </div>
+                  </div>
+
+                  {submitError ? (
+                    <p
+                      role="alert"
+                      data-testid="integration-request-error"
+                      className="mt-5 text-[13px] text-[color:var(--color-destructive,#dc2626)]"
+                    >
+                      {submitError}
+                    </p>
+                  ) : null}
+
+                  <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
+                    <p className="text-[12.5px] text-[color:var(--color-ink-muted)] max-w-md">
+                      We&apos;ll reply within one business day. By
+                      submitting, you agree to be contacted by Rapid
+                      Hire Solutions about your integration request.
+                    </p>
+                    <button
+                      type="submit"
+                      disabled={submitting}
+                      data-testid="integration-request-submit"
+                      className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)] disabled:opacity-60"
+                    >
+                      {submitting ? (
+                        <>
+                          <Loader2 className="size-4 animate-spin" />
+                          Sending…
+                        </>
+                      ) : (
+                        <>
+                          Request integration
+                          <ArrowUpRight className="size-4" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Closing CTA — now anchors to the in-page form. */}
       <section className="bg-white border-t border-border">
         <div className="container py-20">
           <div className="reveal-on-scroll grid grid-cols-12 gap-6 items-end">
@@ -272,17 +788,146 @@ export default function Integrations() {
               </h2>
             </div>
             <div className="col-span-12 md:col-span-4 flex md:justify-end">
-              <Link
-                href="/contact"
+              <a
+                href="#request-integration"
                 className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] px-6 py-3.5 text-[14px] font-medium text-white hover:bg-[color:var(--color-accent-ink-strong)]"
               >
                 Request an integration
                 <ArrowUpRight className="size-4" />
-              </Link>
+              </a>
             </div>
           </div>
         </div>
       </section>
     </SiteShell>
+  );
+}
+
+// §160 — small labeled input/select helpers scoped to the integration form.
+// We intentionally use a different field-id prefix (`int-`) from the quote
+// form (`quote-`) so DOM ids stay unique when both pages render in tests.
+function IntField({
+  label,
+  name,
+  type = "text",
+  required,
+  autoComplete,
+  className,
+  onChange,
+  error,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  autoComplete?: string;
+  className?: string;
+  onChange?: () => void;
+  error?: string;
+}) {
+  const fieldId = `int-${name}`;
+  const errorId = error ? `${fieldId}-error` : undefined;
+  return (
+    <div className={className}>
+      <label
+        htmlFor={fieldId}
+        className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+      >
+        {label}
+        {required ? " *" : ""}
+      </label>
+      <input
+        id={fieldId}
+        type={type}
+        name={name}
+        required={required}
+        autoComplete={autoComplete}
+        onChange={onChange}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
+        className={[
+          "form-field mt-1.5 w-full",
+          error ? "form-field--invalid" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      />
+      {error ? (
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+        >
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function IntSelect({
+  label,
+  name,
+  options,
+  required,
+  defaultValue,
+  className,
+  onChange,
+  error,
+}: {
+  label: string;
+  name: string;
+  options: readonly string[];
+  required?: boolean;
+  defaultValue?: string;
+  className?: string;
+  onChange?: () => void;
+  error?: string;
+}) {
+  const fieldId = `int-${name}`;
+  const errorId = error ? `${fieldId}-error` : undefined;
+  return (
+    <div className={className}>
+      <label
+        htmlFor={fieldId}
+        className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]"
+      >
+        {label}
+        {required ? " *" : ""}
+      </label>
+      <select
+        id={fieldId}
+        name={name}
+        required={required}
+        defaultValue={defaultValue ?? ""}
+        onChange={onChange}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={errorId}
+        className={[
+          "form-field mt-1.5 w-full",
+          error ? "form-field--invalid" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
+        <option value="" disabled>
+          Select…
+        </option>
+        {options.map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
+      </select>
+      {error ? (
+        <p
+          id={errorId}
+          role="alert"
+          className="mt-1.5 text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+        >
+          {error}
+        </p>
+      ) : null}
+    </div>
   );
 }
