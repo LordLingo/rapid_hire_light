@@ -197,6 +197,8 @@ import { post as postMaCori } from "@/content/blog/massachusetts-cori-employer-g
 import { post as postGigEconomy } from "@/content/blog/gig-economy-background-check-compliance";
 // §158 — OFAC sanctions screening for employment (31 C.F.R. Parts 501–598 + SDN list + 50% Rule + EO 13694 + §501.601)
 import { post as postOfacEmployment } from "@/content/blog/ofac-sanctions-screening-employment";
+// §165 — Cannabis-industry employer screening (state worker permits + per-se disqualifying offenses + Schedule III reclassification + FCRA layering)
+import { post as postCannabisEmployer } from "@/content/blog/cannabis-industry-employer-background-checks";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -325,6 +327,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postMaCori,
   postGigEconomy,
   postOfacEmployment,
+  postCannabisEmployer,
 ]);
 
 /**
