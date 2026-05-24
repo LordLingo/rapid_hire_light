@@ -22,7 +22,6 @@ import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowUpRight,
-  BookOpen,
   Check,
   Copy,
   Download,
@@ -42,7 +41,6 @@ import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 import integrationsData from "@shared/integrations.json";
 import {
   API_ENDPOINT_TOTAL,
-  API_HOST_PRODUCTION,
   API_OVERVIEW,
   API_RESOURCES,
 } from "@/lib/apiReference";
@@ -587,16 +585,6 @@ export default function Integrations() {
                   </>
                 )}
               </button>
-              <a
-                href={API_HOST_PRODUCTION}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ink-link inline-flex items-center gap-1.5 text-[13px] text-[color:var(--color-ink)] lg:justify-end"
-              >
-                <BookOpen className="size-3.5" />
-                Production host
-                <ArrowUpRight className="size-3.5" />
-              </a>
               {downloadError ? (
                 <p
                   role="alert"
