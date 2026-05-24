@@ -45,7 +45,7 @@ import {
   buildApiDocsPdfFilename,
   triggerApiDocsPdfDownload,
 } from "@/lib/apiDocsPdf";
-import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { FORMSPREE_INTEGRATIONS_ENDPOINT } from "@/lib/formspree";
 import {
   clearFieldError,
   hasErrors,
@@ -136,9 +136,10 @@ export default function Integrations() {
     }
   }
 
-  // §160 — Integration Request form state. Posts to FORMSPREE_ENDPOINT
-  // with `_subject: "Integration request — {ATS}"` so submissions stay
-  // easy to triage in the shared inbox.
+  // §160 — Integration Request form state. Posts to
+  // FORMSPREE_INTEGRATIONS_ENDPOINT (xgoqzprv) per §161 — partner / ATS
+  // integration requests route to a dedicated inbox so they don't dilute
+  // the sales pipeline. Tagged with `_subject: "Integration request — {ATS}"`.
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -194,7 +195,7 @@ export default function Integrations() {
     };
     setSubmitting(true);
     try {
-      const resp = await fetch(FORMSPREE_ENDPOINT, {
+      const resp = await fetch(FORMSPREE_INTEGRATIONS_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

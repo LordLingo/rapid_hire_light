@@ -23,9 +23,9 @@
     8. The Integrations page source pins the three apiDocsPdf helpers,
        renders both `api-docs-download-btn` testids, references the
        Download icon, surfaces every resource via `api-resource-{slug}`,
-       and wires the request form to FORMSPREE_ENDPOINT with the
-       integration-request testids — so the surface can never silently
-       regress.
+       and wires the request form to FORMSPREE_INTEGRATIONS_ENDPOINT
+       (§161 — dedicated partner inbox) with the integration-request
+       testids — so the surface can never silently regress.
 
   Text extraction reuses the same pdfjs-dist legacy build that the
   K-12 generator's spec uses, so substring matching is stable across
@@ -357,10 +357,14 @@ describe("§160 — Integrations.tsx page wiring (source-pin)", () => {
     expect(PAGE_SRC).toContain('data-testid="integration-request-submit"');
   });
 
-  it("posts to the shared Formspree endpoint and tags the integration subject", () => {
+  it("posts to the dedicated integrations Formspree endpoint and tags the integration subject", () => {
+    // §161: Integrations form routes to its own inbox (xgoqzprv) so partner
+    // requests don't dilute the sales pipeline.
     expect(PAGE_SRC).toContain('from "@/lib/formspree"');
-    expect(PAGE_SRC).toContain("FORMSPREE_ENDPOINT");
-    expect(PAGE_SRC).toContain("fetch(FORMSPREE_ENDPOINT");
+    expect(PAGE_SRC).toContain("FORMSPREE_INTEGRATIONS_ENDPOINT");
+    expect(PAGE_SRC).toContain("fetch(FORMSPREE_INTEGRATIONS_ENDPOINT");
+    // And it must NOT post to the sales endpoint anymore:
+    expect(PAGE_SRC).not.toMatch(/fetch\(\s*FORMSPREE_ENDPOINT\b/);
     expect(PAGE_SRC).toContain("Integration request");
   });
 
