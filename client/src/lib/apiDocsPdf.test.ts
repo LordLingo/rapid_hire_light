@@ -332,14 +332,13 @@ describe("§160 — Integrations.tsx page wiring (source-pin)", () => {
   });
 
   it("surfaces every API resource via a data-testid", () => {
-    // The page iterates API_RESOURCES and renders a row per resource
-    // with `data-testid={`api-resource-${r.slug}`}`. We assert the
-    // structural wiring: the source imports API_RESOURCES, maps over it,
-    // and emits the templated testid. Source-pin tests can't read
-    // expanded runtime DOM strings without jsdom, so we lock the wiring
-    // shape rather than each slug.
+    // The page renders a row per resource with
+    // `data-testid={`api-resource-${r.slug}`}`. After §163 the
+    // iteration is over `filteredResources` (the search matcher's
+    // output) rather than API_RESOURCES directly, but the import +
+    // templated testid + endpoint-chip rendering shape is unchanged.
     expect(PAGE_SRC).toContain("API_RESOURCES");
-    expect(PAGE_SRC).toMatch(/API_RESOURCES\.map\(/);
+    expect(PAGE_SRC).toMatch(/(?:API_RESOURCES|filteredResources)\.map\(/);
     expect(PAGE_SRC).toMatch(
       /data-testid=\{`api-resource-\$\{[a-zA-Z_.]+\.slug\}`\}/,
     );

@@ -1726,3 +1726,13 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Add "Download all snippets as ZIP" button at the API Reference section header
 - [x] Lock with vitest: snippet shape per language, page wiring, ZIP manifest, copy/download triggers
 - [x] Full suite + tsc green; checkpoint
+
+## §163 — Search bar for API documentation section
+
+- [x] Build typed search index + matcher in `client/src/lib/apiSearch.ts` driven off apiReference + apiSnippets
+- [x] Cover resource name, slug, endpoint verb/path/description, and snippet contents
+- [x] Add search bar UI to /integrations API Reference section header
+- [x] Debounced filtering, Esc-to-clear, focus ring, "No matches" empty state
+- [x] Filter both the resource cards grid and the code snippets cards
+- [x] +vitest specs locking matcher invariants and page wiring
+- [x] Full suite + tsc green; checkpoint

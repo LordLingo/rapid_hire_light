@@ -18,7 +18,7 @@
      and contact forms but stay easy to triage.
    - Closing CTA strip now scrolls to the in-page form (not /contact).
 */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
   ArrowUpRight,
@@ -30,7 +30,9 @@ import {
   Loader2,
   Plug,
   RefreshCcw,
+  Search,
   Terminal,
+  X,
   Zap,
 } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
@@ -59,6 +61,7 @@ import {
   triggerSnippetTextDownload,
   type SnippetLanguage,
 } from "@/lib/apiSnippets";
+import { searchApi } from "@/lib/apiSearch";
 import { FORMSPREE_INTEGRATIONS_ENDPOINT } from "@/lib/formspree";
 import {
   clearFieldError,
@@ -182,6 +185,28 @@ export default function Integrations() {
   const [activeLanguage, setActiveLanguage] =
     useState<SnippetLanguage>("curl");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  // §163 — Search bar for the API documentation section. The raw input
+  // is held in `apiQuery`; we debounce it into `apiSearchTerm` (180ms)
+  // before computing the filter so each keystroke doesn't reflow every
+  // resource card and snippet card. An empty term returns the full
+  // unfiltered view (handled inside searchApi).
+  const [apiQuery, setApiQuery] = useState("");
+  const [apiSearchTerm, setApiSearchTerm] = useState("");
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setApiSearchTerm(apiQuery), 180);
+    return () => window.clearTimeout(id);
+  }, [apiQuery]);
+
+  const apiSearchResult = searchApi(apiSearchTerm);
+  const filteredResources = apiSearchResult.resources;
+  const filteredEndpointRecords = apiSearchResult.endpoints;
+  const apiSearchActive = !apiSearchResult.isEmpty;
+  const noApiSearchMatches =
+    apiSearchActive &&
+    filteredResources.length === 0 &&
+    filteredEndpointRecords.length === 0;
 
   async function handleCopySnippet(key: string, contents: string) {
     try {
@@ -614,8 +639,114 @@ export default function Integrations() {
             ))}
           </div>
 
-          <div className="mt-12 grid grid-cols-12 gap-6">
-            {API_RESOURCES.map((r) => (
+          {/* §163 — Search bar. Filters BOTH the resource cards grid
+              below and the code-snippets cards in 06.b. Debounced 180ms;
+              Esc clears; raw input mirrors what the partner typed so the
+              UI stays responsive between debounce ticks. */}
+          <div className="mt-12">
+            <label
+              htmlFor="api-doc-search"
+              className="sr-only"
+            >
+              Search API documentation
+            </label>
+            <div
+              data-testid="api-doc-search-shell"
+              className="relative flex items-center rounded-full border border-border bg-white shadow-[0_1px_2px_rgba(16,42,75,0.04)] focus-within:border-[color:var(--color-accent-ink)] focus-within:ring-2 focus-within:ring-[color:var(--color-accent-ink)]/20 transition-colors"
+            >
+              <Search
+                className="absolute left-4 size-4 text-[color:var(--color-ink-soft)] pointer-events-none"
+                strokeWidth={1.75}
+                aria-hidden="true"
+              />
+              <input
+                id="api-doc-search"
+                type="search"
+                role="searchbox"
+                inputMode="search"
+                autoComplete="off"
+                spellCheck="false"
+                placeholder="Search endpoints, resources, or code (e.g. 'POST orders' or 'Authorization')…"
+                aria-label="Search the API documentation"
+                data-testid="api-doc-search"
+                value={apiQuery}
+                onChange={(e) => setApiQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    e.preventDefault();
+                    setApiQuery("");
+                    setApiSearchTerm("");
+                  }
+                }}
+                className="flex-1 bg-transparent border-0 outline-none rounded-full pl-11 pr-12 py-3 text-[14px] text-[color:var(--color-ink)] placeholder:text-[color:var(--color-ink-soft)]"
+              />
+              {apiQuery ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setApiQuery("");
+                    setApiSearchTerm("");
+                  }}
+                  data-testid="api-doc-search-clear"
+                  aria-label="Clear API search"
+                  className="btn-press absolute right-3 inline-flex items-center justify-center size-7 rounded-full text-[color:var(--color-ink-soft)] hover:bg-[color:var(--color-paper-soft)] hover:text-[color:var(--color-ink)]"
+                >
+                  <X className="size-4" strokeWidth={1.75} />
+                </button>
+              ) : null}
+            </div>
+            {apiSearchActive ? (
+              <p
+                data-testid="api-doc-search-summary"
+                className="mt-3 text-[12.5px] text-[color:var(--color-ink-soft)]"
+                aria-live="polite"
+              >
+                {filteredResources.length} resource
+                {filteredResources.length === 1 ? "" : "s"} ·{" "}
+                {filteredEndpointRecords.length} endpoint
+                {filteredEndpointRecords.length === 1 ? "" : "s"}
+                {" "}match “{apiSearchTerm}”
+              </p>
+            ) : null}
+          </div>
+
+          {noApiSearchMatches ? (
+            <div
+              data-testid="api-doc-search-empty"
+              role="status"
+              className="mt-12 rounded-[16px] border border-dashed border-border bg-[color:var(--color-paper-soft)] p-10 text-center"
+            >
+              <Search
+                className="mx-auto size-7 text-[color:var(--color-ink-soft)]"
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+              <h3 className="mt-3 font-display text-[18px] text-[color:var(--color-ink)]">
+                No matches for “{apiSearchTerm}”
+              </h3>
+              <p className="mt-2 text-[13px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                Try a verb (GET, POST), a resource name (Orders, Branches),
+                or a snippet keyword (Authorization, fetch, requests).
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setApiQuery("");
+                  setApiSearchTerm("");
+                }}
+                className="btn-press mt-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-4 py-2 text-[12.5px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-paper)]"
+              >
+                <X className="size-3.5" strokeWidth={1.75} />
+                Clear search
+              </button>
+            </div>
+          ) : null}
+
+          <div
+            data-testid="api-resources-grid"
+            className={`mt-12 grid grid-cols-12 gap-6 ${noApiSearchMatches ? "hidden" : ""}`}
+          >
+            {filteredResources.map((r) => (
               <article
                 key={r.slug}
                 data-testid={`api-resource-${r.slug}`}
@@ -707,26 +838,36 @@ export default function Integrations() {
               </div>
             </div>
 
-            <div className="mt-10 grid grid-cols-12 gap-6">
-              {API_RESOURCES.flatMap((resource) =>
-                resource.endpoints.map((endpoint) => {
-                  const key = `${resource.slug}--${endpoint.verb}-${endpoint.path}`;
-                  const snippet = buildSnippet(endpoint, activeLanguage);
-                  const filename = buildSnippetFilename(
+            <div
+              data-testid="api-snippets-grid"
+              className={`mt-10 grid grid-cols-12 gap-6 ${noApiSearchMatches ? "hidden" : ""}`}
+            >
+              {filteredEndpointRecords.map((record) => {
+                const resource = API_RESOURCES.find(
+                  (r) => r.slug === record.resourceSlug,
+                );
+                if (!resource) return null;
+                const endpoint = record.endpoint;
+                const key = `${resource.slug}--${endpoint.verb}-${endpoint.path}`;
+                const snippet = buildSnippet(endpoint, activeLanguage);
+                const filename =
+                  buildSnippetFilename(
                     resource,
                     endpoint,
                     activeLanguage,
-                  ).split("/").pop() ?? "snippet.txt";
-                  const lang = SNIPPET_LANGUAGES.find(
-                    (l) => l.id === activeLanguage,
-                  );
-                  const copied = copiedKey === key;
-                  return (
-                    <article
-                      key={key}
-                      data-testid={`api-snippet-${resource.slug}-${endpoint.verb.toLowerCase()}`}
-                      className="col-span-12 lg:col-span-6 rounded-[16px] border border-border bg-white overflow-hidden"
-                    >
+                  )
+                    .split("/")
+                    .pop() ?? "snippet.txt";
+                const lang = SNIPPET_LANGUAGES.find(
+                  (l) => l.id === activeLanguage,
+                );
+                const copied = copiedKey === key;
+                return (
+                  <article
+                    key={key}
+                    data-testid={`api-snippet-${resource.slug}-${endpoint.verb.toLowerCase()}`}
+                    className="col-span-12 lg:col-span-6 rounded-[16px] border border-border bg-white overflow-hidden"
+                  >
                       <header className="flex items-center justify-between gap-3 border-b border-border bg-[color:var(--color-paper-soft)] px-4 py-3">
                         <div className="flex items-center gap-3 min-w-0">
                           <span className="font-mono font-semibold uppercase tracking-wider text-[11px] rounded-full border border-[color:var(--color-accent-ink)]/30 bg-white px-2 py-0.5 text-[color:var(--color-accent-ink)]">
@@ -785,8 +926,7 @@ export default function Integrations() {
                       </pre>
                     </article>
                   );
-                }),
-              )}
+                })}
             </div>
           </div>
         </div>
