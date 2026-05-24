@@ -1720,3 +1720,9 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Add a dedicated "Request an integration" form on /integrations (who builds it, ATS name + version, monthly volume, contact fields, notes) posting to the shared Formspree endpoint with subject "Integration request — {ATS}"
 - [x] Add vitest coverage for the new form, the PDF generator, and the API reference data model
 - [x] Run full vitest suite + tsc; checkpoint
+## §162 — Downloadable API code snippets on /integrations
+- [x] Build typed snippet generator (curl / node / python) driven off existing apiReference data model
+- [x] Add in-page CodeBlock UI with language tabs + per-snippet copy button + per-endpoint download
+- [x] Add "Download all snippets as ZIP" button at the API Reference section header
+- [x] Lock with vitest: snippet shape per language, page wiring, ZIP manifest, copy/download triggers
+- [x] Full suite + tsc green; checkpoint

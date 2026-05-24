@@ -23,10 +23,14 @@ import { Link } from "wouter";
 import {
   ArrowUpRight,
   BookOpen,
+  Check,
+  Copy,
   Download,
+  FileArchive,
   Loader2,
   Plug,
   RefreshCcw,
+  Terminal,
   Zap,
 } from "lucide-react";
 import SiteShell from "@/components/site/SiteShell";
@@ -45,6 +49,16 @@ import {
   buildApiDocsPdfFilename,
   triggerApiDocsPdfDownload,
 } from "@/lib/apiDocsPdf";
+import {
+  SNIPPET_LANGUAGES,
+  buildSnippet,
+  buildSnippetBundle,
+  buildSnippetBundleFilename,
+  buildSnippetFilename,
+  triggerSnippetBundleDownload,
+  triggerSnippetTextDownload,
+  type SnippetLanguage,
+} from "@/lib/apiSnippets";
 import { FORMSPREE_INTEGRATIONS_ENDPOINT } from "@/lib/formspree";
 import {
   clearFieldError,
@@ -133,6 +147,60 @@ export default function Integrations() {
       );
     } finally {
       setDownloading(false);
+    }
+  }
+
+  // §162 — Snippet bundle state. The 'Download all snippets (ZIP)' button
+  // gathers every endpoint × every language plus a README into a single
+  // archive. Same defensive try/catch/loading pattern as the PDF handler so
+  // a runtime failure surfaces inline rather than silently failing.
+  const [buildingBundle, setBuildingBundle] = useState(false);
+  const [bundleError, setBundleError] = useState<string | null>(null);
+
+  function handleDownloadBundle() {
+    if (buildingBundle) return;
+    setBundleError(null);
+    setBuildingBundle(true);
+    try {
+      const bytes = buildSnippetBundle();
+      triggerSnippetBundleDownload({
+        bytes,
+        filename: buildSnippetBundleFilename(),
+      });
+    } catch (err) {
+      setBundleError(
+        err instanceof Error ? err.message : "Could not build snippet bundle.",
+      );
+    } finally {
+      setBuildingBundle(false);
+    }
+  }
+
+  // §162 — Per-snippet copy + language tab state. We keep this all at the
+  // page level (rather than per-CodeBlock-instance) so the page can be
+  // tested without mounting all 13 endpoint cards.
+  const [activeLanguage, setActiveLanguage] =
+    useState<SnippetLanguage>("curl");
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
+
+  async function handleCopySnippet(key: string, contents: string) {
+    try {
+      if (
+        typeof navigator !== "undefined" &&
+        navigator.clipboard?.writeText
+      ) {
+        await navigator.clipboard.writeText(contents);
+      }
+      setCopiedKey(key);
+      window.setTimeout(
+        () =>
+          setCopiedKey((current) => (current === key ? null : current)),
+        1800,
+      );
+    } catch {
+      // Clipboard write can fail silently in restricted contexts;
+      // we don't surface this as an error toast — the partner can
+      // still click 'Download' to get the bytes.
     }
   }
 
@@ -475,6 +543,25 @@ export default function Integrations() {
                   </>
                 )}
               </button>
+              <button
+                type="button"
+                onClick={handleDownloadBundle}
+                disabled={buildingBundle}
+                data-testid="api-snippets-bundle-download-btn"
+                className="btn-press inline-flex items-center justify-center gap-2 rounded-full border border-[color:var(--color-accent-ink)]/30 bg-white px-5 py-3 text-[13.5px] font-medium text-[color:var(--color-accent-ink)] hover:bg-[color:var(--color-tint)] disabled:opacity-60"
+              >
+                {buildingBundle ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Packaging snippets…
+                  </>
+                ) : (
+                  <>
+                    <FileArchive className="size-4" />
+                    Download all snippets (ZIP)
+                  </>
+                )}
+              </button>
               <a
                 href={API_HOST_PRODUCTION}
                 target="_blank"
@@ -492,6 +579,15 @@ export default function Integrations() {
                   className="text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
                 >
                   {downloadError}
+                </p>
+              ) : null}
+              {bundleError ? (
+                <p
+                  role="alert"
+                  data-testid="api-snippets-bundle-download-error"
+                  className="text-[12.5px] text-[color:var(--color-destructive,#dc2626)]"
+                >
+                  {bundleError}
                 </p>
               ) : null}
             </div>
@@ -555,6 +651,143 @@ export default function Integrations() {
                 </ul>
               </article>
             ))}
+          </div>
+
+          {/* §162 — Code snippets. One CodeBlock per endpoint, language tabs
+              shared across all endpoints (so a partner who picks Python once
+              keeps reading Python). Per-snippet copy + download buttons sit
+              inside the toolbar; the page-level 'Download all snippets (ZIP)'
+              button at the section header bundles the entire matrix. */}
+          <div
+            id="api-snippets"
+            data-testid="api-snippets-section"
+            className="mt-20"
+          >
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div className="max-w-2xl">
+                <p className="eyebrow">06.b — Code snippets</p>
+                <div className="mt-3 hairline" />
+                <h3 className="mt-6 font-display text-[24px] md:text-[28px] leading-[1.15] tracking-[-0.02em] text-[color:var(--color-ink)]">
+                  Paste-ready code for every endpoint.
+                </h3>
+                <p className="mt-3 text-[13.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                  Snippets are generated from the same source of truth as
+                  the on-page reference and the PDF, so they can never
+                  drift. Drop in your credentials and the calls run.
+                </p>
+              </div>
+              <div
+                data-testid="api-snippets-language-tabs"
+                role="tablist"
+                aria-label="Snippet language"
+                className="inline-flex items-center rounded-full border border-border bg-white p-1 shadow-[0_1px_2px_rgba(16,42,75,0.05)]"
+              >
+                {SNIPPET_LANGUAGES.map((lang) => {
+                  const active = lang.id === activeLanguage;
+                  return (
+                    <button
+                      key={lang.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={active}
+                      onClick={() => setActiveLanguage(lang.id)}
+                      data-testid={`api-snippets-lang-${lang.id}`}
+                      className={[
+                        "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[12.5px] font-medium transition-colors duration-150",
+                        active
+                          ? "bg-[color:var(--color-accent-ink)] text-white"
+                          : "text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]",
+                      ].join(" ")}
+                    >
+                      <Terminal className="size-3.5" strokeWidth={1.5} />
+                      {lang.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mt-10 grid grid-cols-12 gap-6">
+              {API_RESOURCES.flatMap((resource) =>
+                resource.endpoints.map((endpoint) => {
+                  const key = `${resource.slug}--${endpoint.verb}-${endpoint.path}`;
+                  const snippet = buildSnippet(endpoint, activeLanguage);
+                  const filename = buildSnippetFilename(
+                    resource,
+                    endpoint,
+                    activeLanguage,
+                  ).split("/").pop() ?? "snippet.txt";
+                  const lang = SNIPPET_LANGUAGES.find(
+                    (l) => l.id === activeLanguage,
+                  );
+                  const copied = copiedKey === key;
+                  return (
+                    <article
+                      key={key}
+                      data-testid={`api-snippet-${resource.slug}-${endpoint.verb.toLowerCase()}`}
+                      className="col-span-12 lg:col-span-6 rounded-[16px] border border-border bg-white overflow-hidden"
+                    >
+                      <header className="flex items-center justify-between gap-3 border-b border-border bg-[color:var(--color-paper-soft)] px-4 py-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span className="font-mono font-semibold uppercase tracking-wider text-[11px] rounded-full border border-[color:var(--color-accent-ink)]/30 bg-white px-2 py-0.5 text-[color:var(--color-accent-ink)]">
+                            {endpoint.verb}
+                          </span>
+                          <code className="font-mono text-[12.5px] text-[color:var(--color-ink)] truncate">
+                            {endpoint.path}
+                          </code>
+                          <span className="hidden md:inline text-[11px] uppercase tracking-wider text-[color:var(--color-ink-soft)]">
+                            · {resource.name}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => handleCopySnippet(key, snippet)}
+                            data-testid={`api-snippet-copy-${resource.slug}-${endpoint.verb.toLowerCase()}`}
+                            aria-label={`Copy ${endpoint.verb} ${endpoint.path} ${lang?.label ?? activeLanguage} snippet`}
+                            className="btn-press inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-[11.5px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-paper-soft)]"
+                          >
+                            {copied ? (
+                              <>
+                                <Check className="size-3.5" />
+                                Copied
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="size-3.5" />
+                                Copy
+                              </>
+                            )}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              triggerSnippetTextDownload({
+                                filename,
+                                contents: snippet,
+                                mimeType:
+                                  lang?.mimeType ?? "text/plain",
+                              })
+                            }
+                            data-testid={`api-snippet-download-${resource.slug}-${endpoint.verb.toLowerCase()}`}
+                            aria-label={`Download ${endpoint.verb} ${endpoint.path} ${lang?.label ?? activeLanguage} snippet`}
+                            className="btn-press inline-flex items-center gap-1.5 rounded-full border border-border bg-white px-2.5 py-1 text-[11.5px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-paper-soft)]"
+                          >
+                            <Download className="size-3.5" />
+                            Download
+                          </button>
+                        </div>
+                      </header>
+                      <pre className="m-0 overflow-x-auto bg-[color:var(--color-ink)] px-5 py-4 text-[12.5px] leading-[1.6] text-[color:var(--color-paper-soft)]">
+                        <code className="font-mono whitespace-pre">
+                          {snippet}
+                        </code>
+                      </pre>
+                    </article>
+                  );
+                }),
+              )}
+            </div>
           </div>
         </div>
       </section>
