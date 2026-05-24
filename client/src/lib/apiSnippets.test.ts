@@ -456,10 +456,14 @@ describe("§162 snippets — browser-glue host", () => {
 describe("§162 snippets — source-of-truth invariants", () => {
   it("apiSnippets.ts never hard-codes the production host literal outside the import", () => {
     // The literal should appear via API_HOST_PRODUCTION, not pasted in
-    // by hand. We allow exactly zero occurrences of the literal string
-    // 'https://dot.precisehire.com/api2' inside apiSnippets.ts itself.
+    // by hand. We allow exactly zero occurrences of either the current
+    // host literal ('https://clients.rapidhiresolutions.com/api2') or
+    // the legacy upstream-vendor host inside apiSnippets.ts itself.
     // (API_HOST_PRODUCTION lives in apiReference.ts; this file only
     // imports it.)
+    expect(SNIPPETS_SRC).not.toContain(
+      "https://clients.rapidhiresolutions.com/api2",
+    );
     expect(SNIPPETS_SRC).not.toContain(
       "https://dot.precisehire.com/api2",
     );

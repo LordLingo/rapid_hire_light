@@ -5,7 +5,7 @@
   /integrations in-page API reference section and the downloadable
   API documentation PDF (see @/lib/apiDocsPdf). The data is
   derived from the canonical reference at
-  https://dot.precisehire.com/docs/home.php?overview — re-running
+  https://clients.rapidhiresolutions.com/docs — re-running
   scripts/build_api_ref.py regenerates this file from a fresh
   scrape.
 
@@ -33,9 +33,9 @@ export type ApiResource = {
 };
 
 export const API_HOST_PRODUCTION =
-  "https://dot.precisehire.com/api2";
+  "https://clients.rapidhiresolutions.com/api2";
 export const API_HOST_STAGING =
-  "https://dot.precisehire.com/staging/api2";
+  "https://clients.rapidhiresolutions.com/staging/api2";
 
 export const API_OVERVIEW = {
   version: "v2",
@@ -47,7 +47,7 @@ export const API_OVERVIEW = {
   authentication:
     "HTTP Basic authentication. Use your Rapid Hire Solutions login credentials as the username/password pair on every request.",
   sampleCurl:
-    "curl -X GET --user user:password https://dot.precisehire.com/api2/packages",
+    "curl -X GET --user user:password https://clients.rapidhiresolutions.com/api2/packages",
 } as const;
 
 export const API_RESOURCES: ApiResource[] = [
@@ -58,7 +58,7 @@ export const API_RESOURCES: ApiResource[] = [
     endpoints: [
       { verb: "GET", path: "/branches" },
     ],
-    markdown: `## Precise Hire, Inc. API v2
+    markdown: `## Rapid Hire Solutions API v2
 
 ### GET /branches
 
@@ -67,7 +67,7 @@ export const API_RESOURCES: ApiResource[] = [
 ##### Example Request
 
 \`\`\`
-	 curl -X GET --user name:password https://dot.precisehire.com/api2/branches
+	 curl -X GET --user name:password https://clients.rapidhiresolutions.com/api2/branches
 \`\`\`
 
 List all searches available to order for client account.
@@ -118,7 +118,7 @@ List all searches available to order for client account.
 ##### Example Request
 
 \`\`\`
-	curl -X GET --user name:password https://dot.precisehire.com/api2/clients
+	curl -X GET --user name:password https://clients.rapidhiresolutions.com/api2/clients
 	
 	
 \`\`\`
@@ -167,7 +167,7 @@ Formal two letter US GET Office state abbreviation of requested county list
 ##### Example Request
 
 \`\`\`
-	 curl -X GET --user name:password https://dot.precisehire.com/api2/counties/hi
+	 curl -X GET --user name:password https://clients.rapidhiresolutions.com/api2/counties/hi
 \`\`\`
 
 ##### Example Response
@@ -220,7 +220,7 @@ Formal two letter US GET Office state abbreviation of requested county list
       { verb: "GET", path: "/healthscreenings" },
       { verb: "POST", path: "/healthscreenings" },
     ],
-    markdown: `## Precise Hire, Inc. API v2
+    markdown: `## Rapid Hire Solutions API v2
 
 ### GET /healthscreenings
 
@@ -974,7 +974,7 @@ Create new order or order price quote.
     endpoints: [
       { verb: "GET", path: "/packages/{id}" },
     ],
-    markdown: `## Precise Hire, Inc. API v2
+    markdown: `## Rapid Hire Solutions API v2
 
 ### GET /packages/ {id}
 
@@ -985,7 +985,7 @@ List all packages available to client account.
 ##### Example Request
 
 \`\`\`
-	 curl -X GET --user name:password https://dot.precisehire.com/api2/packages
+	 curl -X GET --user name:password https://clients.rapidhiresolutions.com/api2/packages
 \`\`\`
 
 #### Example Response
@@ -1155,7 +1155,7 @@ List all packages available to client account.
     endpoints: [
       { verb: "GET", path: "/products" },
     ],
-    markdown: `## Precise Hire, Inc. API v2
+    markdown: `## Rapid Hire Solutions API v2
 
 ### 
 GET
@@ -1167,7 +1167,7 @@ GET
 
 \`\`\`
 
-	curl -X GET --user name:password https://dot.precisehire.com/api2/products
+	curl -X GET --user name:password https://clients.rapidhiresolutions.com/api2/products
 	
 	
 \`\`\`

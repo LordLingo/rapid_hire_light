@@ -152,7 +152,9 @@ describe("§160 — buildApiDocsPdf", () => {
     const bytes = await buildApiDocsPdf();
     const text = await extractPdfText(bytes);
     // pdfjs may break the URL on slashes/dots; check distinctive token.
-    expect(text).toContain("dot.precisehire.com");
+    expect(text).toContain("clients.rapidhiresolutions.com");
+    // Anti-regression: the previous upstream-vendor host must be gone.
+    expect(text).not.toContain("precisehire.com");
   });
 
   it("renders the generatedFor attribution when provided", async () => {

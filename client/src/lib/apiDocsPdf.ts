@@ -534,9 +534,9 @@ export async function buildApiDocsPdf(
     // Render the verbatim docs in block form.
     for (const block of parseBlocks(resource.markdown)) {
       if (block.kind === "h2") {
-        // Skip the "## Precise Hire, Inc. API v2" repeating crumb — it
+        // Skip the "## Rapid Hire Solutions API v2" repeating crumb — it
         // mirrors the header we already drew.
-        if (/^Precise Hire.*API v2$/i.test(block.text)) continue;
+        if (/^Rapid Hire.*API v2$/i.test(block.text)) continue;
         ensureRoom(22);
         drawText(block.text, 12.5, helvBold, INK, 16);
       } else if (block.kind === "h3") {
