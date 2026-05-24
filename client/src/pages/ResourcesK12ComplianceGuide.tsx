@@ -28,6 +28,7 @@ import {
   Download,
   Fingerprint,
   Layers,
+  Linkedin,
   ScrollText,
   Repeat,
   Users,
@@ -47,6 +48,11 @@ import {
   buildK12CompliancePdfFilename,
   triggerK12CompliancePdfDownload,
 } from "@/lib/k12Pdf";
+import {
+  buildLinkedInK12Carousel,
+  buildLinkedInK12CarouselFilename,
+  triggerLinkedInK12CarouselDownload,
+} from "@/lib/linkedinK12Carousel";
 
 const WORKFLOW: {
   n: string;
@@ -157,6 +163,30 @@ export default function ResourcesK12ComplianceGuide() {
     }
   }, [downloadingPdf]);
 
+  /*
+    §164 — LinkedIn carousel template. A second downloadable asset
+    sized 1080 x 1350 (the LinkedIn document-post format). Built from
+    the same K12_COMPLIANCE_MATRIX / K12_FEDERAL_LAYERS / k12MatrixCounts()
+    source-of-truth data the page renders, so any matrix update
+    automatically refreshes the carousel without a separate edit.
+  */
+  const [downloadingCarousel, setDownloadingCarousel] = React.useState(false);
+  const handleDownloadCarousel = React.useCallback(async () => {
+    if (downloadingCarousel) return;
+    setDownloadingCarousel(true);
+    try {
+      const bytes = await buildLinkedInK12Carousel();
+      triggerLinkedInK12CarouselDownload(
+        bytes,
+        buildLinkedInK12CarouselFilename(),
+      );
+    } catch (err) {
+      console.error("k12 linkedin carousel failed", err);
+    } finally {
+      setDownloadingCarousel(false);
+    }
+  }, [downloadingCarousel]);
+
   return (
     <SiteShell>
       {/* 01 — HERO */}
@@ -186,6 +216,21 @@ export default function ResourcesK12ComplianceGuide() {
                 className="h-4 w-4 text-[color:var(--color-brand-blue)]"
               />
               {downloadingPdf ? "Building your PDF…" : "Download PDF"}
+            </button>
+            <button
+              type="button"
+              onClick={handleDownloadCarousel}
+              disabled={downloadingCarousel}
+              data-testid="k12-guide-cta-carousel"
+              className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-ink)]/15 bg-transparent px-5 py-2.5 text-sm font-medium text-[color:var(--color-ink)] transition-colors hover:bg-[color:var(--color-paper-soft)] disabled:opacity-60 disabled:cursor-progress"
+            >
+              <Linkedin
+                aria-hidden
+                className="h-4 w-4 text-[color:var(--color-brand-blue)]"
+              />
+              {downloadingCarousel
+                ? "Building carousel…"
+                : "Download LinkedIn carousel"}
             </button>
             <Link
               href="/blog/k12-school-employee-background-check-requirements"

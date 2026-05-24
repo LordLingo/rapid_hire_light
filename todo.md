@@ -1736,3 +1736,10 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Filter both the resource cards grid and the code snippets cards
 - [x] +vitest specs locking matcher invariants and page wiring
 - [x] Full suite + tsc green; checkpoint
+## §164 — LinkedIn carousel template (K-12 compliance guide)
+- [x] Build `linkedinK12Carousel.ts` generator (10 slides, 1080×1350 portrait, branded paper backgrounds, RHS monogram, accent CTA button, slide-pagination chip)
+- [x] Reuse `K12_COMPLIANCE_MATRIX` / `K12_FEDERAL_LAYERS` / `k12MatrixCounts()` so source-of-truth never drifts
+- [x] Add WinAnsi sanitize() pipe (em-dash, en-dash, ellipsis, smart quotes, NBSP, control chars)
+- [x] Wire "Download LinkedIn carousel" button into `/resources/k12-compliance-guide` hero `afterLede` slot with lucide `Linkedin` icon and disabled loading state
+- [x] Vitest coverage: pure-data slide deck, PDF byte/text/page-geometry checks, pagination chip, monogram + brand line + URL + featured statute citations, sanitize() invariants, filename helper, DI download host glue, page source-pin (helper imports + button testid + lucide icon + afterLede placement)
+- [x] Full suite + tsc green; checkpoint
