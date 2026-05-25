@@ -350,21 +350,29 @@ function Stat({
   value: string;
   context: string;
 }) {
-  // §176 — The three stat cards in this trio sit on a shared grid, but
-  // their eyebrow labels wrap to different line-counts ("States with
-  // cannabis protections" fits on one line, the other two wrap to two).
-  // Without explicit baselines the big numerals and trailing context
-  // copy fall onto different vertical positions across the row.
+  // §176 + §180 — The three stat cards sit on a shared grid, but their
+  // eyebrow labels wrap to different line-counts at the live viewport:
+  // "States with private-sector ban-the-box" wraps to THREE lines, while
+  // "States with cannabis protections" and "States with salary-history
+  // bans" each wrap to two. §176 reserved a 2-line slot, which let the
+  // 3-line label overflow and pushed its big numeral down a row, leaving
+  // the trio looking uneven against the visually tidy 2-line columns.
   //
-  // Fix: make each card a flex-column with three slots whose heights are
-  // pinned independently so the trio reads as a tidy grid:
-  //   1. Eyebrow row reserves enough vertical space for two lines
-  //      (label-min-h is sized in `em` against the eyebrow's 11px / 0.18em
-  //      tracking ladder), so labels of any length share a baseline.
+  // §180 fix: enlarge the eyebrow slot to fit THREE lines so every card
+  // gets the same eyebrow→value→context vertical rhythm regardless of
+  // wrap count. Computed as `lines × leading × em` ≈ 3 × 1.3 = 3.9em,
+  // which gives the 3-line label exact fit and leaves the 2-line cards
+  // with a deliberate top-aligned air pocket so the row reads as a
+  // unified grid (eyebrow tops align, numerals align, context tails
+  // align via `mt-auto`).
+  //
+  // Slot pins:
+  //   1. Eyebrow reserves 3 lines of space (`min-h-[3.9em]` at
+  //      `leading-[1.3]`) so labels of 1, 2, or 3 lines share a baseline.
   //   2. Value sits on a fixed leading box so the big numeral baselines
-  //      always align even when one label wraps and another doesn't.
+  //      always align across the row.
   //   3. Context paragraph is pushed to the bottom with `mt-auto` so the
-  //      tails align too, even if a future stat copy wraps differently.
+  //      trailing copy tails align even when bodies wrap differently.
   return (
     <div
       data-testid="by-state-hero-stat"
@@ -372,7 +380,7 @@ function Stat({
     >
       <p
         data-testid="by-state-hero-stat-label"
-        className="min-h-[2.6em] text-[11px] uppercase tracking-[0.18em] leading-[1.3] text-[color:var(--color-ink-soft)]"
+        className="min-h-[3.9em] text-[11px] uppercase tracking-[0.18em] leading-[1.3] text-[color:var(--color-ink-soft)]"
       >
         {label}
       </p>

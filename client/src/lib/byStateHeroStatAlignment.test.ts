@@ -10,9 +10,13 @@
 
     1. Card root is `flex h-full flex-col` so siblings on the grid row
        all match the tallest card's height.
-    2. Eyebrow has a `min-h-[2.6em]` slot sized for two lines at the
-       configured leading, so single-line and two-line labels share a
-       baseline.
+    2. Eyebrow has a `min-h-[3.9em]` slot sized for THREE lines at the
+       configured leading. §176 originally reserved 2 lines, but the
+       "States with private-sector ban-the-box" eyebrow wraps to 3
+       lines at the live viewport — a 2-line slot let it overflow and
+       knocked the big numeral out of vertical alignment. §180 grows
+       the slot to 3 lines so labels of 1, 2, or 3 lines all share an
+       eyebrow-top baseline.
     3. Value uses a fixed `leading-[1]` line box so the big numeral
        baseline is invariant to the eyebrow's wrap state above it.
     4. Context paragraph is `mt-auto`-anchored to the bottom of the
@@ -60,9 +64,12 @@ describe("§176 — By-state hero stat trio alignment", () => {
     const labelIdx = slice.indexOf('data-testid="by-state-hero-stat-label"');
     expect(labelIdx, "stat label testid present").toBeGreaterThan(-1);
     const label = slice.slice(labelIdx, labelIdx + 600);
-    // 2.6em == 1.3 line-height × 2 lines, large enough for the longest
-    // 2-line wrap ("private-sector ban-the-box") at 11px / 0.18em tracking.
-    expect(label).toMatch(/min-h-\[2\.6em\]/);
+    // 3.9em == 1.3 line-height × 3 lines, large enough for the
+    // "States with private-sector ban-the-box" eyebrow that wraps to
+    // 3 lines at the live viewport. §176's original 2-line slot
+    // (2.6em) was insufficient and is explicitly banned below.
+    expect(label).toMatch(/min-h-\[3\.9em\]/);
+    expect(label).not.toMatch(/min-h-\[2\.6em\]/);
     expect(label).toMatch(/leading-\[1\.3\]/);
     expect(label).toMatch(/text-\[11px\]/);
     expect(label).toMatch(/uppercase tracking-\[0\.18em\]/);
