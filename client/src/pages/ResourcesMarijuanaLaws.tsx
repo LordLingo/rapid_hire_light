@@ -152,7 +152,19 @@ export default function ResourcesMarijuanaLaws() {
             <Stat label="States with recreational legality" value={`${counts.recLegal}`} />
             <Stat label="States with medical programs" value={`${counts.medLegal}`} />
             <Stat label="States with employment protections" value={`${counts.employmentProtections}`} />
-            <Stat label="States that updated in 2024" value={`${counts.pre2024Changes}`} highlight />
+            {/* §177 — Fourth card now uses the same warm-paper surface as the
+                first three. The earlier `highlight` variant painted this card
+                in brand-blue/white, which rendered as a washed-out grey on
+                this hero background and made the eyebrow + value unreadable.
+                Caption swaps to the neutral "2024 cycle" tag so the
+                most-recent-update meaning is preserved without the dark
+                surface. */}
+            <Stat
+              label="States that updated in 2024"
+              value={`${counts.pre2024Changes}`}
+              caption="2024 cycle"
+              icon="leaf"
+            />
           </div>
         }
         belowVisual={
@@ -395,45 +407,49 @@ export default function ResourcesMarijuanaLaws() {
 function Stat({
   label,
   value,
-  highlight = false,
+  caption = "Statute floor",
+  icon = "shield",
 }: {
   label: string;
   value: string;
-  highlight?: boolean;
+  /** Footer label below the numeral. Defaults to "Statute floor". */
+  caption?: string;
+  /** Footer icon. "shield" matches the statute-floor cards;
+   * "leaf" is reserved for the most-recent-cycle card. */
+  icon?: "shield" | "leaf";
 }) {
+  // §177 — All four hero stats now share the warm-paper surface and
+  // ink color tokens. The `highlight` (brand-blue / white-on-dark)
+  // variant was retired here because on this hero background the
+  // brand-blue surface rendered as a washed-out grey and made the
+  // eyebrow, numeral, and caption unreadable.
   return (
     <div
-      className={`p-5 ${
-        highlight
-          ? "bg-[color:var(--color-brand-blue)] text-white"
-          : "bg-[color:var(--color-paper)]"
-      }`}
+      data-testid="marijuana-laws-hero-stat"
+      className="flex h-full flex-col bg-[color:var(--color-paper)] p-5"
     >
       <p
-        className={`text-[11px] uppercase tracking-[0.18em] ${
-          highlight ? "text-white/80" : "text-[color:var(--color-ink-soft)]"
-        }`}
+        data-testid="marijuana-laws-hero-stat-label"
+        className="min-h-[2.6em] text-[11px] uppercase tracking-[0.18em] leading-[1.3] text-[color:var(--color-ink-soft)]"
       >
         {label}
       </p>
       <p
-        className={`mt-2 font-display text-[32px] leading-tight ${
-          highlight ? "text-white" : "text-[color:var(--color-ink)]"
-        }`}
+        data-testid="marijuana-laws-hero-stat-value"
+        className="mt-2 font-display text-[32px] leading-[1] text-[color:var(--color-ink)]"
       >
         {value}
       </p>
       <p
-        className={`mt-2 inline-flex items-center gap-1 text-[12px] leading-snug ${
-          highlight ? "text-white/85" : "text-[color:var(--color-ink-soft)]"
-        }`}
+        data-testid="marijuana-laws-hero-stat-caption"
+        className="mt-auto pt-3 inline-flex items-center gap-1 text-[12px] leading-snug text-[color:var(--color-ink-soft)]"
       >
-        {highlight ? (
+        {icon === "leaf" ? (
           <Leaf className="h-3.5 w-3.5" />
         ) : (
           <ShieldCheck className="h-3.5 w-3.5" />
         )}
-        {highlight ? "Most-recent cycle" : "Statute floor"}
+        {caption}
       </p>
     </div>
   );
