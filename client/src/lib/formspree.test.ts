@@ -18,6 +18,8 @@ import {
   FORMSPREE_FORM_ID,
   FORMSPREE_INTEGRATIONS_ENDPOINT,
   FORMSPREE_INTEGRATIONS_FORM_ID,
+  FORMSPREE_NEWSLETTER_ENDPOINT,
+  FORMSPREE_NEWSLETTER_FORM_ID,
 } from "./formspree";
 
 const ROOT = resolve(__dirname, "..", "..", "..");
@@ -132,11 +134,15 @@ describe("§159 — anti-regression: no stray Formspree URL literals", () => {
   });
 
   it("the shared module is the only place either form id appears as a literal", () => {
-    // Both ids may appear inside the shared module (their declarations and
-    // the audit-trail comment). Outside the module, neither raw id can
-    // appear in non-comment source text.
+    // Every id may appear inside the shared module (their declarations and
+    // the audit-trail comment). Outside the module, no raw id can appear
+    // in non-comment source text.
     const offenders: Array<{ file: string; ids: string[] }> = [];
-    const targets = [FORMSPREE_FORM_ID, FORMSPREE_INTEGRATIONS_FORM_ID];
+    const targets = [
+      FORMSPREE_FORM_ID,
+      FORMSPREE_INTEGRATIONS_FORM_ID,
+      FORMSPREE_NEWSLETTER_FORM_ID,
+    ];
     for (const file of SRC_FILES) {
       if (file === LIB_FILE) continue;
       const text = readFileSync(file, "utf8");
@@ -262,5 +268,70 @@ describe("§159 — ComplianceAudit migration off /api/contact", () => {
   it("packs audit-specific fields with a clear _subject so audit bookings stay identifiable", () => {
     expect(COMPLIANCE_AUDIT).toMatch(/\[Compliance Audit Request\]/);
     expect(COMPLIANCE_AUDIT).toMatch(/_subject:[\s\S]{0,200}Compliance audit request/);
+  });
+});
+
+describe("§168 — dedicated newsletter Formspree inbox (xdajwoqo)", () => {
+  const SUBSCRIBE = read("client/src/pages/Subscribe.tsx");
+
+  it("FORMSPREE_NEWSLETTER_FORM_ID is the live newsletter form id 'xdajwoqo'", () => {
+    expect(FORMSPREE_NEWSLETTER_FORM_ID).toBe("xdajwoqo");
+  });
+
+  it("FORMSPREE_NEWSLETTER_ENDPOINT is the full https URL for that form id", () => {
+    expect(FORMSPREE_NEWSLETTER_ENDPOINT).toBe(
+      "https://formspree.io/f/xdajwoqo",
+    );
+  });
+
+  it("the newsletter endpoint is built from the newsletter form id — not a duplicate literal", () => {
+    expect(FORMSPREE_NEWSLETTER_ENDPOINT).toBe(
+      `https://formspree.io/f/${FORMSPREE_NEWSLETTER_FORM_ID}`,
+    );
+  });
+
+  it("newsletter, sales, and integrations inboxes are three distinct destinations", () => {
+    expect(FORMSPREE_NEWSLETTER_ENDPOINT).not.toBe(FORMSPREE_ENDPOINT);
+    expect(FORMSPREE_NEWSLETTER_ENDPOINT).not.toBe(FORMSPREE_INTEGRATIONS_ENDPOINT);
+    expect(FORMSPREE_NEWSLETTER_FORM_ID).not.toBe(FORMSPREE_FORM_ID);
+    expect(FORMSPREE_NEWSLETTER_FORM_ID).not.toBe(FORMSPREE_INTEGRATIONS_FORM_ID);
+  });
+
+  it("the shared module exports both newsletter constants", () => {
+    expect(FORMSPREE_LIB).toMatch(
+      /export const FORMSPREE_NEWSLETTER_FORM_ID\s*=\s*"xdajwoqo"/,
+    );
+    expect(FORMSPREE_LIB).toMatch(/export const FORMSPREE_NEWSLETTER_ENDPOINT/);
+  });
+
+  it("the newsletter endpoint is built from the form id constant in the shared module", () => {
+    expect(FORMSPREE_LIB).toMatch(
+      /FORMSPREE_NEWSLETTER_ENDPOINT[\s\S]{0,80}formspree\.io\/f\/\$\{FORMSPREE_NEWSLETTER_FORM_ID\}/,
+    );
+  });
+
+  it("Subscribe.tsx imports FORMSPREE_NEWSLETTER_ENDPOINT from @/lib/formspree", () => {
+    expect(SUBSCRIBE).toMatch(
+      /import \{ FORMSPREE_NEWSLETTER_ENDPOINT \} from "@\/lib\/formspree"/,
+    );
+  });
+
+  it("Subscribe.tsx posts to FORMSPREE_NEWSLETTER_ENDPOINT (not the sales/integrations endpoints)", () => {
+    expect(SUBSCRIBE).toMatch(/fetch\(\s*FORMSPREE_NEWSLETTER_ENDPOINT\b/);
+    expect(SUBSCRIBE).not.toMatch(/fetch\(\s*FORMSPREE_ENDPOINT\b/);
+    expect(SUBSCRIBE).not.toMatch(/fetch\(\s*FORMSPREE_INTEGRATIONS_ENDPOINT\b/);
+  });
+
+  it("non-newsletter forms do NOT post to the newsletter endpoint (ring-fence)", () => {
+    // A careless refactor must not route Contact / ComplianceAudit / GetAQuote
+    // / Integrations into the newsletter inbox.
+    for (const [, src] of [
+      ["Contact", CONTACT],
+      ["ComplianceAudit", COMPLIANCE_AUDIT],
+      ["GetAQuote", GET_A_QUOTE],
+      ["Integrations", INTEGRATIONS],
+    ] as const) {
+      expect(src).not.toMatch(/FORMSPREE_NEWSLETTER_ENDPOINT/);
+    }
   });
 });

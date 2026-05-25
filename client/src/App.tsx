@@ -18,6 +18,8 @@ import GetAQuote from "./pages/GetAQuote";
 import About from "./pages/About";
 import Pricing from "./pages/Pricing";
 import Blog from "./pages/Blog";
+import Learn from "./pages/Learn";
+import Subscribe from "./pages/Subscribe";
 import BlogPost from "./pages/BlogPost";
 import BlogTag from "./pages/BlogTag";
 import BlogYear from "./pages/BlogYear";
@@ -65,6 +67,8 @@ function Router() {
       <Route path={"/contact"} component={Contact} />
       <Route path={"/get-a-quote"} component={GetAQuote} />
       <Route path={"/blog"} component={Blog} />
+      <Route path={"/learn"} component={Learn} />
+      <Route path={"/subscribe"} component={Subscribe} />
       <Route path={"/blog/tag/:tag"} component={BlogTag} />
       <Route path={"/blog/year/:year"} component={BlogYear} />
       <Route path={"/blog/:slug"} component={BlogPost} />

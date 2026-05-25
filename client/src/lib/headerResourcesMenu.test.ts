@@ -76,13 +76,14 @@ describe("§79 — NAV carries a single Resources group", () => {
 
   it("each child entry carries a non-empty description string", () => {
     // Pull the RESOURCES_CHILDREN array body and count description
-    // entries — §79 four + §80 two + §81 four = 10.
+    // entries — §79 four + §80 two + §81 four + §168 two
+    // (Learn (videos), Subscribe (newsletter)) = 12.
     const block = HEADER_SRC.match(
       /const RESOURCES_CHILDREN:[^\[]*\[([\s\S]*?)\];/,
     );
     expect(block, "RESOURCES_CHILDREN array must exist").not.toBeNull();
     const descriptions = (block?.[1].match(/description:\s*"/g) ?? []);
-    expect(descriptions.length).toBe(10);
+    expect(descriptions.length).toBe(12);
   });
 });
 

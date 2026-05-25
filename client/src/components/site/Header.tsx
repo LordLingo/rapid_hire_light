@@ -70,6 +70,18 @@ const RESOURCES_CHILDREN: ResourceChild[] = [
       "Long-form references for compliance, operations, and industry programs.",
   },
   {
+    label: "Learn (videos)",
+    href: "/learn",
+    description:
+      "Short, plain-English video explainers — the four-minute version of every guide on the blog.",
+  },
+  {
+    label: "Subscribe (newsletter)",
+    href: "/subscribe",
+    description:
+      "One short email a week — FCRA, state-law, and drug-testing rulings distilled for hiring teams.",
+  },
+  {
     label: "Blog",
     href: "/blog",
     description:

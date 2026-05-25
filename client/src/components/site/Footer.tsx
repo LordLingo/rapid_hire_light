@@ -41,6 +41,11 @@ const COMPANY: FooterItem[] = [
   // pillar, not a tucked-away link.
   { label: "Why SPA?", to: SPA_ROUTE },
   { label: "Blog", to: "/blog" },
+  // §168 — surface the new YouTube-readiness pages from the global footer
+  // so the video hub and the newsletter are reachable from every page,
+  // not only via the Resources mega-menu.
+  { label: "Learn (videos)", to: "/learn" },
+  { label: "Newsletter", to: "/subscribe" },
   { label: "Pricing", to: "/pricing" },
   // §69: surface Industries from the global footer alongside the other
   // top-level routes, so procurement teams can reach a sector-specific

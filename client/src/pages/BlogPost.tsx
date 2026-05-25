@@ -16,6 +16,7 @@ import PostToc from "@/components/site/PostToc";
 import ShareButtons from "@/components/site/ShareButtons";
 import ReadingProgressBar from "@/components/site/ReadingProgressBar";
 import { BlogPostCta } from "@/components/blog/BlogPostCta";
+import BlogPostVideoCta from "@/components/blog/BlogPostVideoCta";
 import {
   formatPublishedDate,
   getPostBySlug,
@@ -172,6 +173,11 @@ export default function BlogPost() {
             <PostToc headings={headings} />
           </div>
           <div className="col-span-12 lg:col-span-9 max-w-3xl">
+            {/* §168 — companion video callout. Renders only when a video in
+                lib/videos.ts targets this slug; otherwise returns null and
+                takes zero space. Sits above the body so the four-minute
+                video lands in the top viewport for visitors who skim. */}
+            <BlogPostVideoCta blogSlug={post.slug} />
             <PostBody markdown={post.body} />
 
             {/* Share */}

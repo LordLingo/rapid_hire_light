@@ -21,6 +21,12 @@
            ATS integration requests don't dilute the sales pipeline. Only
            the /integrations request form posts to this endpoint; all other
            sales/contact forms continue to use mvzyoyoz.
+    §168 — added a third dedicated inbox (xdajwoqo) for newsletter signups
+           on /subscribe. Newsletter opt-ins are passive and have a different
+           downstream flow (export to mailing-list provider, send confirmation
+           email) than the sales pipeline; tagging them at the inbox boundary
+           keeps the sales team's signal-to-noise ratio intact and lets us
+           route signups straight to whoever owns the newsletter.
 */
 
 /**
@@ -50,3 +56,17 @@ export const FORMSPREE_INTEGRATIONS_FORM_ID = "xgoqzprv";
  */
 export const FORMSPREE_INTEGRATIONS_ENDPOINT =
   `https://formspree.io/f/${FORMSPREE_INTEGRATIONS_FORM_ID}` as const;
+
+/**
+ * Dedicated newsletter / mailing-list opt-in inbox.
+ * Used by /subscribe only. Newsletter signups are passive opt-ins and need
+ * a different downstream flow than sales (export to mailing-list provider,
+ * send confirmation email), so they get their own inbox.
+ */
+export const FORMSPREE_NEWSLETTER_FORM_ID = "xdajwoqo";
+
+/**
+ * Full HTTPS endpoint for the newsletter signup form on /subscribe.
+ */
+export const FORMSPREE_NEWSLETTER_ENDPOINT =
+  `https://formspree.io/f/${FORMSPREE_NEWSLETTER_FORM_ID}` as const;

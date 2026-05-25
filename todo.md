@@ -1743,3 +1743,13 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Wire "Download LinkedIn carousel" button into `/resources/k12-compliance-guide` hero `afterLede` slot with lucide `Linkedin` icon and disabled loading state
 - [x] Vitest coverage: pure-data slide deck, PDF byte/text/page-geometry checks, pagination chip, monogram + brand line + URL + featured statute citations, sanitize() invariants, filename helper, DI download host glue, page source-pin (helper imports + button testid + lucide icon + afterLede placement)
 - [x] Full suite + tsc green; checkpoint
+## §168 — YouTube readiness (three follow-ups)
+- [ ] Build a videos registry (`client/src/lib/videos.ts` + `shared/videos.json`) mirroring the `blog.ts` discipline: pure functions, frozen array, slug/title/youtubeId/duration/publishedAt/tags + optional `blogSlug` two-way link
+- [ ] Build the `/learn` hub page: PageHero, tag filter pills, responsive card grid using `lite-youtube-embed` for zero-cost facade loading, CtaBanner at the bottom
+- [ ] Add the `<VideoCard />` component (thumbnail + duration chip + title + tag pill + companion-post link)
+- [ ] Register `/learn` route in `App.tsx`, add to Header + Footer nav
+- [ ] Build the `/subscribe` newsletter signup page: full-bleed PageHero, value prop, three-field Formspree form (email + role + optional company), success state, link from Footer
+- [ ] Build the `<BlogPostVideoCta />` companion callout component: renders only when the current post slug appears in a `BLOG_TO_VIDEO` map; shows thumbnail + "Watch the X-minute version" headline + lite-youtube facade
+- [ ] Wire `<BlogPostVideoCta />` into `BlogPost.tsx` above the body markdown
+- [ ] Author vitest specs: videos registry invariants (no duplicate slugs, no duplicate youtubeIds, valid 11-char id, valid duration format, no orphan blogSlug references), /learn page render with empty + populated states, /subscribe Formspree contract (action url + hidden fields + honeypot), BlogPostVideoCta conditional render
+- [ ] Run full vitest suite + tsc; checkpoint
