@@ -584,8 +584,8 @@ export default function Industries() {
               >
                 Every quote is built by a U.S.-based specialist on our desk
                 in Prosper, Texas — not a portal calculator. Same desk,
-                same hours: Monday through Friday, 7am to 7pm Central, with
-                Saturday on-call.
+                same hours: Monday through Friday, 7am to 7pm Central. Email
+                us over the weekend and a real person replies by 8am Monday.
               </p>
             </div>
             <div className="col-span-12 lg:col-span-5 lg:justify-self-end reveal-on-scroll">

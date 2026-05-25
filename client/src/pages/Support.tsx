@@ -227,12 +227,12 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     q: "What if I need help outside business hours?",
     a: (
       <>
-        Saturdays from 9am–1pm Central we run a smaller on-call shift; you can
-        leave a voicemail any other time and a real person — not a ticket
-        robot — will return your call by 8am Central the next business day.
-        Critical issues (a stalled high-volume hiring queue, an adverse-action
-        deadline) can be flagged in the voicemail to escalate to the on-call
-        lead.
+        Email <a href={`mailto:${SUPPORT_EMAIL}`} className="ink-link">{SUPPORT_EMAIL}</a>{" "}
+        anytime over the weekend or after 7pm Central on a weekday — a real
+        person on the desk in Prosper, Texas reads it first thing Monday
+        morning and you'll have a reply by 8am Central. Flag critical issues
+        (a stalled hiring queue, an adverse-action deadline) in the subject
+        line and we'll escalate to the on-call lead.
       </>
     ),
   },
@@ -278,12 +278,6 @@ export default function Support() {
               ],
               opens: "07:00",
               closes: "19:00",
-            },
-            {
-              "@type": "OpeningHoursSpecification",
-              dayOfWeek: ["Saturday"],
-              opens: "09:00",
-              closes: "13:00",
             },
           ],
         },
@@ -510,12 +504,12 @@ export default function Support() {
                 When the team is on the desk.
               </h2>
               <p className="relative mt-6 max-w-2xl text-[16px] leading-[1.7] text-[color:var(--color-footer-soft-text)]">
-                One Central-time desk, no offshore handoff after hours. If you
-                leave a voicemail, you'll hear back from a real person — not a
-                ticket robot.
+                One Central-time desk, no offshore handoff after hours. Email
+                us over the weekend and a real person — not a ticket robot —
+                replies first thing Monday morning by 8am Central.
               </p>
 
-              <div className="relative mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="relative mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[
                   {
                     label: "Monday – Friday",
@@ -523,14 +517,9 @@ export default function Support() {
                     detail: "Live phone and email",
                   },
                   {
-                    label: "Saturday",
-                    value: "9:00 AM – 1:00 PM Central",
-                    detail: "On-call shift; reduced staff",
-                  },
-                  {
-                    label: "Sunday",
-                    value: "Voicemail",
-                    detail: "Returned Monday by 8am Central",
+                    label: "Weekends",
+                    value: "Email anytime",
+                    detail: "A real person replies by 8am Central, Monday",
                   },
                 ].map((row) => (
                   <div
