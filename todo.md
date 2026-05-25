@@ -1765,19 +1765,19 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Full vitest suite green (1,502/1,502); tsc clean
 
 ## 183. Smooth hover/transition choreography on updated buttons
-- [ ] Add a `.filter-chip-press` utility (in @layer components in index.css) modeled on `.cta-banner-cta` / `.hero-primary-cta` but tuned for chip-tier surfaces: subtle lift (translateY(-2px)), soft sky-halo glow, color swap, all gated behind `prefers-reduced-motion: no-preference`
-- [ ] Apply `.filter-chip-press btn-press` to both stage + scope filter chips on /resources/ban-the-box
-- [ ] Apply `.filter-chip-press btn-press` to both recreational + protection filter chips on /resources/marijuana-laws
-- [ ] Source-pin spec: assert the utility exists, is gated correctly, and is applied to all four chip groups
+- [x] Add a `.filter-chip-press` utility (in @layer components in index.css) modeled on `.cta-banner-cta` / `.hero-primary-cta` but tuned for chip-tier surfaces: subtle lift (translateY(-2px)), soft sky-halo glow, color swap, all gated behind `prefers-reduced-motion: no-preference` — shipped in checkpoint cede5187
+- [x] Apply `.filter-chip-press btn-press` to both stage + scope filter chips on /resources/ban-the-box — shipped in checkpoint cede5187
+- [x] Apply `.filter-chip-press btn-press` to both recreational + protection filter chips on /resources/marijuana-laws — shipped in checkpoint cede5187
+- [x] Source-pin spec: assert the utility exists, is gated correctly, and is applied to all four chip groups — shipped in checkpoint cede5187
 
 ## 184. Site-wide audit for remaining contrast/legibility issues
-- [ ] Grep risk patterns: `var(--color-accent)` used as a button surface (the §181 root cause), `border-border` on resting chips, `text-white` on undefined or pastel token surfaces, `text-ink-soft` on warm tints, low-contrast badges
-- [ ] Triage findings into a fix list
-- [ ] Apply surgical class swaps + add a per-fix source-pin spec
+- [x] Grep risk patterns: `var(--color-accent)` used as a button surface (the §181 root cause), `border-border` on resting chips, `text-white` on undefined or pastel token surfaces, `text-ink-soft` on warm tints, low-contrast badges — shipped in checkpoint cede5187 (audit identified two ban-the-box CTAs that were still using the broken `--color-accent` surface)
+- [x] Triage findings into a fix list — shipped in checkpoint cede5187
+- [x] Apply surgical class swaps + add a per-fix source-pin spec — shipped in checkpoint cede5187 (Get-a-fair-chance-ready-quote + Get-started CTAs both moved to brand-blue/white with .hero-primary-cta polish; anti-regression specs ban `--color-accent` as a button surface site-wide and ban pastel-bg + text-white pairings anywhere in pages/ or components/)
 
-- [ ] §185 — Apply smooth hover/transition choreography to main navigation menu links (match .filter-chip-press easing/duration; reduced-motion gated; focus-visible ring preserved)
-- [ ] §186 — Audit footer links + all form input fields against §184 contrast/legibility rules; fix any pastel-bg+text-white pairings, undefined-token surfaces, or near-invisible borders
-- [ ] §187 — Sweep all /resources/* pages and unify text alignment + card heights so eyebrow→number→body baselines and card row heights match across the entire resources hub
+- [x] §185 — Apply smooth hover/transition choreography to main navigation menu links (match .filter-chip-press easing/duration; reduced-motion gated; focus-visible ring preserved) — shipped in checkpoint 2ee13336 (.nav-link-press utility on NavLink, ResourcesMenu trigger, MobileNavLink)
+- [x] §186 — Audit footer links + all form input fields against §184 contrast/legibility rules; fix any pastel-bg+text-white pairings, undefined-token surfaces, or near-invisible borders — shipped in checkpoint 2ee13336 (audit confirmed clean; anti-regression specs installed)
+- [x] §187 — Sweep all /resources/* pages and unify text alignment + card heights so eyebrow→number→body baselines and card row heights match across the entire resources hub — shipped in checkpoint 2ee13336 (applied `flex h-full flex-col` + `min-h-[3.9em]` eyebrow + `mt-auto` body to K12, LegislativeUpdates, WhitePapers, Benchmarks, StatePage)
 
 - [x] §188 — Replace placeholder integrations on /integrations with canonical 33-partner list (from user screenshots) and remove non-listed entries
 
