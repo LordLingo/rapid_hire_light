@@ -158,36 +158,36 @@ export default function ResourcesBenchmarks() {
         }
         visual={
           <div className="grid grid-cols-3 gap-px bg-[color:var(--color-ink)]/10">
-            <div className="bg-[color:var(--color-paper)] p-5">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-soft)]">
+            <div className="flex h-full flex-col bg-[color:var(--color-paper)] p-5">
+              <p className="text-[11px] uppercase tracking-[0.18em] leading-[1.3] min-h-[3.9em] text-[color:var(--color-ink-soft)]">
                 Median TAT
               </p>
-              <p className="mt-2 font-display text-[28px] leading-tight text-[color:var(--color-ink)]">
+              <p className="mt-2 font-display text-[28px] leading-[1] text-[color:var(--color-ink)]">
                 1.5d
               </p>
-              <p className="mt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
+              <p className="mt-auto pt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
                 For the full standard package
               </p>
             </div>
-            <div className="bg-[color:var(--color-paper)] p-5">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-soft)]">
+            <div className="flex h-full flex-col bg-[color:var(--color-paper)] p-5">
+              <p className="text-[11px] uppercase tracking-[0.18em] leading-[1.3] min-h-[3.9em] text-[color:var(--color-ink-soft)]">
                 Dispute rate
               </p>
-              <p className="mt-2 font-display text-[28px] leading-tight text-[color:var(--color-ink)]">
+              <p className="mt-2 font-display text-[28px] leading-[1] text-[color:var(--color-ink)]">
                 0.6%
               </p>
-              <p className="mt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
+              <p className="mt-auto pt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
                 Of all completed reports
               </p>
             </div>
-            <div className="bg-[color:var(--color-paper)] p-5">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-soft)]">
+            <div className="flex h-full flex-col bg-[color:var(--color-paper)] p-5">
+              <p className="text-[11px] uppercase tracking-[0.18em] leading-[1.3] min-h-[3.9em] text-[color:var(--color-ink-soft)]">
                 Adverse-action rate
               </p>
-              <p className="mt-2 font-display text-[28px] leading-tight text-[color:var(--color-ink)]">
+              <p className="mt-2 font-display text-[28px] leading-[1] text-[color:var(--color-ink)]">
                 7.4%
               </p>
-              <p className="mt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
+              <p className="mt-auto pt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
                 Aggregate across sectors
               </p>
             </div>

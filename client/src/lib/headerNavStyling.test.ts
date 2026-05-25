@@ -48,8 +48,12 @@ describe("§136 — Header nav menu styling refresh", () => {
   describe("NavLink (desktop primary nav)", () => {
     it("uses 14px / font-medium / tracking-tight on inactive items", () => {
       // The NavLink className opens with the typography string we pin.
+      // §185: the inline `transition-colors duration-200 ease-out`
+      // directive moved into the .nav-link-press utility class so the
+      // easing curve is shared with chips + CTAs site-wide. The
+      // remaining typography string still pins font-size / tracking.
       expect(SRC).toMatch(
-        /group relative whitespace-nowrap text-\[14px\] tracking-tight transition-colors duration-200 ease-out/,
+        /nav-link-press group relative whitespace-nowrap text-\[14px\] tracking-tight/,
       );
       // Inactive branch carries font-medium so unselected nav items have
       // visible weight (the previous default-weight was too quiet).
@@ -78,12 +82,13 @@ describe("§136 — Header nav menu styling refresh", () => {
       );
     });
 
-    it("hover rail grows from center (origin-center) and uses the snappy 180ms ease-out curve", () => {
+    it("hover rail grows from center (origin-center) and uses the snappy 200ms cubic-bezier curve", () => {
       expect(SRC).toMatch(/origin-center/);
-      // `duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]` per the
-      // design-system animation guide.
+      // §185: the rail timing was bumped from 180ms to 200ms to match
+      // the canonical .filter-chip-press / .hero-primary-cta easing
+      // grid; same cubic-bezier curve.
       expect(SRC).toMatch(
-        /transition-transform duration-\[180ms\] ease-\[cubic-bezier\(0\.23,1,0\.32,1\)\]/,
+        /transition-transform duration-\[200ms\] ease-\[cubic-bezier\(0\.23,1,0\.32,1\)\]/,
       );
     });
   });
@@ -101,8 +106,12 @@ describe("§136 — Header nav menu styling refresh", () => {
         but a closing quote so we don't accidentally span across
         adjacent className strings).
       */
+      // §185: the inline transition-colors+duration directive was
+      // hoisted into the .nav-link-press utility class so both NavLink
+      // and the Resources trigger now open with `nav-link-press group
+      // relative ...`. We pin both occurrences.
       const matches = SRC.match(
-        /group relative[^"]*?whitespace-nowrap text-\[14px\] tracking-tight transition-colors duration-200 ease-out/g,
+        /nav-link-press group relative[^"]*?whitespace-nowrap text-\[14px\] tracking-tight/g,
       );
       expect(matches).not.toBeNull();
       expect((matches as RegExpMatchArray).length).toBeGreaterThanOrEqual(2);

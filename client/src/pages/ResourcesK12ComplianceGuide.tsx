@@ -535,30 +535,35 @@ function Stat({
   value: string;
   highlight?: boolean;
 }) {
+  // §187 — baseline alignment: turn each Stat cell into a flex-col
+  // with three slots that are independent of label line-count, so the
+  // big number sits on a shared baseline across the row regardless
+  // of how the eyebrow wraps. Same shape as the by-state and
+  // marijuana-laws pages after §180.
   return (
     <div
-      className={`p-5 ${
+      className={`flex h-full flex-col p-5 ${
         highlight
           ? "bg-[color:var(--color-brand-blue)] text-white"
           : "bg-[color:var(--color-paper)]"
       }`}
     >
       <p
-        className={`text-[11px] uppercase tracking-[0.18em] ${
+        className={`text-[11px] uppercase tracking-[0.18em] leading-[1.3] min-h-[3.9em] ${
           highlight ? "text-white/80" : "text-[color:var(--color-ink-soft)]"
         }`}
       >
         {label}
       </p>
       <p
-        className={`mt-2 font-display text-[32px] leading-tight ${
+        className={`mt-2 font-display text-[32px] leading-[1] ${
           highlight ? "text-white" : "text-[color:var(--color-ink)]"
         }`}
       >
         {value}
       </p>
       <p
-        className={`mt-2 inline-flex items-center gap-1 text-[12px] leading-snug ${
+        className={`mt-auto pt-2 inline-flex items-center gap-1 text-[12px] leading-snug ${
           highlight ? "text-white/85" : "text-[color:var(--color-ink-soft)]"
         }`}
       >

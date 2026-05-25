@@ -1774,3 +1774,7 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [ ] Grep risk patterns: `var(--color-accent)` used as a button surface (the §181 root cause), `border-border` on resting chips, `text-white` on undefined or pastel token surfaces, `text-ink-soft` on warm tints, low-contrast badges
 - [ ] Triage findings into a fix list
 - [ ] Apply surgical class swaps + add a per-fix source-pin spec
+
+- [ ] §185 — Apply smooth hover/transition choreography to main navigation menu links (match .filter-chip-press easing/duration; reduced-motion gated; focus-visible ring preserved)
+- [ ] §186 — Audit footer links + all form input fields against §184 contrast/legibility rules; fix any pastel-bg+text-white pairings, undefined-token surfaces, or near-invisible borders
+- [ ] §187 — Sweep all /resources/* pages and unify text alignment + card heights so eyebrow→number→body baselines and card row heights match across the entire resources hub

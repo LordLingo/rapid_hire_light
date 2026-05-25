@@ -471,7 +471,13 @@ function NavLink({
       aria-current={active ? "page" : undefined}
       data-active={active ? "true" : undefined}
       className={[
-        "group relative whitespace-nowrap text-[14px] tracking-tight transition-colors duration-200 ease-out",
+        // §185 — nav-link choreography upgraded to match the
+        // .filter-chip-press / .hero-primary-cta easing curve so the
+        // hover feel is consistent across the whole site. Color +
+        // transform animate together on the snappy curve; the lift is
+        // gated to motion-safe so reduced-motion users never get the
+        // translate but do still get the color/rail transitions.
+        "nav-link-press group relative whitespace-nowrap text-[14px] tracking-tight",
         active
           ? "font-semibold text-[color:var(--color-ink)]"
           : "font-medium text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] focus-visible:text-[color:var(--color-ink)]",
@@ -488,7 +494,7 @@ function NavLink({
         <span
           aria-hidden
           data-testid="nav-hover-rail"
-          className="pointer-events-none absolute left-0 right-0 -bottom-1.5 h-[2px] origin-center rounded-full bg-[color:var(--color-accent-ink)] scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
+          className="pointer-events-none absolute left-0 right-0 -bottom-1.5 h-[2.5px] origin-center rounded-full bg-[color:var(--color-accent-ink)] scale-x-0 group-hover:scale-x-100 group-focus-visible:scale-x-100 transition-transform duration-[200ms] ease-[cubic-bezier(0.23,1,0.32,1)]"
         />
       )}
     </Link>
@@ -572,7 +578,9 @@ function ResourcesMenu({
           // §136: same typography + animated-rail treatment as NavLink so
           // the trigger reads as a peer of the other items, not as a
           // distinct UI primitive.
-          "group relative inline-flex items-center gap-1 whitespace-nowrap text-[14px] tracking-tight transition-colors duration-200 ease-out",
+          // §185: upgraded to .nav-link-press for shared easing curve
+          // and motion-safe lift parity with the rest of the nav.
+          "nav-link-press group relative inline-flex items-center gap-1 whitespace-nowrap text-[14px] tracking-tight",
           active
             ? "font-semibold text-[color:var(--color-ink)]"
             : "font-medium text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] focus-visible:text-[color:var(--color-ink)]",
@@ -597,7 +605,7 @@ function ResourcesMenu({
             aria-hidden
             data-testid="nav-hover-rail"
             className={[
-              "pointer-events-none absolute left-0 right-4 -bottom-1.5 h-[2px] origin-center rounded-full bg-[color:var(--color-accent-ink)] transition-transform duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
+              "pointer-events-none absolute left-0 right-4 -bottom-1.5 h-[2.5px] origin-center rounded-full bg-[color:var(--color-accent-ink)] transition-transform duration-[200ms] ease-[cubic-bezier(0.23,1,0.32,1)]",  // §185
               // §136: keep the hover rail expanded while the panel is
               // open so closing it doesn't feel like the link "un-hit".
               isOpen
@@ -792,7 +800,11 @@ function MobileNavLink({
       aria-current={active ? "page" : undefined}
       data-active={active ? "true" : undefined}
       className={[
-        "relative text-[15px] py-1.5 pl-3 -ml-3 transition-colors",
+        // §185: the mobile nav link gets the same snappy color easing
+        // as the desktop NavLink so transitions read consistent across
+        // breakpoints. No transform-lift here — vertical drag in a
+        // sheet that's already scrollable would feel jittery.
+        "relative text-[15px] py-1.5 pl-3 -ml-3 transition-colors duration-[200ms] ease-[cubic-bezier(0.23,1,0.32,1)] hover:text-[color:var(--color-ink)]",
         active
           ? "font-medium text-[color:var(--color-ink)]"
           : "text-[color:var(--color-ink-soft)]",

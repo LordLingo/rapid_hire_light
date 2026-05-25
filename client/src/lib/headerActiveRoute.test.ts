@@ -83,11 +83,13 @@ describe("Header.tsx — §46 active-marker markup", () => {
     expect((ariaCurrentMatches ?? []).length).toBeGreaterThanOrEqual(2);
   });
 
-  it("renders the desktop active underline as a brand-blue 2px hairline below the baseline", () => {
+  it("renders the desktop active underline as a brand-blue 2.5px hairline below the baseline", () => {
     // Pin the exact marker token so a refactor can't silently swap
     // the brand-blue underline for a generic gray border.
+    // §185: rail height was bumped from 2px to 2.5px so hover and
+    // active rails read at the same weight — spec follows.
     expect(HEADER_SRC).toMatch(
-      /h-\[2px\][^"]*bg-\[color:var\(--color-accent-ink\)\]/
+      /h-\[2\.5px\][^"]*bg-\[color:var\(--color-accent-ink\)\]/
     );
     // Pin that the underline is below the baseline (negative bottom)
     // so the link doesn't shift when becoming active.

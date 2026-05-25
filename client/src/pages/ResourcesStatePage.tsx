@@ -124,17 +124,18 @@ export default function ResourcesStatePage() {
         visual={
           <div className="grid grid-cols-3 gap-px bg-[color:var(--color-ink)]/10">
             {content.heroStats.map((stat) => (
+              // §187 — baseline alignment.
               <div
                 key={stat.label}
-                className="bg-[color:var(--color-paper)] p-5"
+                className="flex h-full flex-col bg-[color:var(--color-paper)] p-5"
               >
-                <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-soft)]">
+                <p className="text-[11px] uppercase tracking-[0.18em] leading-[1.3] min-h-[3.9em] text-[color:var(--color-ink-soft)]">
                   {stat.label}
                 </p>
-                <p className="mt-2 font-display text-[28px] leading-tight text-[color:var(--color-ink)]">
+                <p className="mt-2 font-display text-[28px] leading-[1] text-[color:var(--color-ink)]">
                   {stat.value}
                 </p>
-                <p className="mt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
+                <p className="mt-auto pt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
                   {stat.context}
                 </p>
               </div>
