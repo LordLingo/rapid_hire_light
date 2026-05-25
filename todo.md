@@ -1743,13 +1743,15 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Wire "Download LinkedIn carousel" button into `/resources/k12-compliance-guide` hero `afterLede` slot with lucide `Linkedin` icon and disabled loading state
 - [x] Vitest coverage: pure-data slide deck, PDF byte/text/page-geometry checks, pagination chip, monogram + brand line + URL + featured statute citations, sanitize() invariants, filename helper, DI download host glue, page source-pin (helper imports + button testid + lucide icon + afterLede placement)
 - [x] Full suite + tsc green; checkpoint
-## §168 — YouTube readiness (three follow-ups)
-- [ ] Build a videos registry (`client/src/lib/videos.ts` + `shared/videos.json`) mirroring the `blog.ts` discipline: pure functions, frozen array, slug/title/youtubeId/duration/publishedAt/tags + optional `blogSlug` two-way link
-- [ ] Build the `/learn` hub page: PageHero, tag filter pills, responsive card grid using `lite-youtube-embed` for zero-cost facade loading, CtaBanner at the bottom
-- [ ] Add the `<VideoCard />` component (thumbnail + duration chip + title + tag pill + companion-post link)
-- [ ] Register `/learn` route in `App.tsx`, add to Header + Footer nav
-- [ ] Build the `/subscribe` newsletter signup page: full-bleed PageHero, value prop, three-field Formspree form (email + role + optional company), success state, link from Footer
-- [ ] Build the `<BlogPostVideoCta />` companion callout component: renders only when the current post slug appears in a `BLOG_TO_VIDEO` map; shows thumbnail + "Watch the X-minute version" headline + lite-youtube facade
-- [ ] Wire `<BlogPostVideoCta />` into `BlogPost.tsx` above the body markdown
-- [ ] Author vitest specs: videos registry invariants (no duplicate slugs, no duplicate youtubeIds, valid 11-char id, valid duration format, no orphan blogSlug references), /learn page render with empty + populated states, /subscribe Formspree contract (action url + hidden fields + honeypot), BlogPostVideoCta conditional render
-- [ ] Run full vitest suite + tsc; checkpoint
+## §168 — YouTube readiness (three follow-ups) (DONE — checkpoint 26fb7a7c)
+- [x] Build a videos registry (`client/src/lib/videos.ts`) mirroring the `blog.ts` discipline: pure functions, frozen array, slug/title/youtubeId/duration/publishedAt/tags + optional `blogSlug` two-way link, `PENDING####` sentinel + `isReadyVideo()` for pre-launch placeholder filtering
+- [x] Build the `/learn` hub page: PageHero with dual hero CTAs (YouTube + Newsletter), tag filter pills, responsive video-card grid using a click-to-load YouTube facade (no `lite-youtube-embed` dep, ~30 LOC inline pattern), graceful 'Channel coming soon' empty state for day-1 pre-launch, CtaBanner at the bottom
+- [x] Video card built inline in /learn (thumbnail + duration chip + title + facade-to-iframe upgrade on click + companion-post link when blogSlug set)
+- [x] Register `/learn` route in `App.tsx`, add to Header Resources mega-menu + Footer Company column
+- [x] Build the `/subscribe` newsletter signup page: PageHero, value-prop bullets, three-field Formspree form (email required + role + company optional), honeypot, success state, links to /blog and /learn so it's not a dead-end, posts to dedicated newsletter inbox `xdajwoqo` (not the sales inbox)
+- [x] Add `FORMSPREE_NEWSLETTER_FORM_ID` + `FORMSPREE_NEWSLETTER_ENDPOINT` constants to `lib/formspree.ts` (third inbox alongside sales `mvzyoyoz` and integrations `xgoqzprv`)
+- [x] Build the `<BlogPostVideoCta />` companion callout component: renders only when `getCompanionVideoForBlog(slug)` returns a ready video; shows facade thumbnail + duration chip + 'Watch the X-minute version' headline + Open-on-YouTube external link
+- [x] Wire `<BlogPostVideoCta />` into `BlogPost.tsx` above `<PostBody>` so the video lands in the top viewport
+- [x] Author vitest specs (98 new): videos registry invariants (slug/id uniqueness, charset/length/duration/date/tag patterns, blogSlug → real post lookup, sort order, sentinel patterns), /learn page source-pin (helpers imported, SEO meta, dual hero CTAs, empty-state branch, populated-grid branch, facade gate, App.tsx route ordering, Header + Footer wiring), /subscribe form contract (newsletter endpoint, JSON submit, required email, optional role/company, honeypot, success/error states, no phone field, no cross-routing to sales/integrations endpoints), <BlogPostVideoCta /> contract (helpers imported, null when no companion, facade gate, test ids, external-link safety, BlogPost.tsx integration above PostBody, blogSlug prop wiring, companion mapping data integrity)
+- [x] Bump pre-existing §79 Resources mega-menu count test from 10 → 12 (Learn + Subscribe entries)
+- [x] Full vitest suite green: 1,465/1,465 (+98 new); `tsc --noEmit` clean; checkpoint 26fb7a7c
