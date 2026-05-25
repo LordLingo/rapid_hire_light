@@ -13,8 +13,20 @@ import { ArrowUpRight, Mail, Phone, MapPin, Check, Loader2 } from "lucide-react"
 import { toast } from "sonner";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
-import { ContactCallCard } from "@/components/heroes/HeroCards";
 import HeroMiniStats from "@/components/heroes/HeroMiniStats";
+
+/*
+  §175 — Contact hero photograph.
+
+  Replaces the synthetic ContactCallCard with an editorial-calm photograph
+  that matches the framed-image + overhanging-badge pattern used on
+  /compliance (see complianceHeroBadges.test.ts). The trust signals from
+  the prior call card — "Average pickup: 14s", "Direct extension · no IVR"
+  — are migrated into a floating credibility badge so the page does not
+  lose the responsiveness claim, just the placeholder caller chrome.
+*/
+const CONTACT_HERO_URL =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/contact-hero-NCQW8S8RJYNrqZZjYCgptA.webp";
 // §134: shared field-level validation — surfaces inline red borders
 // (.form-field--invalid) and short helper text per field instead of
 // relying on a single page-level toast for missing data.
@@ -358,7 +370,48 @@ export default function Contact() {
           </>
         }
         lede="Tell us about your hiring volume and the roles you screen for. Our U.S.-based, FCRA-certified team will respond the same business day with a tailored package."
-        visual={<ContactCallCard />}
+        visualBleed
+        visual={
+          <div className="relative w-full">
+            {/* Framed hero photo — owns its own rounded clip so the badge
+                sitting outside this wrapper can overhang the frame edges
+                without being clipped. */}
+            <div className="overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
+              <img
+                src={CONTACT_HERO_URL}
+                alt=""
+                loading="eager"
+                decoding="async"
+                className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
+              />
+            </div>
+            {/* Bottom-left credibility badge — Live answer.
+                Migrates the trust copy from the prior ContactCallCard
+                ("Average pickup: 14 seconds", "Direct extension · no IVR")
+                into a small floating chip that overhangs the frame the
+                way the dispute-rate badge does on /compliance. */}
+            <div
+              data-testid="contact-hero-badge-pickup"
+              className="hidden sm:block absolute -bottom-6 -left-4 md:-bottom-7 md:-left-6 w-[230px] md:w-[244px] rounded-[14px] paper-shadow bg-white px-4 py-3 ring-1 ring-[color:var(--color-border)]"
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  data-testid="contact-hero-badge-pickup-dot"
+                  className="size-2 rounded-full bg-[color:var(--color-accent-ink)] support-status-dot-live"
+                />
+                <p className="text-[10px] tracking-[0.18em] uppercase text-[color:var(--color-ink-muted)]">
+                  Live answer · M–F 7am–7pm CT
+                </p>
+              </div>
+              <p className="mt-1 font-display text-[16px] leading-[1.2] text-[color:var(--color-ink)]">
+                Average pickup 14 seconds
+              </p>
+              <p className="mt-1.5 text-[11px] leading-[1.45] text-[color:var(--color-ink-muted)]">
+                  Direct extension · no IVR · (888) 445-3047
+              </p>
+            </div>
+          </div>
+        }
         belowVisual={<HeroMiniStats page="contact" />}
       />
 
