@@ -65,6 +65,20 @@
   --color-tint: oklch(0.965 0.025 255);             /* pale electric-blue tint (#eff6ff family) */
   --color-accent-ink: oklch(0.62 0.205 256);        /* original brand bright blue ~ #3b82f6 */
   --color-accent-ink-strong: oklch(0.55 0.225 258); /* hover/active deeper variant ~ #2563eb */
+
+  /* §179 — Brand-blue alias. The design language standardized on
+     `--color-accent-ink` as the bright-blue token, but ~55 call-sites
+     across 16 files still reference an older `--color-brand-blue`
+     identifier that was never defined in the theme. Because Tailwind v4
+     resolves `bg-[color:var(--color-brand-blue)]` against this @theme
+     block, an undefined token silently falls back to `currentColor` /
+     transparent — which is what caused the marijuana-laws "All" filter
+     chip and other selected-state callsites to render as a near-paper
+     smudge instead of brand blue. Defining the alias here restores all
+     existing call-sites in one line without forcing a project-wide
+     rename. */
+  --color-brand-blue: var(--color-accent-ink);
+  --color-brand-blue-strong: var(--color-accent-ink-strong);
   --color-accent-halo: oklch(0.85 0.12 250);        /* brighter sky halo (#93c5fd family) */
   --color-accent-on-dark: oklch(0.85 0.12 250);     /* italic-accent / link colour over dark surfaces */
 
