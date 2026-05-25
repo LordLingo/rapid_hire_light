@@ -356,13 +356,15 @@ export default function ResourcesBanTheBox() {
                         <button
                           key={f.value}
                           type="button"
+                          data-testid={`ban-the-box-stage-filter-${f.value}`}
+                          data-active={active}
                           onClick={() => setStageFilter(f.value)}
                           aria-pressed={active}
                           className={
                             "inline-flex items-center rounded-full border px-3.5 py-1.5 text-[13px] transition-colors " +
                             (active
-                              ? "border-[color:var(--color-accent)] bg-[color:var(--color-accent)] text-white"
-                              : "border-border bg-white text-[color:var(--color-ink)] hover:bg-[color:var(--color-paper-soft)]")
+                              ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
+                              : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]")
                           }
                         >
                           {f.label}
@@ -382,13 +384,15 @@ export default function ResourcesBanTheBox() {
                         <button
                           key={f.value}
                           type="button"
+                          data-testid={`ban-the-box-scope-filter-${f.value}`}
+                          data-active={active}
                           onClick={() => setScopeFilter(f.value)}
                           aria-pressed={active}
                           className={
                             "inline-flex items-center rounded-full border px-3.5 py-1.5 text-[13px] transition-colors " +
                             (active
-                              ? "border-[color:var(--color-accent)] bg-[color:var(--color-accent)] text-white"
-                              : "border-border bg-white text-[color:var(--color-ink)] hover:bg-[color:var(--color-paper-soft)]")
+                              ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
+                              : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]")
                           }
                         >
                           {f.label}
