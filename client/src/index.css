@@ -647,6 +647,63 @@
 }
 
 
+/* §183 — Filter-chip hover choreography.
+
+   The Resources filter chips on /resources/ban-the-box and
+   /resources/marijuana-laws use the same selected-state surface as
+   the brand-blue CTAs, but they're chip-sized so the CTA’s
+   translateY(-6px) lift and 30px halo would overshoot. This utility
+   gives the chips their own scaled-down version of the same gesture:
+   a 2px lift, a soft sky-halo glow, and matched color/border/text
+   transitions. Same easing as the CTAs (cubic-bezier(0.23, 1, 0.32,
+   1)) so the language feels unified across button tiers.
+
+   Reduced-motion fallback: color/border/box-shadow swaps still happen
+   so the hover affordance is preserved, but the transform-based lift
+   is suppressed — matching the gating used by the CTAs above. */
+@layer components {
+  .filter-chip-press {
+    transition:
+      background-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform, box-shadow;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .filter-chip-press {
+      transition:
+        background-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        border-color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        color 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        transform 180ms cubic-bezier(0.23, 1, 0.32, 1),
+        box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .filter-chip-press:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 6px 14px -6px color-mix(in oklch, var(--color-accent-halo) 50%, transparent),
+        0 0 0 4px color-mix(in oklch, var(--color-accent-halo) 14%, transparent);
+    }
+    .filter-chip-press:active {
+      transform: translateY(0px) scale(0.97);
+      transition-duration: 110ms;
+    }
+  }
+
+  /* Focus-visible ring is a separate accessibility concern — keep the
+     ring sky-halo'd at 3px so keyboard users get a strong affordance
+     even when the hover-lift transform is suppressed by reduced motion. */
+  .filter-chip-press:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 3px color-mix(in oklch, var(--color-accent-halo) 32%, transparent),
+      0 0 0 4px color-mix(in oklch, var(--color-accent-ink) 60%, transparent);
+  }
+}
+
+
 /* §50 — Hover polish utilities for cards and images.
 
    Three flavors:

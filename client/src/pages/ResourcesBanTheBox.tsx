@@ -217,7 +217,8 @@ export default function ResourcesBanTheBox() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent)] px-5 py-3 text-[14px] font-medium text-white hover-lift-link"
+              data-testid="ban-the-box-cta-quote"
+              className="hero-primary-cta btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-blue)] hover:bg-[color:var(--color-brand-blue-strong)] px-5 py-3 text-[14px] font-medium text-white"
             >
               Get a fair-chance ready quote
               <ArrowRight className="h-4 w-4" aria-hidden />
@@ -361,7 +362,7 @@ export default function ResourcesBanTheBox() {
                           onClick={() => setStageFilter(f.value)}
                           aria-pressed={active}
                           className={
-                            "inline-flex items-center rounded-full border px-3.5 py-1.5 text-[13px] transition-colors " +
+                            "filter-chip-press inline-flex items-center rounded-full border px-3.5 py-1.5 text-[13px] " +
                             (active
                               ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
                               : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]")
@@ -389,7 +390,7 @@ export default function ResourcesBanTheBox() {
                           onClick={() => setScopeFilter(f.value)}
                           aria-pressed={active}
                           className={
-                            "inline-flex items-center rounded-full border px-3.5 py-1.5 text-[13px] transition-colors " +
+                            "filter-chip-press inline-flex items-center rounded-full border px-3.5 py-1.5 text-[13px] " +
                             (active
                               ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
                               : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]")
@@ -624,7 +625,8 @@ export default function ResourcesBanTheBox() {
               <div className="mt-10 flex flex-wrap items-center gap-3">
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent)] px-5 py-3 text-[14px] font-medium text-white hover-lift-link"
+                  data-testid="ban-the-box-cta-get-started"
+                  className="hero-primary-cta btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-blue)] hover:bg-[color:var(--color-brand-blue-strong)] px-5 py-3 text-[14px] font-medium text-white"
                 >
                   Get started
                   <ArrowRight className="h-4 w-4" aria-hidden />

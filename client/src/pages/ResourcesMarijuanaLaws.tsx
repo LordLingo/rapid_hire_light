@@ -243,7 +243,7 @@ export default function ResourcesMarijuanaLaws() {
                       data-testid={`marijuana-laws-rec-filter-${f}`}
                       data-active={recFilter === f}
                       onClick={() => setRecFilter(f)}
-                      className={`rounded-full border px-3 py-1 text-[12px] transition ${
+                      className={`filter-chip-press inline-flex items-center rounded-full border px-3 py-1 text-[12px] ${
                         recFilter === f
                           ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
                           : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]"
@@ -263,7 +263,7 @@ export default function ResourcesMarijuanaLaws() {
                       data-testid={`marijuana-laws-protection-filter-${f}`}
                       data-active={protectionFilter === f}
                       onClick={() => setProtectionFilter(f)}
-                      className={`rounded-full border px-3 py-1 text-[12px] transition ${
+                      className={`filter-chip-press inline-flex items-center rounded-full border px-3 py-1 text-[12px] ${
                         protectionFilter === f
                           ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
                           : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]"

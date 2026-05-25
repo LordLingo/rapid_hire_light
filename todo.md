@@ -1763,3 +1763,14 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Removed the `ContactCallCard` import from Contact.tsx (the card stays exported for /get-a-quote which still uses it)
 - [x] Wrote `client/src/lib/contactHeroImage.test.ts` — 13 source-pin specs (URL constant, removed import, image src + object-cover, visualBleed opt-in, inner rounded frame, relative wrapper, badge text rows in order, sm:absolute overhang offsets, paper surface tokens, pulse-dot treatment, badge sits above belowVisual, headline + italic accent unchanged, HeroMiniStats slot intact)
 - [x] Full vitest suite green (1,502/1,502); tsc clean
+
+## 183. Smooth hover/transition choreography on updated buttons
+- [ ] Add a `.filter-chip-press` utility (in @layer components in index.css) modeled on `.cta-banner-cta` / `.hero-primary-cta` but tuned for chip-tier surfaces: subtle lift (translateY(-2px)), soft sky-halo glow, color swap, all gated behind `prefers-reduced-motion: no-preference`
+- [ ] Apply `.filter-chip-press btn-press` to both stage + scope filter chips on /resources/ban-the-box
+- [ ] Apply `.filter-chip-press btn-press` to both recreational + protection filter chips on /resources/marijuana-laws
+- [ ] Source-pin spec: assert the utility exists, is gated correctly, and is applied to all four chip groups
+
+## 184. Site-wide audit for remaining contrast/legibility issues
+- [ ] Grep risk patterns: `var(--color-accent)` used as a button surface (the §181 root cause), `border-border` on resting chips, `text-white` on undefined or pastel token surfaces, `text-ink-soft` on warm tints, low-contrast badges
+- [ ] Triage findings into a fix list
+- [ ] Apply surgical class swaps + add a per-fix source-pin spec
