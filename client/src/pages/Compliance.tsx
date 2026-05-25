@@ -337,7 +337,7 @@ function ComplianceCredibilityBar() {
                 U.S. specialist
               </span>{" "}
               <span className="text-[color:var(--color-ink-muted)]">
-                Mon–Fri 7am–7pm CT · Sat on-call
+                Mon–Fri 7am–7pm CT
               </span>
             </p>
           </li>

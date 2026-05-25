@@ -142,7 +142,7 @@ const COMPARISON: ComparisonRow[] = [
   },
   {
     question: "Hours covered live",
-    rapid: "7am–7pm Central, M–F + Sat on-call",
+    rapid: "7am–7pm Central, M–F",
     typical: "Often 9–5 in a single time zone you don't share",
   },
   {

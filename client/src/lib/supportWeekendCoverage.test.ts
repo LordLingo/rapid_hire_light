@@ -82,6 +82,29 @@ describe("Weekend coverage removal (§174)", () => {
     expect(supportSrc).toMatch(/closes:\s*"19:00"/);
   });
 
+  it("Support comparison row no longer claims Saturday on-call", () => {
+    // The "Hours covered live" feature row in the Support comparison
+    // table previously said `7am–7pm Central, M–F + Sat on-call`.
+    // The user asked for the Sat on-call clause gone; the rapid cell
+    // is now flat M–F.
+    expect(supportSrc).not.toMatch(/M–F\s*\+\s*Sat on-call/);
+    expect(supportSrc).toMatch(
+      /question:\s*"Hours covered live",\s*\n\s*rapid:\s*"7am–7pm Central, M–F",/,
+    );
+  });
+
+  it("Compliance page contact row no longer claims Saturday on-call", () => {
+    const compliancePath = path.join(
+      ROOT,
+      "client/src/pages/Compliance.tsx",
+    );
+    const complianceSrc = fs.readFileSync(compliancePath, "utf8");
+    // The U.S.-specialist contact row used to read `Mon–Fri 7am–7pm
+    // CT · Sat on-call`. The Sat on-call half is gone.
+    expect(complianceSrc).not.toMatch(/Sat on-call/);
+    expect(complianceSrc).toMatch(/Mon–Fri 7am–7pm CT/);
+  });
+
   it("Industries CTA paragraph no longer promises Saturday on-call", () => {
     expect(industriesSrc).not.toMatch(/with\s+\n?\s*Saturday on-call/);
     expect(industriesSrc).not.toMatch(/Saturday on-call/);

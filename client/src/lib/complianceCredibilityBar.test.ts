@@ -102,11 +102,13 @@ describe("§68 — items 4 & 5 use Rapid-Hire-truthful copy (not precisehire's)"
     expect(compliance).not.toMatch(/est\.\s*2003/);
   });
 
-  it("item 5 is U.S. specialist Mon–Fri 7am–7pm CT · Sat on-call (matches Support.tsx)", () => {
+  it("item 5 is U.S. specialist Mon–Fri 7am–7pm CT (§174 dropped Sat on-call)", () => {
     expect(compliance).toMatch(/data-testid="compliance-cred-hours"/);
     expect(compliance).toMatch(/U\.S\.\s+specialist/);
     expect(compliance).toMatch(/Mon–Fri\s+7am–7pm\s+CT/);
-    expect(compliance).toMatch(/Sat\s+on-call/);
+    // §174: the Sat on-call clause was removed across the site so
+    // the page no longer advertises weekend live hours.
+    expect(compliance).not.toMatch(/Sat\s+on-call/);
     // Anti-regression: the precisehire-only "8a–8p ET, Sat 9a–1p" hours
     // must not appear anywhere on the page.
     expect(compliance).not.toMatch(/8a–8p\s+ET/);
