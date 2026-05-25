@@ -113,11 +113,18 @@ export default function Services() {
                 </div>
                 <div className="col-span-12 lg:col-span-3">
                   <p className="eyebrow">What&apos;s included</p>
+                  {/*
+                    §170 — Hanging-indent so wrapped lines tuck under the
+                    bullet text rather than under the em-dash. The em-dash
+                    stays inline as a typographic mark; padding-left +
+                    negative text-indent give a clean left rail when the
+                    text wraps in a narrow column.
+                  */}
                   <ul className="mt-3 grid gap-1.5">
                     {s.includes.map((item) => (
                       <li
                         key={item}
-                        className="text-[13.5px] leading-snug text-[color:var(--color-ink-soft)]"
+                        className="text-[13.5px] leading-snug text-[color:var(--color-ink-soft)] pl-[1.4em] -indent-[1.4em]"
                       >
                         — {item}
                       </li>
