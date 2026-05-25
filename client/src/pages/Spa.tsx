@@ -241,17 +241,26 @@ export default function Spa() {
                       >
                         Pillar
                       </th>
-                      <th
-                        scope="col"
-                        className="eyebrow px-6 py-4 text-[color:var(--color-ink-muted)]"
-                      >
-                        Typical legacy vendor
-                      </th>
+                      {/*
+                        §171 — Column order is intentionally
+                        Pillar | Rapid Hire | Typical legacy vendor.
+                        English reads left-to-right, so the brand-blue
+                        "Rapid Hire" header lands as the first comparison
+                        cell a reader's eye hits, putting the
+                        positive/solution statement before the
+                        negative/legacy contrast.
+                      */}
                       <th
                         scope="col"
                         className="eyebrow px-6 py-4 text-[color:var(--color-accent-ink)]"
                       >
                         Rapid Hire
+                      </th>
+                      <th
+                        scope="col"
+                        className="eyebrow px-6 py-4 text-[color:var(--color-ink-muted)]"
+                      >
+                        Typical legacy vendor
                       </th>
                     </tr>
                   </thead>
@@ -274,15 +283,7 @@ export default function Spa() {
                             {row.pillar}
                           </p>
                         </td>
-                        <td className="px-6 py-6 align-top">
-                          <p className="flex gap-3 text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                            <XCircle
-                              aria-hidden
-                              className="mt-0.5 size-4 shrink-0 text-[color:var(--color-ink-muted)]"
-                            />
-                            <span>{row.legacyVendor}</span>
-                          </p>
-                        </td>
+                        {/* §171 — body cells follow the swapped header order. */}
                         <td className="px-6 py-6 align-top">
                           <p className="flex gap-3 text-[15px] leading-[1.7] text-[color:var(--color-ink)]">
                             <CheckCircle2
@@ -290,6 +291,15 @@ export default function Spa() {
                               className="mt-0.5 size-4 shrink-0 text-[color:var(--color-accent-ink)]"
                             />
                             <span>{row.rapidHire}</span>
+                          </p>
+                        </td>
+                        <td className="px-6 py-6 align-top">
+                          <p className="flex gap-3 text-[15px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+                            <XCircle
+                              aria-hidden
+                              className="mt-0.5 size-4 shrink-0 text-[color:var(--color-ink-muted)]"
+                            />
+                            <span>{row.legacyVendor}</span>
                           </p>
                         </td>
                       </tr>
