@@ -240,11 +240,13 @@ export default function ResourcesMarijuanaLaws() {
                   {REC_FILTERS.map((f) => (
                     <button
                       key={f}
+                      data-testid={`marijuana-laws-rec-filter-${f}`}
+                      data-active={recFilter === f}
                       onClick={() => setRecFilter(f)}
                       className={`rounded-full border px-3 py-1 text-[12px] transition ${
                         recFilter === f
                           ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
-                          : "border-[color:var(--color-ink)]/15 bg-[color:var(--color-paper)] text-[color:var(--color-ink-soft)] hover:bg-[color:var(--color-paper-soft)]"
+                          : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]"
                       }`}
                     >
                       {f}
@@ -258,11 +260,13 @@ export default function ResourcesMarijuanaLaws() {
                   {PROTECTION_FILTERS.map((f) => (
                     <button
                       key={f}
+                      data-testid={`marijuana-laws-protection-filter-${f}`}
+                      data-active={protectionFilter === f}
                       onClick={() => setProtectionFilter(f)}
                       className={`rounded-full border px-3 py-1 text-[12px] transition ${
                         protectionFilter === f
                           ? "border-[color:var(--color-brand-blue)] bg-[color:var(--color-brand-blue)] text-white"
-                          : "border-[color:var(--color-ink)]/15 bg-[color:var(--color-paper)] text-[color:var(--color-ink-soft)] hover:bg-[color:var(--color-paper-soft)]"
+                          : "border-[color:var(--color-ink)]/25 bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-ink)]/40 hover:bg-[color:var(--color-paper)]"
                       }`}
                     >
                       {f}
