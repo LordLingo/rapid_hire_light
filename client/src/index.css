@@ -63,8 +63,21 @@
   --color-ink-muted: oklch(0.56 0.012 260);
   --color-rule: oklch(0.92 0.005 85);
   --color-tint: oklch(0.965 0.025 255);             /* pale electric-blue tint (#eff6ff family) */
-  --color-accent-ink: oklch(0.62 0.205 256);        /* original brand bright blue ~ #3b82f6 */
-  --color-accent-ink-strong: oklch(0.55 0.225 258); /* hover/active deeper variant ~ #2563eb */
+  /* §182 — Brand-blue darkened site-wide. The previous values
+     (lightness 0.62 / 0.55) rendered as a pastel cobalt that was too
+     light to carry white text — button labels and selected filter chips
+     across the site (Get-a-Quote, Get-a-fair-chance-quote, ban-the-box
+     filter chips, marijuana-laws filter chips, etc.) read as washed-out
+     near-pastel against a warm paper background. The user explicitly
+     asked for this to be fixed site-wide: darker, more saturated blue
+     so white-on-brand-blue passes legibility at a glance.
+
+     The new lightness anchors the resting state at oklch(0.50) and the
+     hover/strong variant at oklch(0.42), with chroma kept high so the
+     hue still feels like the original cobalt family (blueprint-ink,
+     not navy). Visual reference: ~#2563eb resting / ~#1d4ed8 hover. */
+  --color-accent-ink: oklch(0.50 0.215 259);        /* darkened brand blue ~ #2563eb (was 0.62) */
+  --color-accent-ink-strong: oklch(0.42 0.215 260); /* hover/active deeper variant ~ #1d4ed8 (was 0.55) */
 
   /* §179 — Brand-blue alias. The design language standardized on
      `--color-accent-ink` as the bright-blue token, but ~55 call-sites
