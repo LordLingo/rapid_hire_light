@@ -199,6 +199,8 @@ import { post as postGigEconomy } from "@/content/blog/gig-economy-background-ch
 import { post as postOfacEmployment } from "@/content/blog/ofac-sanctions-screening-employment";
 // §165 — Cannabis-industry employer screening (state worker permits + per-se disqualifying offenses + Schedule III reclassification + FCRA layering)
 import { post as postCannabisEmployer } from "@/content/blog/cannabis-industry-employer-background-checks";
+// §167 — Drug-Free Workplace Act federal-contractor compliance (§8102 seven-element scaffold + §8103 grantee certification + 10-day conviction-notice clock + DOT/state-marijuana stack)
+import { post as postDrugFreeWorkplaceAct } from "@/content/blog/drug-free-workplace-act-federal-contractor-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -328,6 +330,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postGigEconomy,
   postOfacEmployment,
   postCannabisEmployer,
+  postDrugFreeWorkplaceAct,
 ]);
 
 /**
