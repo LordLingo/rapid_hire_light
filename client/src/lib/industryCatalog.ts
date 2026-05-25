@@ -130,7 +130,7 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
         "DQF assembled to 49 CFR §391.51, drug & alcohol program administered to 49 CFR Part 40, FMCSA Clearinghouse queries available on request. We never short-circuit the consortium step to win a turnaround claim.",
     },
     stats: [
-      { value: "1 hr", label: "Median MVR", sub: "single-state, business hours" },
+      { value: "Instant", label: "MVR pulls", sub: "electronic-DMV states · all 50" },
       { value: "24/7", label: "License alerts", sub: "real-time CDL status changes" },
       { value: "Part 40", label: "Drug program", sub: "DOT-compliant by default" },
     ],
