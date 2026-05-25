@@ -13,9 +13,14 @@
     - the rendered markup uses an <img> with object-cover inside the
       original `size-14 rounded-full` envelope, NOT the previous
       `{person.initials}` text node
-    - the placeholder disclaimer was updated to acknowledge BOTH
-      "names" and "photos" are placeholders (otherwise the legal
-      posture lies about the AI faces being real employees)
+    - §173: the user explicitly opted to remove BOTH placeholder
+      disclaimers (the visible italic paragraph below the team grid
+      AND the FAQ entry titled "Is this page describing your real
+      team?") with the understanding that the placeholder names + AI
+      portraits stay in place until a real roster swap. These pins
+      flip from "disclaimer must be present" to "disclaimer must be
+      absent" so a future edit can't silently re-introduce the old
+      copy.
 */
 import fs from "node:fs";
 import path from "node:path";
@@ -92,16 +97,27 @@ describe("Support Desk avatars (§56)", () => {
     expect(supportSrc).not.toMatch(/>\s*\{person\.initials\}\s*</);
   });
 
-  it("disclaimer copy now mentions BOTH names and photos as placeholders", () => {
-    // The legal posture has to be honest: the AI-generated faces
-    // are not real employees, so the disclaimer must say so.
-    expect(supportSrc).toMatch(
-      /Names and photos shown are placeholders[\s\S]*?will be\s*\n?\s*replaced with the live team roster on launch/,
+  it("§173 — visible italic placeholder disclaimer is removed", () => {
+    // The italic paragraph that used to sit below the team grid is
+    // gone. Both the original ("Names shown are placeholders…") and
+    // the expanded ("Names and photos shown are placeholders…")
+    // wordings must be absent so a future visual-editor edit cannot
+    // silently restore either.
+    expect(supportSrc).not.toMatch(
+      /Names and photos shown are placeholders/,
     );
-    // Anti-regression on the old "Names shown are placeholders"
-    // wording (which only covered names).
     expect(supportSrc).not.toMatch(
       /^\s*Names shown are placeholders for this preview/m,
     );
+  });
+
+  it("§173 — placeholder-disclosure FAQ entry is removed", () => {
+    // The FAQ entry titled "Is this page describing your real team?"
+    // is also gone. We pin both the question text and a distinctive
+    // phrase from the answer so neither half can silently return.
+    expect(supportSrc).not.toMatch(
+      /Is this page describing your real team\?/,
+    );
+    expect(supportSrc).not.toMatch(/fabricate identities/);
   });
 });

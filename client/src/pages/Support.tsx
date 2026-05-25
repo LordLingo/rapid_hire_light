@@ -236,17 +236,6 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
       </>
     ),
   },
-  {
-    q: "Is this page describing your real team?",
-    a: (
-      <>
-        The roles, hours, location, and main line are real. The names and
-        photos in <em>The Desk</em> section are placeholders for this preview
-        and will be replaced with the live roster on launch — we'd rather show
-        you the format honestly than fabricate identities.
-      </>
-    ),
-  },
 ];
 
 /* ---------- page ---------- */
@@ -450,12 +439,6 @@ export default function Support() {
                   </article>
                 ))}
               </div>
-
-              <p className="mt-8 max-w-2xl text-[12.5px] italic leading-[1.7] text-[color:var(--color-ink-muted)]">
-                Names and photos shown are placeholders for this preview and
-                will be replaced with the live team roster on launch. The
-                roles, coverage, and main line are real.
-              </p>
             </div>
           </div>
         </div>
