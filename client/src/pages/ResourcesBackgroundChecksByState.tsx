@@ -350,15 +350,42 @@ function Stat({
   value: string;
   context: string;
 }) {
+  // §176 — The three stat cards in this trio sit on a shared grid, but
+  // their eyebrow labels wrap to different line-counts ("States with
+  // cannabis protections" fits on one line, the other two wrap to two).
+  // Without explicit baselines the big numerals and trailing context
+  // copy fall onto different vertical positions across the row.
+  //
+  // Fix: make each card a flex-column with three slots whose heights are
+  // pinned independently so the trio reads as a tidy grid:
+  //   1. Eyebrow row reserves enough vertical space for two lines
+  //      (label-min-h is sized in `em` against the eyebrow's 11px / 0.18em
+  //      tracking ladder), so labels of any length share a baseline.
+  //   2. Value sits on a fixed leading box so the big numeral baselines
+  //      always align even when one label wraps and another doesn't.
+  //   3. Context paragraph is pushed to the bottom with `mt-auto` so the
+  //      tails align too, even if a future stat copy wraps differently.
   return (
-    <div className="bg-[color:var(--color-paper)] p-5">
-      <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-soft)]">
+    <div
+      data-testid="by-state-hero-stat"
+      className="flex h-full flex-col bg-[color:var(--color-paper)] p-5"
+    >
+      <p
+        data-testid="by-state-hero-stat-label"
+        className="min-h-[2.6em] text-[11px] uppercase tracking-[0.18em] leading-[1.3] text-[color:var(--color-ink-soft)]"
+      >
         {label}
       </p>
-      <p className="mt-2 font-display text-[32px] leading-tight text-[color:var(--color-ink)]">
+      <p
+        data-testid="by-state-hero-stat-value"
+        className="mt-2 font-display text-[32px] leading-[1] text-[color:var(--color-ink)]"
+      >
         {value}
       </p>
-      <p className="mt-2 text-[12px] leading-snug text-[color:var(--color-ink-soft)]">
+      <p
+        data-testid="by-state-hero-stat-context"
+        className="mt-auto pt-3 text-[12px] leading-snug text-[color:var(--color-ink-soft)]"
+      >
         {context}
       </p>
     </div>
