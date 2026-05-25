@@ -942,7 +942,7 @@ export default function Support() {
               </em>
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-[16px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-              Trusted by 10,000+ HR &amp; staffing teams · Avg. 20-min report
+              Trusted by 10,000+ HR &amp; staffing teams · Avg. 6.5 hr report
               turnaround · 99.4% on-time SLA.
             </p>
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

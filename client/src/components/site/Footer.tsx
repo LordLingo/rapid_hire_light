@@ -187,7 +187,7 @@ export default function Footer() {
             </span>
           </p>
           <p className="eyebrow text-[color:var(--color-footer-muted)]">
-            Avg. 20-min turnaround · 99.4% on-time SLA
+            Avg. 6.5 hr turnaround · 99.4% on-time SLA
           </p>
         </div>
       </div>
