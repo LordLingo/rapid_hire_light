@@ -5,7 +5,8 @@
   This test reads both files and asserts they agree.
 
   Assertions:
-    - shared/brand.ts URL constants all point at /manus-storage/.
+    - shared/brand.ts URL constants all point at /static/ (§189 — bundled
+      with the Vercel build, no longer dependent on the Manus host).
     - index.html references each of those exact URLs in the right tag:
         - favicon (.ico)
         - apple-touch-icon (180x180)
@@ -28,31 +29,31 @@ const ROOT = path.resolve(__dirname, "../../..");
 const html = fs.readFileSync(path.join(ROOT, "client/index.html"), "utf8");
 
 describe("Brand head meta", () => {
-  // §128: filename patterns loosened from `rhs-*` literals to a generic
-  // /manus-storage/<asset>.<ext> shape so future re-uploads (which always
-  // produce a new filename) don't fail the suite. The cross-file `index.html`
-  // ↔ `shared/brand.ts` agreement test below is the actual enforcement.
-  it("FAVICON_ICO_URL is pinned to a /manus-storage/ .ico", () => {
+  // §189: migrated from /manus-storage/ to /static/ so brand assets ship
+  // with the Vercel build instead of relying on a Manus-only host route.
+  // The cross-file `index.html` ↔ `shared/brand.ts` agreement test below
+  // is the actual enforcement — these regex pins are the bumper.
+  it("FAVICON_ICO_URL is pinned to a /static/ .ico", () => {
     expect(FAVICON_ICO_URL).toMatch(
-      /^\/manus-storage\/[A-Za-z0-9_-]+\.ico$/,
+      /^\/static\/[A-Za-z0-9_-]+\.ico$/,
     );
   });
 
-  it("Apple-touch + PWA icon URLs are pinned to /manus-storage/ PNGs", () => {
+  it("Apple-touch + PWA icon URLs are pinned to /static/ PNGs", () => {
     expect(APPLE_TOUCH_ICON_URL).toMatch(
-      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
+      /^\/static\/[A-Za-z0-9_-]+\.png$/,
     );
     expect(ICON_192_URL).toMatch(
-      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
+      /^\/static\/[A-Za-z0-9_-]+\.png$/,
     );
     expect(ICON_512_URL).toMatch(
-      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
+      /^\/static\/[A-Za-z0-9_-]+\.png$/,
     );
   });
 
-  it("Social card URL is a 1200x630 /manus-storage/ PNG", () => {
+  it("Social card URL is a 1200x630 /static/ PNG", () => {
     expect(SOCIAL_OG_IMAGE_URL).toMatch(
-      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
+      /^\/static\/[A-Za-z0-9_-]+\.png$/,
     );
   });
 

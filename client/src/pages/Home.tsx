@@ -29,8 +29,8 @@ export default function Home() {
         : "https://rapidhiresolutions.com/",
     image:
       typeof window !== "undefined"
-        ? `${window.location.origin}/manus-storage/rhs-og-card_22bd2542.png`
-        : "https://rapidhiresolutions.com/manus-storage/rhs-og-card_22bd2542.png",
+        ? `${window.location.origin}/static/rhs-og-card.png`
+        : "https://rapidhiresolutions.com/static/rhs-og-card.png",
     keywords: [
       "background check services",
       "FCRA-certified background screening",
@@ -49,8 +49,8 @@ export default function Home() {
           : "https://rapidhiresolutions.com",
       logo:
         typeof window !== "undefined"
-          ? `${window.location.origin}/manus-storage/rhs-icon-512_4751a040.png`
-          : "https://rapidhiresolutions.com/manus-storage/rhs-icon-512_4751a040.png",
+          ? `${window.location.origin}/static/rhs-icon-512.png`
+          : "https://rapidhiresolutions.com/static/rhs-icon-512.png",
       description:
         "FCRA-certified background screening for high-volume hiring teams. US-based CRA serving HR, talent acquisition, and operations leaders since 2018.",
       address: {

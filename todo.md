@@ -1781,6 +1781,27 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 
 - [x] §188 — Replace placeholder integrations on /integrations with canonical 33-partner list (from user screenshots) and remove non-listed entries
 
+## 189. Bundle brand assets into client/public/static/ for Vercel
+- [x] Diagnosed: header logo (and 20 other brand assets) referenced as `/manus-storage/{name}_{hash}.{ext}` URLs that only resolve on the Manus webdev host. On Vercel those paths 404, which is why the user saw the broken-image icon next to "Rapid Hire Solutions" after deploying.
+- [x] Inventoried 21 unique hashed asset URLs across 11 source files: rhs5-{color-trimmed,white,favicon,apple-touch-icon,icon-192,icon-512,og-card}, rhs-og-card, rhs-icon-512, spa-hero-{desktop,mobile}.{png,avif,webp}, badge-{soc2-type2,pbsa-member,fcra-aligned}, samplereport, why_us_interview, integrations-infographic
+- [x] Copied all 21 originals from `/home/ubuntu/webdev-static-assets/` into `client/public/static/` (9.4MB total — fine for Vercel; only an issue for Manus deploys per the template README warning, which we accept since the explicit ask was Vercel)
+- [x] Wrote `/tmp/rewrite_manus_storage.sh` with a hashmap of all 21 old→new URLs and ran it across the codebase; rewrote 48 references in 11 files (shared/brand.ts, client/index.html, client/src/pages/{Home,Compliance,Trust,Integrations}.tsx, client/src/components/site/{WhyUs,SampleReportImage}.tsx, plus the integrationsHeroImage spec). Confirmed zero hashed `/manus-storage/...{ext}` references remain.
+- [x] Updated `shared/brand.ts` rationale comment to explain why /static/ is now required (was "Manus-only host route")
+- [x] Updated 6 source-pin specs that hard-coded the old paths as expected values: footerLogo.test.ts (URL regex), headerLogo.test.ts (URL regex), brandHeadMeta.test.ts (4 favicon/icon/og pins), integrationsHeroImage.test.ts (infographic path + alt-text regex), trustPage.test.ts (3 badge URL pins), complianceCredibilityBar.test.ts (3 CRED_BADGES URL pins), homeHeroImage.test.ts (HERO_ASSET_PREFIX regex + sample-report URL pin)
+- [x] Each updated pin now matches `^/static/...$` and carries an inline §189 comment explaining the migration reason
+- [x] checklistPdf.test.ts left alone — its `/manus-storage/RapidHire-24-Point-Compliance-Checklist` reference is a `not.toContain` regression check banning the old static PDF (still valid; the PDF was deleted in §109 in favor of dynamic generation)
+- [x] servicesEducationImage.test.ts left alone — its `/manus-storage/` references are doc-only comments about a different image-storage pipeline
+- [x] Verified all eight bundled assets serve 200 OK from the dev server: /static/rhs5-color-trimmed.png, /static/rhs5-white.png, /static/rhs5-favicon.ico, /static/rhs5-og-card.png, /static/spa-hero-desktop.webp, /static/badge-soc2-type2.webp, /static/samplereport.png, /static/integrations-infographic.png
+- [x] Initial copy attempt blocked at checkpoint save — 5 files exceeded the 1MB-per-file limit (spa-hero-desktop.png 1.4MB, spa-hero-mobile.png 1.5MB, samplereport.png 1.2MB, why_us_interview.png 1.2MB, integrations-infographic.png 2.5MB)
+- [x] Re-encoded the 3 non-hero PNGs to WebP at quality 82 with Pillow (samplereport: 1266 KB → 95 KB / 93% smaller; why_us_interview: 1272 KB → 63 KB / 95% smaller; integrations-infographic: 2527 KB → 192 KB / 92% smaller). Visually identical — these are screenshots/photos where WebP q82 is essentially lossless.
+- [x] Dropped the 2 hero PNG fallbacks entirely (spa-hero-desktop.png, spa-hero-mobile.png) since AVIF (~130KB) and WebP (~115KB) variants were already shipping. WebP has universal browser support in 2026 (Safari 14+, Edge 18+, Chrome 23+, FF 65+) so the PNG fallback was redundant.
+- [x] Repointed `HOME_HERO_IMAGE_URL` and `HOME_HERO_IMAGE_URL_MOBILE` in shared/brand.ts at the WebP variant directly (these constants alias to their `_WEBP` siblings now). Updated the rationale doc-comment to explain the change.
+- [x] Removed the four `<source type="image/png">` entries from Hero.tsx (would have served WebP bytes with a PNG mime, breaking strict browsers). The `<picture>` is now AVIF → WebP per breakpoint with the `<img>` falling back to HOME_HERO_IMAGE_URL (which is the WebP variant).
+- [x] Updated 3 source-pin specs that pinned `.png`: integrationsHeroImage.test.ts (infographic + alt-text regex → .webp), homeHeroImage.test.ts (default-URL extension → .webp, distinct-URL count 6→4, banned `image/png` source mime, dropped PNG-ordering pins), homeHeroImage.test.ts sample-report URL pin → .webp
+- [x] Final dir size: 1.9MB total in client/public/static/, 21 files, largest is rhs5-color-trimmed.png at 304KB — well under the 1MB-per-file limit
+- [x] Verified all 10 sample assets still serve 200 OK (including the new .webp variants for samplereport / why_us_interview / integrations-infographic)
+- [x] Full suite still 1,617/1,617 green; tsc clean
+
 ## 188. Canonical integrations list
 - [x] Read shared/integrations.json (24 placeholder partners), the IntegrationsGrid hero card consumer in HeroCards.tsx, and the page consumer in Integrations.tsx
 - [x] Extracted 33 canonical partner names verbatim from the three customer screenshots (qcIGYJ + trwb1b + XOqBDm) and saved the raw extraction notes to `.canonical-integrations.notes.md`

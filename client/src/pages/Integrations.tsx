@@ -431,7 +431,7 @@ export default function Integrations() {
             >
               <figure className="mx-auto max-w-[560px] overflow-hidden rounded-[20px] border border-border bg-[color:var(--color-paper)] p-3 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_12px_32px_-16px_rgba(16,42,75,0.22)]">
                 <img
-                  src="/manus-storage/integrations-infographic_ad1c2dd4.png"
+                  src="/static/integrations-infographic.webp"
                   alt="Vertical infographic showing how Rapid Hire integrates with ATS and HRIS systems: candidate hire → secure data sync → background check software running identity verification, criminal records, employment verification, and education verification, with status updates flowing back into the ATS/HRIS, ending in saved time, reduced risk, improved efficiency, and a better candidate experience. Footer notes SOC 2 Type II, GDPR compliance, and end-to-end encryption."
                   loading="lazy"
                   decoding="async"

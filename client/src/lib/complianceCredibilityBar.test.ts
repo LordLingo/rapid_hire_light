@@ -39,7 +39,7 @@ describe("§68 — credibility bar mounted between hero and §01", () => {
 });
 
 describe("§68 — three certification badges (soc2 → pbsa → fcra)", () => {
-  it("declares CRED_BADGES in the right order with the /trust slug → /manus-storage badge mapping", () => {
+  it("declares CRED_BADGES in the right order with the /trust slug → /static/ badge mapping", () => {
     const arr = compliance.match(/const CRED_BADGES:[\s\S]*?\];/)?.[0] ?? "";
     expect(arr).toBeTruthy();
     const i1 = arr.indexOf('slug: "soc2"');
@@ -48,10 +48,11 @@ describe("§68 — three certification badges (soc2 → pbsa → fcra)", () => {
     expect(i1).toBeGreaterThan(-1);
     expect(i2).toBeGreaterThan(i1);
     expect(i3).toBeGreaterThan(i2);
-    // Each slug must map to its uploaded /manus-storage badge image.
-    expect(arr).toMatch(/\/manus-storage\/badge-soc2-type2_36054675\.webp/);
-    expect(arr).toMatch(/\/manus-storage\/badge-pbsa-member_4f368a83\.webp/);
-    expect(arr).toMatch(/\/manus-storage\/badge-fcra-aligned_359d4dc8\.webp/);
+    // §189: migrated from /manus-storage/ to /static/ so the assets ship
+    // with the Vercel build. Each slug must map to its bundled badge image.
+    expect(arr).toMatch(/\/static\/badge-soc2-type2\.webp/);
+    expect(arr).toMatch(/\/static\/badge-pbsa-member\.webp/);
+    expect(arr).toMatch(/\/static\/badge-fcra-aligned\.webp/);
   });
 
   it("renders one badge item per CRED_BADGES entry with the parametric testid", () => {

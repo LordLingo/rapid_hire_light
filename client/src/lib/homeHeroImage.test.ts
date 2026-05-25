@@ -3,15 +3,17 @@
   section across pages.
 
   Hero key visual:
-    - HOME_HERO_IMAGE_URL + HOME_HERO_IMAGE_URL_MOBILE both point at the
-      webdev static host.
-    - The desktop + mobile crops also have AVIF and WebP variants
-      (HOME_HERO_IMAGE_URL_AVIF / _WEBP / _MOBILE_AVIF / _MOBILE_WEBP),
-      uploaded by encode_hero_modern.py and named with the right extensions.
+    - HOME_HERO_IMAGE_URL + HOME_HERO_IMAGE_URL_MOBILE point at the WebP
+      variants in the bundled /static/ folder (§189 — PNG fallback dropped
+      because the source PNGs blew the 1MB checkpoint limit; WebP is
+      universal in 2026).
+    - The desktop + mobile crops also have AVIF variants
+      (HOME_HERO_IMAGE_URL_AVIF / _MOBILE_AVIF), uploaded by
+      encode_hero_modern.py and named with the right extensions.
     - Hero.tsx imports all six constants from @shared/brand.
     - Hero.tsx's <picture> declares each format in the right order
-      (AVIF -> WebP -> PNG) and at the right breakpoint (>= 640 / < 640).
-    - The rendered <img> fallback uses the desktop PNG, has a real alt,
+      (AVIF -> WebP) at the right breakpoint (>= 640 / < 640).
+    - The rendered <img> fallback uses the desktop WebP, has a real alt,
       and the competing eyebrow row stays removed.
     - The "View Sample Report" CTA is now an anchor link to #sample-report
       (no toast).
@@ -74,25 +76,23 @@ const pricingSrc = fs.readFileSync(
 // as "spa-hero-{desktop,mobile}.{png,avif,webp}". The asset prefix
 // pattern below allows either historical filename so a future re-upload
 // of either generation continues to satisfy the spec.
-const HERO_ASSET_PREFIX = /^\/manus-storage\/(?:rhs-home-hero|spa-hero)[a-z0-9-]*_[a-z0-9]+/;
+// §189 — path moved from /manus-storage/ to /static/ so the asset ships
+// with the Vercel build instead of relying on a Manus-only host route.
+const HERO_ASSET_PREFIX = /^\/static\/(?:rhs-home-hero|spa-hero)[a-z0-9-]*/;
 
 describe("Home hero key visual — URL constants", () => {
-  it("desktop + mobile PNG URLs both live on the webdev static host", () => {
+  it("desktop + mobile default URLs both live in the bundled /static/ folder as WebP", () => {
+    // §189: default URLs now point at the WebP variant directly (PNG
+    // fallback dropped to fit under the 1MB-per-file checkpoint limit).
     expect(HOME_HERO_IMAGE_URL).toMatch(
-      new RegExp(HERO_ASSET_PREFIX.source + "\\.png$"),
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.webp$"),
     );
     expect(HOME_HERO_IMAGE_URL_MOBILE).toMatch(
-      new RegExp(HERO_ASSET_PREFIX.source + "\\.png$"),
+      new RegExp(HERO_ASSET_PREFIX.source + "\\.webp$"),
     );
   });
 
   it("desktop + mobile AVIF and WebP variants are present, distinct, and end with the right extension", () => {
-    const all = [
-      HOME_HERO_IMAGE_URL_AVIF,
-      HOME_HERO_IMAGE_URL_WEBP,
-      HOME_HERO_IMAGE_URL_MOBILE_AVIF,
-      HOME_HERO_IMAGE_URL_MOBILE_WEBP,
-    ];
     expect(HOME_HERO_IMAGE_URL_AVIF).toMatch(
       new RegExp(HERO_ASSET_PREFIX.source + "\\.avif$"),
     );
@@ -105,12 +105,24 @@ describe("Home hero key visual — URL constants", () => {
     expect(HOME_HERO_IMAGE_URL_MOBILE_WEBP).toMatch(
       new RegExp(HERO_ASSET_PREFIX.source + "\\.webp$"),
     );
-    // Six unique URLs total — none of them collide.
-    const set = new Set([HOME_HERO_IMAGE_URL, HOME_HERO_IMAGE_URL_MOBILE, ...all]);
-    expect(set.size).toBe(6);
+    // §189: 4 unique URLs total — desktop AVIF + WebP, mobile AVIF + WebP.
+    // HOME_HERO_IMAGE_URL{,_MOBILE} now alias to the WebP variants, so the
+    // distinct-URL set is 4, not 6.
+    const set = new Set([
+      HOME_HERO_IMAGE_URL,
+      HOME_HERO_IMAGE_URL_AVIF,
+      HOME_HERO_IMAGE_URL_WEBP,
+      HOME_HERO_IMAGE_URL_MOBILE,
+      HOME_HERO_IMAGE_URL_MOBILE_AVIF,
+      HOME_HERO_IMAGE_URL_MOBILE_WEBP,
+    ]);
+    expect(set.size).toBe(4);
+    // Default URLs alias to their WebP siblings (single source of truth).
+    expect(HOME_HERO_IMAGE_URL).toEqual(HOME_HERO_IMAGE_URL_WEBP);
+    expect(HOME_HERO_IMAGE_URL_MOBILE).toEqual(HOME_HERO_IMAGE_URL_MOBILE_WEBP);
   });
 
-  it("desktop and mobile PNG URLs are distinct (two real crops)", () => {
+  it("desktop and mobile default URLs point at distinct crop files", () => {
     expect(HOME_HERO_IMAGE_URL).not.toEqual(HOME_HERO_IMAGE_URL_MOBILE);
   });
 });
@@ -130,45 +142,42 @@ describe("Hero.tsx <picture> wiring", () => {
     expect(heroSrc).toMatch(/from\s*"@shared\/brand"/);
   });
 
-  it("declares AVIF before WebP before PNG within the desktop breakpoint", () => {
+  it("declares AVIF before WebP within the desktop breakpoint", () => {
+    // §189: PNG <source> dropped (default URL now aliases to WebP).
     const desktopAvif = heroSrc.indexOf(
       'srcSet={HOME_HERO_IMAGE_URL_AVIF}',
     );
     const desktopWebp = heroSrc.indexOf(
       'srcSet={HOME_HERO_IMAGE_URL_WEBP}',
     );
-    // Find the *desktop* PNG <source> (srcSet={HOME_HERO_IMAGE_URL} appears
-    // a second time inside the <img>; we want the first occurrence).
-    const desktopPng = heroSrc.indexOf('srcSet={HOME_HERO_IMAGE_URL}');
     expect(desktopAvif).toBeGreaterThan(-1);
     expect(desktopWebp).toBeGreaterThan(-1);
-    expect(desktopPng).toBeGreaterThan(-1);
     expect(desktopAvif).toBeLessThan(desktopWebp);
-    expect(desktopWebp).toBeLessThan(desktopPng);
   });
 
-  it("declares AVIF before WebP before PNG within the mobile breakpoint", () => {
+  it("declares AVIF before WebP within the mobile breakpoint", () => {
     const mobileAvif = heroSrc.indexOf(
       'srcSet={HOME_HERO_IMAGE_URL_MOBILE_AVIF}',
     );
     const mobileWebp = heroSrc.indexOf(
       'srcSet={HOME_HERO_IMAGE_URL_MOBILE_WEBP}',
     );
-    const mobilePng = heroSrc.indexOf('srcSet={HOME_HERO_IMAGE_URL_MOBILE}');
     expect(mobileAvif).toBeGreaterThan(-1);
     expect(mobileWebp).toBeGreaterThan(-1);
-    expect(mobilePng).toBeGreaterThan(-1);
     expect(mobileAvif).toBeLessThan(mobileWebp);
-    expect(mobileWebp).toBeLessThan(mobilePng);
   });
 
   it("each <source> declares its image type so the browser can pick correctly", () => {
+    // §189: image/png <source> entries removed (the PNG fallback was
+    // dropped to fit under the 1MB-per-file checkpoint limit; default
+    // URLs now alias to the WebP variants).
     expect(heroSrc).toMatch(/type="image\/avif"/);
     expect(heroSrc).toMatch(/type="image\/webp"/);
-    expect(heroSrc).toMatch(/type="image\/png"/);
+    expect(heroSrc).not.toMatch(/type="image\/png"/);
   });
 
-  it("the rendered <img> uses the desktop PNG and has a non-trivial alt", () => {
+  it("the rendered <img> uses the desktop default URL and has a non-trivial alt", () => {
+    // §189: HOME_HERO_IMAGE_URL now points at the WebP variant.
     expect(heroSrc).toMatch(/<img[\s\S]*?src=\{HOME_HERO_IMAGE_URL\}/);
     const altMatch = heroSrc.match(
       /<img[\s\S]*?src=\{HOME_HERO_IMAGE_URL\}[\s\S]*?alt="([^"]+)"/,
@@ -211,7 +220,7 @@ describe("Sample report image reuse across pages (§55)", () => {
     // re-upload only has to change the SAMPLE_REPORT_IMAGE_URL
     // constant; every consumer reads it from there.
     expect(sampleImageSrc).toMatch(
-      /export const SAMPLE_REPORT_IMAGE_URL = "\/manus-storage\/samplereport_08051bd9\.png"/,
+      /export const SAMPLE_REPORT_IMAGE_URL = "\/static\/samplereport\.webp"/,
     );
   });
 

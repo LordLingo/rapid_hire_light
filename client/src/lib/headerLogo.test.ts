@@ -4,7 +4,8 @@
   @shared/brand so the test imports it directly and can't drift.
 
   Assertions:
-    - HEADER_LOGO_URL points at the webdev static host (/manus-storage/...).
+    - HEADER_LOGO_URL points at the bundled /static/ folder so the asset ships
+      with the Vercel build (§189 — /manus-storage/ doesn't resolve there).
     - Header.tsx imports + uses that exact constant.
     - The brand <Link> in the desktop nav routes to "/" with proper
       aria-label.
@@ -25,13 +26,13 @@ function read(rel: string): string {
 describe("Header brand logo", () => {
   const src = read("client/src/components/site/Header.tsx");
 
-  it("HEADER_LOGO_URL points at the webdev static host", () => {
-    // §127: brand owner supplied a new color lockup (rapid-hire-logo).
-    // The constraint is that the asset must be served from /manus-storage/
-    // (the webdev static host) and end in .png; the specific filename slug
-    // is allowed to change whenever the brand asset is re-uploaded.
+  it("HEADER_LOGO_URL points at the bundled /static/ folder", () => {
+    // §189: migrated from /manus-storage/ to /static/ so the asset ships
+    // with the Vercel build. The constraint is that the asset lives under
+    // /static/ and ends in .png; the specific filename slug is allowed to
+    // change whenever the brand asset is re-uploaded.
     expect(HEADER_LOGO_URL).toMatch(
-      /^\/manus-storage\/[a-zA-Z0-9._-]+\.png$/,
+      /^\/static\/[a-zA-Z0-9._-]+\.png$/,
     );
   });
 

@@ -91,8 +91,10 @@ describe("§124.B — user's infographic stays in the handshake section", () => 
     expect(PAGE).toContain('data-testid="integrations-handshake-figure"');
   });
 
-  it("references the user-uploaded infographic at /manus-storage/", () => {
-    expect(PAGE).toContain('src="/manus-storage/integrations-infographic_ad1c2dd4.png"');
+  it("references the user-uploaded infographic at /static/", () => {
+    // §189: migrated from /manus-storage/ to /static/ so the asset ships
+    // with the Vercel build instead of relying on a Manus-only host route.
+    expect(PAGE).toContain('src="/static/integrations-infographic.webp"');
   });
 
   it("figure carries the §121 framing (paper-bg mat, p-3, max-w-[560px], paper-shadow)", () => {
@@ -115,7 +117,7 @@ describe("§124.B — user's infographic stays in the handshake section", () => 
 
   it("alt text is informative (mentions ATS/HRIS, the four checks, security footer)", () => {
     const altMatch = PAGE.match(
-      /integrations-infographic_ad1c2dd4\.png"[\s\S]*?alt="([^"]+)"/,
+      /integrations-infographic\.webp"[\s\S]*?alt="([^"]+)"/,
     );
     expect(altMatch).not.toBeNull();
     const alt = (altMatch![1] ?? "").toLowerCase();

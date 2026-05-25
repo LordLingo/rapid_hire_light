@@ -37,7 +37,7 @@ export default function WhyUs() {
             <div className="relative">
               <div className="hover-zoom-image rounded-[18px] border border-border paper-shadow">
                 <img
-                  src="/manus-storage/why_us_interview_940f946b.png"
+                  src="/static/why_us_interview.webp"
                   alt="A hiring manager shaking hands with a candidate at a sunlit office, with a HIRED sign on the desk."
                   className="w-full h-[420px] md:h-[520px] object-cover"
                   loading="lazy"

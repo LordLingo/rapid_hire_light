@@ -42,11 +42,11 @@ import { useSeo } from "@/hooks/useSeo";
 /* ---------- assets ---------- */
 
 const BADGE_SOC2_URL =
-  "/manus-storage/badge-soc2-type2_36054675.webp";
+  "/static/badge-soc2-type2.webp";
 const BADGE_PBSA_URL =
-  "/manus-storage/badge-pbsa-member_4f368a83.webp";
+  "/static/badge-pbsa-member.webp";
 const BADGE_FCRA_URL =
-  "/manus-storage/badge-fcra-aligned_359d4dc8.webp";
+  "/static/badge-fcra-aligned.webp";
 
 /* ---------- contact constants (kept in sync with Support.tsx voice) ---------- */
 

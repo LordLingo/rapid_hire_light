@@ -213,21 +213,21 @@ type CredItem = {
 const CRED_BADGES: CredItem[] = [
   {
     slug: "soc2",
-    badge: "/manus-storage/badge-soc2-type2_36054675.webp",
+    badge: "/static/badge-soc2-type2.webp",
     title: "SOC 2 Type II",
     caption: "Attested annually",
     alt: "SOC 2 Type II independently attested annually",
   },
   {
     slug: "pbsa",
-    badge: "/manus-storage/badge-pbsa-member_4f368a83.webp",
+    badge: "/static/badge-pbsa-member.webp",
     title: "PBSA Member",
     caption: "In good standing",
     alt: "Professional Background Screening Association — member in good standing",
   },
   {
     slug: "fcra",
-    badge: "/manus-storage/badge-fcra-aligned_359d4dc8.webp",
+    badge: "/static/badge-fcra-aligned.webp",
     title: "FCRA-aligned",
     caption: "15 U.S.C. §1681 workflow",
     alt: "FCRA-aligned screening workflow — Fair Credit Reporting Act",

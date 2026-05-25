@@ -184,13 +184,17 @@ function HeroKeyVisual() {
           negotiates format inside each breakpoint. Browsers walk the
           <source> list top-down and pick the first they can decode whose
           media query matches.
-            - >= 640px: 5:4 desktop crop  (AVIF -> WebP -> PNG fallback)
-            - <  640px: original 1:1 source (AVIF -> WebP -> PNG fallback)
+            - >= 640px: 5:4 desktop crop  (AVIF -> WebP)
+            - <  640px: original 1:1 source (AVIF -> WebP)
           AVIF + WebP cut the LCP image payload from ~1.5 MB to ~100 KB
-          with no visible quality loss; the PNG <img> below remains the
-          universal fallback for browsers that ship neither codec.
-          See encode_hero_modern.py in webdev-static-assets/ for how the
-          AVIF/WebP variants were produced.
+          with no visible quality loss. §189 — the PNG fallback was dropped
+          because (a) the source PNGs blew the 1MB-per-file checkpoint
+          limit on the Manus host and (b) WebP is universally supported
+          across every browser shipping in 2026 (Safari 14+, Edge 18+,
+          Chrome 23+, FF 65+). HOME_HERO_IMAGE_URL{,_MOBILE} now points
+          at the WebP variant directly, which the <img> below uses as
+          the universal fallback. See encode_hero_modern.py in
+          webdev-static-assets/ for how the AVIF/WebP variants were produced.
         */}
         <picture>
           {/* Desktop sources (>= 640px) */}
@@ -208,13 +212,6 @@ function HeroKeyVisual() {
             width={1254}
             height={1003}
           />
-          <source
-            type="image/png"
-            media="(min-width: 640px)"
-            srcSet={HOME_HERO_IMAGE_URL}
-            width={1254}
-            height={1003}
-          />
           {/* Mobile sources (< 640px) */}
           <source
             type="image/avif"
@@ -227,13 +224,6 @@ function HeroKeyVisual() {
             type="image/webp"
             media="(max-width: 639px)"
             srcSet={HOME_HERO_IMAGE_URL_MOBILE_WEBP}
-            width={1254}
-            height={1254}
-          />
-          <source
-            type="image/png"
-            media="(max-width: 639px)"
-            srcSet={HOME_HERO_IMAGE_URL_MOBILE}
             width={1254}
             height={1254}
           />

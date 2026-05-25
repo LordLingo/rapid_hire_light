@@ -27,9 +27,10 @@
     Keyboard:  Enter and Space both open the lightbox (matches button
                semantics). Tab order: card → expand chip → next item.
 
-  The image asset lives at /manus-storage/samplereport_08051bd9.png
-  (uploaded via `manus-upload-file --webdev`). The file is shared as
-  a constant so a future re-upload only changes one source of truth.
+  The image asset lives at /static/samplereport.webp (§189 — re-encoded
+  from PNG to WebP at q82 to fit under the 1MB-per-file checkpoint limit;
+  visually identical, 93% smaller). The URL is shared as a constant so a
+  future re-upload only changes one source of truth.
 */
 import { useState } from "react";
 import { Maximize2, Download } from "lucide-react";
@@ -43,7 +44,7 @@ import {
 // Single source of truth for the sample report asset URL. If the
 // brand owner re-uploads the report (different PDF rev, updated
 // branding), bump this constant and every entry point updates.
-export const SAMPLE_REPORT_IMAGE_URL = "/manus-storage/samplereport_08051bd9.png";
+export const SAMPLE_REPORT_IMAGE_URL = "/static/samplereport.webp";
 
 // Alt text used in BOTH the inline card and the lightbox image. Kept
 // explicit so screen readers convey what the visual is — a sample

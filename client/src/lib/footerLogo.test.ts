@@ -1,11 +1,12 @@
 /*
   Spec: pin the footer logo. The brand owner supplied a white Rapid Hire
-  Solutions logo (rhs-white-logo) that lives on the webdev static host. The
-  URL itself now lives in @shared/brand, so this test imports the constant
-  directly — Footer.tsx and the test can never drift out of sync.
+  Solutions logo (rhs-white-logo) that lives in client/public/static/ so it
+  ships with the build (matters for Vercel where /manus-storage/ doesn't
+  resolve). The URL lives in @shared/brand, so this test imports the
+  constant directly — Footer.tsx and the test can never drift out of sync.
 
   Assertions:
-    - FOOTER_LOGO_URL points at the webdev static host (/manus-storage/...).
+    - FOOTER_LOGO_URL points at the bundled /static/ folder.
     - Footer.tsx imports + uses that exact constant.
     - Brand <Link> still routes to "/" with proper aria-label + alt text.
     - The old inline-SVG placeholder mark is gone.
@@ -23,12 +24,11 @@ function read(rel: string): string {
 describe("Footer brand logo", () => {
   const src = read("client/src/components/site/Footer.tsx");
 
-  it("FOOTER_LOGO_URL points at the webdev static host", () => {
-    // Loosened from the legacy `rhs-white-logo_*.png` pattern in §128 when
-    // the user supplied a new lockup; the only constraint that matters is
-    // that the asset lives on the webdev static host, not its filename.
+  it("FOOTER_LOGO_URL points at the bundled /static/ folder", () => {
+    // §189 — migrated from /manus-storage/ to /static/ so the asset ships
+    // with the Vercel build instead of relying on a Manus-only host route.
     expect(FOOTER_LOGO_URL).toMatch(
-      /^\/manus-storage\/[A-Za-z0-9_-]+\.png$/,
+      /^\/static\/[A-Za-z0-9_-]+\.png$/,
     );
   });
 

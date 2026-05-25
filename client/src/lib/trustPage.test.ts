@@ -93,10 +93,12 @@ describe("badge trio band", () => {
     expect(i3).toBeGreaterThan(i2);
   });
 
-  it("uses the three uploaded /manus-storage badge assets", () => {
-    expect(trust).toMatch(/\/manus-storage\/badge-soc2-type2_36054675\.webp/);
-    expect(trust).toMatch(/\/manus-storage\/badge-pbsa-member_4f368a83\.webp/);
-    expect(trust).toMatch(/\/manus-storage\/badge-fcra-aligned_359d4dc8\.webp/);
+  it("uses the three uploaded /static/ badge assets", () => {
+    // §189: migrated from /manus-storage/ to /static/ so the assets ship
+    // with the Vercel build instead of relying on a Manus-only host route.
+    expect(trust).toMatch(/\/static\/badge-soc2-type2\.webp/);
+    expect(trust).toMatch(/\/static\/badge-pbsa-member\.webp/);
+    expect(trust).toMatch(/\/static\/badge-fcra-aligned\.webp/);
   });
 });
 

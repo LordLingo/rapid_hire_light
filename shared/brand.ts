@@ -18,12 +18,14 @@
   exact same constant, so a future swap touches only this file.
 */
 
-// Brand mark URLs — hosted on the webdev static host. Re-upload via
-// `manus-upload-file --webdev <path>` and replace the URL here when the
-// asset changes; the corresponding *.test.ts files will fail loudly if the
-// constant ever drifts away from "/manus-storage/...".
-export const HEADER_LOGO_URL = "/manus-storage/rhs5-color-trimmed_5cbbb11f.png";
-export const FOOTER_LOGO_URL = "/manus-storage/rhs5-white_4026a964.png";
+// Brand mark URLs — bundled with the build under /static/ so the assets
+// ship to whatever host serves the dist (§189 — was /manus-storage/, but
+// that path is Manus-only and 404s on Vercel). To swap an asset, drop the
+// new file into client/public/static/ and update the path here; the
+// corresponding *.test.ts files will fail loudly if the constant ever
+// drifts away from "/static/...".
+export const HEADER_LOGO_URL = "/static/rhs5-color-trimmed.png";
+export const FOOTER_LOGO_URL = "/static/rhs5-white.png";
 
 // Homepage hero key visual. §142 — swapped to the new SPA brand artwork
 // supplied by the brand owner. The image composes the Rapid Hire Solutions
@@ -38,39 +40,43 @@ export const FOOTER_LOGO_URL = "/manus-storage/rhs5-white_4026a964.png";
 //                      the service strip get clipped on a narrow phone
 //                      screen (1254x1254).
 //
-// Each crop is encoded three ways for `<picture>` source negotiation:
-//   AVIF (best compression on modern browsers) -> WebP (broad support) ->
-//   PNG (universal fallback / used by the <img> element). The PNG URLs
-//   below remain the canonical "truth" of which crop is which; all six
-//   variants are produced by `webdev-static-assets/build_spa_hero.py`.
+// Each crop is encoded for `<picture>` source negotiation:
+//   AVIF (best compression on modern browsers) -> WebP (universal fallback,
+//   supported by every browser shipping in 2026 — Safari 14+, Edge 18+,
+//   Chrome 23+, FF 65+ all decode WebP). The HOME_HERO_IMAGE_URL +
+//   HOME_HERO_IMAGE_URL_MOBILE constants now point at the WebP variant
+//   directly because the source PNGs (1.4MB + 1.5MB) blew the 1MB-per-file
+//   checkpoint limit — §189. WebP at q82 is visually identical to the PNGs
+//   for this artwork. All variants are produced by
+//   `webdev-static-assets/build_spa_hero.py`.
 export const HOME_HERO_IMAGE_URL =
-  "/manus-storage/spa-hero-desktop_980e0ed2.png";
+  "/static/spa-hero-desktop.webp";
 export const HOME_HERO_IMAGE_URL_AVIF =
-  "/manus-storage/spa-hero-desktop_4bda91fd.avif";
+  "/static/spa-hero-desktop.avif";
 export const HOME_HERO_IMAGE_URL_WEBP =
-  "/manus-storage/spa-hero-desktop_b01f329e.webp";
+  "/static/spa-hero-desktop.webp";
 export const HOME_HERO_IMAGE_URL_MOBILE =
-  "/manus-storage/spa-hero-mobile_18b585fe.png";
+  "/static/spa-hero-mobile.webp";
 export const HOME_HERO_IMAGE_URL_MOBILE_AVIF =
-  "/manus-storage/spa-hero-mobile_a1e6ba0f.avif";
+  "/static/spa-hero-mobile.avif";
 export const HOME_HERO_IMAGE_URL_MOBILE_WEBP =
-  "/manus-storage/spa-hero-mobile_2a681c1f.webp";
+  "/static/spa-hero-mobile.webp";
 
 // Social/share preview card. 1200x630 PNG that composes the color mark on a
 // branded background. Wired into <head> via index.html.
-export const SOCIAL_OG_IMAGE_URL = "/manus-storage/rhs5-og-card_3f643ff4.png";
+export const SOCIAL_OG_IMAGE_URL = "/static/rhs5-og-card.png";
 
 // Browser tab favicon. Multi-size .ico (16/32/48/64) generated from the
 // color mark only — the wordmark is unreadable at favicon scale.
-export const FAVICON_ICO_URL = "/manus-storage/rhs5-favicon_dc62a770.ico";
+export const FAVICON_ICO_URL = "/static/rhs5-favicon.ico";
 
 // iOS home-screen icon. 180x180 PNG, transparent background, color mark
 // only (no wordmark — too small to read at 60pt).
-export const APPLE_TOUCH_ICON_URL = "/manus-storage/rhs5-apple-touch-icon_ab5371f6.png";
+export const APPLE_TOUCH_ICON_URL = "/static/rhs5-apple-touch-icon.png";
 
 // Android / PWA maskable icons. 192 + 512 PNGs from the same source.
-export const ICON_192_URL = "/manus-storage/rhs5-icon-192_72d5cd2d.png";
-export const ICON_512_URL = "/manus-storage/rhs5-icon-512_30985797.png";
+export const ICON_192_URL = "/static/rhs5-icon-192.png";
+export const ICON_512_URL = "/static/rhs5-icon-512.png";
 
 // Identity strings — kept here so a name/tagline change can't drift between
 // the header link, the footer link, and the document <title>/meta tags.
