@@ -105,7 +105,10 @@ const STEPS = [
   },
 ];
 
-const CATS = ["All", "ATS", "HRIS", "Payroll", "CRM"] as const;
+// §188 — "CRM" was retired from the canonical 33-partner list. Keeping it
+// in this filter would render a chip with zero matches, so the filter row
+// was narrowed to the three categories actually present on the cards.
+const CATS = ["All", "ATS", "HRIS", "Payroll"] as const;
 
 /** §160 — fixed-position option lists for the Integration Request form. */
 export const INTEGRATION_DIRECTIONS = [

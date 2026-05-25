@@ -21,7 +21,7 @@ const QA = [
   {
     q: "Do you integrate with our existing ATS?",
     a:
-      "Yes — we integrate with Greenhouse, Bullhorn, Workable, BambooHR, and JazzHR.",
+      "Yes — we have 30+ native ATS / HRIS integrations including Greenhouse, Workday, iCIMS, Lever, JazzHR, and Workable. The full list lives on our Integrations page.",
   },
   {
     q: "What does the candidate experience look like?",

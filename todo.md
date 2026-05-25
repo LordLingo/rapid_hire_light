@@ -1778,3 +1778,18 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [ ] §185 — Apply smooth hover/transition choreography to main navigation menu links (match .filter-chip-press easing/duration; reduced-motion gated; focus-visible ring preserved)
 - [ ] §186 — Audit footer links + all form input fields against §184 contrast/legibility rules; fix any pastel-bg+text-white pairings, undefined-token surfaces, or near-invisible borders
 - [ ] §187 — Sweep all /resources/* pages and unify text alignment + card heights so eyebrow→number→body baselines and card row heights match across the entire resources hub
+
+- [x] §188 — Replace placeholder integrations on /integrations with canonical 33-partner list (from user screenshots) and remove non-listed entries
+
+## 188. Canonical integrations list
+- [x] Read shared/integrations.json (24 placeholder partners), the IntegrationsGrid hero card consumer in HeroCards.tsx, and the page consumer in Integrations.tsx
+- [x] Extracted 33 canonical partner names verbatim from the three customer screenshots (qcIGYJ + trwb1b + XOqBDm) and saved the raw extraction notes to `.canonical-integrations.notes.md`
+- [x] Rewrote shared/integrations.json with all 33 entries: name + 4-char-or-less mark + ATS/HRIS/Payroll category + Live status + body copy. Categories assigned per-partner: ATS (24 entries: CATS, Essium Labs, iCIMS, Tenstreet, CareerBuilder, IBM Kenexa BrassRing, myStaffingPro (Paychex), RecruiterBox, SilkRoad, Taleo Enterprise Edition, Cadient Talent, ClearCompany, Erecruit, Greenhouse, Hirebridge, JazzHR, Jobvite, Lever, PageUp, Rival, SmartRecruiters, talentReef, Taleo Business Edition, Workable), HRIS (7 entries: SuccessFactors, Workday, Cornerstone, Dayforce, UKG Pro, UKG Ready, Oracle), Payroll (2 entries: Paycor, ADP RM). Total 24+7+2 = 33.
+- [x] Narrowed CATS filter on Integrations.tsx from ["All", "ATS", "HRIS", "Payroll", "CRM"] to ["All", "ATS", "HRIS", "Payroll"] because the canonical list contains zero CRM partners (the legacy "CRM" chip would have rendered with zero matches and looked broken)
+- [x] Updated Faq.tsx (homepage FAQ) to swap "Greenhouse, Bullhorn, Workable, BambooHR, and JazzHR" for canonical names (Greenhouse, Workday, iCIMS, Lever, JazzHR, Workable) so the FAQ no longer claims partners that aren't on the integrations page
+- [x] Updated Support.tsx FAQ similarly (BambooHR → Workday + iCIMS)
+- [x] IntegrationsGrid hero card automatically picks up the new partners (it slices first 6 Live items — now CATS / Essium Labs / iCIMS / Paycor / ADP RM / Tenstreet, all from the canonical list)
+- [x] Wrote client/src/lib/integrationsCanonicalList.test.ts — 10 source-pin specs across three describe blocks: (1) JSON file: exact 33 names match canonical list, 17 banned legacy names (BambooHR/Bullhorn/Recruitee/Zoho/ADP Workforce Now/Paylocity/Paychex Flex/Gusto/Ceridian Dayforce/SAP SuccessFactors/Oracle HCM Cloud/UKG Pro / Ready/Rippling/HiBob/Personio/Namely/Salesforce) explicitly absent, every entry tagged ATS|HRIS|Payroll (no CRM), ≥6 Live items for IntegrationsGrid, field-shape pins (mark length ≤4, body non-empty), uniqueness; (2) CATS filter narrowed pin + old 5-chip array banned; (3) Faq.tsx + Support.tsx legacy strings absent
+- [x] Full vitest suite green (1,617/1,617 — up 10 from previous 1,607); tsc clean
+
+

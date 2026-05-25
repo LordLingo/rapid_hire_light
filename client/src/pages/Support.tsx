@@ -213,8 +213,9 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     q: "Do you support integrations with my ATS?",
     a: (
       <>
-        We have native integrations with Workable, Greenhouse, Lever, BambooHR,
-        and JazzHR, plus a documented REST API for everything else. Implementation
+        We have 30+ native ATS / HRIS integrations including Workable,
+        Greenhouse, Lever, Workday, iCIMS, and JazzHR, plus a documented REST
+        API for everything else. Implementation
         support is included at every plan tier — see the{" "}
         <Link href="/integrations" className="ink-link">
           Integrations page
