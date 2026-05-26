@@ -1865,4 +1865,11 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Fix: derive the page reset synchronously during render via filterSignatureRef + setPage(1) inside the same render pass, guarded by `if (page !== 1)` to avoid render loops. Pattern documented in https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
 - [x] Regression spec added in client/src/lib/blogIndexFilters.test.ts (4 new pins, banning the useEffect anti-pattern, requiring the synchronous reset, requiring the React docs comment, requiring the page!==1 guard)
 - [x] Verified: pnpm test → 1,674/1,674 green; pnpm exec tsc --noEmit → clean
-- [ ] Save checkpoint
+- [x] Saved checkpoint 11bc0953
+## 196. §196 — Vercel chip-click "blank grid" bug (scroll restoration)
+- [x] Reproduce on live Vercel deploy (rapid-hire-light-git-main-mark-lingo-s-projects.vercel.app): from /blog?page=11, click Marijuana chip → state updates correctly (URL = /blog?tag=marijuana, count = "8 of 126 in Marijuana", 8 cards rendered) BUT viewport is stranded below the grid because the deep scroll position from page 11 was never reset — the user sees an empty white area where the grid USED to be (page 11 content) and the actual filtered grid renders above the viewport. Visually indistinguishable from "blogs aren't displaying".
+- [x] Root cause: `goToPage()` already had a scroll-restore step but `setTag` and `setRange` chip handlers called the bare setters inline, leaving the user's scroll position untouched. The "Open as standalone page" link works because it triggers a full navigation, which scrolls to the top by default.
+- [x] Fix: introduced `scrollGridIntoView()` helper, plus `selectTag()` / `selectRange()` wrapper handlers that call the setter AND scroll the grid into view (honoring prefers-reduced-motion). All chip onClick handlers now route through these wrappers; raw `setTag`/`setRange` in chip onClicks is banned by spec.
+- [x] Regression spec: 6 new pins in §196 block of client/src/lib/blogIndexFilters.test.ts — pin scrollGridIntoView helper exists, pin selectTag/selectRange wrappers route through both setter + scroll, ban inline raw setTag/setRange in chip onClicks, require §196 comment block to survive refactors.
+- [x] Verified: pnpm test → 1,680/1,680 green (+6 new pins); pnpm exec tsc --noEmit → clean.
+- [ ] Save checkpoint and request user pushes to GitHub for Vercel rebuild.

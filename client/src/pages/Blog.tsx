@@ -171,15 +171,44 @@ export default function Blog() {
 
   function goToPage(nextPage: number) {
     setPage(nextPage);
-    if (typeof window !== "undefined" && gridAnchorRef.current) {
-      const prefersReducedMotion =
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      gridAnchorRef.current.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-        block: "start",
-      });
-    }
+    scrollGridIntoView();
+  }
+
+  // §196 — Scroll the grid anchor into view whenever a filter change shrinks
+  // the result set. Without this, a user who has scrolled down on, say,
+  // page 11 of the unfiltered index and then clicks a tag chip ends up
+  // stranded BELOW the new (much shorter) grid — the cards have re-rendered
+  // at the top of the section, but the viewport is still pointed at empty
+  // whitespace where page 11 used to be. Visually indistinguishable from a
+  // "blog isn't displaying" bug, which is exactly how it was reported.
+  // The standalone-page route bypasses this because it triggers a full
+  // navigation, which scrolls to the top.
+  function scrollGridIntoView() {
+    if (typeof window === "undefined" || !gridAnchorRef.current) return;
+    const prefersReducedMotion =
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    gridAnchorRef.current.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+
+  // §196 — Wrapper for setTag that also scrolls the user back to the grid
+  // so a smaller filtered set is never rendered "above" the user's
+  // current scroll position. Used by every chip click — keeps Blog.tsx
+  // the single source of truth for the chip-click contract.
+  function selectTag(nextTag: string | null) {
+    setTag(nextTag);
+    scrollGridIntoView();
+  }
+
+  // §196 — Same idea for the date-range chips: changing range can shrink
+  // the corpus to fewer than one page of cards, which would otherwise
+  // leave the user stranded below the grid.
+  function selectRange(nextRange: DateRange) {
+    setRange(nextRange);
+    scrollGridIntoView();
   }
 
   // ItemList JSON-LD helps Google understand the index as a structured
@@ -355,7 +384,7 @@ export default function Blog() {
                 data-testid="blog-category-pill"
                 data-tag="all"
                 data-active={tag === null ? "true" : "false"}
-                onClick={() => setTag(null)}
+                onClick={() => selectTag(null)}
                 aria-pressed={tag === null}
                 className={[
                   "rounded-full border px-3.5 py-1.5 text-[13px] tracking-tight transition-colors",
@@ -385,7 +414,7 @@ export default function Blog() {
                     data-testid="blog-category-pill"
                     data-tag={t}
                     data-active={active ? "true" : "false"}
-                    onClick={() => setTag(active ? null : t)}
+                    onClick={() => selectTag(active ? null : t)}
                     aria-pressed={active}
                     className={[
                       "rounded-full border px-3.5 py-1.5 text-[13px] tracking-tight transition-colors",
@@ -438,7 +467,7 @@ export default function Blog() {
                   <button
                     key={opt.id}
                     type="button"
-                    onClick={() => setRange(opt.id)}
+                    onClick={() => selectRange(opt.id)}
                     aria-pressed={active}
                     className={[
                       "rounded-full border px-3.5 py-1.5 text-[13.5px] tracking-tight transition-colors",

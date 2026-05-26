@@ -710,3 +710,77 @@ describe("§195 — synchronous page reset on filter change (Vercel race fix)", 
     expect(src).toMatch(/if\s*\(page\s*!==\s*1\)\s*\{[\s\S]{0,40}?setPage\(1\)/);
   });
 });
+
+// §196 — Production-only chip-click "blog disappears" bug.
+//
+// When a user scrolled deep on /blog (e.g., page 11 of the unfiltered index)
+// and then clicked a tag chip, the filtered grid rendered correctly at the
+// top of the section — but the user's scroll position was still pointing
+// at the bottom of where the OLD grid used to be. Result: an empty white
+// area filled the viewport and the user reported "blogs aren't displaying."
+//
+// The fix wraps every state setter that can shrink the result set
+// (setTag, setRange) in a wrapper that ALSO scrolls #blog-grid back into
+// view. This mirrors what goToPage() already does for pagination clicks
+// and what the standalone-page route (/blog/tag/:tag) gets for free
+// because a full navigation always scrolls to the top.
+//
+// These pins make sure a future "extract handler" or "lift state up"
+// refactor doesn't quietly regress the scroll-restoration contract.
+describe("§196 — chip-click scroll restoration (production blank-grid fix)", () => {
+  const src = read("client/src/pages/Blog.tsx");
+
+  it("defines a scrollGridIntoView helper that uses gridAnchorRef.scrollIntoView", () => {
+    expect(src).toMatch(/function\s+scrollGridIntoView\s*\(/);
+    expect(src).toMatch(/gridAnchorRef\.current\.scrollIntoView/);
+  });
+
+  it("defines selectTag wrapper that calls setTag AND scrollGridIntoView", () => {
+    // Single source of truth for the chip-click contract — the chip
+    // onClick handlers must route through this so the scroll restore
+    // never gets dropped from one chip while staying on another.
+    expect(src).toMatch(
+      /function\s+selectTag[\s\S]{0,200}?setTag[\s\S]{0,80}?scrollGridIntoView\(\)/,
+    );
+  });
+
+  it("defines selectRange wrapper that calls setRange AND scrollGridIntoView", () => {
+    // Same contract for the date-range chips, which can also shrink
+    // the result set to fewer than one full page of cards.
+    expect(src).toMatch(
+      /function\s+selectRange[\s\S]{0,200}?setRange[\s\S]{0,80}?scrollGridIntoView\(\)/,
+    );
+  });
+
+  it("wires every tag chip onClick through selectTag, never raw setTag", () => {
+    // Pin the chip onClick handlers specifically. Inline setTag in a chip
+    // onClick is the regression we want to ban — it's exactly what would
+    // bring back the scroll-stranded blank-grid bug.
+    // (clearFilters() may still call setTag(null) internally — that path
+    //  is fine because clearing filters typically happens from the
+    //  empty-state CTA which is already in view.)
+    expect(src).toMatch(
+      /onClick=\{\(\)\s*=>\s*selectTag\(null\)\}/,
+    );
+    expect(src).toMatch(
+      /onClick=\{\(\)\s*=>\s*selectTag\(active\s*\?\s*null\s*:\s*t\)\}/,
+    );
+    // Ban the original buggy patterns:
+    expect(src).not.toMatch(/onClick=\{\(\)\s*=>\s*setTag\(null\)\}/);
+    expect(src).not.toMatch(/onClick=\{\(\)\s*=>\s*setTag\(active\s*\?\s*null\s*:\s*t\)\}/);
+  });
+
+  it("wires the date-range chip onClick through selectRange, never raw setRange", () => {
+    expect(src).toMatch(/onClick=\{\(\)\s*=>\s*selectRange\(opt\.id\)\}/);
+    expect(src).not.toMatch(/onClick=\{\(\)\s*=>\s*setRange\(opt\.id\)\}/);
+  });
+
+  it("documents WHY the wrappers exist so the pattern survives refactors", () => {
+    // The §196 comment block explains the bug's user-visible symptom
+    // (blank grid even though state is correct). A future contributor
+    // who tries to "simplify" by inlining setTag will hit this pin
+    // and read the comment first.
+    expect(src).toMatch(/§196/);
+    expect(src).toMatch(/stranded BELOW the new \(much shorter\) grid/i);
+  });
+});
