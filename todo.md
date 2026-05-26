@@ -1881,3 +1881,10 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [ ] Implement the fix
 - [ ] Add regression spec
 - [ ] Save checkpoint and verify on live Vercel deploy
+
+## 198. §198 — React error #300 ("Too many re-renders") on browser-back inside /blog
+- [ ] Reproduce on the live Vercel deploy and capture exact trigger sequence (which page → which page transition fires the loop)
+- [ ] Identify the source of the loop (§195 synchronous setPage in render, URL-sync effect calling history.replaceState, or another path)
+- [ ] Implement fix that avoids both the original §195 race AND the back-button loop
+- [ ] Add regression spec locking the loop-prevention guard so a future refactor can't re-introduce it
+- [ ] Save checkpoint, verify on the redeployed Vercel build, and report back

@@ -637,9 +637,16 @@ describe("§149 Blog.tsx wires the pager UI", () => {
     expect(src).toMatch(/aria-current=\{isActive \? "page" : undefined\}/);
   });
 
-  it("resets page state when the filtered set changes", () => {
-    expect(src).toMatch(/setPage\(1\)/);
-    expect(src).toMatch(/filterSignatureRef/);
+  it("clamps the displayed page to [1, totalPages] via paginatePosts (§198 architecture)", () => {
+    // §198 — The render-phase setPage(1) reset (§195) was removed because it
+    // produced React error #300 on browser back/forward navigation. Empty-slice
+    // protection now lives entirely inside paginatePosts() in blogFilters.ts,
+    // which clamps page to [1, totalPages] before slicing. Blog.tsx must not
+    // re-introduce render-phase setPage(1) (the original §195 pattern was
+    // unsafe under popstate-triggered re-renders).
+    expect(src).toMatch(/paginatePosts\(visiblePosts, page, BLOG_POSTS_PER_PAGE\)/);
+    // No more filterSignatureRef — the abstraction was the loop source.
+    expect(src).not.toMatch(/filterSignatureRef/);
   });
 
   it("clearFilters resets page to 1 too", () => {
@@ -662,52 +669,76 @@ describe("§149 Blog.tsx wires the pager UI", () => {
 });
 
 
-// §195 — Vercel-only blog tag-chip race condition.
+// §198 — React error #300 on browser back/forward navigation.
 //
-// When a user clicked a tag chip on /blog, React state updated correctly but
-// the page-reset useEffect only fired AFTER the filter change had committed,
-// causing one render where `page` (e.g. 3) pointed past the end of the newly
-// filtered set, so paginatePosts returned an empty slice and the grid
-// rendered the empty state. On Vercel's production build with React 18
-// concurrent rendering this manifested as a persistent empty grid until
-// the user hard-reloaded via "Open as standalone page".
+// §195 had attempted to fix the Vercel-only empty-grid bug by calling
+// setPage(1) synchronously during render whenever a filter-signature ref
+// flipped. That was correct under steady-state interaction (clicking a chip
+// works), but on browser back/forward (popstate) the pattern produced
+// React error #300 "Too many re-renders":
 //
-// The fix derives `page = 1` synchronously during render whenever the filter
-// signature changes, so the pagination memo never runs against a stale page
-// index. These pins lock that contract against future regressions.
-describe("§195 — synchronous page reset on filter change (Vercel race fix)", () => {
+//   - popstate fires → wouter re-renders Blog with new URL
+//   - filter state did NOT auto-sync from URL (the original code used
+//     useState(initial.tag) which only reads `initial` once on mount)
+//   - URL-sync effect runs and rewrites URL via replaceState based on stale
+//     state, which differs from the popstate-restored URL
+//   - this can re-trigger a render where currentSig (computed from
+//     visiblePosts[0]?.slug, an ordering-sensitive value) flips repeatedly,
+//     calling setPage(1) inside render forever → #300
+//
+// §198 fix has three parts that together make the architecture loop-safe:
+//   1. DELETE the render-phase setPage(1) reset entirely. paginatePosts()
+//      already clamps page defensively, so the empty-slice scenario §195 was
+//      protecting against is already covered by the helper.
+//   2. ADD a popstate listener that re-syncs filter state from the URL on
+//      browser back/forward, so state follows URL instead of fighting it.
+//   3. MAKE the URL-sync effect idempotent: only call replaceState when the
+//      computed href actually differs from window.location.href. This
+//      guarantees popstate-triggered re-syncs don't round-trip the same URL.
+//
+// These pins lock the §198 architecture so a future contributor who tries to
+// "simplify" the back-button handling can't accidentally re-introduce the
+// loop.
+describe("§198 — React error #300 fix: back/forward navigation loop prevention", () => {
   const src = read("client/src/pages/Blog.tsx");
 
-  it("does NOT reset page inside a useEffect (the original Vercel-buggy pattern)", () => {
-    // The bug pattern was a useEffect that depended on visiblePosts and
-    // called setPage(1). The fix moves this logic out of useEffect and
-    // into the render phase. Catch any future regression where the reset
-    // is moved back inside an effect keyed on visiblePosts.
-    expect(src).not.toMatch(
-      /useEffect\([^)]*\bsetPage\(1\)[\s\S]*?\bvisiblePosts\b[\s\S]*?\)\s*;/,
-    );
+  it("does NOT call setPage during render (the §195 pattern that produced #300)", () => {
+    // The original §195 fix used `if (filterSignatureRef.current !== currentSig) ... setPage(1)`
+    // synchronously during render. That pattern is now banned: it caused
+    // React error #300 under back/forward navigation.
+    expect(src).not.toMatch(/filterSignatureRef/);
+    expect(src).not.toMatch(/const currentSig\s*=/);
+    // No setPage(1) call should appear inside the function body OUTSIDE of
+    // an event handler or effect. The clearFilters function is allowed.
+    // We assert by absence of the original pattern markers.
   });
 
-  it("performs the page reset synchronously during render via filterSignatureRef", () => {
-    // The fix pattern: a ref-tracked signature compared during render and
-    // setPage(1) called in the same render pass when the signature shifts.
-    expect(src).toMatch(/const currentSig = `\$\{visiblePosts\.length\}/);
+  it("installs a popstate listener that re-syncs filter state from the URL", () => {
+    // Without this, browser back/forward changes the URL but leaves React
+    // state at the post-click filter values, causing the URL-sync effect
+    // to fight history.
+    expect(src).toMatch(/window\.addEventListener\("popstate"/);
+    expect(src).toMatch(/parseFiltersFromSearch\(window\.location\.search\)/);
+    // The listener must call all five state setters so state fully follows URL.
+    expect(src).toMatch(/setRange\(/);
+    expect(src).toMatch(/setTag\(filters\.tag\)/);
+    expect(src).toMatch(/setQuery\(filters\.query \?\? ""\)/);
+    expect(src).toMatch(/setSort\(filters\.sort\)/);
+    expect(src).toMatch(/setPage\(filters\.page\)/);
+  });
+
+  it("makes the URL-sync replaceState call idempotent (only writes when href changes)", () => {
+    // Without this guard, popstate-triggered re-syncs would round-trip the
+    // same URL through history.replaceState, cascading into a render loop.
     expect(src).toMatch(
-      /filterSignatureRef\.current\s*!==\s*currentSig[\s\S]{0,300}?if\s*\(page\s*!==\s*1\)[\s\S]{0,80}?setPage\(1\)/,
+      /const nextHref = url\.toString\(\);[\s\S]{0,200}?if \(nextHref !== window\.location\.href\)[\s\S]{0,200}?window\.history\.replaceState/,
     );
   });
 
-  it("documents the React docs reference so the pattern is not 'cleaned up' by future contributors", () => {
-    expect(src).toMatch(
-      /react\.dev\/learn\/you-might-not-need-an-effect/,
-    );
-  });
-
-  it("guards setPage(1) with `if (page !== 1)` to avoid render loops", () => {
-    // Without the guard, calling setPage(1) when page is already 1 would
-    // schedule an extra render every commit. React deduplicates identical
-    // state but the explicit guard is defensive + self-documenting.
-    expect(src).toMatch(/if\s*\(page\s*!==\s*1\)\s*\{[\s\S]{0,40}?setPage\(1\)/);
+  it("documents the §198 architecture so future contributors know not to re-introduce §195", () => {
+    expect(src).toMatch(/§198/);
+    // The comment block must explain WHY render-phase setPage was removed.
+    expect(src).toMatch(/React error #300/);
   });
 });
 

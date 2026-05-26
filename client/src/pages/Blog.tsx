@@ -103,41 +103,55 @@ export default function Blog() {
     return out;
   }, [allPosts, range, tag, query, sort]);
 
-  // §195 — Reset page during render whenever the filter set changes,
-  // so the pagination memo below NEVER runs against a stale page index.
+  // §198 — Page clamping is now done ENTIRELY inside paginatePosts(), which
+  // returns `pagination.page` clamped to [1, totalPages]. We do NOT reset
+  // page state synchronously during render anymore (that was the §195 fix
+  // for the empty-grid bug, but it caused React error #300 "Too many
+  // re-renders" on browser back/forward navigation: when popstate restored
+  // a URL whose page param differed from React state, the URL-sync effect
+  // below would rewrite the URL via replaceState, which could re-trigger
+  // a render where `currentSig` (computed from visiblePosts[0]?.slug, an
+  // ordering-sensitive value) flipped repeatedly, calling setPage(1) in
+  // render forever).
   //
-  // The previous approach used a useEffect that called setPage(1) AFTER
-  // the filter change had already rendered. Under React 18's automatic
-  // batching in Vercel's production build, the intermediate render where
-  // `page` was still the old value (and pointed past the end of the
-  // newly-filtered set) would briefly show an empty grid because
-  // paginatePosts() would return an empty slice. The standalone-page
-  // route worked because it bypassed this state by mounting fresh.
+  // The empty-grid problem the §195 reset was protecting against is fully
+  // handled by paginatePosts' internal clamp at
+  // client/src/lib/blogFilters.ts (line ~213): when the filtered set has
+  // fewer pages than the current `page` value, paginatePosts clamps to
+  // totalPages and returns the correct slice. The URL-sync effect below
+  // then writes the clamped value back to the URL, so /blog?page=3 with a
+  // 1-page filter cleans itself up to /blog (no page param) on the next
+  // commit — without us calling setPage during render.
   //
-  // The pattern below is the React docs' recommended fix for race
-  // conditions like this — derive the next page synchronously during
-  // render and call the setter inside the same render pass. React
-  // discards the partial render and re-runs with the corrected state
-  // before committing to the DOM, so users never see the stale slice.
-  // See https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
-  const filterSignatureRef = useRef<string>("");
-  const currentSig = `${visiblePosts.length}:${visiblePosts[0]?.slug ?? ""}:${sort}`;
-  if (filterSignatureRef.current === "") {
-    filterSignatureRef.current = currentSig;
-  } else if (filterSignatureRef.current !== currentSig) {
-    filterSignatureRef.current = currentSig;
-    if (page !== 1) {
-      setPage(1);
-    }
-  }
-
-  // §149 — page-aware slice of the filtered+sorted result set.
-  // §195 — `page` is guaranteed safe by the synchronous reset above; the
-  // helper still clamps defensively for deep-link edge cases.
+  // §195 history: https://react.dev/learn/you-might-not-need-an-effect
   const pagination = useMemo(
     () => paginatePosts(visiblePosts, page, BLOG_POSTS_PER_PAGE),
     [visiblePosts, page],
   );
+
+  // §198 — Listen for browser back/forward (popstate) and re-sync filter
+  // state from the restored URL. Without this, pressing back from /blog
+  // (after applying filters) takes the URL back to its earlier value but
+  // leaves the React state at the post-click filter state — visually the
+  // page looks unchanged. Worse, the URL-sync effect below then rewrites
+  // the URL based on stale state, fighting the browser's history. With
+  // this listener, state follows URL on history navigation, breaking the
+  // oscillation that produced React error #300.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onPopstate = () => {
+      const filters = parseFiltersFromSearch(window.location.search);
+      const params = new URLSearchParams(window.location.search);
+      const nextRange = params.get("range");
+      setRange(nextRange === "30d" || nextRange === "90d" ? nextRange : "all");
+      setTag(filters.tag);
+      setQuery(filters.query ?? "");
+      setSort(filters.sort);
+      setPage(filters.page);
+    };
+    window.addEventListener("popstate", onPopstate);
+    return () => window.removeEventListener("popstate", onPopstate);
+  }, []);
 
   // §197 — Re-run the IntersectionObserver-driven reveal-on-scroll system
   // every time the rendered card set changes (chip click, search, sort,
@@ -173,7 +187,16 @@ export default function Blog() {
       const params = new URLSearchParams(filtersSearch);
       params.forEach((v, k) => url.searchParams.set(k, v));
     }
-    window.history.replaceState(null, "", url.toString());
+    // §198 — Idempotent URL write: only call replaceState when the
+    // computed href actually differs from the current location. Without
+    // this guard, a popstate-triggered re-sync would cause this effect
+    // to round-trip the same URL through history.replaceState, which
+    // can cascade into a render loop (React error #300) under React 18
+    // production batching on Vercel.
+    const nextHref = url.toString();
+    if (nextHref !== window.location.href) {
+      window.history.replaceState(null, "", nextHref);
+    }
   }, [range, tag, query, sort, pagination.page]);
 
   function clearFilters() {
