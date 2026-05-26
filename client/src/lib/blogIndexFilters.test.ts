@@ -784,3 +784,61 @@ describe("§196 — chip-click scroll restoration (production blank-grid fix)", 
     expect(src).toMatch(/stranded BELOW the new \(much shorter\) grid/i);
   });
 });
+
+// §197 — Production blank-grid bug: cards rendered at opacity:0 after chip click.
+//
+// After §195 (page reset) and §196 (scroll restoration) shipped, users still
+// reported that clicking a tag chip on the live Vercel deploy produced a
+// "blank white area below the chip row." Direct DOM inspection on the live
+// site showed:
+//   - State was correct: visiblePosts.length matched the chip's count
+//   - URL was correct: ?tag=<slug> applied
+//   - Grid <article> elements WERE rendering into the DOM
+//   - But every .reveal-on-scroll card had `opacity: 0` because the
+//     IntersectionObserver in useReveal() only re-attached on route change.
+//     A wouter SPA filter change is NOT a route change, so the observer
+//     never tagged the newly-mounted cards `.is-visible` and they stayed
+//     invisible until a hard reload.
+//
+// Fix: call useReveal(revealKey) inside Blog.tsx with a key derived from the
+// slugs of the currently-rendered slice. Whenever the rendered slice
+// changes (chip, search, sort, pagination), useReveal's effect re-runs,
+// disconnects the old observer, and observes the freshly-mounted cards.
+//
+// These pins make sure a future "consolidate hooks" pass doesn't drop the
+// useReveal call or change its key to something that loses the chip-click
+// case (e.g., keying only on `tag`, which would miss search-input changes).
+describe("§197 — useReveal re-attaches IntersectionObserver on chip click (production opacity:0 fix)", () => {
+  const src = read("client/src/pages/Blog.tsx");
+
+  it("imports useReveal from the hooks module", () => {
+    expect(src).toMatch(/import\s+\{\s*useReveal\s*\}\s+from\s+["']@\/hooks\/useReveal["']/);
+  });
+
+  it("calls useReveal inside the Blog component with a render-derived key", () => {
+    // The hook must be called, and the key must reference pagination.posts
+    // (or an equivalent slug-derived identifier) so that every rendered
+    // slice change re-runs the observer attach. A bare `useReveal()` with
+    // no arg, or `useReveal(tag)`, would miss search/sort/pagination cases.
+    expect(src).toMatch(/useReveal\s*\(\s*revealKey\s*\)/);
+    expect(src).toMatch(/const\s+revealKey\s*=\s*pagination\.posts\.map/);
+  });
+
+  it("derives the key from rendered slugs, not just length or tag", () => {
+    // Locks the join("|") of slugs pattern. Length-only would miss sort
+    // changes; tag-only would miss query/sort/page changes. Slug-list is
+    // the minimum stable signature that captures all four filter axes.
+    expect(src).toMatch(/pagination\.posts\.map\(\s*\(p\)\s*=>\s*p\.slug\s*\)\.join\(\s*["']\|["']\s*\)/);
+  });
+
+  it("documents WHY the hook call exists so the pattern survives refactors", () => {
+    // The §197 comment block explains the bug's user-visible symptom
+    // (blank area below chip row even though cards are in the DOM at
+    // opacity:0). A future contributor who tries to remove the call as
+    // "redundant with SiteShell's useReveal" will hit this pin and read
+    // the explanation first.
+    expect(src).toMatch(/§197/);
+    expect(src).toMatch(/IntersectionObserver|opacity:0|reveal-on-scroll/);
+    expect(src).toMatch(/SiteShell only re-attaches on\s+\/\/\s*route change/);
+  });
+});

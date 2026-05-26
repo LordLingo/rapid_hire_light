@@ -18,6 +18,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight, Search as SearchIcon, X as XIc
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { useSeo } from "@/hooks/useSeo";
+import { useReveal } from "@/hooks/useReveal";
 import {
   listPosts,
   getAllTags,
@@ -137,6 +138,19 @@ export default function Blog() {
     () => paginatePosts(visiblePosts, page, BLOG_POSTS_PER_PAGE),
     [visiblePosts, page],
   );
+
+  // §197 — Re-run the IntersectionObserver-driven reveal-on-scroll system
+  // every time the rendered card set changes (chip click, search, sort,
+  // pagination). Without this, newly-mounted .reveal-on-scroll cards stay at
+  // opacity:0 forever because the observer in SiteShell only re-attaches on
+  // route change. Keying on the slugs of the rendered slice (not just
+  // visiblePosts.length) ensures we also handle sort changes that keep the
+  // count constant. The user-visible symptom this fixes was "clicking a tag
+  // chip leaves the area below the chip row blank" — the cards were
+  // rendering, but invisible because the observer never tagged them
+  // .is-visible. See client/src/hooks/useReveal.ts for the observer impl.
+  const revealKey = pagination.posts.map((p) => p.slug).join("|");
+  useReveal(revealKey);
 
   // Keep the URL in sync with every filter change so deep links work and
   // the browser back button restores filter state.

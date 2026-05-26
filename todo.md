@@ -1872,4 +1872,12 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Fix: introduced `scrollGridIntoView()` helper, plus `selectTag()` / `selectRange()` wrapper handlers that call the setter AND scroll the grid into view (honoring prefers-reduced-motion). All chip onClick handlers now route through these wrappers; raw `setTag`/`setRange` in chip onClicks is banned by spec.
 - [x] Regression spec: 6 new pins in §196 block of client/src/lib/blogIndexFilters.test.ts — pin scrollGridIntoView helper exists, pin selectTag/selectRange wrappers route through both setter + scroll, ban inline raw setTag/setRange in chip onClicks, require §196 comment block to survive refactors.
 - [x] Verified: pnpm test → 1,680/1,680 green (+6 new pins); pnpm exec tsc --noEmit → clean.
-- [ ] Save checkpoint and request user pushes to GitHub for Vercel rebuild.
+- [x] Saved checkpoint 86514159 (auto-pushed to user_github/main); waiting on Vercel rebuild + user retest.
+
+## 197. §197 — Vercel blank-page-on-blog-card-click bug
+- [ ] Reproduce on live Vercel deploy: from /blog click any blog post card → navigates to /blog/<slug> but renders blank white page; hard refresh of same URL renders the post correctly
+- [ ] Trace: route registration in App.tsx, BlogPost.tsx mount path, network requests for the post chunk, console errors, lazy-load behavior
+- [ ] Identify root cause (likely candidates: lazy-loaded chunk that 404s on the rewritten path, useSeo crashing during client nav, or a Wouter route ordering issue with the prerendered HTML stub)
+- [ ] Implement the fix
+- [ ] Add regression spec
+- [ ] Save checkpoint and verify on live Vercel deploy
