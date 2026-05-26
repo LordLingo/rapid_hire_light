@@ -102,28 +102,41 @@ export default function Blog() {
     return out;
   }, [allPosts, range, tag, query, sort]);
 
+  // §195 — Reset page during render whenever the filter set changes,
+  // so the pagination memo below NEVER runs against a stale page index.
+  //
+  // The previous approach used a useEffect that called setPage(1) AFTER
+  // the filter change had already rendered. Under React 18's automatic
+  // batching in Vercel's production build, the intermediate render where
+  // `page` was still the old value (and pointed past the end of the
+  // newly-filtered set) would briefly show an empty grid because
+  // paginatePosts() would return an empty slice. The standalone-page
+  // route worked because it bypassed this state by mounting fresh.
+  //
+  // The pattern below is the React docs' recommended fix for race
+  // conditions like this — derive the next page synchronously during
+  // render and call the setter inside the same render pass. React
+  // discards the partial render and re-runs with the corrected state
+  // before committing to the DOM, so users never see the stale slice.
+  // See https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+  const filterSignatureRef = useRef<string>("");
+  const currentSig = `${visiblePosts.length}:${visiblePosts[0]?.slug ?? ""}:${sort}`;
+  if (filterSignatureRef.current === "") {
+    filterSignatureRef.current = currentSig;
+  } else if (filterSignatureRef.current !== currentSig) {
+    filterSignatureRef.current = currentSig;
+    if (page !== 1) {
+      setPage(1);
+    }
+  }
+
   // §149 — page-aware slice of the filtered+sorted result set.
+  // §195 — `page` is guaranteed safe by the synchronous reset above; the
+  // helper still clamps defensively for deep-link edge cases.
   const pagination = useMemo(
     () => paginatePosts(visiblePosts, page, BLOG_POSTS_PER_PAGE),
     [visiblePosts, page],
   );
-
-  // §149 — reset page to 1 whenever the filtered set itself changes so a
-  // reader filtering down from page 8 doesn't land on an empty page.
-  // We diff on the *length* + first slug + sort key so a no-op render
-  // (e.g. a typo'd query that still matches the same set) doesn't reset.
-  const filterSignatureRef = useRef<string>("");
-  useEffect(() => {
-    const sig = `${visiblePosts.length}:${visiblePosts[0]?.slug ?? ""}:${sort}`;
-    if (filterSignatureRef.current === "") {
-      filterSignatureRef.current = sig;
-      return;
-    }
-    if (filterSignatureRef.current !== sig) {
-      filterSignatureRef.current = sig;
-      setPage(1);
-    }
-  }, [visiblePosts, sort]);
 
   // Keep the URL in sync with every filter change so deep links work and
   // the browser back button restores filter state.

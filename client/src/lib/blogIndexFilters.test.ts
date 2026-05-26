@@ -660,3 +660,53 @@ describe("§149 Blog.tsx wires the pager UI", () => {
     expect(src).toMatch(/id="blog-grid"/);
   });
 });
+
+
+// §195 — Vercel-only blog tag-chip race condition.
+//
+// When a user clicked a tag chip on /blog, React state updated correctly but
+// the page-reset useEffect only fired AFTER the filter change had committed,
+// causing one render where `page` (e.g. 3) pointed past the end of the newly
+// filtered set, so paginatePosts returned an empty slice and the grid
+// rendered the empty state. On Vercel's production build with React 18
+// concurrent rendering this manifested as a persistent empty grid until
+// the user hard-reloaded via "Open as standalone page".
+//
+// The fix derives `page = 1` synchronously during render whenever the filter
+// signature changes, so the pagination memo never runs against a stale page
+// index. These pins lock that contract against future regressions.
+describe("§195 — synchronous page reset on filter change (Vercel race fix)", () => {
+  const src = read("client/src/pages/Blog.tsx");
+
+  it("does NOT reset page inside a useEffect (the original Vercel-buggy pattern)", () => {
+    // The bug pattern was a useEffect that depended on visiblePosts and
+    // called setPage(1). The fix moves this logic out of useEffect and
+    // into the render phase. Catch any future regression where the reset
+    // is moved back inside an effect keyed on visiblePosts.
+    expect(src).not.toMatch(
+      /useEffect\([^)]*\bsetPage\(1\)[\s\S]*?\bvisiblePosts\b[\s\S]*?\)\s*;/,
+    );
+  });
+
+  it("performs the page reset synchronously during render via filterSignatureRef", () => {
+    // The fix pattern: a ref-tracked signature compared during render and
+    // setPage(1) called in the same render pass when the signature shifts.
+    expect(src).toMatch(/const currentSig = `\$\{visiblePosts\.length\}/);
+    expect(src).toMatch(
+      /filterSignatureRef\.current\s*!==\s*currentSig[\s\S]{0,300}?if\s*\(page\s*!==\s*1\)[\s\S]{0,80}?setPage\(1\)/,
+    );
+  });
+
+  it("documents the React docs reference so the pattern is not 'cleaned up' by future contributors", () => {
+    expect(src).toMatch(
+      /react\.dev\/learn\/you-might-not-need-an-effect/,
+    );
+  });
+
+  it("guards setPage(1) with `if (page !== 1)` to avoid render loops", () => {
+    // Without the guard, calling setPage(1) when page is already 1 would
+    // schedule an extra render every commit. React deduplicates identical
+    // state but the explicit guard is defensive + self-documenting.
+    expect(src).toMatch(/if\s*\(page\s*!==\s*1\)\s*\{[\s\S]{0,40}?setPage\(1\)/);
+  });
+});

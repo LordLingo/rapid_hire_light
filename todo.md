@@ -1858,3 +1858,11 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Mobile sheet logo Link wrapper uses `inline-flex` inside a grid parent (not flex), so it's unaffected and was left alone.
 - [x] Source-pin spec at client/src/lib/headerLogoShrink.test.ts (4 tests): pins the desktop Link's exact className, pins that the shrink-0 Link is followed by `<Logo />` (not some other flex child), pins the mobile sheet Link's inline-flex contract so a future refactor can't accidentally swap it for flex and re-introduce the bug, pins the parent flex-row classes (`flex items-center justify-between gap-6 py-4 md:py-5`) so we know the shrink-0 fix targets the right flex context
 - [x] Suite green at 1,670/1,670 (4 new specs); tsc clean
+
+## 195. §195 — Vercel-only blog tag-chip race condition
+- [x] Reproduce / scope: scenario A confirmed by user — clicking a tag chip on /blog (e.g. Compliance → Marijuana) leaves the post grid empty; only "Open as standalone page" (full reload via /blog/tag/:tag route) renders content
+- [x] Traced bug to filterSignatureRef useEffect in Blog.tsx that called setPage(1) AFTER the filter change had committed. Under Vercel's React 18 production build, the intermediate render where `page` (e.g. 3) pointed past the end of the newly filtered set caused paginatePosts() to return an empty slice and the empty-state to render. The standalone-page route worked because it mounted a fresh component (BlogTag) that read the tag directly from the URL.
+- [x] Fix: derive the page reset synchronously during render via filterSignatureRef + setPage(1) inside the same render pass, guarded by `if (page !== 1)` to avoid render loops. Pattern documented in https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+- [x] Regression spec added in client/src/lib/blogIndexFilters.test.ts (4 new pins, banning the useEffect anti-pattern, requiring the synchronous reset, requiring the React docs comment, requiring the page!==1 guard)
+- [x] Verified: pnpm test → 1,674/1,674 green; pnpm exec tsc --noEmit → clean
+- [ ] Save checkpoint
