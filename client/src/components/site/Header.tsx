@@ -221,9 +221,18 @@ export default function Header() {
       {/* Main nav */}
       <div className="container">
         <div className="flex items-center justify-between gap-6 py-4 md:py-5">
+          {/*
+            §194: shrink-0 on the Link wrapper prevents the flex
+            algorithm from squeezing the logo to ~12px wide when the
+            nav row gets crowded. The template's customized .flex
+            default sets min-width: 0 on flex children, so without
+            shrink-0 the leftmost flex item (the logo) collapses
+            past its content. min-w-fit on the inner <Logo> is a
+            belt-and-suspenders backup.
+          */}
           <Link
             href="/"
-            className="flex items-center gap-3"
+            className="flex shrink-0 items-center gap-3"
             aria-label={`${BRAND_NAME} home`}
           >
             <Logo />
