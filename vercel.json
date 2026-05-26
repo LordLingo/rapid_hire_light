@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "pnpm vite build && pnpm node scripts/prerender_top_posts.mjs",
+  "outputDirectory": "dist/public",
+  "framework": null,
+  "rewrites": [
+    { "source": "/api/contact", "destination": "/api/index" },
+    { "source": "/api/candidate-contact", "destination": "/api/index" },
+    { "source": "/api/og/blog/:slug.svg", "destination": "/api/index" },
+    { "source": "/api/og/blog/tag/:tag.svg", "destination": "/api/index" },
+    { "source": "/blog/feed.xml", "destination": "/api/index" },
+    { "source": "/blog/index.json", "destination": "/api/index" },
+    { "source": "/((?!api/|assets/|static/|.*\\..*).*)", "destination": "/index.html" }
+  ]
+}

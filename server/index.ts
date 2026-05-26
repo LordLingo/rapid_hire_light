@@ -8,15 +8,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Persist contact submissions to a JSON file co-located with the running server.
-const DATA_DIR = path.resolve(__dirname, "..", "data");
+// §190: on Vercel the deployed filesystem is read-only outside /tmp, and /tmp
+// is per-invocation-ephemeral. We keep on-disk persistence as a best-effort
+// audit trail for local dev / long-lived hosts (Manus webdev, the previous
+// production target) but never fail a submission if the write throws. The
+// real persistence path is owner notification via the front-end's existing
+// notify flow + the form's email pipeline; the JSON file is supplementary.
+const DATA_DIR =
+  process.env.VERCEL === "1"
+    ? path.resolve("/tmp", "rapid-hire-data")
+    : path.resolve(__dirname, "..", "data");
 const DATA_FILE = path.join(DATA_DIR, "contact_submissions.json");
 const CANDIDATE_FILE = path.join(DATA_DIR, "candidate_contact_submissions.json");
 const BLOG_OG_FILE = path.resolve(__dirname, "..", "shared", "blog-og.json");
 const BLOG_META_FILE = path.resolve(__dirname, "..", "shared", "blog-meta.json");
 
 function ensureContactStore() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "[]\n", "utf-8");
+  // §190: best-effort — swallow EROFS / EPERM on Vercel.
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    if (!fs.existsSync(DATA_FILE)) fs.writeFileSync(DATA_FILE, "[]\n", "utf-8");
+  } catch {
+    /* ignore */
+  }
 }
 
 function readContactSubmissions(): unknown[] {
@@ -31,16 +45,30 @@ function readContactSubmissions(): unknown[] {
 }
 
 function appendContactSubmission(entry: Record<string, unknown>) {
-  const list = readContactSubmissions();
-  list.push(entry);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(list, null, 2) + "\n", "utf-8");
+  // §190: best-effort persistence. Vercel's filesystem is read-only except
+  // /tmp (per-invocation), so a write failure must not surface as a 500 to
+  // the submitter. Callers should treat the boolean return as advisory only.
+  try {
+    const list = readContactSubmissions();
+    list.push(entry);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(list, null, 2) + "\n", "utf-8");
+    return true;
+  } catch (err) {
+    console.warn("[contact] best-effort disk persistence skipped:", err instanceof Error ? err.message : err);
+    return false;
+  }
 }
 
 // ---- Candidate-contact (mirror of vite.config.ts plugin) -------------------
 
 function ensureCandidateStore() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(CANDIDATE_FILE)) fs.writeFileSync(CANDIDATE_FILE, "[]\n", "utf-8");
+  // §190: best-effort — swallow EROFS / EPERM on Vercel.
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    if (!fs.existsSync(CANDIDATE_FILE)) fs.writeFileSync(CANDIDATE_FILE, "[]\n", "utf-8");
+  } catch {
+    /* ignore */
+  }
 }
 function readCandidateSubmissions(): unknown[] {
   ensureCandidateStore();
@@ -53,9 +81,16 @@ function readCandidateSubmissions(): unknown[] {
   }
 }
 function appendCandidateSubmission(entry: Record<string, unknown>) {
-  const list = readCandidateSubmissions();
-  list.push(entry);
-  fs.writeFileSync(CANDIDATE_FILE, JSON.stringify(list, null, 2) + "\n", "utf-8");
+  // §190: see appendContactSubmission — best-effort, never throws.
+  try {
+    const list = readCandidateSubmissions();
+    list.push(entry);
+    fs.writeFileSync(CANDIDATE_FILE, JSON.stringify(list, null, 2) + "\n", "utf-8");
+    return true;
+  } catch (err) {
+    console.warn("[candidate-contact] best-effort disk persistence skipped:", err instanceof Error ? err.message : err);
+    return false;
+  }
 }
 function validateCandidatePayload(payload: any) {
   if (!payload || typeof payload !== "object") return { ok: false as const, error: "Invalid payload" };
@@ -341,9 +376,19 @@ function validateContactPayload(payload: any) {
   return { ok: true as const, value: { fullName, email, company, volume, services, message } };
 }
 
-async function startServer() {
+// §190: createApp() builds and returns the configured Express instance
+// without binding to a port, so it can be exported as a Vercel serverless
+// function handler (see api/index.ts) and also driven by startServer() for
+// the long-running `pnpm start` local-dev path.
+//
+// When opts.apiOnly is true (set by the Vercel adapter), we skip the static
+// asset middleware and the SPA-fallback catch-all so the function only handles
+// the API routes + dynamic blog endpoints listed in vercel.json. Vercel's
+// edge handles static files and the SPA fallback directly — routing those
+// through the serverless function would inflate invocation count and break
+// the prerendered /blog/<slug>/index.html stubs.
+export function createApp(opts: { apiOnly?: boolean } = {}) {
   const app = express();
-  const server = createServer(app);
 
   app.use(express.json({ limit: "1mb" }));
 
@@ -359,12 +404,11 @@ async function startServer() {
       createdAt: new Date().toISOString(),
       ...result.value,
     };
-    try {
-      appendContactSubmission(entry);
-    } catch {
-      res.status(500).json({ ok: false, error: "Could not persist submission" });
-      return;
-    }
+    // §190: persistence is best-effort (Vercel filesystem is read-only).
+    // Always return 201 once validation passes — the submission has been
+    // accepted regardless of whether the optional audit-trail JSON could be
+    // updated. Production owner-notification happens via a separate channel.
+    appendContactSubmission(entry);
     res.status(201).json({ ok: true, id: entry.id });
   });
 
@@ -386,12 +430,8 @@ async function startServer() {
       createdAt: new Date().toISOString(),
       ...result.value,
     };
-    try {
-      appendCandidateSubmission(entry);
-    } catch {
-      res.status(500).json({ ok: false, error: "Could not persist submission" });
-      return;
-    }
+    // §190: see /api/contact handler — best-effort persistence, always 201.
+    appendCandidateSubmission(entry);
     res.status(201).json({ ok: true, id: entry.id });
   });
 
@@ -451,6 +491,12 @@ async function startServer() {
     res.send(renderBlogTagOgSvg({ tag, count }));
   });
 
+  if (opts.apiOnly) {
+    // §190: short-circuit — the Vercel adapter routes static files +
+    // SPA fallback at the edge; the function should never serve from disk.
+    return app;
+  }
+
   // Serve static files from dist/public in production
   const staticPath =
     process.env.NODE_ENV === "production"
@@ -478,11 +524,31 @@ async function startServer() {
     res.sendFile(path.join(staticPath, "index.html"));
   });
 
-  const port = process.env.PORT || 3000;
+  return app;
+}
 
+async function startServer() {
+  const app = createApp();
+  const server = createServer(app);
+  const port = process.env.PORT || 3000;
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
   });
+  return server;
 }
 
-startServer().catch(console.error);
+// §190: on Vercel the serverless adapter imports `createApp` directly and
+// the platform handles the request lifecycle, so we only auto-start the
+// long-running listener when this module is invoked as the entrypoint
+// (`pnpm start` / `node dist/index.js` / local dev).
+const isEntrypoint = (() => {
+  try {
+    const entry = process.argv[1] ? fileURLToPath(import.meta.url) === path.resolve(process.argv[1]) : false;
+    return entry;
+  } catch {
+    return false;
+  }
+})();
+if (isEntrypoint || process.env.RAPID_HIRE_FORCE_LISTEN === "1") {
+  startServer().catch(console.error);
+}
