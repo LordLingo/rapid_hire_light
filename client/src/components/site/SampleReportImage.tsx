@@ -119,9 +119,17 @@ export default function SampleReportImage() {
           </DialogDescription>
 
           <div className="max-h-[85vh] overflow-y-auto">
+            {/*
+              §191: this <img> only renders inside the open dialog, which is
+              dismissed by default. loading="lazy" defers the fetch until
+              the user clicks the trigger — saving the WebP from every
+              pageload that doesn't open the modal.
+            */}
             <img
               src={SAMPLE_REPORT_IMAGE_URL}
               alt={SAMPLE_REPORT_ALT}
+              loading="lazy"
+              decoding="async"
               className="block w-full h-auto"
             />
           </div>

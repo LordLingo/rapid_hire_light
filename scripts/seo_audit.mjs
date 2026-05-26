@@ -23,12 +23,16 @@
  *   1 — score < 90 (caller can wire this into pre-publish CI later)
  *
  * Usage:
- *   node scripts/seo_audit.mjs https://rapidhire-8y99zzzx.manus.space/
+ *   node scripts/seo_audit.mjs https://www.rapidhiresolutions.com/
  *   node scripts/seo_audit.mjs            # defaults to the prod domain
+ *
+ * §192: previously defaulted to the Manus staging URL; updated to point
+ * at the production marketing domain since that's the canonical surface
+ * we audit pre-publish.
  */
 import process from "node:process";
 
-const DEFAULT_URL = "https://rapidhire-8y99zzzx.manus.space/";
+const DEFAULT_URL = "https://www.rapidhiresolutions.com/";
 const BRAND = "Rapid Hire Solutions";
 const WEIGHTS = {
   title: 12,

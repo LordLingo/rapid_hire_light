@@ -1826,6 +1826,28 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Wrote source-pin spec at client/src/lib/vercelDeployment.test.ts — 13 tests across 3 describe blocks: vercel.json existence + buildCommand + outputDirectory + 6 rewrite-source pins + SPA-fallback negative-lookahead pin; api/index.ts existence + import-from-server-index pin + apiOnly:true pin; createApp() export pin + apiOnly?:boolean type pin + listener-guard pin (counts startServer() invocations and verifies the single one is positioned after the guard) + ban on "Could not persist submission" error string + DATA_DIR /tmp env-aware pin
 - [x] Verified Vite build still succeeds: 2077 modules transformed, dist/public/ contains index.html, assets/, static/ (bundled brand images), 20 prerendered blog stubs, 4 tag stubs, 2 year stubs, sitemap.xml (222 URLs), robots.txt
 - [x] Full vitest suite green (1,628/1,628 — up 11 from previous 1,617); tsc clean
-- [ ] §191 — Audit & add loading="lazy" to below-the-fold images sitewide (skip header logo + hero <picture>)
-- [ ] §192 — Grep codebase for hardcoded Manus URLs, hardcoded API endpoints, hardcoded localhost references, or other Manus-platform-specific paths that would break on Vercel
-- [ ] §193 — Accessibility audit: review every <img> alt attribute for descriptive text; fix gaps (empty alt without decorative rationale, filename-as-alt, "image of...")
+- [x] §191 — Audit & add loading="lazy" to below-the-fold images sitewide (skip header logo + hero <picture>)
+
+## 191. Below-the-fold lazy loading
+- [x] Audited every <img> across client/src/ — found the codebase already correctly applies loading="eager" to above-the-fold images (Hero, PageHero, BlogPost cover, Compliance hero, Contact hero) and loading="lazy" to below-the-fold (footer logo, sample report, why_us interview photo, Trust/Compliance badges, Industries/ServiceDetail/IndustryDetail hero images, Pricing illustration, Learn video thumbnails, Support desk avatars, Integrations infographic, BlogPostVideoCta thumbnail)
+- [x] Two real gaps fixed: (1) Header.tsx mobile-menu sheet logo (only renders when hamburger is opened) — added loading="lazy"; (2) SampleReportImage.tsx dialog modal img (only renders when user clicks the trigger) — added loading="lazy" + decoding="async"
+- [x] Wrote source-pin spec at client/src/lib/imageLazyLoading.test.ts pinning the loading-attribute contract sitewide so future regressions don't ship without explicit eager/lazy declarations
+
+- [x] §192 — Grep codebase for hardcoded Manus URLs, hardcoded API endpoints, hardcoded localhost references, or other Manus-platform-specific paths that would break on Vercel
+
+## 192. Hardcoded URL audit for Vercel migration
+- [x] Grepped for: rapidhire-8y99zzzx.manus.space, manus-storage, manus.space, manus-webdev, .manus.app, localhost, 127.0.0.1, hardcoded ports (3000/5173/8080/4173), SITE_BASE/SITE_URL/CANONICAL_URL constants, window.location.origin usages
+- [x] Two real runtime issues found and fixed: (1) client/src/lib/apiSnippets.ts:348 — the README inside the downloadable code-snippet ZIP hardcoded `https://rapidhire-8y99zzzx.manus.space/integrations` as the integration-request URL; replaced with `https://www.rapidhiresolutions.com/integrations`; (2) scripts/seo_audit.mjs:31 — DEFAULT_URL was the Manus staging host; swapped to https://www.rapidhiresolutions.com/
+- [x] Verified: Home.tsx SSR fallback already uses https://rapidhiresolutions.com canonical; const.ts getLoginUrl() correctly uses window.location.origin; prerender_top_posts.mjs / submit-sitemap.mjs / vite.config.ts already read process.env.SITE_BASE_URL with https://www.rapidhiresolutions.com fallback; localhost references confined to dev tooling
+- [x] Vendor URLs left intentionally hardcoded: clients.rapidhiresolutions.com (separate client portal), d2xsxph8kpxj0f.cloudfront.net (Pricing illustration on third-party CDN), Formspree endpoint, Manus OAuth URLs (env-driven via VITE_OAUTH_PORTAL_URL)
+- [x] Wrote source-pin spec at client/src/lib/vercelHardcodedUrls.test.ts banning rapidhire-8y99zzzx.manus.space from runtime files and pinning origin-derived URLs in Home.tsx + getLoginUrl()
+
+- [x] §193 — Accessibility audit: review every <img> alt attribute for descriptive text; fix gaps (empty alt without decorative rationale, filename-as-alt, "image of...")
+
+## 193. Image alt-text accessibility audit
+- [x] Audited all 27 rendered <img> tags across client/src/components/ + client/src/pages/ — every one carries either descriptive alt text or correctly uses empty alt paired with aria-hidden context for decorative imagery
+- [x] Descriptive alt examples confirmed: Header/Footer logo use BRAND_NAME; Hero artwork carries 400+ char alt covering wordmark + SPA acronym + tagline + service strip; Pricing illustration describes editorial scene (coins/ledger/receipt); WhyUs interview photo describes the scene; Trust/Compliance badges use per-badge title + 'certification badge'; Industries/ServiceDetail/IndustryDetail pass through catalog heroImage.alt; BlogPost cover uses post.coverAlt with title fallback; SampleReport image uses long descriptive alt covering report contents
+- [x] Empty-alt usages verified as correct: Support.tsx desk avatars (alt="" + aria-hidden parent + name in adjacent text); Compliance/Contact heroes (alt="" because section eyebrow already announces the section); Learn video thumbnails (alt="" because linked card heading provides accessible name); PageHero.tsx fallback (imageAlt ?? "" allows opt-out)
+- [x] No fixes were required to existing alt text — the previous design work had been thorough on this front
+- [x] Wrote source-pin spec at client/src/lib/imageAltText.test.ts banning regressions: missing alt attribute, redundant 'Image of …'/'Picture of …' prefix per WCAG 1.1.1, filename-as-alt; pins descriptive alt on key brand surfaces; pins empty-alt allowlist (Support avatars, Learn thumbnails, PageHero fallback)
+- [x] Combined §190 + §191 + §192 + §193 work: vitest suite green at 1,666/1,666 (39 new tests across the four sections); tsc clean

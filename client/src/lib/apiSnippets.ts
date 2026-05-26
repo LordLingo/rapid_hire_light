@@ -345,7 +345,15 @@ export function buildSnippetBundleReadme(
     ``,
     `## Need a different language or webhook example?`,
     ``,
-    `Request an integration at https://rapidhire-8y99zzzx.manus.space/integrations`,
+    /*
+     * §192: this README ships inside the downloadable ZIP that customers
+     * unpack on their own machine. The URL must point at the production
+     * marketing site, not at the staging Manus webdev domain that
+     * disappears as soon as the project leaves Manus hosting. Hardcoding
+     * the canonical https://www.rapidhiresolutions.com here matches the
+     * pattern used by SITE_BASE_URL elsewhere in the codebase.
+     */
+    `Request an integration at https://www.rapidhiresolutions.com/integrations`,
     `— we'll wire the snippet for you. Live API docs at the same URL.`,
     ``,
   ].join("\n");

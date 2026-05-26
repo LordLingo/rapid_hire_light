@@ -354,11 +354,18 @@ export default function Header() {
               aria-label={`${BRAND_NAME} home`}
               className="-mt-1 mb-1 inline-flex items-center self-start"
             >
+              {/*
+                §191: this logo only renders inside the mobile sheet, which
+                is closed by default. Marking it loading="lazy" defers the
+                fetch until the user actually opens the hamburger menu, so
+                we don't pay for it on every mobile pageload.
+              */}
               <img
                 src={HEADER_LOGO_URL}
                 alt={BRAND_NAME}
                 width={210}
                 height={140}
+                loading="lazy"
                 decoding="async"
                 draggable={false}
                 className="block h-16 w-auto select-none"
