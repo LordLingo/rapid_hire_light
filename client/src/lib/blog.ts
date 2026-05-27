@@ -203,6 +203,8 @@ import { post as postCannabisEmployer } from "@/content/blog/cannabis-industry-e
 import { post as postDrugFreeWorkplaceAct } from "@/content/blog/drug-free-workplace-act-federal-contractor-employer-guide";
 // §199 — Pennsylvania CHRIA §9125 employer guide (felony/misdemeanor-only rule + job-relevance test + Negron v. Philadelphia + Philadelphia FCRSO §9-3404 overlay + class-action exposure)
 import { post as postPaChria9125 } from "@/content/blog/pennsylvania-chria-9125-employer-background-check-guide";
+// §200 — Connecticut RERACA cannabis-employment guide (Public Act 21-1 §31-51tt off-duty + §31-51uu pre-employment-testing restriction + 8 exempt buckets + reasonable-suspicion training)
+import { post as postCtReraca } from "@/content/blog/connecticut-reraca-cannabis-employment-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -334,6 +336,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postCannabisEmployer,
   postDrugFreeWorkplaceAct,
   postPaChria9125,
+  postCtReraca,
 ]);
 
 /**
