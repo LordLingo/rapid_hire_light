@@ -186,6 +186,75 @@ export default function ResourcesCaseStudies() {
                   number={String(i + 1).padStart(2, "0")}
                 />
               ))}
+
+              {/*
+                §202 — Request a Demo CTA.
+                Sits immediately under the three case-study cards so the
+                demo ask lands while the proof is still in the reader's
+                eyeline. Uses the canonical /get-a-quote route (§111)
+                with a source tag so sales can attribute leads back to
+                this page.
+              */}
+              <div
+                data-testid="case-studies-demo-cta"
+                className="reveal-on-scroll relative overflow-hidden rounded-[20px] border border-[color:var(--color-brand-blue)]/25 bg-[color:var(--color-ink)] p-8 md:p-10 paper-shadow text-white"
+                style={{ colorScheme: "dark" }}
+              >
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full opacity-40 blur-3xl"
+                  style={{
+                    background:
+                      "radial-gradient(closest-side, var(--color-brand-blue), transparent 70%)",
+                  }}
+                />
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute left-6 right-6 top-0 h-px"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, color-mix(in oklch, var(--color-accent-halo) 60%, transparent) 25%, color-mix(in oklch, var(--color-accent-halo) 60%, transparent) 75%, transparent)",
+                  }}
+                />
+                <div className="relative grid grid-cols-12 gap-6 items-center">
+                  <div className="col-span-12 md:col-span-8">
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-accent-halo)]">
+                      See it on your own data
+                    </p>
+                    <h3 className="mt-3 font-display text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.01em] text-white">
+                      Want results like these for{" "}
+                      <span className="italic font-light text-[color:var(--color-accent-halo)]">
+                        your team?
+                      </span>
+                    </h3>
+                    <p className="mt-4 max-w-xl text-[15.5px] leading-[1.7] text-white/75">
+                      Book a 20-minute walkthrough with a U.S.-based,
+                      FCRA-accredited specialist. We&apos;ll model your
+                      volume against the SPA Standard, run a sample
+                      report against your current vendor, and show you
+                      the exact savings line you&apos;d see in month one.
+                    </p>
+                  </div>
+                  <div className="col-span-12 md:col-span-4 flex md:justify-end">
+                    <div className="flex flex-col items-start md:items-end gap-3">
+                      <Link
+                        href="/get-a-quote?source=resources-case-studies&note=Interested+in+a+demo"
+                        data-testid="case-studies-demo-cta-primary"
+                        className="btn-press inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-[15px] font-semibold text-[color:var(--color-ink)] shadow-sm hover:bg-[color:var(--color-accent-halo)] hover:text-[color:var(--color-ink)] transition"
+                      >
+                        Request a Demo
+                        <ArrowRight className="h-4 w-4" />
+                      </Link>
+                      <Link
+                        href="/customers"
+                        className="text-[12px] uppercase tracking-[0.14em] text-white/60 hover:text-white transition"
+                      >
+                        Or read named-customer stories
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

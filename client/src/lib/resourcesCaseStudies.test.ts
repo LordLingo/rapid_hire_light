@@ -78,6 +78,26 @@ describe("§201 — ResourcesCaseStudies page wiring", () => {
     const src = read("client/src/pages/ResourcesCaseStudies.tsx");
     expect(src).toMatch(/data-testid=\{?`case-study-/);
   });
+
+  it("§202 — surfaces a prominent 'Request a Demo' CTA at the bottom of the case-study library", () => {
+    const src = read("client/src/pages/ResourcesCaseStudies.tsx");
+    // Marker block + primary button must both exist with stable testids.
+    expect(src).toContain('data-testid="case-studies-demo-cta"');
+    expect(src).toContain('data-testid="case-studies-demo-cta-primary"');
+    // Button copy must read "Request a Demo".
+    expect(src).toMatch(/Request a Demo/);
+    // CTA must point at the canonical /get-a-quote route (§111) and carry
+    // a source tag for sales attribution back to this page.
+    expect(src).toMatch(
+      /href="\/get-a-quote\?source=resources-case-studies&note=Interested\+in\+a\+demo"/,
+    );
+    // The CTA block must be rendered AFTER the .map() over CASE_STUDY_RESOURCES
+    // so it sits below the three case-study cards rather than above them.
+    const mapIdx = src.indexOf("CASE_STUDY_RESOURCES.map");
+    const ctaIdx = src.indexOf('data-testid="case-studies-demo-cta"');
+    expect(mapIdx).toBeGreaterThan(0);
+    expect(ctaIdx).toBeGreaterThan(mapIdx);
+  });
 });
 
 describe("§201 — Routing + nav surface", () => {

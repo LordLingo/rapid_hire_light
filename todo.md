@@ -1902,3 +1902,11 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Wrote dedicated regression spec client/src/lib/resourcesCaseStudies.test.ts (10 pins covering registry shape, page wiring, and nav surface)
 - [x] Fixed JSX literal-escape bug — replaced \u201c/\u201d/\u2014/\u00b7 sequences with literal characters so they render as glyphs, not source
 - [x] Full suite green: 1,694 / 1,694 across 113 files; pnpm exec tsc --noEmit clean
+
+## 202. §202 — Request a Demo CTA at bottom of Case Studies page
+- [x] Audited the page tail — the three cards sat directly above a quiet "How to use them" band, with the global CtaBanner ("Switch to Rapid Hire / See how it works") at the very bottom; the demo ask deserved its own block in-line with the proof, not buried below the use-cases
+- [x] Confirmed the canonical CTA route is `/get-a-quote` (§111 Formspree-backed) — every Header / Footer / Services / Pricing / Industries / PricingCalculator CTA across the site already routes there; tagged this CTA with `?source=resources-case-studies&note=Interested+in+a+demo` for sales attribution
+- [x] Added a prominent dark CTA card (bg `--color-ink`, brand-blue halo glow, sky-halo top hairline echoing the footer treatment) immediately under the third case-study card so the demo ask lands while the proof is still in the reader's eyeline; primary button "Request a Demo" (white pill on dark) + secondary "Or read named-customer stories" link
+- [x] Added regression pin in resourcesCaseStudies.test.ts asserting the marker testids exist, button copy reads exactly "Request a Demo", href hits the canonical /get-a-quote route with source+note params, and the CTA block sits AFTER the CASE_STUDY_RESOURCES.map() call (positional pin)
+- [x] Full suite green: 1,695 / 1,695 across 113 files
+- [x] Visually verified — CTA renders prominently with strong contrast against the surrounding paper section
