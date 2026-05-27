@@ -1888,3 +1888,17 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [ ] Implement fix that avoids both the original §195 race AND the back-button loop
 - [ ] Add regression spec locking the loop-prevention guard so a future refactor can't re-introduce it
 - [ ] Save checkpoint, verify on the redeployed Vercel build, and report back
+## 201. §201 — Resources Case Studies page
+- [x] Fetched user-supplied content from Manus share link (3 industry case studies: Dallas industrial staffing, nationwide last-mile delivery, multi-state healthcare network)
+- [x] Added typed CASE_STUDY_RESOURCES registry at client/src/lib/caseStudyResources.ts (kept separate from /customers CASE_STUDIES which holds the named-customer Frito-Lay/H&R Block/TaylorMade trio)
+- [x] Built client/src/pages/ResourcesCaseStudies.tsx with PageHero + 4-section rhythm (paper hero / paper-soft "why we publish" / paper case-study library / paper-soft "how to use") matching the rest of the Resources hub
+- [x] Each case-study card shows industry eyebrow + headline result + Problem / What Was Broken / Why They Switched narrative blocks + 4-row Legacy/Rapid Hire/Δ metrics table + pull-quote testimonial
+- [x] Registered `/resources/case-studies` route in App.tsx
+- [x] Added Case Studies entry to RESOURCES_CHILDREN in Header.tsx with a description string; bumped headerResourcesMenu.test.ts description-count assertion 12 → 13 and added the new href pin
+- [x] Added Case Studies entry to PILLARS list in Resources.tsx hub page
+- [x] Added /resources/case-studies to vite.config.ts SITEMAP_PATHS (priority 0.7, monthly)
+- [x] Added useSeo with canonical URL https://www.rapidhiresolutions.com/resources/case-studies
+- [x] Added ResourcesCaseStudies.tsx to paperSoftAudit.test.ts allowlist
+- [x] Wrote dedicated regression spec client/src/lib/resourcesCaseStudies.test.ts (10 pins covering registry shape, page wiring, and nav surface)
+- [x] Fixed JSX literal-escape bug — replaced \u201c/\u201d/\u2014/\u00b7 sequences with literal characters so they render as glyphs, not source
+- [x] Full suite green: 1,694 / 1,694 across 113 files; pnpm exec tsc --noEmit clean

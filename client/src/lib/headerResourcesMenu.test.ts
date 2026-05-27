@@ -67,6 +67,8 @@ describe("§79 — NAV carries a single Resources group", () => {
     expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/marijuana-laws"/);
     expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/legislative-updates"/);
     expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/white-papers"/);
+    // §201 addition
+    expect(HEADER_SRC).toMatch(/href:\s*"\/resources\/case-studies"/);
     // §79 originals
     expect(HEADER_SRC).toMatch(/href:\s*"\/blog"/);
     expect(HEADER_SRC).toMatch(/href:\s*"\/compliance\/checklist"/);
@@ -77,13 +79,13 @@ describe("§79 — NAV carries a single Resources group", () => {
   it("each child entry carries a non-empty description string", () => {
     // Pull the RESOURCES_CHILDREN array body and count description
     // entries — §79 four + §80 two + §81 four + §168 two
-    // (Learn (videos), Subscribe (newsletter)) = 12.
+    // (Learn (videos), Subscribe (newsletter)) + §201 (Case studies) = 13.
     const block = HEADER_SRC.match(
       /const RESOURCES_CHILDREN:[^\[]*\[([\s\S]*?)\];/,
     );
     expect(block, "RESOURCES_CHILDREN array must exist").not.toBeNull();
     const descriptions = (block?.[1].match(/description:\s*"/g) ?? []);
-    expect(descriptions.length).toBe(12);
+    expect(descriptions.length).toBe(13);
   });
 });
 

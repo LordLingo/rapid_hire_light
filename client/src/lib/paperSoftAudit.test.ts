@@ -168,6 +168,11 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // Box) — sections 02, 04, and 06 sit on --color-paper-soft.
       // Visually audited.
       "client/src/pages/ResourcesK12ComplianceGuide.tsx",
+      // §201: Resources Case Studies page uses the same alternating section
+      // rhythm (white hero → paper-soft "why we publish" → white case-study
+      // library → paper-soft "how to use them") as the rest of the
+      // Resources hub. Visually audited.
+      "client/src/pages/ResourcesCaseStudies.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {

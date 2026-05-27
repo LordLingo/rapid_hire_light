@@ -774,6 +774,7 @@ const STATIC_ROUTES: { path: string; priority: number; changefreq: string }[] = 
   { path: "/resources/marijuana-laws",       priority: 0.8, changefreq: "monthly" },
   { path: "/resources/legislative-updates",  priority: 0.8, changefreq: "weekly"  },
   { path: "/resources/white-papers",         priority: 0.7, changefreq: "monthly" },
+  { path: "/resources/case-studies",         priority: 0.7, changefreq: "monthly" },
   { path: "/resources/background-checks-by-state",                priority: 0.8, changefreq: "monthly" },
   { path: "/resources/background-checks-by-state/california",     priority: 0.7, changefreq: "monthly" },
   { path: "/resources/background-checks-by-state/texas",          priority: 0.7, changefreq: "monthly" },

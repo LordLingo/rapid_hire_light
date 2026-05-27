@@ -70,6 +70,12 @@ const RESOURCES_CHILDREN: ResourceChild[] = [
       "Long-form references for compliance, operations, and industry programs.",
   },
   {
+    label: "Case studies",
+    href: "/resources/case-studies",
+    description:
+      "Three industry case studies \u2014 staffing, last-mile logistics, and healthcare \u2014 with metrics and quotes.",
+  },
+  {
     label: "Learn (videos)",
     href: "/learn",
     description:

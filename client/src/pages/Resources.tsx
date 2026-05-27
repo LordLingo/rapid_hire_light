@@ -86,6 +86,14 @@ const PILLARS: {
       "TAT, dispute rates, compliance findings, and YoY deltas across four sectors — anchored on the rapid-hire client base and triangulated against PBSA + SHRM.",
     href: "/resources/benchmarks",
   },
+  // §201: Enterprise case studies (industry-anonymized).
+  {
+    eyebrow: "Case studies",
+    title: "Enterprise case studies",
+    body:
+      "Three industry case studies — high-volume staffing, last-mile logistics, and multi-state healthcare — with the operational metrics and pull-quotes from the program owners who ran the migration.",
+    href: "/resources/case-studies",
+  },
   // §83: A–Z glossary closes the long-tail "what is X" SEO gap.
   {
     eyebrow: "Glossary",
