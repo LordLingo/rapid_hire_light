@@ -205,6 +205,8 @@ import { post as postDrugFreeWorkplaceAct } from "@/content/blog/drug-free-workp
 import { post as postPaChria9125 } from "@/content/blog/pennsylvania-chria-9125-employer-background-check-guide";
 // §200 — Connecticut RERACA cannabis-employment guide (Public Act 21-1 §31-51tt off-duty + §31-51uu pre-employment-testing restriction + 8 exempt buckets + reasonable-suspicion training)
 import { post as postCtReraca } from "@/content/blog/connecticut-reraca-cannabis-employment-employer-guide";
+// §203 — Maryland JAFA credit-history employer guide (Md. Code, Lab. & Empl. §3-711 + 8 exemptions + Cannabis Reform Act §13-3301 overlay + Commissioner of Labor private right of action)
+import { post as postMdJafa } from "@/content/blog/maryland-jafa-credit-history-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -337,6 +339,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postDrugFreeWorkplaceAct,
   postPaChria9125,
   postCtReraca,
+  postMdJafa,
 ]);
 
 /**

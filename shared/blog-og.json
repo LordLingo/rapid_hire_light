@@ -598,7 +598,7 @@
     },
     {
       "slug": "k12-school-employee-background-check-requirements",
-      "title": "K-12 School Employee Background Checks: Fingerprint Statutes, ESSA §8546, and the State Overlays HR Has to Get Right",
+      "title": "K-12 School Employee Background Checks: Fingerprint Statutes, ESSA \u00a78546, and the State Overlays HR Has to Get Right",
       "tag": "k12-education"
     },
     {
@@ -608,7 +608,7 @@
     },
     {
       "slug": "massachusetts-cori-employer-guide",
-      "title": "Massachusetts CORI: An Employer's Guide to iCORI, Lookback Caps, and the §171A Acknowledgment",
+      "title": "Massachusetts CORI: An Employer's Guide to iCORI, Lookback Caps, and the \u00a7171A Acknowledgment",
       "tag": "massachusetts"
     },
     {
@@ -628,18 +628,23 @@
     },
     {
       "slug": "drug-free-workplace-act-federal-contractor-employer-guide",
-      "title": "Drug-Free Workplace Act Compliance: A Federal Contractor's Guide to 41 USC §8101 and the SAMHSA Lab Floor",
+      "title": "Drug-Free Workplace Act Compliance: A Federal Contractor's Guide to 41 USC \u00a78101 and the SAMHSA Lab Floor",
       "tag": "drug-free-workplace-act"
     },
     {
       "slug": "pennsylvania-chria-9125-employer-background-check-guide",
-      "title": "Pennsylvania CHRIA §9125: The Job-Relevance Test Every Employer Hiring in PA Has To Pass",
+      "title": "Pennsylvania CHRIA \u00a79125: The Job-Relevance Test Every Employer Hiring in PA Has To Pass",
       "tag": "pennsylvania"
     },
     {
       "slug": "connecticut-reraca-cannabis-employment-employer-guide",
       "title": "Connecticut RERACA: The Cannabis-Employment Statute Every Employer Hiring in CT Has To Operationalize",
       "tag": "connecticut"
+    },
+    {
+      "slug": "maryland-jafa-credit-history-employer-guide",
+      "title": "Maryland JAFA: The Credit-History Restriction Every Employer Hiring in MD Has To Operationalize",
+      "tag": "maryland"
     }
   ]
 }
