@@ -207,6 +207,8 @@ import { post as postPaChria9125 } from "@/content/blog/pennsylvania-chria-9125-
 import { post as postCtReraca } from "@/content/blog/connecticut-reraca-cannabis-employment-employer-guide";
 // §203 — Maryland JAFA credit-history employer guide (Md. Code, Lab. & Empl. §3-711 + 8 exemptions + Cannabis Reform Act §13-3301 overlay + Commissioner of Labor private right of action)
 import { post as postMdJafa } from "@/content/blog/maryland-jafa-credit-history-employer-guide";
+// §205 — Colorado Chance to Compete Act ban-the-box guide (C.R.S. §8-2-130 + HB 19-1025 + 3 exemptions + 2023 SB23-058 Job Application Fairness Act age-screening overlay + CDLE enforcement)
+import { post as postCoCcca } from "@/content/blog/colorado-chance-to-compete-act-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -340,6 +342,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postPaChria9125,
   postCtReraca,
   postMdJafa,
+  postCoCcca,
 ]);
 
 /**
