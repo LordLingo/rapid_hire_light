@@ -1910,3 +1910,13 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Added regression pin in resourcesCaseStudies.test.ts asserting the marker testids exist, button copy reads exactly "Request a Demo", href hits the canonical /get-a-quote route with source+note params, and the CTA block sits AFTER the CASE_STUDY_RESOURCES.map() call (positional pin)
 - [x] Full suite green: 1,695 / 1,695 across 113 files
 - [x] Visually verified — CTA renders prominently with strong contrast against the surrounding paper section
+
+## 204. §204 — Request a Demo CTA on every blog post (driven by user request to add it to the new Maryland JAFA post)
+- [x] Built BlogPostDemoCta component at client/src/components/blog/BlogPostDemoCta.tsx — dark ink card with brand-blue halo glow, sky-halo top hairline, eyebrow "Ready to switch?", display headline "Ready to see Rapid Hire in action?", supporting copy framing the demo as 20-min walkthrough (no deck, just the product); primary white pill button "Request a Demo" → /get-a-quote?source=blog-demo-cta&slug={slug}&note=Interested+in+a+demo, secondary "Get a written quote instead" → /contact (preserves the lower-intent path)
+- [x] Exported a pure buildBlogDemoHref(slug) helper so the regression spec can pin the canonical URL without rendering React
+- [x] Wired it into client/src/pages/BlogPost.tsx — ships on every post, not just JAFA; the page is shared infrastructure so a single insertion captures every reader funnel
+- [x] Placed AFTER the existing BlogPostCta archetype card (archetype keeps the primary spot for research-mode readers; demo CTA captures higher-intent readers who finished the article AND scrolled past the archetype CTA without converting); placed BEFORE the related-posts rail so it's the last in-article ask
+- [x] Visual differentiation matches §202 case-studies CTA (same dark-card / brand-blue-halo / sky-hairline pattern) so the two dark CTAs across the site read as a deliberate brand pattern
+- [x] Wrote regression spec at client/src/components/blog/BlogPostDemoCta.test.ts (14 pins): href builder routes to /get-a-quote, source=blog-demo-cta tag, slug-attribution, note=Interested+in+a+demo prefill (with + URL-encoding); source-pin assertions for exact button copy, all 4 testids, wouter <Link> usage, secondary /contact link, single-source-of-truth href derivation; integration pins for BlogPost.tsx import, post-prop passing, position-after-archetype-CTA, position-before-related-posts-rail
+- [x] Full suite green: 1,709 / 1,709 across 114 files (added 14 new specs); pnpm exec tsc --noEmit clean
+- [x] Save checkpoint

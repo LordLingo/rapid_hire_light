@@ -16,6 +16,7 @@ import PostToc from "@/components/site/PostToc";
 import ShareButtons from "@/components/site/ShareButtons";
 import ReadingProgressBar from "@/components/site/ReadingProgressBar";
 import { BlogPostCta } from "@/components/blog/BlogPostCta";
+import { BlogPostDemoCta } from "@/components/blog/BlogPostDemoCta";
 import BlogPostVideoCta from "@/components/blog/BlogPostVideoCta";
 import {
   formatPublishedDate,
@@ -198,6 +199,13 @@ export default function BlogPost() {
             {/* CTA — universal blog CTA framework. Picks one of 6 archetypes
                 based on the post's tags + slug. See client/src/lib/blogCta.ts. */}
             <BlogPostCta post={post} />
+
+            {/* §204 — Universal "Request a Demo" CTA. Sits AFTER the
+                archetype CTA so the archetype-tuned ask still gets the
+                primary spot for research-mode readers; this dark card
+                captures higher-intent readers who finished the article
+                AND scrolled past the archetype CTA without converting. */}
+            <BlogPostDemoCta post={post} />
           </div>
         </div>
       </section>
