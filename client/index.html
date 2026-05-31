@@ -43,6 +43,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!--
+      §211 — HubSpot Tracking Code (portal 24249673).
+
+      REQUIRED for the "Form submission" workflow trigger to fire on the
+      Get Started Form (id e0120c0d-1fad-4556-a0ee-bb0684797042). Without
+      this script the browser never sets the `hubspotutk` cookie, our
+      Forms API submission ships an empty `context.hutk`, and HubSpot
+      classifies the submission as a non-tracked event — contacts get
+      created and `lead_source` is populated, but workflows that listen
+      for tracked form-submissions will not enroll the contact.
+
+      Loaded async + defer so it never blocks first paint. Pinned by
+      `hubspotTrackingScript.test.ts` so a future refactor can't quietly
+      remove it and silently re-break the HubSpot automation.
+    -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/24249673.js"></script>
   </head>
 
   <body>
