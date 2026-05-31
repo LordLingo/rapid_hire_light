@@ -211,6 +211,8 @@ import { post as postMdJafa } from "@/content/blog/maryland-jafa-credit-history-
 import { post as postCoCcca } from "@/content/blog/colorado-chance-to-compete-act-employer-guide";
 // §206 — Virginia Fair Chance Hiring guide (Va. Code §19.2-389.3 marijuana-misdemeanor automatic sealing + §40.1-28.7:8 state-agency ban-the-box + 2025 §19.2-392.7–§19.2-392.13 expungement-and-sealing infrastructure)
 import { post as postVaFairChance } from "@/content/blog/virginia-fair-chance-hiring-employer-guide";
+// §207 — Michigan ICHAT + Clean Slate Act employer guide (MCL §28.214 ICHAT + 2023 Clean Slate MCL §§780.621–780.621g automatic sealing + §780.623 use-restriction private right of action + ICHAT-vs-aggregator pull architecture)
+import { post as postMiIchatCleanSlate } from "@/content/blog/michigan-ichat-clean-slate-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -346,6 +348,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postMdJafa,
   postCoCcca,
   postVaFairChance,
+  postMiIchatCleanSlate,
 ]);
 
 /**
