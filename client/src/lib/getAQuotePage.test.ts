@@ -106,6 +106,20 @@ describe("§111 — GetAQuote page wiring", () => {
     // — not three independent inputs that happen to live on the same page.
     expect(src).toMatch(/<input[\s\S]*?type="hidden"[\s\S]*?name="lead_source"[\s\S]*?value="Get Started Form"[\s\S]*?\/>/);
   });
+
+  // §208b — The hidden field alone is NOT sufficient: this form's onSubmit
+  // handler builds a hand-rolled `payload` object and JSON-stringifies that
+  // (it does not POST raw FormData), so the hidden input has to be
+  // explicitly forwarded into the payload object too. This was the failure
+  // mode the user hit — hidden field present in the DOM but never reached
+  // Formspree because the payload constructor didn't list it.
+  it("§208b — lead_source is forwarded into the JSON payload that ships to Formspree (not just the DOM)", () => {
+    const src = read("client/src/pages/GetAQuote.tsx");
+    // The payload object must read lead_source out of FormData with a
+    // safe "Get Started Form" fallback so a stripped /get-a-quote still
+    // enrolls in the HubSpot workflow.
+    expect(src).toMatch(/lead_source:\s*String\(fd\.get\("lead_source"\)\s*\?\?\s*"Get Started Form"\)/);
+  });
 });
 
 // --- B) /get-a-quote route is registered ------------------------------------

@@ -213,6 +213,13 @@ export default function GetAQuote() {
       ats: String(fd.get("ats") ?? ""),
       timeline: String(fd.get("timeline") ?? ""),
       message: String(fd.get("message") ?? ""),
+      // §208 — HubSpot lead-source attribution. Read from the hidden
+      // <input name="lead_source"> in the form so the JSON payload that
+      // actually ships to Formspree carries the value (the hand-rolled
+      // payload object above does NOT auto-include FormData fields).
+      // Falls back to the literal default so a stripped-down /get-a-quote
+      // call still enrolls in the HubSpot "Get Started Form" workflow.
+      lead_source: String(fd.get("lead_source") ?? "Get Started Form"),
       _subject: company
         ? `New quote request — ${company}`
         : "New quote request",
