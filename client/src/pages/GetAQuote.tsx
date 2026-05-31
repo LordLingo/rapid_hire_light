@@ -37,6 +37,14 @@ import {
 // original name so the existing §111 tests + downstream importers keep
 // working without a rename.
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+// §209 — Direct HubSpot Forms API submission. Fires in parallel with
+// the Formspree submission so the form is wired to HubSpot end-to-end
+// even if the Formspree → HubSpot integration mapping is incomplete.
+import {
+  buildHubspotFields,
+  readHubspotUtkCookie,
+  submitToHubspot,
+} from "@/lib/hubspotForm";
 
 /** Formspree endpoint for quote requests (provided by site owner). */
 export const QUOTE_FORMSPREE_ENDPOINT = FORMSPREE_ENDPOINT;
@@ -225,6 +233,61 @@ export default function GetAQuote() {
         : "New quote request",
     };
     setSubmitting(true);
+
+    /*
+      §209 — Fire-and-forget HubSpot Forms API submission.
+
+      Runs in parallel with the Formspree POST below. We DO NOT await it
+      in a way that blocks the user's success state — if HubSpot
+      rejects the payload (missing custom property, invalid dropdown
+      enum, etc.), we want the user to still get the success toast off
+      the Formspree path while we log the HubSpot diagnostic to the
+      console for engineering follow-up.
+
+      Field names below are HubSpot's standard contact-property internal
+      names (firstname, lastname, email, phone, company, jobtitle,
+      industry, lead_source). Custom-friendly fields (volume, services,
+      ats, timeline, message) are passed by their lowercase names so
+      they line up with the most common HubSpot custom-property naming
+      convention; if a property doesn't exist on the portal HubSpot
+      will surface a 400 listing the offending field, which we log to
+      the console for diagnosis without breaking the UX.
+    */
+    const hubspotFields = buildHubspotFields({
+      firstname: payload.firstName,
+      lastname: payload.lastName,
+      email: payload.email,
+      phone: payload.phone,
+      company: payload.company,
+      jobtitle: payload.role,
+      industry: payload.industry,
+      hiring_volume: payload.volume,
+      services_of_interest: payload.services,
+      ats_in_use: payload.ats,
+      timeline: payload.timeline,
+      message: payload.message,
+      lead_source: payload.lead_source,
+    });
+    const hubspotPromise = submitToHubspot({
+      fields: hubspotFields,
+      context: {
+        pageUri:
+          typeof window !== "undefined" ? window.location.href : undefined,
+        pageName: "Get a Quote — Rapid Hire Solutions",
+        hutk: readHubspotUtkCookie(),
+      },
+    }).then((result) => {
+      // Surface non-2xx HubSpot responses to the dev console so future
+      // missing-property errors are visible without breaking the user.
+      if (!result.ok && typeof console !== "undefined") {
+        console.warn("[HubSpot Forms] non-2xx response", result);
+      }
+      return result;
+    });
+    // Mark the promise as intentionally not awaited — this prevents an
+    // unhandled-rejection warning if HubSpot's fetch ever rejects.
+    void hubspotPromise.catch(() => {});
+
     try {
       const resp = await fetch(QUOTE_FORMSPREE_ENDPOINT, {
         method: "POST",
