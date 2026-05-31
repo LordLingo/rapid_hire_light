@@ -236,6 +236,13 @@ export default function GetAQuote() {
       _subject: company
         ? `New quote request — ${company}`
         : "New quote request",
+      // §212 — Formspree control field. Comma-separated list of
+      // additional recipients that get CC'd on every quote-form
+      // submission email. Owner-requested distribution — keeps partner
+      // contacts in the loop on inbound quote requests without needing a
+      // separate forwarding rule. Pinned in the §111 GetAQuote spec so a
+      // future refactor can't silently drop a recipient.
+      _cc: "mark@precisehire.com,sbratcher@exactbackgroundchecks.com,arthur@brangoholdings.com",
     };
     setSubmitting(true);
 

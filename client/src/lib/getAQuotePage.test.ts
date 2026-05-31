@@ -120,6 +120,28 @@ describe("§111 — GetAQuote page wiring", () => {
     // enrolls in the HubSpot workflow.
     expect(src).toMatch(/lead_source:\s*String\(fd\.get\("lead_source"\)\s*\?\?\s*"Get Started Form"\)/);
   });
+
+  // §212 — Owner-requested CC distribution. Formspree's `_cc` control
+  // field accepts a comma-separated list of additional recipients that
+  // get CC'd on every submission email. Pinning each recipient address
+  // explicitly so a future refactor can't silently drop one.
+  it("§212 — Formspree payload CC's the three owner-requested partner addresses", () => {
+    const src = read("client/src/pages/GetAQuote.tsx");
+    // The control field must be exactly `_cc` (Formspree's reserved name).
+    expect(src).toMatch(/_cc:\s*"[^"]+"/);
+    expect(src).toContain("mark@precisehire.com");
+    expect(src).toContain("sbratcher@exactbackgroundchecks.com");
+    expect(src).toContain("arthur@brangoholdings.com");
+    // All three must live on the same comma-separated _cc value (not
+    // accidentally split across multiple fields, which would make
+    // Formspree treat only the last one as the CC list).
+    const ccLine = src.match(/_cc:\s*"([^"]+)"/);
+    expect(ccLine).not.toBeNull();
+    if (!ccLine) return;
+    expect(ccLine[1]).toContain("mark@precisehire.com");
+    expect(ccLine[1]).toContain("sbratcher@exactbackgroundchecks.com");
+    expect(ccLine[1]).toContain("arthur@brangoholdings.com");
+  });
 });
 
 // --- B) /get-a-quote route is registered ------------------------------------
