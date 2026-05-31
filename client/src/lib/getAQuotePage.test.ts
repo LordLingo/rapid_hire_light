@@ -89,6 +89,23 @@ describe("§111 — GetAQuote page wiring", () => {
   it("file exists at client/src/pages/GetAQuote.tsx (not Contact)", () => {
     expect(existsSync(resolve(ROOT, "client/src/pages/GetAQuote.tsx"))).toBe(true);
   });
+
+  // §208 — HubSpot lead-source attribution: the form must POST a hidden
+  // `lead_source` field with the literal value "Get Started Form" so the
+  // HubSpot workflow trigger "Lead Source is any of Get Started Form"
+  // enrolls the contact, rotates ownership, and sets Lead Status: HOT.
+  // Pinning all three independently so a refactor can't silently break
+  // the HubSpot automation by renaming/dropping any one of them.
+  it("§208 — ships a hidden lead_source field defaulted to 'Get Started Form' for HubSpot enrollment", () => {
+    const src = read("client/src/pages/GetAQuote.tsx");
+    expect(src).toMatch(/type="hidden"/);
+    expect(src).toMatch(/name="lead_source"/);
+    expect(src).toMatch(/value="Get Started Form"/);
+    expect(src).toMatch(/data-testid="quote-lead-source"/);
+    // The hidden input must be a single tag with all three attributes on it
+    // — not three independent inputs that happen to live on the same page.
+    expect(src).toMatch(/<input[\s\S]*?type="hidden"[\s\S]*?name="lead_source"[\s\S]*?value="Get Started Form"[\s\S]*?\/>/);
+  });
 });
 
 // --- B) /get-a-quote route is registered ------------------------------------

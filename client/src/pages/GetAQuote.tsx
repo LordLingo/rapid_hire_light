@@ -406,6 +406,23 @@ export default function GetAQuote() {
                     aria-hidden="true"
                   />
 
+                  {/*
+                    §208 — HubSpot lead-source attribution. Hidden field POSTed
+                    to Formspree with a stable default of "Get Started Form" so
+                    the HubSpot workflow trigger "Lead Source is any of Get
+                    Started Form" enrolls the contact and routes it through
+                    rotation → Lead Status: HOT (per the configured automation).
+                    The HubSpot contact-property internal name for the standard
+                    Lead Source field is `lead_source` — do not rename without
+                    coordinating the property mapping in HubSpot.
+                  */}
+                  <input
+                    type="hidden"
+                    name="lead_source"
+                    value="Get Started Form"
+                    data-testid="quote-lead-source"
+                  />
+
                   <div className="grid grid-cols-12 gap-x-8 gap-y-8">
                     <Field label="First name" name="firstName" required autoComplete="given-name" className="col-span-12 md:col-span-6" error={fieldErrors.firstName} />
                     <Field label="Last name" name="lastName" required autoComplete="family-name" className="col-span-12 md:col-span-6" error={fieldErrors.lastName} />
