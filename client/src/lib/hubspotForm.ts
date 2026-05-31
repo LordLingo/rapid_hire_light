@@ -50,6 +50,74 @@ export interface HubspotField {
   readonly value: string;
 }
 
+/**
+ * §210 — Compose the multi-line "Quote Request Details" summary that
+ * lands in the HubSpot custom contact property `quote_request_details`.
+ *
+ * Approach 1 from the user conversation: rather than create five separate
+ * HubSpot custom properties (one each for role, hiring volume, services
+ * of interest, ATS, timeline) plus a long-text "message" field, we bundle
+ * the entire form submission into a single multi-line text property so
+ * sales sees the full context on the contact record without HubSpot
+ * needing five new dropdowns/properties defined.
+ *
+ * Pure function so the formatting can be regression-pinned without
+ * touching the network. Empty fields are silently omitted so the summary
+ * stays clean for partial submissions — the optional Phone / Role /
+ * timeline lines won't render an awkward empty "Role / Title:" stub.
+ */
+export interface QuoteRequestDetailsInput {
+  readonly role?: string;
+  readonly volume?: string;
+  readonly services?: string;
+  readonly ats?: string;
+  readonly timeline?: string;
+  readonly message?: string;
+  /** ISO timestamp of the submission (UTC). Falls back to Date.now() when omitted. */
+  readonly submittedAtIso?: string;
+  /** Page the form was submitted from (defaults to the canonical /get-a-quote URL). */
+  readonly sourcePageUri?: string;
+}
+
+export function formatQuoteRequestDetails(
+  input: QuoteRequestDetailsInput,
+): string {
+  const lines: string[] = [];
+  const submittedAt = input.submittedAtIso
+    ? new Date(input.submittedAtIso)
+    : new Date();
+  // Render the timestamp in UTC so it's unambiguous when sales sees it
+  // across time zones; the trailing "UTC" tag makes the convention
+  // explicit and avoids the locale-of-the-server vs. locale-of-the-rep
+  // confusion that plagues mixed-format timestamps.
+  const stamp = submittedAt.toISOString().replace("T", " ").replace(/\.\d+Z$/, " UTC");
+  lines.push(`Submitted: ${stamp}`);
+  if (input.sourcePageUri && input.sourcePageUri.trim().length > 0) {
+    lines.push(`Source: ${input.sourcePageUri.trim()}`);
+  }
+  // Blank line separator between the metadata header and the form fields.
+  lines.push("");
+  const labeled: ReadonlyArray<readonly [string, string | undefined]> = [
+    ["Role / Title", input.role],
+    ["Hiring Volume", input.volume],
+    ["Services of Interest", input.services],
+    ["ATS in Use", input.ats],
+    ["Timeline", input.timeline],
+  ];
+  for (const [label, raw] of labeled) {
+    const v = (raw ?? "").trim();
+    if (v.length === 0) continue;
+    lines.push(`${label}: ${v}`);
+  }
+  const messageRaw = (input.message ?? "").trim();
+  if (messageRaw.length > 0) {
+    lines.push("");
+    lines.push("Message:");
+    lines.push(messageRaw);
+  }
+  return lines.join("\n");
+}
+
 export interface HubspotSubmitContext {
   readonly pageUri?: string;
   readonly pageName?: string;

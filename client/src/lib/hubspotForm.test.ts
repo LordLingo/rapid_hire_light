@@ -22,6 +22,7 @@ import {
   HUBSPOT_QUOTE_FORM_ID,
   hubspotFormsEndpoint,
   buildHubspotFields,
+  formatQuoteRequestDetails,
   readHubspotUtkCookie,
   submitToHubspot,
 } from "./hubspotForm";
@@ -127,6 +128,67 @@ describe("§209 — readHubspotUtkCookie", () => {
   });
 });
 
+// --- E.5) §210 formatQuoteRequestDetails -----------------------------------
+describe("§210 — formatQuoteRequestDetails", () => {
+  it("renders the canonical multi-line summary when all fields are populated", () => {
+    const out = formatQuoteRequestDetails({
+      role: "HR Director",
+      volume: "100–500 hires/yr",
+      services: "County criminal, MVR, education verification",
+      ats: "Greenhouse",
+      timeline: "Ready to start within 30 days",
+      message: "We need to switch fast.\nCurrent vendor is too slow.",
+      submittedAtIso: "2026-05-31T16:42:00.000Z",
+      sourcePageUri: "https://rapidhiresolutions.com/get-a-quote",
+    });
+    expect(out).toContain("Submitted: 2026-05-31 16:42:00 UTC");
+    expect(out).toContain("Source: https://rapidhiresolutions.com/get-a-quote");
+    expect(out).toContain("Role / Title: HR Director");
+    expect(out).toContain("Hiring Volume: 100–500 hires/yr");
+    expect(out).toContain("Services of Interest: County criminal, MVR, education verification");
+    expect(out).toContain("ATS in Use: Greenhouse");
+    expect(out).toContain("Timeline: Ready to start within 30 days");
+    expect(out).toContain("Message:\nWe need to switch fast.");
+  });
+
+  it("silently omits empty fields so partial submissions stay clean", () => {
+    const out = formatQuoteRequestDetails({
+      role: "HR Director",
+      volume: "",
+      services: "  ", // whitespace-only counts as empty
+      ats: undefined,
+      timeline: "Q3",
+      message: "",
+      submittedAtIso: "2026-05-31T16:42:00.000Z",
+      sourcePageUri: "https://rapidhiresolutions.com/get-a-quote",
+    });
+    expect(out).toContain("Role / Title: HR Director");
+    expect(out).toContain("Timeline: Q3");
+    expect(out).not.toContain("Hiring Volume:");
+    expect(out).not.toContain("Services of Interest:");
+    expect(out).not.toContain("ATS in Use:");
+    expect(out).not.toContain("Message:");
+  });
+
+  it("renders just the metadata header when no body fields are populated", () => {
+    const out = formatQuoteRequestDetails({
+      submittedAtIso: "2026-05-31T16:42:00.000Z",
+      sourcePageUri: "https://rapidhiresolutions.com/get-a-quote",
+    });
+    // The header should still ship even with no fields, so sales sees
+    // "someone submitted at X but didn't fill anything optional in".
+    expect(out).toContain("Submitted: 2026-05-31 16:42:00 UTC");
+    expect(out).toContain("Source: https://rapidhiresolutions.com/get-a-quote");
+  });
+
+  it("falls back to current time when submittedAtIso is omitted", () => {
+    const out = formatQuoteRequestDetails({ role: "x" });
+    // We can't pin the exact timestamp, but it must follow the canonical
+    // "YYYY-MM-DD HH:MM:SS UTC" shape.
+    expect(out).toMatch(/^Submitted: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} UTC/);
+  });
+});
+
 // --- F) GetAQuote.tsx integration -------------------------------------------
 describe("§209 — GetAQuote.tsx HubSpot wiring", () => {
   const src = read("client/src/pages/GetAQuote.tsx");
@@ -142,7 +204,7 @@ describe("§209 — GetAQuote.tsx HubSpot wiring", () => {
     expect(src).toMatch(/lead_source:\s*payload\.lead_source/);
   });
 
-  it("uses HubSpot's canonical contact-property internal names (firstname/lastname/jobtitle, not firstName)", () => {
+  it("uses HubSpot's canonical contact-property internal names (firstname/lastname, not firstName)", () => {
     // Look INSIDE the buildHubspotFields(...) call so we don't false-match
     // the Formspree payload's camelCase field names.
     const block = src.match(/buildHubspotFields\(\{[\s\S]*?\}\);?/);
@@ -151,8 +213,18 @@ describe("§209 — GetAQuote.tsx HubSpot wiring", () => {
     const fieldsBlock = block[0];
     expect(fieldsBlock).toMatch(/firstname:/);
     expect(fieldsBlock).toMatch(/lastname:/);
-    expect(fieldsBlock).toMatch(/jobtitle:/);
     expect(fieldsBlock).toMatch(/lead_source:/);
+    // §210 — quote_request_details bundle replaces the five separate
+    // custom-property submissions (jobtitle, hiring_volume,
+    // services_of_interest, ats_in_use, timeline) with one summary.
+    expect(fieldsBlock).toMatch(/quote_request_details:/);
+    // The five would-be-separate fields must NOT be sent as standalone
+    // HubSpot properties anymore — they're bundled inside the summary.
+    expect(fieldsBlock).not.toMatch(/jobtitle:/);
+    expect(fieldsBlock).not.toMatch(/hiring_volume:/);
+    expect(fieldsBlock).not.toMatch(/services_of_interest:/);
+    expect(fieldsBlock).not.toMatch(/ats_in_use:/);
+    expect(fieldsBlock).not.toMatch(/^\s*timeline:/m);
   });
 
   it("fires the HubSpot submission as fire-and-forget (NOT awaited inline)", () => {

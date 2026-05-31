@@ -40,8 +40,13 @@ import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
 // §209 — Direct HubSpot Forms API submission. Fires in parallel with
 // the Formspree submission so the form is wired to HubSpot end-to-end
 // even if the Formspree → HubSpot integration mapping is incomplete.
+// §210 — formatQuoteRequestDetails bundles the compound fields
+// (role, volume, services, ATS, timeline, message) into a single
+// multi-line summary that lands in the `quote_request_details` custom
+// HubSpot property, replacing five would-be separate properties with one.
 import {
   buildHubspotFields,
+  formatQuoteRequestDetails,
   readHubspotUtkCookie,
   submitToHubspot,
 } from "@/lib/hubspotForm";
@@ -235,7 +240,7 @@ export default function GetAQuote() {
     setSubmitting(true);
 
     /*
-      §209 — Fire-and-forget HubSpot Forms API submission.
+      §209/§210 — Fire-and-forget HubSpot Forms API submission.
 
       Runs in parallel with the Formspree POST below. We DO NOT await it
       in a way that blocks the user's success state — if HubSpot
@@ -244,29 +249,36 @@ export default function GetAQuote() {
       the Formspree path while we log the HubSpot diagnostic to the
       console for engineering follow-up.
 
-      Field names below are HubSpot's standard contact-property internal
-      names (firstname, lastname, email, phone, company, jobtitle,
-      industry, lead_source). Custom-friendly fields (volume, services,
-      ats, timeline, message) are passed by their lowercase names so
-      they line up with the most common HubSpot custom-property naming
-      convention; if a property doesn't exist on the portal HubSpot
-      will surface a 400 listing the offending field, which we log to
-      the console for diagnosis without breaking the UX.
+      Top-line fields go to HubSpot's STANDARD contact-property internal
+      names (firstname, lastname, email, phone, company, industry,
+      lead_source) so they remain filterable and segmentable in HubSpot.
+      The five compound fields (role, hiring volume, services of interest,
+      ATS in use, timeline) plus the free-text message are bundled into
+      a single multi-line summary that lands in ONE custom long-text
+      property `quote_request_details` — see formatQuoteRequestDetails().
+      This avoids needing five separate custom HubSpot properties for
+      one-off form data while keeping the full submission visible to
+      sales on the contact record.
     */
+    const quoteDetails = formatQuoteRequestDetails({
+      role: payload.role,
+      volume: payload.volume,
+      services: payload.services,
+      ats: payload.ats,
+      timeline: payload.timeline,
+      message: payload.message,
+      sourcePageUri:
+        typeof window !== "undefined" ? window.location.href : undefined,
+    });
     const hubspotFields = buildHubspotFields({
       firstname: payload.firstName,
       lastname: payload.lastName,
       email: payload.email,
       phone: payload.phone,
       company: payload.company,
-      jobtitle: payload.role,
       industry: payload.industry,
-      hiring_volume: payload.volume,
-      services_of_interest: payload.services,
-      ats_in_use: payload.ats,
-      timeline: payload.timeline,
-      message: payload.message,
       lead_source: payload.lead_source,
+      quote_request_details: quoteDetails,
     });
     const hubspotPromise = submitToHubspot({
       fields: hubspotFields,
