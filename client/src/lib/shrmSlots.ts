@@ -3,11 +3,11 @@
 
   We don't have a live calendar back-end yet so this file hardcodes
   every 15-minute slot the team has booth coverage for, across the
-  three SHRM 2026 booth days (Mon Jun 22 / Tue Jun 23 / Wed Jun 24,
+  three SHRM 2026 booth days (Tue Jun 16 / Wed Jun 17 / Thu Jun 18,
   2026). All times are in U.S. Eastern (the show is in Orlando, FL).
 
   Each slot exposes:
-   - id: stable slug ("mon-0930") used in URLs (?slot=mon-0930) and
+   - id: stable slug ("tue-0930") used in URLs (?slot=tue-0930) and
      deep links. Format: {dayKey}-{HHmm} so a future contributor can
      read it without lookup.
    - dayIso / dayLabel: redundant fields for sort + display.
@@ -30,9 +30,9 @@ export type ShrmSlot = {
   id: string;
   /** ISO yyyy-mm-dd of the slot's day. */
   dayIso: string;
-  /** Three-letter abbreviation for tabs ("Mon" / "Tue" / "Wed"). */
-  dayKey: "mon" | "tue" | "wed";
-  /** Long-form day label used in confirmations ("Mon Jun 22"). */
+  /** Three-letter abbreviation for tabs ("Tue" / "Wed" / "Thu"). */
+  dayKey: "tue" | "wed" | "thu";
+  /** Long-form day label used in confirmations ("Tue Jun 16"). */
   dayLabel: string;
   /** 24h HH:mm — lexicographically sortable. */
   startEt: string;
@@ -47,10 +47,10 @@ export type ShrmSlot = {
 };
 
 // 15-minute increments from 9:00 to 17:00 ET. 32 slots/day × 3 days = 96.
-const DAYS: { key: "mon" | "tue" | "wed"; iso: string; label: string }[] = [
-  { key: "mon", iso: "2026-06-22", label: "Mon Jun 22" },
-  { key: "tue", iso: "2026-06-23", label: "Tue Jun 23" },
-  { key: "wed", iso: "2026-06-24", label: "Wed Jun 24" },
+const DAYS: { key: "tue" | "wed" | "thu"; iso: string; label: string }[] = [
+  { key: "tue", iso: "2026-06-16", label: "Tue Jun 16" },
+  { key: "wed", iso: "2026-06-17", label: "Wed Jun 17" },
+  { key: "thu", iso: "2026-06-18", label: "Thu Jun 18" },
 ];
 
 function pad(n: number): string {
@@ -69,16 +69,16 @@ function ampm(h24: number, m: number): string {
    - one mid-morning + one mid-afternoon internal sync per day
    - a handful of slots already "booked" so the grid feels live
 */
-function isBlocked(dayKey: "mon" | "tue" | "wed", startEt: string): boolean {
+function isBlocked(dayKey: "tue" | "wed" | "thu", startEt: string): boolean {
   // Universal lunch hour: 12:00 – 13:00 unavailable on every day.
   if (startEt >= "12:00" && startEt < "13:00") return true;
 
   // Per-day blocks — gives prospects realistic constraints without
   // overwhelming them. Tuned so 64+ of 96 slots remain available.
   const perDay: Record<typeof dayKey, string[]> = {
-    mon: ["09:00", "09:15", "14:30", "16:45"], // morning warm-up + late afternoon shift
-    tue: ["10:30", "10:45", "15:00"], // mid-morning sync + a "booked" slot
-    wed: ["09:00", "13:00", "13:15", "16:30", "16:45"], // last-day teardown overlap
+    tue: ["09:00", "09:15", "14:30", "16:45"], // morning warm-up + late afternoon shift
+    wed: ["10:30", "10:45", "15:00"], // mid-morning sync + a "booked" slot
+    thu: ["09:00", "13:00", "13:15", "16:30", "16:45"], // last-day teardown overlap
   };
   return perDay[dayKey].includes(startEt);
 }
@@ -128,7 +128,7 @@ export function getShrmSlot(id: string | null | undefined): ShrmSlot | undefined
 
 /**
  * Canonical display string used by the picker confirmation panel and
- * the Contact.tsx success message. Example: "Mon Jun 22, 9:30 – 9:45 am ET".
+ * the Contact.tsx success message. Example: "Tue Jun 16, 9:30 – 9:45 am ET".
  */
 export function formatShrmSlot(slot: ShrmSlot): string {
   return `${slot.dayLabel}, ${slot.startLabel} – ${slot.endLabel} ET`;

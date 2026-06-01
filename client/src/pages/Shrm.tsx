@@ -1,5 +1,5 @@
 /*
-  §139 — /shrm landing page (SHRM 2026 Annual, Orlando, June 21-24).
+  §139 — /shrm landing page (SHRM 2026 Annual, Orlando, June 16–18).
 
   This is the destination for:
     (a) booth visitors who scan the booth's QR code
@@ -20,7 +20,7 @@
     04 — Virtual fallback for buyers who can't make it to Orlando
     05 — Final CTA: "Step into the SPA at SHRM 2026"
 
-  When the conference ends (June 24, 2026), the page itself stays up
+  When the conference ends (June 18, 2026), the page itself stays up
   but the announcement strip auto-hides and the page can be redirected
   to /spa later if desired (post-mortem traffic still has a home in
   the meantime).
@@ -109,9 +109,9 @@ function captureUtmParams() {
 export default function Shrm() {
   useSeo({
     title:
-      "Meet Rapid Hire at SHRM 2026 — Orlando, June 21-24 | Rapid Hire Solutions",
+      "Meet Rapid Hire at SHRM 2026 — Orlando, June 16–18 | Rapid Hire Solutions",
     description:
-      "Step into the SPA — Speed, Price, Accuracy — at the largest HR conference of the year. Book your 15-minute SPA Treatment with a U.S.-based, FCRA-accredited rep at SHRM 2026, June 21-24, Orange County Convention Center, Orlando.",
+      "Step into the SPA — Speed, Price, Accuracy — at the largest HR conference of the year. Book your 15-minute SPA Treatment with a U.S.-based, FCRA-accredited rep at SHRM 2026, June 16–18, Orange County Convention Center, Orlando.",
   });
 
   useEffect(() => {

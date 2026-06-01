@@ -2,7 +2,7 @@
   §139 — SHRM 2026 Annual Conference promotion
 
   Single source of truth for everything related to Rapid Hire's
-  presence at SHRM Annual 2026 (Orlando, June 21-24). Every consumer
+  presence at SHRM Annual 2026 (Orlando, June 16–18). Every consumer
   imports from here so:
 
     - the announcement strip, /shrm landing page, useSeo metadata,
@@ -27,7 +27,7 @@ export type ShrmEvent = {
   startIso: string;
   /** ISO 8601 end date (inclusive) — last day of expo. */
   endIso: string;
-  /** Compact human date range for in-copy use (e.g. "June 21-24, 2026"). */
+  /** Compact human date range for in-copy use (e.g. "June 16–18, 2026"). */
   dateRange: string;
   /** Year suffix used in titles, slugs, and analytics. */
   year: number;
@@ -46,14 +46,14 @@ export type ShrmEvent = {
 /**
  * Canonical event details. Locked by shrm.test.ts.
  *
- * Source: SHRM official site. Annual 2026 runs June 21-24 at the
+ * Source: SHRM official site. Annual 2026 runs June 16–18 at the
  * Orange County Convention Center in Orlando, FL.
  */
 export const SHRM_EVENT: ShrmEvent = {
   name: "SHRM 2026 Annual Conference & Expo",
-  startIso: "2026-06-21",
-  endIso: "2026-06-24",
-  dateRange: "June 21-24, 2026",
+  startIso: "2026-06-16",
+  endIso: "2026-06-18",
+  dateRange: "June 16–18, 2026",
   year: 2026,
   city: "Orlando, FL",
   venue: "Orange County Convention Center",
@@ -116,8 +116,8 @@ export const SHRM_STRIP_COPY = `Meeting at SHRM 2026, ${SHRM_EVENT.dateRange}, $
  */
 export function isUpcoming(now: Date = new Date()): boolean {
   // Cutoff = end of the day after the conference ends, UTC.
-  // For SHRM 2026 (ends June 24) this means strip hides starting
-  // June 25 UTC. Good enough — a few hours late is fine.
+  // For SHRM 2026 (ends June 18) this means strip hides starting
+  // June 19 UTC. Good enough — a few hours late is fine.
   const end = new Date(SHRM_EVENT.endIso + "T23:59:59Z");
   // Add 24 hours of grace so US/ET times don't flip mid-day on the last day.
   const cutoff = new Date(end.getTime() + 24 * 60 * 60 * 1000);

@@ -53,9 +53,9 @@ describe("§139 — SHRM event constants (lib/shrm.ts)", () => {
     expect(SHRM_EVENT.year).toBe(2026);
   });
 
-  it("locks ISO start/end dates to June 21-24, 2026", () => {
-    expect(SHRM_EVENT.startIso).toBe("2026-06-21");
-    expect(SHRM_EVENT.endIso).toBe("2026-06-24");
+  it("locks ISO start/end dates to June 16–18, 2026", () => {
+    expect(SHRM_EVENT.startIso).toBe("2026-06-16");
+    expect(SHRM_EVENT.endIso).toBe("2026-06-18");
   });
 
   it("has city + venue + dateRange + booth fields populated", () => {
@@ -91,11 +91,11 @@ describe("§139 — SHRM event constants (lib/shrm.ts)", () => {
 
 describe("§139 — isUpcoming() helper", () => {
   it("returns true at the start of the conference window", () => {
-    expect(isUpcoming(new Date("2026-06-21T13:00:00Z"))).toBe(true);
+    expect(isUpcoming(new Date("2026-06-16T13:00:00Z"))).toBe(true);
   });
 
   it("returns true on the last day of the conference", () => {
-    expect(isUpcoming(new Date("2026-06-24T13:00:00Z"))).toBe(true);
+    expect(isUpcoming(new Date("2026-06-18T13:00:00Z"))).toBe(true);
   });
 
   it("returns false long after the conference ends", () => {

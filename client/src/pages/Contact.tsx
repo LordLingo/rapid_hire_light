@@ -181,9 +181,9 @@ export default function Contact() {
 
   /*
     §148 — SHRM booking-picker slot. /shrm CTAs may pass
-    `?slot=mon-0930` after the user picks a specific 15-minute block.
+    `?slot=tue-0930` after the user picks a specific 15-minute block.
     We look the id up in the static catalog so we can render the full
-    "Mon Jun 22, 9:30 – 9:45 am ET" string in the prefilled message,
+    "Tue Jun 16, 9:30 – 9:45 am ET" string in the prefilled message,
     success card, and Formspree payload. Stale/unknown ids resolve to
     undefined and fall back to the generic SHRM prefill copy.
   */

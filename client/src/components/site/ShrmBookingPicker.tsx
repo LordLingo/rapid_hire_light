@@ -10,14 +10,14 @@
   later we can swap it without touching this component's UI.
 
   UX notes:
-   - Day tabs (Mon / Tue / Wed) — three tabs, never four. The same
-     three-letter keys match the slot ids (mon-0930, tue-1015, ...).
+   - Day tabs (Tue / Wed / Thu) — three tabs, never four. The same
+     three-letter keys match the slot ids (tue-0930, wed-1015, ...).
    - 4-column grid of 15-minute cells per day. Each cell shows the
      start time only (full range shown in the selection summary). Taken
      slots render disabled with a strikethrough so the page still feels
      "live" even though every slot is hard-coded.
    - Tap-to-toggle: clicking the active slot deselects.
-   - Selection card renders below the grid with the full "Mon Jun 22,
+   - Selection card renders below the grid with the full "Tue Jun 16,
      9:30 – 9:45 am ET" string + a primary "Reserve this slot" CTA that
      opens /contact?subject=…&source=shrm-2026&slot={id}. Contact.tsx
      reads the slot id, looks it up via getShrmSlot, and (a) prefills
@@ -45,7 +45,7 @@ import {
 import { buildShrmContactUrl } from "@/lib/shrm";
 
 export default function ShrmBookingPicker() {
-  const [dayKey, setDayKey] = useState<ShrmSlot["dayKey"]>("mon");
+  const [dayKey, setDayKey] = useState<ShrmSlot["dayKey"]>("tue");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Group slots by day for cheap rendering.

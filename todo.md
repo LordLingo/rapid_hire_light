@@ -1920,3 +1920,5 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Wrote regression spec at client/src/components/blog/BlogPostDemoCta.test.ts (14 pins): href builder routes to /get-a-quote, source=blog-demo-cta tag, slug-attribution, note=Interested+in+a+demo prefill (with + URL-encoding); source-pin assertions for exact button copy, all 4 testids, wouter <Link> usage, secondary /contact link, single-source-of-truth href derivation; integration pins for BlogPost.tsx import, post-prop passing, position-after-archetype-CTA, position-before-related-posts-rail
 - [x] Full suite green: 1,709 / 1,709 across 114 files (added 14 new specs); pnpm exec tsc --noEmit clean
 - [x] Save checkpoint
+
+- [x] §214 — Update all SHRM 2026 conference dates site-wide from June 21–24 to June 16–18 (en-dash)

@@ -48,14 +48,14 @@ const contactPage = readFileSync(
 );
 
 describe("§148 — SHRM_BOOKING_DAYS catalog", () => {
-  it("ships exactly three days (Mon/Tue/Wed) in show order", () => {
-    expect(SHRM_BOOKING_DAYS.map((d) => d.key)).toEqual(["mon", "tue", "wed"]);
+  it("ships exactly three days (Tue/Wed/Thu) in show order", () => {
+    expect(SHRM_BOOKING_DAYS.map((d) => d.key)).toEqual(["tue", "wed", "thu"]);
   });
 
   it("each day has an ISO date in 2026 and a human label", () => {
     for (const day of SHRM_BOOKING_DAYS) {
-      expect(day.iso).toMatch(/^2026-06-(22|23|24)$/);
-      expect(day.label).toMatch(/^(Mon|Tue|Wed) Jun (22|23|24)$/);
+      expect(day.iso).toMatch(/^2026-06-(16|17|18)$/);
+      expect(day.label).toMatch(/^(Tue|Wed|Thu) Jun (16|17|18)$/);
     }
   });
 });
@@ -68,7 +68,7 @@ describe("§148 — SHRM_SLOTS catalog shape", () => {
   it("each slot id matches `{day}-HHmm` and is unique", () => {
     const ids = SHRM_SLOTS.map((s) => s.id);
     for (const id of ids) {
-      expect(id).toMatch(/^(mon|tue|wed)-\d{4}$/);
+      expect(id).toMatch(/^(tue|wed|thu)-\d{4}$/);
     }
     expect(new Set(ids).size).toBe(ids.length);
   });
@@ -87,7 +87,7 @@ describe("§148 — SHRM_SLOTS catalog shape", () => {
 
   it("start times cover 09:00 through 16:45 inclusive", () => {
     const sorted = [...SHRM_SLOTS]
-      .filter((s) => s.dayKey === "mon")
+      .filter((s) => s.dayKey === "tue")
       .map((s) => s.startEt);
     expect(sorted[0]).toBe("09:00");
     expect(sorted[sorted.length - 1]).toBe("16:45");
@@ -119,31 +119,31 @@ describe("§148 — getShrmSlot helper", () => {
     expect(getShrmSlot(null)).toBeUndefined();
     expect(getShrmSlot(undefined)).toBeUndefined();
     expect(getShrmSlot("")).toBeUndefined();
-    expect(getShrmSlot("mon-9999")).toBeUndefined();
+    expect(getShrmSlot("tue-9999")).toBeUndefined();
     expect(getShrmSlot("not-a-slot")).toBeUndefined();
   });
 
   it("returns the exact matching slot for a valid id", () => {
-    const found = getShrmSlot("mon-0930");
+    const found = getShrmSlot("tue-0930");
     expect(found).toBeDefined();
-    expect(found?.dayKey).toBe("mon");
+    expect(found?.dayKey).toBe("tue");
     expect(found?.startEt).toBe("09:30");
     expect(found?.endEt).toBe("09:45");
   });
 });
 
 describe("§148 — formatShrmSlot helper", () => {
-  it("renders the canonical 'Mon Jun 22, 9:30 – 9:45 am ET' shape", () => {
-    const slot = getShrmSlot("mon-0930") as ShrmSlot;
-    expect(formatShrmSlot(slot)).toBe("Mon Jun 22, 9:30 am – 9:45 am ET");
+  it("renders the canonical 'Tue Jun 16, 9:30 – 9:45 am ET' shape", () => {
+    const slot = getShrmSlot("tue-0930") as ShrmSlot;
+    expect(formatShrmSlot(slot)).toBe("Tue Jun 16, 9:30 am – 9:45 am ET");
   });
 
   it("crosses noon correctly (am → pm boundary)", () => {
-    const slot = getShrmSlot("tue-1145") as ShrmSlot;
+    const slot = getShrmSlot("wed-1145") as ShrmSlot;
     // 11:45 am → 12:00 pm — display strings flip period correctly.
     expect(slot.startLabel).toBe("11:45 am");
     expect(slot.endLabel).toBe("12:00 pm");
-    expect(formatShrmSlot(slot)).toBe("Tue Jun 23, 11:45 am – 12:00 pm ET");
+    expect(formatShrmSlot(slot)).toBe("Wed Jun 17, 11:45 am – 12:00 pm ET");
   });
 });
 
@@ -151,7 +151,7 @@ describe("§148 — slotsByDay convenience", () => {
   it("groups every slot into exactly its day bucket, preserving order", () => {
     const groups = slotsByDay();
     expect(groups).toHaveLength(3);
-    expect(groups.map((g) => g.day.key)).toEqual(["mon", "tue", "wed"]);
+    expect(groups.map((g) => g.day.key)).toEqual(["tue", "wed", "thu"]);
     for (const g of groups) {
       expect(g.slots.length).toBe(32);
       expect(g.slots.every((s) => s.dayKey === g.day.key)).toBe(true);
@@ -169,17 +169,17 @@ describe("§148 — buildShrmContactUrl(slotId)", () => {
   });
 
   it("appends slot= when slotId is provided", () => {
-    const url = buildShrmContactUrl({ slotId: "tue-1015" });
-    expect(url).toContain("slot=tue-1015");
+    const url = buildShrmContactUrl({ slotId: "wed-1015" });
+    expect(url).toContain("slot=wed-1015");
     // existing SHRM params still present
     expect(url).toContain("source=shrm-2026");
   });
 
   it("encodes the slot id as a URL-safe value", () => {
     // ids are already safe but the call site should round-trip cleanly
-    const url = buildShrmContactUrl({ slotId: "wed-0900" });
+    const url = buildShrmContactUrl({ slotId: "thu-0900" });
     const params = new URLSearchParams(url.split("?")[1]);
-    expect(params.get("slot")).toBe("wed-0900");
+    expect(params.get("slot")).toBe("thu-0900");
   });
 });
 
