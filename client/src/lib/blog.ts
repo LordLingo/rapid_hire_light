@@ -213,6 +213,8 @@ import { post as postCoCcca } from "@/content/blog/colorado-chance-to-compete-ac
 import { post as postVaFairChance } from "@/content/blog/virginia-fair-chance-hiring-employer-guide";
 // §207 — Michigan ICHAT + Clean Slate Act employer guide (MCL §28.214 ICHAT + 2023 Clean Slate MCL §§780.621–780.621g automatic sealing + §780.623 use-restriction private right of action + ICHAT-vs-aggregator pull architecture)
 import { post as postMiIchatCleanSlate } from "@/content/blog/michigan-ichat-clean-slate-employer-guide";
+// §213 — Minnesota Criminal History Employment Act (Minn. Stat. §§364.01–364.10) + 2023 cannabis off-duty protections (Minn. Stat. §181.953 + HF 100 omnibus) employer guide
+import { post as postMnCoraCannabis } from "@/content/blog/minnesota-criminal-history-cannabis-employer-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -349,6 +351,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postCoCcca,
   postVaFairChance,
   postMiIchatCleanSlate,
+  postMnCoraCannabis,
 ]);
 
 /**
