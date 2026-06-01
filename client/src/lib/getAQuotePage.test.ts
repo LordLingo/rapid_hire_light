@@ -145,6 +145,32 @@ describe("§111 — GetAQuote page wiring", () => {
     expect(src).not.toContain("sbratcher@exactbackgroundchecks.com");
     expect(src).not.toContain("arthur@brangoholdings.com");
   });
+
+  // §216 — After a successful submission the page must scroll the
+  // success-confirmation panel into view. Without this, the form
+  // unmounts in place and the user (scrolled near the submit button)
+  // is left staring at empty whitespace ~600px below the new panel,
+  // believing the click did nothing. Pinning the three ingredients of
+  // the fix in source so a refactor can't silently drop scroll behavior:
+  //   1. a `useRef`-typed handle to the success element,
+  //   2. an effect keyed off `submitted` that calls `scrollIntoView`,
+  //   3. the success element actually consumes that ref.
+  it("§216 — success state scrolls itself into view after submit", () => {
+    const src = read("client/src/pages/GetAQuote.tsx");
+    // (1) Ref declaration — must be typed as HTMLDivElement so the
+    //     compiler enforces it's bound to the success <div> below.
+    expect(src).toMatch(/successRef\s*=\s*useRef<HTMLDivElement\s*\|\s*null>\(null\)/);
+    // (2) Effect that watches `submitted` and triggers scrollIntoView.
+    //     The single regex enforces dependency + behavior together so a
+    //     future contributor can't keep the effect but quietly remove
+    //     the actual scroll call (or vice versa).
+    expect(src).toMatch(
+      /useEffect\(\(\)\s*=>\s*\{[\s\S]*?submitted[\s\S]*?successRef\.current\?\.scrollIntoView\([\s\S]*?\}\s*,\s*\[submitted\]\)/,
+    );
+    // (3) The success-state element actually consumes the ref. Without
+    //     this the effect would scroll a null ref to nowhere.
+    expect(src).toMatch(/ref=\{successRef\}[\s\S]*?data-testid="quote-success"/);
+  });
 });
 
 // --- B) /get-a-quote route is registered ------------------------------------

@@ -1924,3 +1924,5 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] §214 — Update all SHRM 2026 conference dates site-wide from June 21–24 to June 16–18 (en-dash)
 
 - [x] §215 — Remove _cc field from /get-a-quote Formspree payload (SendGrid rejected duplicate-recipient errors; recipients now managed in Formspree Workflow dashboard)
+
+- [x] §216 — /get-a-quote: after submit, scroll the page up so the success/confirmation panel is in view (form currently appears unchanged on submit because user stays scrolled at bottom of form)

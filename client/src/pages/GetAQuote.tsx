@@ -15,7 +15,7 @@
   Design tokens reuse the same hairline-underline form fields used on
     Contact.tsx so the two surfaces feel like siblings.
 */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearch } from "wouter";
 import { ArrowUpRight, Mail, Phone, Check, Loader2, Clock, Timer } from "lucide-react";
 import { LAST_QUOTE_TURNAROUND } from "@/lib/lastQuoteTurnaround";
@@ -157,11 +157,40 @@ export default function GetAQuote() {
   // §134: per-field inline errors. Keyed by `name` attribute so the
   // markup binding stays trivial. Cleared on input/change.
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  // §216 — Ref to the success-state panel. After a successful submit
+  // the form unmounts and the success panel mounts in-place, but the
+  // user's scroll position is left at the bottom of the (now-vanished)
+  // form fields — leaving them staring at empty whitespace and footer
+  // links and believing the form did nothing. The post-submit effect
+  // below scrolls this panel into view so the "Quote request received"
+  // confirmation is what they actually see after pressing the button.
+  const successRef = useRef<HTMLDivElement | null>(null);
 
   // Re-sync if user navigates between pre-fills within the SPA.
   useEffect(() => {
     if (prefillSet.length) setServices(prefillSet);
   }, [prefillSet]);
+
+  // §216 — Scroll the success-state confirmation panel into view as soon
+  // as `submitted` flips to true. Without this the form node unmounts
+  // in place and the user (who was scrolled near the submit button at
+  // the bottom of the form) is left looking at empty space — the new
+  // panel renders ~600px above their current scroll position. Using
+  // `block: "center"` (instead of `start`) keeps the eyebrow row and
+  // hero context visible above the panel, which reads more like a
+  // deliberate confirmation state than a hard jump. `behavior: "smooth"`
+  // makes the transition obviously deliberate so the user perceives
+  // their click as having had an effect.
+  useEffect(() => {
+    if (!submitted) return;
+    // requestAnimationFrame defers the scroll until after React has
+    // committed the success panel to the DOM — otherwise the ref is
+    // still null on the same tick that `submitted` becomes true.
+    const id = requestAnimationFrame(() => {
+      successRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [submitted]);
 
   function toggleService(id: string) {
     setServices((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
@@ -451,8 +480,9 @@ export default function GetAQuote() {
             <div className="col-span-12 lg:col-span-8 reveal-on-scroll">
               {submitted ? (
                 <div
+                  ref={successRef}
                   data-testid="quote-success"
-                  className="rounded-[20px] border border-border bg-[color:var(--color-paper)] px-8 py-16 text-center"
+                  className="rounded-[20px] border border-border bg-[color:var(--color-paper)] px-8 py-16 text-center scroll-mt-32"
                 >
                   <div className="mx-auto grid place-items-center size-12 rounded-full bg-[color:var(--color-tint)] text-[color:var(--color-accent-ink)]">
                     <Check className="size-5" strokeWidth={2} />
