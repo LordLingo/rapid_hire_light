@@ -121,26 +121,29 @@ describe("§111 — GetAQuote page wiring", () => {
     expect(src).toMatch(/lead_source:\s*String\(fd\.get\("lead_source"\)\s*\?\?\s*"Get Started Form"\)/);
   });
 
-  // §212 — Owner-requested CC distribution. Formspree's `_cc` control
-  // field accepts a comma-separated list of additional recipients that
-  // get CC'd on every submission email. Pinning each recipient address
-  // explicitly so a future refactor can't silently drop one.
-  it("§212 — Formspree payload CC's the three owner-requested partner addresses", () => {
+  // §215 — Owner-requested CC distribution is now handled in the
+  // Formspree Workflow dashboard (Linked Emails + per-recipient Email
+  // actions on form `mvzyoyoz`). Re-introducing a `_cc` field in the
+  // submission payload duplicates the three partner addresses across
+  // SendGrid's `to` and `cc` personalization fields, which SendGrid
+  // rejects with: "Each email address in the personalization block
+  // should be unique between to, cc, and bcc." That regression is what
+  // suppressed delivery to mark@precisehire.com,
+  // arthur@brangoholdings.com, and sbratcher@exactbackgroundchecks.com
+  // after §212 shipped. This negative pin ensures a future contributor
+  // who reads the old §212 comment can't quietly re-add `_cc` and
+  // re-break the partner-CC delivery path.
+  it("§215 — GetAQuote payload does NOT carry an `_cc` field (owned by Formspree dashboard)", () => {
     const src = read("client/src/pages/GetAQuote.tsx");
-    // The control field must be exactly `_cc` (Formspree's reserved name).
-    expect(src).toMatch(/_cc:\s*"[^"]+"/);
-    expect(src).toContain("mark@precisehire.com");
-    expect(src).toContain("sbratcher@exactbackgroundchecks.com");
-    expect(src).toContain("arthur@brangoholdings.com");
-    // All three must live on the same comma-separated _cc value (not
-    // accidentally split across multiple fields, which would make
-    // Formspree treat only the last one as the CC list).
-    const ccLine = src.match(/_cc:\s*"([^"]+)"/);
-    expect(ccLine).not.toBeNull();
-    if (!ccLine) return;
-    expect(ccLine[1]).toContain("mark@precisehire.com");
-    expect(ccLine[1]).toContain("sbratcher@exactbackgroundchecks.com");
-    expect(ccLine[1]).toContain("arthur@brangoholdings.com");
+    // No `_cc:` key in the submission payload object.
+    expect(src).not.toMatch(/_cc:\s*"[^"]+"/);
+    // Belt-and-suspenders: also fail if any literal partner email
+    // address sneaks back into a hand-rolled payload field. The three
+    // addresses are intentionally NOT in the source — they live in the
+    // Formspree dashboard.
+    expect(src).not.toContain("mark@precisehire.com");
+    expect(src).not.toContain("sbratcher@exactbackgroundchecks.com");
+    expect(src).not.toContain("arthur@brangoholdings.com");
   });
 });
 

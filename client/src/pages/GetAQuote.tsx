@@ -236,13 +236,18 @@ export default function GetAQuote() {
       _subject: company
         ? `New quote request — ${company}`
         : "New quote request",
-      // §212 — Formspree control field. Comma-separated list of
-      // additional recipients that get CC'd on every quote-form
-      // submission email. Owner-requested distribution — keeps partner
-      // contacts in the loop on inbound quote requests without needing a
-      // separate forwarding rule. Pinned in the §111 GetAQuote spec so a
-      // future refactor can't silently drop a recipient.
-      _cc: "mark@precisehire.com,sbratcher@exactbackgroundchecks.com,arthur@brangoholdings.com",
+      // §215 — NOTE: do NOT add a `_cc` field here. The owner-requested
+      // partner-recipient distribution (Mark / Arthur / Stewart) is now
+      // managed inside the Formspree Workflow dashboard for form
+      // `mvzyoyoz` (Linked Emails + per-recipient Email actions). Adding
+      // `_cc` here in addition would duplicate those addresses across
+      // SendGrid's `to`/`cc` personalization block and the underlying
+      // SendGrid backend rejects the send with: "Each email address in
+      // the personalization block should be unique between to, cc, and
+      // bcc." — which is exactly what happened on §212. Recipients are
+      // intentionally a Formspree-side concern from §215 onward; if the
+      // partner list changes, update it in the Formspree dashboard, not
+      // in this payload.
     };
     setSubmitting(true);
 
