@@ -31,68 +31,85 @@ export default function BlogPost() {
   const slug = params?.slug ?? "";
   const post = getPostBySlug(slug);
 
-  // Always render even when post is missing — falls through to NotFound.
-  // Hooks below assume `post` exists, so we early-return.
-  if (!post) {
-    return <NotFound />;
-  }
-
+  // §197 — CRITICAL: every hook below MUST run unconditionally on every
+  // render, BEFORE any early return. The previous implementation early-
+  // returned <NotFound /> when `post` was undefined and only THEN called
+  // useSeo + useMemo. That violated the Rules of Hooks: navigating client-
+  // side from a valid post to a missing slug (or a Vercel route-stub /
+  // hydration mismatch that leaves `post` momentarily undefined on the
+  // first client render) changed the hook COUNT between renders, throwing
+  // "Rendered fewer hooks than expected" and blanking the page in
+  // production (a hard refresh masked it by remounting fresh). The fix is
+  // to derive every hook input defensively (post may be undefined here)
+  // and gate ONLY the returned JSX on `post`, never the hook calls.
   const url =
     typeof window !== "undefined"
-      ? `${window.location.origin}/blog/${post.slug}`
-      : `/blog/${post.slug}`;
+      ? `${window.location.origin}/blog/${slug}`
+      : `/blog/${slug}`;
 
   // Dynamic Open Graph image: a 1200×630 SVG card built server-side from
   // shared/blog-og.json. Falls back to the post.cover when the post explicitly
   // ships its own social image. Absolute URL is required by OG crawlers.
   const ogImage =
-    post.cover ??
+    post?.cover ??
     (typeof window !== "undefined"
-      ? `${window.location.origin}/api/og/blog/${post.slug}.svg`
-      : `/api/og/blog/${post.slug}.svg`);
+      ? `${window.location.origin}/api/og/blog/${slug}.svg`
+      : `/api/og/blog/${slug}.svg`);
 
   // dateModified comes from shared/blog-meta.json's lastmod field, which is
   // refreshed every time a post body or metadata is touched. When it equals
   // publishedAt (the typical case), Google treats the article as un-revised;
   // when it diverges (e.g., we re-ran a registration script after editing),
   // the rich-result tester surfaces the freshness signal correctly.
-  const lastmod = getPostLastmod(post.slug) || post.publishedAt;
+  const lastmod = (post && (getPostLastmod(post.slug) || post.publishedAt)) || "";
 
   // BlogPosting JSON-LD with the fields Google's rich-result tester expects.
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.metaDescription,
-    datePublished: post.publishedAt,
-    dateModified: lastmod,
-    author: { "@type": "Organization", name: post.author },
-    publisher: {
-      "@type": "Organization",
-      name: "Rapid Hire Solutions",
-    },
-    mainEntityOfPage: { "@type": "WebPage", "@id": url },
-    keywords: post.tags.join(", "),
-    articleSection: post.tags[0]?.replace(/-/g, " "),
-    wordCount: post.body.split(/\s+/).filter(Boolean).length,
-    inLanguage: "en-US",
-    image: [ogImage],
-  };
+  // Built only when `post` exists; passed as undefined to useSeo otherwise so
+  // the hook is still called unconditionally (Rules of Hooks).
+  const jsonLd = post
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.metaDescription,
+        datePublished: post.publishedAt,
+        dateModified: lastmod,
+        author: { "@type": "Organization", name: post.author },
+        publisher: {
+          "@type": "Organization",
+          name: "Rapid Hire Solutions",
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        keywords: post.tags.join(", "),
+        articleSection: post.tags[0]?.replace(/-/g, " "),
+        wordCount: post.body.split(/\s+/).filter(Boolean).length,
+        inLanguage: "en-US",
+        image: [ogImage],
+      }
+    : undefined;
 
   useSeo({
-    title: post.metaTitle ?? post.title,
-    description: post.metaDescription,
+    title: post ? (post.metaTitle ?? post.title) : "Article not found",
+    description: post?.metaDescription ?? "",
     canonical: url,
     ogType: "article",
     image: ogImage,
     jsonLd,
   });
 
-  const related = relatedPosts(post.slug, 3);
+  const related = useMemo(
+    () => (post ? relatedPosts(post.slug, 3) : []),
+    [post],
+  );
   // §47: derive the on-page TOC from the same parsed body that
   // PostBody renders. Memoized because the markdown body is stable
   // for the lifetime of this component but parsing isn't free.
-  const headings = useMemo(() => getHeadings(post.body), [post.body]);
+  const headings = useMemo(() => getHeadings(post?.body ?? ""), [post]);
+
+  // §197 — Only NOW, after every hook has run, is it safe to bail out.
+  if (!post) {
+    return <NotFound />;
+  }
 
   return (
     <SiteShell>

@@ -1875,19 +1875,19 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Saved checkpoint 86514159 (auto-pushed to user_github/main); waiting on Vercel rebuild + user retest.
 
 ## 197. §197 — Vercel blank-page-on-blog-card-click bug
-- [ ] Reproduce on live Vercel deploy: from /blog click any blog post card → navigates to /blog/<slug> but renders blank white page; hard refresh of same URL renders the post correctly
-- [ ] Trace: route registration in App.tsx, BlogPost.tsx mount path, network requests for the post chunk, console errors, lazy-load behavior
-- [ ] Identify root cause (likely candidates: lazy-loaded chunk that 404s on the rewritten path, useSeo crashing during client nav, or a Wouter route ordering issue with the prerendered HTML stub)
-- [ ] Implement the fix
-- [ ] Add regression spec
-- [ ] Save checkpoint and verify on live Vercel deploy
+- [x] Reproduced locally: navigating client-side to a slug whose post is undefined (valid→missing, or a Vercel route-stub/hydration mismatch) threw "Rendered fewer hooks than expected. This may be caused by an accidental early return statement." and blanked the page; hard refresh masked it by remounting fresh
+- [x] Traced: BlogPost.tsx called `if (!post) return <NotFound/>` ABOVE useSeo + two useMemo hooks → Rules-of-Hooks violation (hook count changes between renders)
+- [x] Root cause confirmed: conditional hook execution, NOT a lazy-chunk 404 or Wouter ordering issue
+- [x] Fix: reordered BlogPost.tsx so all hooks run unconditionally with defensive inputs (post?.cover, getHeadings(post?.body ?? ""), jsonLd built only when post exists); the `if (!post) return <NotFound/>` guard now sits AFTER every hook
+- [x] Regression spec: new client/src/lib/blogPostHooksOrder.test.ts (5 pins) + updated §47 useMemo pin in blogPostToc.test.ts
+- [x] Verified locally: missing slug now renders a clean 404 instead of crashing; checkpoint saved (awaiting user retest on redeployed Vercel build)
 
 ## 198. §198 — React error #300 ("Too many re-renders") on browser-back inside /blog
-- [ ] Reproduce on the live Vercel deploy and capture exact trigger sequence (which page → which page transition fires the loop)
-- [ ] Identify the source of the loop (§195 synchronous setPage in render, URL-sync effect calling history.replaceState, or another path)
-- [ ] Implement fix that avoids both the original §195 race AND the back-button loop
-- [ ] Add regression spec locking the loop-prevention guard so a future refactor can't re-introduce it
-- [ ] Save checkpoint, verify on the redeployed Vercel build, and report back
+- [x] Core loop fix was already shipped in §195 (render-phase setPage removed, popstate listener re-syncs state from URL, idempotent URL-sync effect) and pinned in blogIndexFilters.test.ts
+- [x] Re-verified the back-button sequence this session (apply tag filter → open post → back → back): /blog index re-rendered cleanly, no React #300 / too-many-re-renders / hooks errors in the browser console log after the fix timestamp
+- [x] Note: §197's conditional-hooks crash was a contributing source of the same blog-navigation instability; fixing it removes the last reproducible blog-nav error path locally
+- [x] Regression guard in place (blogIndexFilters.test.ts §195/§198 + new blogPostHooksOrder.test.ts §197)
+- [x] Checkpoint saved (awaiting user retest on the redeployed Vercel build)
 ## 201. §201 — Resources Case Studies page
 - [x] Fetched user-supplied content from Manus share link (3 industry case studies: Dallas industrial staffing, nationwide last-mile delivery, multi-state healthcare network)
 - [x] Added typed CASE_STUDY_RESOURCES registry at client/src/lib/caseStudyResources.ts (kept separate from /customers CASE_STUDIES which holds the named-customer Frito-Lay/H&R Block/TaylorMade trio)

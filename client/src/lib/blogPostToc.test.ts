@@ -152,7 +152,9 @@ describe("BlogPost.tsx — §47 wiring", () => {
   });
 
   it("memoizes the headings derivation so it doesn't re-parse on every render", () => {
-    expect(BLOG_POST_SRC).toMatch(/useMemo\(\(\) => getHeadings\(post\.body\)/);
+    // §197 — derivation is now defensive (post may be undefined while the
+    // hook still runs unconditionally), so it reads post?.body ?? "".
+    expect(BLOG_POST_SRC).toMatch(/useMemo\(\(\) => getHeadings\(post\?\.body \?\? ""\)/);
   });
 
   it("anti-regression: the previously-empty lg:col-span-3 placeholder is no longer empty", () => {
