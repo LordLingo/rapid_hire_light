@@ -215,6 +215,8 @@ import { post as postVaFairChance } from "@/content/blog/virginia-fair-chance-hi
 import { post as postMiIchatCleanSlate } from "@/content/blog/michigan-ichat-clean-slate-employer-guide";
 // §213 — Minnesota Criminal History Employment Act (Minn. Stat. §§364.01–364.10) + 2023 cannabis off-duty protections (Minn. Stat. §181.953 + HF 100 omnibus) employer guide
 import { post as postMnCoraCannabis } from "@/content/blog/minnesota-criminal-history-cannabis-employer-guide";
+// §217 — Georgia employer background-check compliance (O.C.G.A. §35-3-34 GCIC access + §35-3-34(b.1) adverse-notice + First Offender Act §42-8-60/§42-8-62.1 + record restriction §35-3-37 + SB 288 (2020) + 2015 state-agency ban-the-box EO)
+import { post as postGaCompliance } from "@/content/blog/georgia-employer-background-check-compliance-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -352,6 +354,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postVaFairChance,
   postMiIchatCleanSlate,
   postMnCoraCannabis,
+  postGaCompliance,
 ]);
 
 /**

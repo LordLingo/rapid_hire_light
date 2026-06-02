@@ -1926,3 +1926,9 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] §215 — Remove _cc field from /get-a-quote Formspree payload (SendGrid rejected duplicate-recipient errors; recipients now managed in Formspree Workflow dashboard)
 
 - [x] §216 — /get-a-quote: after submit, scroll the page up so the success/confirmation panel is in view (form currently appears unchanged on submit because user stays scrolled at bottom of form)
+
+## 217. §217 — Daily SEO blog post: Georgia employer background-check compliance
+- [x] Author client/src/content/blog/georgia-employer-background-check-compliance-guide.ts (O.C.G.A. §35-3-34 GCIC access + §42-8-60 first-offender + §42-8-62.1 record restriction + §17-10-1 sealing + ban-the-box EO for state agencies)
+- [x] Register import + ALL_POSTS in client/src/lib/blog.ts
+- [x] Append slug+lastmod to shared/blog-meta.json, add 'georgia' tag, append to shared/blog-og.json
+- [x] pnpm test blog.test.ts + blogOg.test.ts green; tsc clean; checkpoint
