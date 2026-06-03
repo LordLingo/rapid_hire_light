@@ -74,11 +74,54 @@ describe("§220 StaffingLanding — page wiring", () => {
     expect(src).toContain('data-testid="lp-placeholder-banner"');
   });
 
-  it("uses the custom generated hero asset via a deploy-safe absolute CDN URL", () => {
-    // §221: must be an absolute https CDN URL, NOT a /manus-storage/* signed-redirect
-    // path (that endpoint 404s on the published static build).
-    expect(src).toMatch(/HERO_IMG\s*=\s*"https:\/\/files\.manuscdn\.com\//);
+  it("keeps section imagery on deploy-safe absolute CDN URLs (no /manus-storage)", () => {
+    // §221: any retained section assets must be absolute https CDN URLs, NOT
+    // /manus-storage/* signed-redirect paths (that endpoint 404s on the published
+    // static build). §223 replaced the hero photo with the WebGL shader, but the
+    // speed + handshake section images are still CDN-hosted.
+    expect(src).toMatch(/SPEED_IMG\s*=\s*"https:\/\/files\.manuscdn\.com\//);
+    expect(src).toMatch(/HANDSHAKE_IMG\s*=\s*"https:\/\/files\.manuscdn\.com\//);
     expect(src).not.toContain("/manus-storage/staffing-hero");
+  });
+});
+
+describe("§223 StaffingLanding — WebGL shader hero", () => {
+  const src = read(PAGE);
+  const SHADER = resolve(__dirname, "../components/StaffingShaderHero.tsx");
+  const shaderSrc = read(SHADER);
+
+  it("mounts the recolored shader background in the hero", () => {
+    expect(src).toContain('from "@/components/StaffingShaderHero"');
+    expect(src).toContain("<StaffingShaderBackground />");
+  });
+
+  it("uses the requested 'speed of light' headline", () => {
+    // headline reads "Hiring at the speed of light." with 'light' as the accent word
+    expect(src).toContain("Hiring at the speed of");
+    expect(src).toMatch(/>\s*light\s*</);
+  });
+
+  it("dropped the former photo hero (no HERO_IMG constant remains)", () => {
+    expect(src).not.toMatch(/const HERO_IMG\s*=/);
+  });
+
+  it("recolors the GLSL to brand blue, not the original orange demo", () => {
+    // the brand recolor swaps the warm cloud tint for a deep cobalt-ink tint
+    expect(shaderSrc).toContain("vec3(bg*.04,bg*.10,bg*.26)");
+    // and must NOT keep the original warm-brown cloud tint
+    expect(shaderSrc).not.toContain("vec3(bg*.25,bg*.137,bg*.05)");
+  });
+
+  it("gates the animation behind prefers-reduced-motion + has a static fallback", () => {
+    expect(shaderSrc).toContain("prefersReducedMotion");
+    // canvas only renders when motion is allowed; the gradient base always renders
+    expect(shaderSrc).toContain("{animate && <StaffingShaderCanvas");
+  });
+
+  it("requires WebGL2 and cleans up the context on unmount", () => {
+    expect(shaderSrc).toContain('getContext("webgl2")');
+    expect(shaderSrc).toContain("cancelAnimationFrame");
+    expect(shaderSrc).toContain("deleteProgram");
   });
 });
 

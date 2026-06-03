@@ -62,11 +62,12 @@ import {
   type TrackingParams,
 } from "@/lib/staffingLp";
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { StaffingShaderBackground } from "@/components/StaffingShaderHero";
 
 // Hosted on the public Manus CDN (absolute https URLs) so they resolve identically on the
 // dev server AND the published static build. The /manus-storage/* signed-redirect endpoint
 // only exists on the dev server and 404s on the published domain, which broke these images.
-const HERO_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/IyMMIoUlAwklgkbr.png";
+// (The former HERO_IMG photo was replaced by the §223 WebGL shader hero.)
 const SPEED_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/GnVKueGqbdcZNlEQ.png";
 const HANDSHAKE_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/iHizSpGdlPhtPCqE.png";
 
@@ -185,21 +186,27 @@ function PlaceholderStat({
   value,
   label,
   start,
+  onDark = false,
 }: {
   value: string;
   label: string;
   start: boolean;
+  onDark?: boolean;
 }) {
   return (
     <div className="reveal-on-scroll">
       <div
-        className={`font-display text-[40px] md:text-[52px] leading-none text-[color:var(--color-ink)] transition-opacity duration-500 ${
-          start ? "opacity-100" : "opacity-0"
-        }`}
+        className={`font-display text-[40px] md:text-[52px] leading-none transition-opacity duration-500 ${
+          onDark ? "text-white" : "text-[color:var(--color-ink)]"
+        } ${start ? "opacity-100" : "opacity-0"}`}
       >
         {value}
       </div>
-      <p className="mt-2 text-[13px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+      <p
+        className={`mt-2 text-[13px] uppercase tracking-wider ${
+          onDark ? "text-[color:var(--color-footer-muted)]" : "text-[color:var(--color-ink-muted)]"
+        }`}
+      >
         {label}
       </p>
     </div>
@@ -688,107 +695,77 @@ export default function StaffingLanding() {
         </div>
       </header>
 
-      {/* HERO */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(900px 420px at 15% -10%, color-mix(in oklch, var(--color-accent-ink) 14%, transparent), transparent), radial-gradient(700px 360px at 100% 10%, color-mix(in oklch, var(--color-accent-ink) 8%, transparent), transparent)",
-          }}
-          aria-hidden="true"
-        />
-        <div className="container py-14 md:py-20">
-          <div className="grid grid-cols-12 gap-x-10 gap-y-12 items-center">
-            <div className="col-span-12 lg:col-span-6">
-              <p className="eyebrow reveal-on-scroll inline-flex items-center gap-2">
-                <Zap className="size-3.5 text-[color:var(--color-accent-ink)]" strokeWidth={2} />
-                Staffing-grade screening
-              </p>
-              <h1 className="reveal-on-scroll mt-4 font-display text-[40px] md:text-[58px] leading-[1.02] tracking-tight">
-                Place candidates{" "}
-                <span className="italic font-normal text-[color:var(--color-accent-ink)]">
-                  before
-                </span>{" "}
-                your competitors call them back.
-              </h1>
-              <p className="reveal-on-scroll mt-6 max-w-xl text-[16.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                Background checks are where staffing deals stall. Rapid Hire runs
-                searches in parallel with real-time status and same-business-day
-                human support — so a slow report never costs you the placement.
-              </p>
-              <div className="reveal-on-scroll mt-8 flex flex-wrap items-center gap-3">
-                <a
-                  href="#lead"
-                  className="btn-press inline-flex items-center gap-2 rounded-full bg-[color:var(--color-accent-ink)] text-white px-7 py-4 text-[15px] font-medium"
-                >
-                  Get your turnaround benchmarks
-                  <ArrowRight className="size-4" strokeWidth={2} />
-                </a>
-                <a
-                  href="#how"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-4 text-[15px] text-[color:var(--color-ink)] hover:bg-white transition-colors"
-                >
-                  See how fast
-                </a>
-              </div>
-              <p className="reveal-on-scroll mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-[color:var(--color-ink-muted)]">
-                <span className="inline-flex items-center gap-1.5">
-                  <ShieldCheck className="size-3.5 text-[color:var(--color-accent-ink)]" strokeWidth={1.75} />
-                  SOC 2 Type II
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Check className="size-3.5 text-[color:var(--color-accent-ink)]" strokeWidth={2} />
-                  PBSA accredited
-                </span>
-                <span className="inline-flex items-center gap-1.5">
-                  <Check className="size-3.5 text-[color:var(--color-accent-ink)]" strokeWidth={2} />
-                  FCRA-aligned
-                </span>
-              </p>
+      {/* HERO — §223 full-bleed WebGL shader background, light text on top */}
+      <section className="relative overflow-hidden border-b border-[color:var(--color-footer-border)] text-white">
+        <StaffingShaderBackground />
+        <div className="container relative z-10 py-20 md:py-28">
+          <div className="max-w-3xl">
+            <p className="eyebrow reveal-on-scroll inline-flex items-center gap-2 text-[color:var(--color-footer-muted)]">
+              <Zap className="size-3.5 text-[color:var(--color-accent-on-dark)]" strokeWidth={2} />
+              Staffing-grade screening
+            </p>
+            <h1 className="reveal-on-scroll mt-4 font-display text-[44px] md:text-[68px] leading-[1.0] tracking-tight">
+              Hiring at the speed of{" "}
+              <span
+                className="italic font-normal"
+                style={{
+                  background:
+                    "linear-gradient(90deg, var(--color-accent-on-dark), oklch(0.9 0.07 250), var(--color-accent-on-dark))",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  color: "transparent",
+                }}
+              >
+                light
+              </span>
+              .
+            </h1>
+            <p className="reveal-on-scroll mt-6 max-w-xl text-[16.5px] md:text-[18px] leading-[1.7] text-[color:var(--color-footer-soft-text)]">
+              Background checks are where staffing deals stall. Rapid Hire runs
+              searches in parallel with real-time status and same-business-day
+              human support — so a slow report never costs you the placement.
+            </p>
+            <div className="reveal-on-scroll mt-9 flex flex-wrap items-center gap-3">
+              <a
+                href="#lead"
+                className="btn-press inline-flex items-center gap-2 rounded-full bg-white text-[color:var(--color-footer)] px-7 py-4 text-[15px] font-semibold hover:bg-[color:var(--color-paper)] transition-colors"
+              >
+                Get your turnaround benchmarks
+                <ArrowRight className="size-4" strokeWidth={2} />
+              </a>
+              <a
+                href="#how"
+                className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-4 text-[15px] text-white hover:bg-white/10 transition-colors"
+              >
+                See how fast
+              </a>
             </div>
-
-            <div className="col-span-12 lg:col-span-6 reveal-on-scroll">
-              <div className="relative">
-                <div
-                  className="absolute -inset-4 -z-10 rounded-[28px] opacity-70"
-                  style={{
-                    background:
-                      "radial-gradient(60% 60% at 70% 20%, color-mix(in oklch, var(--color-accent-ink) 22%, transparent), transparent)",
-                  }}
-                  aria-hidden="true"
-                />
-                <img
-                  src={HERO_IMG}
-                  alt="Recruiting team placing candidates quickly with fast background screening"
-                  className="w-full rounded-[22px] border border-border shadow-[0_30px_60px_-25px_rgba(0,0,0,0.35)] object-cover"
-                  loading="eager"
-                />
-                {/* Floating speed chip */}
-                <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-[260px] rounded-[16px] border border-border bg-[color:var(--color-paper)]/95 backdrop-blur p-4">
-                  <div className="flex items-center gap-2">
-                    <Gauge className="size-4 text-[color:var(--color-accent-ink)]" strokeWidth={2} />
-                    <span className="text-[12px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
-                      Median report time
-                    </span>
-                  </div>
-                  <p className="mt-1 font-display text-[30px] leading-none text-[color:var(--color-ink)]">
-                    [XX] hrs
-                  </p>
-                </div>
-              </div>
-            </div>
+            <p className="reveal-on-scroll mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-[color:var(--color-footer-muted)]">
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="size-3.5 text-[color:var(--color-accent-on-dark)]" strokeWidth={1.75} />
+                SOC 2 Type II
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Check className="size-3.5 text-[color:var(--color-accent-on-dark)]" strokeWidth={2} />
+                PBSA accredited
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Check className="size-3.5 text-[color:var(--color-accent-on-dark)]" strokeWidth={2} />
+                FCRA-aligned
+              </span>
+            </p>
           </div>
 
           {/* Stat band */}
           <div
             ref={stats.ref}
-            className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 pt-10 border-t border-border"
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 pt-10 border-t border-white/15"
           >
-            <PlaceholderStat value="[XX]%" label="Reports < 24 hrs" start={stats.seen} />
-            <PlaceholderStat value="[XX] hrs" label="Median turnaround" start={stats.seen} />
-            <PlaceholderStat value="[XX]%" label="Time-to-fill reduction" start={stats.seen} />
-            <PlaceholderStat value="[XX]+" label="Staffing clients" start={stats.seen} />
+            <PlaceholderStat value="[XX]%" label="Reports < 24 hrs" start={stats.seen} onDark />
+            <PlaceholderStat value="[XX] hrs" label="Median turnaround" start={stats.seen} onDark />
+            <PlaceholderStat value="[XX]%" label="Time-to-fill reduction" start={stats.seen} onDark />
+            <PlaceholderStat value="[XX]+" label="Staffing clients" start={stats.seen} onDark />
           </div>
         </div>
       </section>

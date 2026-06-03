@@ -1993,3 +1993,14 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Reconcile with the existing mobile sticky bar so they don't double up
 - [x] Add a regression source pin in staffingLandingPage.test.ts
 - [x] Verify in browser + full suite + tsc, save checkpoint
+
+## 223. §223 — WebGL shader hero on /lp/staffing ("Hiring at the speed of light")
+- [x] Port the WebGL2 fragment-shader background into a clean TS component (no Next.js `<style jsx>`; standard React + Tailwind for Vite)
+- [x] Recolor the GLSL from the orange/amber demo palette to the site's blue/ink brand palette (deep ink bg, accent-ink blues)
+- [x] Headline "Hiring at the speed of light." with "light" as the gradient-accent word; keep Fraunces serif + brand type
+- [x] Replace the existing photo hero in StaffingLanding.tsx with the dark shader hero (light text on top)
+- [x] Preserve existing hero CTAs (#lead "Get your turnaround benchmarks" + #how "See how fast") and trust badges (SOC 2 / PBSA / FCRA)
+- [x] prefers-reduced-motion fallback: render a static gradient (no animation loop) instead of the canvas
+- [x] Clean up WebGL context on unmount; guard for browsers without webgl2
+- [x] Update staffingLandingPage.test.ts pins (hero copy / shader component presence); keep paperSoftAudit allowlist correct
+- [x] Verify in browser + full suite + tsc, save checkpoint
