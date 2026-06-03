@@ -224,10 +224,10 @@ function PlaceholderStat({
 
 function TurnaroundTimeline() {
   const steps = [
-    { label: "Order placed", sub: "ATS or one-click invite", t: "0 min" },
-    { label: "Candidate consents", sub: "Mobile-first, e-sign", t: "[X] min" },
-    { label: "Searches run in parallel", sub: "County, fed, MVR, verifications", t: "[X] hrs" },
-    { label: "Report delivered", sub: "Adjudication-ready", t: "[XX] hrs" },
+    { label: "Order placed", sub: "ATS or one-click invite" },
+    { label: "Candidate consents", sub: "Mobile-first, e-sign" },
+    { label: "Searches run in parallel", sub: "County, fed, MVR, verifications" },
+    { label: "Report delivered", sub: "Adjudication-ready" },
   ];
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-[20px] overflow-hidden border border-border bg-border">
@@ -239,9 +239,6 @@ function TurnaroundTimeline() {
           <div className="flex items-center gap-2">
             <span className="grid place-items-center size-7 rounded-full bg-[color:var(--color-tint)] text-[color:var(--color-accent-ink)] text-[13px] font-medium">
               {i + 1}
-            </span>
-            <span className="text-[12px] uppercase tracking-wider text-[color:var(--color-accent-ink)] font-medium">
-              {s.t}
             </span>
           </div>
           <p className="mt-4 font-medium text-[color:var(--color-ink)]">{s.label}</p>
@@ -1070,10 +1067,6 @@ export default function StaffingLanding() {
           <div className="mt-12">
             <TurnaroundTimeline />
           </div>
-          <p className="mt-6 text-[12.5px] text-[color:var(--color-ink-muted)]">
-            Timeline figures shown as [PLACEHOLDER] — replace with your verified
-            median benchmarks before launch.
-          </p>
         </div>
       </section>
 

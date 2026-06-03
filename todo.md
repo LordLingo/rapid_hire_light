@@ -2059,3 +2059,9 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Update stale §220 header comment to reflect approved stats
 - [x] Leave the separate Turnaround-timeline "[XX] hrs" step as-is (not in scope)
 - [x] tsc clean; LP tests 31/31; verified stat band renders real values; checkpoint
+
+## 232. §232 — Remove time labels from the turnaround-timeline steps
+- [x] Drop the per-step time labels (0 MIN / [X] MIN / [X] HRS / [XX] HRS) — everything happens under a minute, so the frames aren't needed
+- [x] Keep step number badge + title + subtitle
+- [x] Remove the now-stale "Timeline figures shown as [PLACEHOLDER]" caption beneath the timeline
+- [x] tsc clean; LP tests 31/31; verified section renders without labels/caption; checkpoint
