@@ -1932,3 +1932,28 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Register import + ALL_POSTS in client/src/lib/blog.ts
 - [x] Append slug+lastmod to shared/blog-meta.json, add 'georgia' tag, append to shared/blog-og.json
 - [x] pnpm test blog.test.ts + blogOg.test.ts green; tsc clean; checkpoint
+
+
+## 218. §218 — Standalone staffing-only Google Ads landing page (/lp/staffing)
+- [x] Inspect brand tokens (index.css), existing PageHero/useSeo/GetAQuote form patterns, and App.tsx routing
+- [x] Build LP shell: dedicated minimal header (logo + single CTA), NOT the global Header/spa hero; clean B2B HR-tech styling
+- [x] HERO: H1 + sub + dual CTA (Get Staffing Pricing / Book a 15-Minute Call) + trust row + 4-step status-flow visual card; lead form visible above the fold on desktop
+- [x] Section 1 PAIN — placements delayed when checks slow down
+- [x] Section 2 SOLUTION — screening partner built around staffing speed
+- [x] Section 3 BENEFITS — 4 cards (faster placements / lower cost / candidate experience / reachable support)
+- [x] Section 4 COST SAVINGS — pure calc lib client/src/lib/staffingLp.ts done (computeStaffingSavings + UTM capture + fireLeadConversion); widget UI pending
+- [x] Section 5 PROCESS — 4 steps (choose package → submit → track → receive results)
+- [x] Section 6 USE CASES — light industrial, healthcare, clerical/admin, driver/logistics, hospitality, high-volume seasonal
+- [x] Section 7 SERVICES — popular checks list for staffing
+- [x] Section 8 COMPARISON TABLE — Big-box provider vs Rapid Hire Solutions (5 rows)
+- [x] Section 9 TESTIMONIALS — 3 generic B2B staffing personas (no real-resembling company names)
+- [x] Section 10 FAQ — 8 briefed Q&As
+- [x] Section 11 FINAL CTA — get pricing built around hiring volume
+- [x] LEAD FORM: First/Last name, Work email, Phone, Company, Checks per month, Current provider, Message + hidden utm_source/medium/campaign/term/gclid + conversion-tracking + form-submit event placeholders
+- [x] All performance stats as bracketed placeholders ([TURNAROUND], [ACCURACY %], etc.) — invent NO numbers
+- [x] FCRA-aware, employment-screening-only language throughout (no consumer/tenant/people-search framing)
+- [x] SEO: title "Background Checks for Staffing Companies | Rapid Hire Solutions" + briefed meta description
+- [x] DESIGN: mobile responsive, sticky mobile CTA, CTA repeated down page, clean icons, subtle gradients, no heavy animations
+- [x] Register route /lp/staffing in App.tsx (standalone, outside global nav chrome)
+- [x] Add regression spec pinning route + key LP invariants (hidden tracking fields, placeholder stats, employment-only copy)
+- [x] Verify in browser + pnpm test + tsc, save checkpoint and report

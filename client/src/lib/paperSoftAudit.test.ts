@@ -173,6 +173,11 @@ describe("§71 — paper-soft / accent-on-dark token audit", () => {
       // library → paper-soft "how to use them") as the rest of the
       // Resources hub. Visually audited.
       "client/src/pages/ResourcesCaseStudies.tsx",
+      // §218: standalone staffing Google Ads LP (/lp/staffing) uses the
+      // same alternating white → paper-soft band rhythm as the marketing
+      // pages (pain → solution → benefits → calculator → process …) even
+      // though it ships its own minimal chrome. Visually audited.
+      "client/src/pages/StaffingLanding.tsx",
     ]);
     const offenders: string[] = [];
     for (const f of listSourceFiles("client/src")) {
