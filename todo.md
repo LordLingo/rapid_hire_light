@@ -1978,3 +1978,10 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Wire /lp/staffing route + useSeo meta + conversion hook
 - [x] Add regression tests (lib + page structure pins)
 - [x] Verify in browser, pnpm test + tsc green, save checkpoint
+
+
+## 221. §221 — Fix broken hero/section images on published /lp/staffing
+- [x] Re-upload the 3 staffing LP assets via `manus-upload-file --webdev` to get deploy-safe permanent URLs
+- [x] Replace the local /manus-storage/... refs in StaffingLanding.tsx with the returned webdev URLs
+- [x] Update the staffingLandingPage.test.ts hero-asset pin to match the new URL form
+- [x] Verify in browser + full test suite + tsc, save checkpoint

@@ -63,9 +63,12 @@ import {
 } from "@/lib/staffingLp";
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
 
-const HERO_IMG = "/manus-storage/staffing-hero_504d5685.png";
-const SPEED_IMG = "/manus-storage/staffing-speed_bff16b6b.png";
-const HANDSHAKE_IMG = "/manus-storage/staffing-handshake_0faaf2f2.png";
+// Hosted on the public Manus CDN (absolute https URLs) so they resolve identically on the
+// dev server AND the published static build. The /manus-storage/* signed-redirect endpoint
+// only exists on the dev server and 404s on the published domain, which broke these images.
+const HERO_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/IyMMIoUlAwklgkbr.png";
+const SPEED_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/GnVKueGqbdcZNlEQ.png";
+const HANDSHAKE_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/iHizSpGdlPhtPCqE.png";
 
 /* ------------------------------------------------------------------ */
 /* In-view-once hook                                                   */

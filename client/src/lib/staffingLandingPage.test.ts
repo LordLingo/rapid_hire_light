@@ -74,8 +74,11 @@ describe("§220 StaffingLanding — page wiring", () => {
     expect(src).toContain('data-testid="lp-placeholder-banner"');
   });
 
-  it("uses the custom generated hero asset", () => {
-    expect(src).toContain("/manus-storage/staffing-hero");
+  it("uses the custom generated hero asset via a deploy-safe absolute CDN URL", () => {
+    // §221: must be an absolute https CDN URL, NOT a /manus-storage/* signed-redirect
+    // path (that endpoint 404s on the published static build).
+    expect(src).toMatch(/HERO_IMG\s*=\s*"https:\/\/files\.manuscdn\.com\//);
+    expect(src).not.toContain("/manus-storage/staffing-hero");
   });
 });
 
@@ -92,7 +95,8 @@ describe("§220 StaffingLanding — no invented stats", () => {
         .replace(/style=\{\{[\s\S]*?\}\}/g, " ")
         // remove className="..." values
         .replace(/className=("[^"]*"|\{`[\s\S]*?`\})/g, " ")
-        // remove import/asset path strings
+        // remove import/asset URL/path strings (CDN hero assets + any storage paths)
+        .replace(/["'`][^"'`]*files\.manuscdn\.com[^"'`]*["'`]/g, " ")
         .replace(/["'`][^"'`]*manus-storage[^"'`]*["'`]/g, " ")
     );
   }
