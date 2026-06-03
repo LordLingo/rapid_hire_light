@@ -2030,3 +2030,12 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Upload full-size artwork to public Manus CDN; point SPEED_IMG at it
 - [x] Widen image column 5/12 -> 6/12 (text column 7/12 -> 6/12) so the infographic renders larger and text is legible
 - [x] tsc clean; LP tests 27/27; desktop screenshot verified (labels + categories + tagline readable)
+
+## 228. §228 — Replace single placeholder testimonial with shadcn multi-card grid
+- [x] Integrate the shadcn Testimonials component (featured 2x2 card + 3 supporting cards) into the LP
+- [x] Reuse existing Card + Avatar primitives (no new deps; @radix-ui/react-avatar already present)
+- [x] Recolor/restyle to LP brand tokens (paper cards, ink text, accent-ink quote marks, Fraunces serif on featured)
+- [x] Keep all quotes as clearly-labeled placeholders + "[Name]/[Title] — [Staffing Company]" + initials avatars (no invented named clients); easy to swap for real approved quotes later
+- [x] Remove the now-unused HANDSHAKE_IMG photo + its test pin
+- [x] Add §228 test block; fix §225 grid-count pin (4 -> 3) after removing the old testimonial grid
+- [x] Verify desktop + mobile (no overflow, 390==390) + full suite + tsc, save checkpoint

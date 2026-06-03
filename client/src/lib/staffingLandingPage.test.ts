@@ -77,11 +77,33 @@ describe("§220 StaffingLanding — page wiring", () => {
   it("keeps section imagery on deploy-safe absolute CDN URLs (no /manus-storage)", () => {
     // §221: any retained section assets must be absolute https CDN URLs, NOT
     // /manus-storage/* signed-redirect paths (that endpoint 404s on the published
-    // static build). §223 replaced the hero photo with the WebGL shader, but the
-    // speed + handshake section images are still CDN-hosted.
+    // static build). §223 replaced the hero photo with the WebGL shader; §228
+    // replaced the handshake-photo testimonial with an initials-avatar grid, so
+    // SPEED_IMG is the remaining CDN-hosted section asset.
     expect(src).toMatch(/SPEED_IMG\s*=\s*"https:\/\/files\.manuscdn\.com\//);
-    expect(src).toMatch(/HANDSHAKE_IMG\s*=\s*"https:\/\/files\.manuscdn\.com\//);
     expect(src).not.toContain("/manus-storage/staffing-hero");
+  });
+});
+
+describe("§228 StaffingLanding — testimonials grid", () => {
+  const src = read(PAGE);
+
+  it("renders the multi-card testimonials section using shadcn Card + Avatar", () => {
+    expect(src).toContain('data-testid="lp-testimonials"');
+    expect(src).toContain('from "@/components/ui/card"');
+    expect(src).toContain('from "@/components/ui/avatar"');
+    expect(src).toContain("function StaffingTestimonials()");
+    expect(src).toContain("<StaffingTestimonials />");
+  });
+
+  it("keeps testimonial copy as clearly-labeled placeholders (no invented named clients)", () => {
+    // Every testimonial must remain a bracketed placeholder until real approved
+    // quotes are supplied. Guard against accidentally shipping demo names.
+    expect(src).toContain("[Placeholder");
+    expect(src).toContain("approved client quotes before launch");
+    expect(src).not.toContain("Shekinah");
+    expect(src).not.toContain("Tailus");
+    expect(src).not.toContain("tailus.io");
   });
 });
 
@@ -137,7 +159,9 @@ describe("§225 StaffingLanding — no mobile horizontal overflow (grid gap coll
 
   it("every 12-col grid uses the responsive gap-x-0 lg:gap-x-10 pattern", () => {
     const grids = src.match(/grid grid-cols-12 [^"]*/g) || [];
-    expect(grids.length).toBeGreaterThanOrEqual(4);
+    // §228 replaced the old 12-col handshake/testimonial grid with a shadcn
+    // card grid, leaving 3 twelve-col grids on the page.
+    expect(grids.length).toBeGreaterThanOrEqual(3);
     for (const g of grids) {
       expect(g).toContain("gap-x-0 lg:gap-x-10");
     }

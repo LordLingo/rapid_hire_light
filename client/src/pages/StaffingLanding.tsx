@@ -38,7 +38,10 @@ import {
   Phone,
   Mail,
   ChevronRight,
+  Quote,
 } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { useSeo } from "@/hooks/useSeo";
 import { useReveal } from "@/hooks/useReveal";
@@ -70,7 +73,6 @@ import { StaffingShaderBackground } from "@/components/StaffingShaderHero";
 // only exists on the dev server and 404s on the published domain, which broke these images.
 // (The former HERO_IMG photo was replaced by the §223 WebGL shader hero.)
 const SPEED_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/gXHYijayUMgKZqUP.png";
-const HANDSHAKE_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/iHizSpGdlPhtPCqE.png";
 
 /* ------------------------------------------------------------------ */
 /* In-view-once hook                                                   */
@@ -346,6 +348,128 @@ function SavingsCalculator() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Testimonials grid (placeholder copy until approved client quotes)   */
+/* ------------------------------------------------------------------ */
+type Testimonial = {
+  quote: string;
+  name: string;
+  title: string;
+  initials: string;
+  featured?: boolean;
+};
+
+// NOTE: All quotes below are clearly-labeled PLACEHOLDERS. Swap the `quote`,
+// `name`, `title`, and `initials` for real, approved client testimonials
+// before launch. No invented stats or named clients.
+const TESTIMONIALS: Testimonial[] = [
+  {
+    featured: true,
+    quote:
+      "[Placeholder testimonial — a staffing client describes, in 2–3 sentences, how faster turnaround let them fill seats before competitors could respond, and how transparent status updates removed the day-to-day chasing.]",
+    name: "[Name]",
+    title: "[Title] — [Staffing Company]",
+    initials: "RH",
+  },
+  {
+    quote:
+      "[Placeholder — a recruiter notes how same-business-day replies and clear pricing changed their workflow.]",
+    name: "[Name]",
+    title: "[Title] — [Staffing Company]",
+    initials: "RH",
+  },
+  {
+    quote:
+      "[Placeholder — an ops leader describes the time their team got back each week.]",
+    name: "[Name]",
+    title: "[Title] — [Staffing Company]",
+    initials: "RH",
+  },
+  {
+    quote:
+      "[Placeholder — a client highlights accuracy and a U.S.-based support contact.]",
+    name: "[Name]",
+    title: "[Title] — [Staffing Company]",
+    initials: "RH",
+  },
+];
+
+function TestimonialCite({ t }: { t: Testimonial }) {
+  return (
+    <div className="mt-6 flex items-center gap-3">
+      <Avatar className="size-11 border border-border">
+        <AvatarFallback className="bg-[color:var(--color-accent-ink)]/10 text-[color:var(--color-accent-ink)] text-[13px] font-semibold">
+          {t.initials}
+        </AvatarFallback>
+      </Avatar>
+      <div className="min-w-0">
+        <cite className="not-italic block text-[14px] font-medium text-[color:var(--color-ink)]">
+          {t.name}
+        </cite>
+        <span className="block text-[13px] text-[color:var(--color-ink-muted)]">
+          {t.title}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function StaffingTestimonials() {
+  const [featured, ...rest] = TESTIMONIALS;
+  return (
+    <section className="border-b border-border" data-testid="lp-testimonials">
+      <div className="container py-16 md:py-24">
+        <div className="max-w-2xl reveal-on-scroll">
+          <p className="eyebrow">In their words</p>
+          <h2 className="mt-3 font-display text-[32px] md:text-[40px] leading-tight text-[color:var(--color-ink)]">
+            Built for high-volume staffing teams.
+          </h2>
+          <p className="mt-4 text-[16px] leading-[1.7] text-[color:var(--color-ink-soft)]">
+            What recruiters and ops leaders say once “pending” stops costing
+            them placements.
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 reveal-on-scroll">
+          {/* Featured card spans 2x2 */}
+          <Card className="sm:col-span-2 lg:row-span-2 rounded-[20px] border-border bg-[color:var(--color-paper)]">
+            <CardContent className="flex h-full flex-col p-6 md:p-8">
+              <Quote className="size-8 text-[color:var(--color-accent-ink)]/30" strokeWidth={1.75} />
+              <blockquote className="mt-5 flex-1 font-display text-[22px] md:text-[26px] leading-[1.4] text-[color:var(--color-ink)]">
+                {featured.quote}
+              </blockquote>
+              <TestimonialCite t={featured} />
+            </CardContent>
+          </Card>
+
+          {/* Supporting cards */}
+          {rest.map((t, i) => (
+            <Card
+              key={i}
+              className={
+                "rounded-[20px] border-border bg-[color:var(--color-paper)] " +
+                (i === 0 ? "sm:col-span-2 lg:col-span-2" : "")
+              }
+            >
+              <CardContent className="flex h-full flex-col p-6">
+                <Quote className="size-6 text-[color:var(--color-accent-ink)]/30" strokeWidth={1.75} />
+                <blockquote className="mt-4 flex-1 text-[16px] leading-[1.6] text-[color:var(--color-ink-soft)]">
+                  {t.quote}
+                </blockquote>
+                <TestimonialCite t={t} />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <p className="mt-6 text-[12px] text-[color:var(--color-ink-muted)]">
+          Replace these placeholders with approved client quotes before launch.
+        </p>
+      </div>
+    </section>
   );
 }
 
@@ -952,34 +1076,7 @@ export default function StaffingLanding() {
       </section>
 
       {/* TESTIMONIAL / TRUST */}
-      <section className="border-b border-border">
-        <div className="container py-16 md:py-24">
-          <div className="grid grid-cols-12 gap-x-0 lg:gap-x-10 gap-y-10 items-center">
-            <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
-              <img
-                src={HANDSHAKE_IMG}
-                alt="A successful placement — recruiter and candidate handshake"
-                className="w-full rounded-[20px] border border-border object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="col-span-12 lg:col-span-7 reveal-on-scroll">
-              <p className="eyebrow">In their words</p>
-              <blockquote className="mt-4 font-display text-[26px] md:text-[32px] leading-[1.3] text-[color:var(--color-ink)]">
-                "[Placeholder testimonial — a staffing client describes how
-                faster turnaround let them fill seats before competitors could
-                respond.]"
-              </blockquote>
-              <p className="mt-5 text-[14px] text-[color:var(--color-ink-muted)]">
-                [Name], [Title] — [Staffing Company]
-              </p>
-              <p className="mt-2 text-[12px] text-[color:var(--color-ink-muted)]">
-                Replace with an approved client quote before launch.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StaffingTestimonials />
 
       {/* FINAL CTA + FORM */}
       <section id="lead" className="bg-[color:var(--color-ink)] scroll-mt-20">
