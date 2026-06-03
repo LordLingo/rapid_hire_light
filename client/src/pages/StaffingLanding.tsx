@@ -677,15 +677,19 @@ export default function StaffingLanding() {
         <div className="container flex items-center justify-between h-16">
           <Link href="/" className="shrink-0 inline-flex items-center" aria-label={BRAND_NAME}>
             {/* §224: real Rapid Hire color lockup (same asset as the main-site
-                header), on this light LP header surface. Intrinsic ratio locked
-                so the mark + wordmark sit cleanly; height tuned to the 64px bar. */}
+                header). Intrinsic box is 210x140 (1.5:1) — matching the main
+                site's <Logo> — so the mark + wordmark keep the correct aspect.
+                Sized h-10/sm:h-12 to read clearly while fitting this slim 64px
+                LP bar (the main site uses h-16+, but that bar is taller). */}
             <img
               src={HEADER_LOGO_URL}
               alt={BRAND_NAME}
               width={210}
-              height={42}
-              className="h-9 w-auto"
+              height={140}
+              className="block h-10 sm:h-12 w-auto select-none"
               loading="eager"
+              decoding="async"
+              draggable={false}
             />
           </Link>
           <div className="flex items-center gap-3">

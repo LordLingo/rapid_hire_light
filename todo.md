@@ -2004,3 +2004,10 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Clean up WebGL context on unmount; guard for browsers without webgl2
 - [x] Update staffingLandingPage.test.ts pins (hero copy / shader component presence); keep paperSoftAudit allowlist correct
 - [x] Verify in browser + full suite + tsc, save checkpoint
+
+## 224. §224 — Real brand logo in /lp/staffing header + mobile scaling
+- [x] Replace the plain "Rapid Hire Solutions" text wordmark with the real HEADER_LOGO_URL color lockup (same asset as main site), linking to home
+- [x] Fix logo intrinsic ratio to 210x140 (was 210x42, which squashed the lockup) and size h-10/sm:h-12 to read clearly in the slim 64px LP bar
+- [x] Verify mobile (390px) header: logo scales by height + w-auto, Link shrink-0, phone hidden < sm, "Get a quote" fits — no wrap/overflow (headless Chromium screenshot)
+- [x] Add §224 regression pins (logo present, no text wordmark, correct ratio, shrink-0 + w-auto, phone hidden below sm)
+- [x] tsc clean; LP page tests 25/25 pass; checkpoint

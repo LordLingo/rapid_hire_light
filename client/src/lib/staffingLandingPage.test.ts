@@ -135,6 +135,30 @@ describe("§224 StaffingLanding — header uses the real brand logo", () => {
     // the old plain-text wordmark link must be gone
     expect(src).not.toContain("Rapid Hire <span");
   });
+
+  it("declares the correct 210x140 intrinsic ratio (matches main-site <Logo>)", () => {
+    // §224 mobile fix: the lockup is 1.5:1; a wrong height (e.g. 42) squashes it.
+    // Pin the logo <img> attributes together so the ratio can't drift.
+    const logoImg = src.match(/<img[\s\S]*?src=\{HEADER_LOGO_URL\}[\s\S]*?\/>/);
+    expect(logoImg).not.toBeNull();
+    const tag = logoImg![0];
+    expect(tag).toMatch(/width=\{210\}/);
+    expect(tag).toMatch(/height=\{140\}/);
+  });
+
+  it("keeps the logo width-auto + shrink-0 so it scales by height and never collapses on mobile", () => {
+    const logoImg = src.match(/<img[\s\S]*?src=\{HEADER_LOGO_URL\}[\s\S]*?\/>/)![0];
+    // height-driven, width auto so the aspect ratio holds at every breakpoint
+    expect(logoImg).toMatch(/h-\d+/);
+    expect(logoImg).toContain("w-auto");
+    // the wrapping Link is shrink-0 so the flex row can't squeeze the logo to ~12px
+    expect(src).toMatch(/<Link href="\/"[^>]*shrink-0[^>]*aria-label=\{BRAND_NAME\}>/);
+  });
+
+  it("hides the phone link below the sm breakpoint so the mobile header only carries logo + CTA", () => {
+    // phone is hidden < 640px (sm:inline-flex), leaving plenty of room on mobile
+    expect(src).toMatch(/href="tel:\+18884453047"\s+className="hidden sm:inline-flex/);
+  });
 });
 
 describe("§222 StaffingLanding — persistent Request a Demo sticky CTA", () => {
