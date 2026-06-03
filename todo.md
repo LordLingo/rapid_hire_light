@@ -1957,3 +1957,11 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Register route /lp/staffing in App.tsx (standalone, outside global nav chrome)
 - [x] Add regression spec pinning route + key LP invariants (hidden tracking fields, placeholder stats, employment-only copy)
 - [x] Verify in browser + pnpm test + tsc, save checkpoint and report
+
+
+## 219. §219 — Remove the /lp/staffing landing page (user disliked it; starting over)
+- [x] Delete client/src/pages/StaffingLanding.tsx
+- [x] Delete client/src/lib/staffingLp.ts + staffingLp.test.ts + staffingLandingPage.test.ts
+- [x] Remove the StaffingLanding import + /lp/staffing route from App.tsx
+- [x] Revert the §218 entry in paperSoftAudit.test.ts allowlist
+- [x] Verify pnpm test + tsc green, save checkpoint
