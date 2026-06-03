@@ -2011,3 +2011,11 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Verify mobile (390px) header: logo scales by height + w-auto, Link shrink-0, phone hidden < sm, "Get a quote" fits — no wrap/overflow (headless Chromium screenshot)
 - [x] Add §224 regression pins (logo present, no text wordmark, correct ratio, shrink-0 + w-auto, phone hidden below sm)
 - [x] tsc clean; LP page tests 25/25 pass; checkpoint
+
+## 225. §225 — Fix mobile horizontal overflow on /lp/staffing
+- [x] Diagnose: page scrollWidth 461px vs 390px viewport; root cause = grid-cols-12 gap-x-10 forcing 40px horizontal gutters on stacked mobile columns (the fixed §222 demo bar then matched the inflated doc width)
+- [x] Fix: change all four grids to gap-x-0 lg:gap-x-10 so the gap only applies once columns sit side-by-side at lg
+- [x] Verify with headless-Chromium CDP probe: scrollWidth now 390 = viewport, zero overflow offenders
+- [x] Screenshot the "Get started" dark section at 390px — headline + copy fully visible, no clipping
+- [x] Add §225 regression pins (no bare gap-x-10 on grid-cols-12; all grids use gap-x-0 lg:gap-x-10)
+- [x] tsc clean; LP page tests 27/27 pass; checkpoint

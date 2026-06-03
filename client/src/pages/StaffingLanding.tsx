@@ -281,7 +281,7 @@ function SavingsCalculator() {
   );
 
   return (
-    <div className="grid grid-cols-12 gap-x-10 gap-y-10 items-center">
+    <div className="grid grid-cols-12 gap-x-0 lg:gap-x-10 gap-y-10 items-center">
       <div className="col-span-12 lg:col-span-6 reveal-on-scroll">
         <div className="space-y-7">
           <SliderRow
@@ -808,7 +808,7 @@ export default function StaffingLanding() {
       {/* PROBLEM */}
       <section className="border-b border-border">
         <div className="container py-16 md:py-24">
-          <div className="grid grid-cols-12 gap-x-10 gap-y-10 items-center">
+          <div className="grid grid-cols-12 gap-x-0 lg:gap-x-10 gap-y-10 items-center">
             <div className="col-span-12 lg:col-span-7 reveal-on-scroll">
               <p className="eyebrow">The staffing bottleneck</p>
               <h2 className="mt-3 font-display text-[32px] md:text-[40px] leading-tight">
@@ -952,7 +952,7 @@ export default function StaffingLanding() {
       {/* TESTIMONIAL / TRUST */}
       <section className="border-b border-border">
         <div className="container py-16 md:py-24">
-          <div className="grid grid-cols-12 gap-x-10 gap-y-10 items-center">
+          <div className="grid grid-cols-12 gap-x-0 lg:gap-x-10 gap-y-10 items-center">
             <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
               <img
                 src={HANDSHAKE_IMG}
@@ -982,7 +982,7 @@ export default function StaffingLanding() {
       {/* FINAL CTA + FORM */}
       <section id="lead" className="bg-[color:var(--color-ink)] scroll-mt-20">
         <div className="container py-16 md:py-24">
-          <div className="grid grid-cols-12 gap-x-10 gap-y-12 items-center">
+          <div className="grid grid-cols-12 gap-x-0 lg:gap-x-10 gap-y-12 items-center">
             <div className="col-span-12 lg:col-span-6 text-[color:var(--color-paper)]">
               <p className="eyebrow !text-[color:var(--color-paper)]/60">Get started</p>
               <h2 className="mt-3 font-display text-[34px] md:text-[46px] leading-tight">

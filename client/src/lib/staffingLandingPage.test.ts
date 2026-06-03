@@ -125,6 +125,25 @@ describe("§223 StaffingLanding — WebGL shader hero", () => {
   });
 });
 
+describe("§225 StaffingLanding — no mobile horizontal overflow (grid gap collapses)", () => {
+  const src = read(PAGE);
+
+  it("never uses a bare gap-x-10 on a 12-col grid (forces 40px gutters on stacked mobile cols => overflow)", () => {
+    // §225 fix: gap-x-10 only at lg; on mobile the columns stack (col-span-12)
+    // so a 40px horizontal gap is dead space that pushed the doc to 461px > 390.
+    const bareGapGrids = src.match(/grid-cols-12 gap-x-10\b/g) || [];
+    expect(bareGapGrids.length).toBe(0);
+  });
+
+  it("every 12-col grid uses the responsive gap-x-0 lg:gap-x-10 pattern", () => {
+    const grids = src.match(/grid grid-cols-12 [^"]*/g) || [];
+    expect(grids.length).toBeGreaterThanOrEqual(4);
+    for (const g of grids) {
+      expect(g).toContain("gap-x-0 lg:gap-x-10");
+    }
+  });
+});
+
 describe("§224 StaffingLanding — header uses the real brand logo", () => {
   const src = read(PAGE);
 
