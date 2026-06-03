@@ -105,6 +105,15 @@ describe("§228 StaffingLanding — testimonials grid", () => {
     expect(src).not.toContain("Tailus");
     expect(src).not.toContain("tailus.io");
   });
+
+  it("§229 applies the subtle hover-lift effect to the testimonial cards", () => {
+    // §229: cards lift + cast a soft shadow on hover via the shared
+    // .hover-lift-card utility (reduced-motion gated in index.css). Pin both
+    // the featured card and the supporting-card map so the affordance can't
+    // silently regress.
+    expect(src).toContain('className="hover-lift-card sm:col-span-2 lg:row-span-2');
+    expect(src).toMatch(/"hover-lift-card rounded-\[20px\] border-border/);
+  });
 });
 
 describe("§223 StaffingLanding — WebGL shader hero", () => {

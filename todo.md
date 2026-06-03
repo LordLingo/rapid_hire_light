@@ -2039,3 +2039,8 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Remove the now-unused HANDSHAKE_IMG photo + its test pin
 - [x] Add §228 test block; fix §225 grid-count pin (4 -> 3) after removing the old testimonial grid
 - [x] Verify desktop + mobile (no overflow, 390==390) + full suite + tsc, save checkpoint
+
+## 229. §229 — Subtle hover lift + soft shadow on testimonial cards
+- [x] Reuse the existing reduced-motion-gated `.hover-lift-card` utility (3px lift, soft elevated shadow, sky-halo border tint, 220ms ease-out) on the featured + 3 supporting testimonial cards
+- [x] Add §229 regression pin to staffingLandingPage.test.ts (featured + supporting-card map both carry hover-lift-card)
+- [x] tsc clean; LP page tests 30/30; checkpoint

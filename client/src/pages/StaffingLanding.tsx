@@ -435,7 +435,7 @@ function StaffingTestimonials() {
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 reveal-on-scroll">
           {/* Featured card spans 2x2 */}
-          <Card className="sm:col-span-2 lg:row-span-2 rounded-[20px] border-border bg-[color:var(--color-paper)]">
+          <Card className="hover-lift-card sm:col-span-2 lg:row-span-2 rounded-[20px] border-border bg-[color:var(--color-paper)]">
             <CardContent className="flex h-full flex-col p-6 md:p-8">
               <Quote className="size-8 text-[color:var(--color-accent-ink)]/30" strokeWidth={1.75} />
               <blockquote className="mt-5 flex-1 font-display text-[22px] md:text-[26px] leading-[1.4] text-[color:var(--color-ink)]">
@@ -450,7 +450,7 @@ function StaffingTestimonials() {
             <Card
               key={i}
               className={
-                "rounded-[20px] border-border bg-[color:var(--color-paper)] " +
+                "hover-lift-card rounded-[20px] border-border bg-[color:var(--color-paper)] " +
                 (i === 0 ? "sm:col-span-2 lg:col-span-2" : "")
               }
             >
