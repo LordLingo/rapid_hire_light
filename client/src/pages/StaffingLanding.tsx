@@ -21,6 +21,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "wouter";
+import { HEADER_LOGO_URL, BRAND_NAME } from "@shared/brand";
 import {
   ArrowRight,
   Check,
@@ -674,8 +675,18 @@ export default function StaffingLanding() {
       {/* Slim header */}
       <header className="sticky top-0 z-40 bg-[color:var(--color-paper)]/85 backdrop-blur-md border-b border-border">
         <div className="container flex items-center justify-between h-16">
-          <Link href="/" className="font-display text-[19px] tracking-tight text-[color:var(--color-ink)]">
-            Rapid Hire <span className="text-[color:var(--color-accent-ink)]">Solutions</span>
+          <Link href="/" className="shrink-0 inline-flex items-center" aria-label={BRAND_NAME}>
+            {/* §224: real Rapid Hire color lockup (same asset as the main-site
+                header), on this light LP header surface. Intrinsic ratio locked
+                so the mark + wordmark sit cleanly; height tuned to the 64px bar. */}
+            <img
+              src={HEADER_LOGO_URL}
+              alt={BRAND_NAME}
+              width={210}
+              height={42}
+              className="h-9 w-auto"
+              loading="eager"
+            />
           </Link>
           <div className="flex items-center gap-3">
             <a

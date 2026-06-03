@@ -125,6 +125,18 @@ describe("§223 StaffingLanding — WebGL shader hero", () => {
   });
 });
 
+describe("§224 StaffingLanding — header uses the real brand logo", () => {
+  const src = read(PAGE);
+
+  it("renders the shared HEADER_LOGO_URL lockup in the header, not a text wordmark", () => {
+    expect(src).toContain('from "@shared/brand"');
+    expect(src).toContain("HEADER_LOGO_URL");
+    expect(src).toMatch(/src=\{HEADER_LOGO_URL\}/);
+    // the old plain-text wordmark link must be gone
+    expect(src).not.toContain("Rapid Hire <span");
+  });
+});
+
 describe("§222 StaffingLanding — persistent Request a Demo sticky CTA", () => {
   const src = read(PAGE);
 
