@@ -98,6 +98,86 @@ function useInViewOnce<T extends HTMLElement>() {
 }
 
 /* ------------------------------------------------------------------ */
+/* Persistent "Request a Demo" sticky CTA (§222)                        */
+/* ------------------------------------------------------------------ */
+// Stays visible while scrolling on every breakpoint once the user has
+// scrolled past the hero, and hides while the #lead form is on screen so it
+// never double-stacks with the form or fights the above-the-fold CTA.
+function DemoCtaBar() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // Reveal after the user scrolls roughly past the hero; hide near page
+    // bottom where the #lead form lives. rAF-throttled passive scroll listener
+    // (mirrors the StickyEstimateBar approach — reliable across anchor jumps).
+    let ticking = false;
+    const compute = () => {
+      ticking = false;
+      const scrolled = window.scrollY;
+      const pastHero = scrolled > 520;
+      const lead = document.getElementById("lead");
+      let leadInView = false;
+      if (lead) {
+        const r = lead.getBoundingClientRect();
+        // Treat the form as "in view" once its top crosses the lower third.
+        leadInView = r.top < window.innerHeight * 0.66;
+      }
+      setShow(pastHero && !leadInView);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(compute);
+    };
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return (
+    <div
+      data-testid="lp-demo-cta"
+      aria-hidden={!show}
+      className={`fixed bottom-0 inset-x-0 z-40 border-t border-border bg-[color:var(--color-paper)]/95 backdrop-blur transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:transition-none ${
+        show ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
+      }`}
+    >
+      <div className="container flex items-center justify-between gap-3 py-3">
+        <div className="hidden sm:flex items-center gap-2.5 min-w-0">
+          <span className="grid place-items-center size-8 rounded-full bg-[color:var(--color-tint)] text-[color:var(--color-accent-ink)]">
+            <Gauge className="size-4" strokeWidth={2} />
+          </span>
+          <p className="truncate text-[14px] text-[color:var(--color-ink)]">
+            See your real turnaround benchmarks —{" "}
+            <span className="text-[color:var(--color-ink-muted)]">same-business-day reply.</span>
+          </p>
+        </div>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <a
+            href="tel:+18884453047"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2.5 text-[13.5px] font-medium text-[color:var(--color-ink)] hover:bg-[color:var(--color-tint)] transition-colors"
+          >
+            <Phone className="size-4" strokeWidth={1.75} /> (888) 445-3047
+          </a>
+          <a
+            href="#lead"
+            className="btn-press inline-flex items-center justify-center gap-2 w-full sm:w-auto rounded-full bg-[color:var(--color-accent-ink)] text-white px-6 py-3 text-[15px] font-medium"
+          >
+            Request a Demo <ArrowRight className="size-4" strokeWidth={2} />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Small presentational pieces                                         */
 /* ------------------------------------------------------------------ */
 
@@ -966,16 +1046,8 @@ export default function StaffingLanding() {
         </div>
       </footer>
 
-      {/* MOBILE STICKY CTA */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[color:var(--color-paper)]/95 backdrop-blur border-t border-border px-4 py-3">
-        <a
-          href="#lead"
-          className="btn-press flex items-center justify-center gap-2 w-full rounded-full bg-[color:var(--color-accent-ink)] text-white px-6 py-3.5 text-[15px] font-medium"
-        >
-          Get your turnaround benchmarks
-          <ArrowRight className="size-4" strokeWidth={2} />
-        </a>
-      </div>
+      {/* PERSISTENT "REQUEST A DEMO" STICKY CTA (§222) — all breakpoints */}
+      <DemoCtaBar />
     </div>
   );
 }

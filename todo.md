@@ -1985,3 +1985,11 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Replace the local /manus-storage/... refs in StaffingLanding.tsx with the returned webdev URLs
 - [x] Update the staffingLandingPage.test.ts hero-asset pin to match the new URL form
 - [x] Verify in browser + full test suite + tsc, save checkpoint
+
+## 222. §222 — Persistent "Request a Demo" sticky CTA on /lp/staffing
+- [x] Add a floating "Request a Demo" CTA that stays visible while scrolling on all breakpoints, links to #lead
+- [x] Appear after the user scrolls past the hero (so it doesn't compete with the above-the-fold form); hide when the #lead form is in view
+- [x] Keep consistent with existing accent-ink button style + btn-press; respect prefers-reduced-motion
+- [x] Reconcile with the existing mobile sticky bar so they don't double up
+- [x] Add a regression source pin in staffingLandingPage.test.ts
+- [x] Verify in browser + full suite + tsc, save checkpoint

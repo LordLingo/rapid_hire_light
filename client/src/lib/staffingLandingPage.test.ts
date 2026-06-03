@@ -82,6 +82,36 @@ describe("§220 StaffingLanding — page wiring", () => {
   });
 });
 
+describe("§222 StaffingLanding — persistent Request a Demo sticky CTA", () => {
+  const src = read(PAGE);
+
+  it("renders a single persistent DemoCtaBar (no leftover mobile-only bar)", () => {
+    expect(src).toContain("function DemoCtaBar()");
+    expect(src).toContain("<DemoCtaBar />");
+    expect(src).toContain('data-testid="lp-demo-cta"');
+    // exactly one rendered instance of the bar (no leftover duplicate bar)
+    expect(src.match(/<DemoCtaBar \/>/g)?.length).toBe(1);
+  });
+
+  it("labels the CTA 'Request a Demo' and links it to the #lead form", () => {
+    expect(src).toMatch(/Request a Demo/);
+    expect(src).toMatch(/href="#lead"/);
+  });
+
+  it("is fixed, spans all breakpoints, and toggles visibility on scroll", () => {
+    // fixed bottom bar, NOT gated behind lg:hidden (must show on desktop too)
+    expect(src).toMatch(/fixed bottom-0 inset-x-0 z-40/);
+    expect(src).not.toMatch(/lg:hidden fixed bottom-0/);
+    // visibility is state-driven and accessibility-aware
+    expect(src).toContain("aria-hidden={!show}");
+    expect(src).toContain('getElementById("lead")');
+  });
+
+  it("respects reduced-motion on the slide transition", () => {
+    expect(src).toContain("motion-reduce:transition-none");
+  });
+});
+
 describe("§220 StaffingLanding — no invented stats", () => {
   const src = read(PAGE);
 
