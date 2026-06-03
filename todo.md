@@ -2019,3 +2019,9 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Screenshot the "Get started" dark section at 390px — headline + copy fully visible, no clipping
 - [x] Add §225 regression pins (no bare gap-x-10 on grid-cols-12; all grids use gap-x-0 lg:gap-x-10)
 - [x] tsc clean; LP page tests 27/27 pass; checkpoint
+
+## 226. §226 — Replace staffing-bottleneck section image with SPA infographic
+- [x] Upload new SPEED/PRICE/ACCURACY infographic to public Manus CDN (absolute https URL, not /manus-storage which 404s on published domain)
+- [x] Point SPEED_IMG at the new CDN URL; update alt text
+- [x] Switch this image to object-contain + h-auto + bg-white so the wide infographic shows fully (no crop), keeping sane column-fit size
+- [x] tsc clean; LP tests 27/27 (SPEED_IMG CDN-url pin still passes); desktop screenshot verified

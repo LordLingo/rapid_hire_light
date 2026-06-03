@@ -69,7 +69,7 @@ import { StaffingShaderBackground } from "@/components/StaffingShaderHero";
 // dev server AND the published static build. The /manus-storage/* signed-redirect endpoint
 // only exists on the dev server and 404s on the published domain, which broke these images.
 // (The former HERO_IMG photo was replaced by the §223 WebGL shader hero.)
-const SPEED_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/GnVKueGqbdcZNlEQ.png";
+const SPEED_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/sSAYXLZlHWgbVQTZ.png";
 const HANDSHAKE_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/iHizSpGdlPhtPCqE.png";
 
 /* ------------------------------------------------------------------ */
@@ -836,9 +836,11 @@ export default function StaffingLanding() {
             <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
               <img
                 src={SPEED_IMG}
-                alt="Speed of a fast background check resolving into a verified result"
-                className="w-full rounded-[20px] border border-border object-cover"
+                alt="Speed, Price, Accuracy — background checks that keep you moving, from candidate applied to hired"
+                className="w-full h-auto rounded-[20px] border border-border bg-white object-contain"
                 loading="lazy"
+                width={1536}
+                height={1024}
               />
             </div>
           </div>
