@@ -9,9 +9,11 @@
     - lead form posts to the Formspree endpoint and renders hidden tracking
       fields + a honeypot
     - the success panel uses the §216 scroll-into-view pattern
-    - NO invented marketing stats: every headline metric stays a bracketed
-      [PLACEHOLDER]; this test fails if a bare percentage/number claim leaks
-      into visible copy (CSS values inside style/className are ignored)
+    - Marketing stats are controlled: the four hero stat-band figures are
+      owner-APPROVED real values (§231: 65% / 8 hrs / 30% / 150+); every OTHER
+      headline metric must stay a bracketed [PLACEHOLDER]. This test fails if a
+      bare, unapproved percentage/number claim leaks into visible copy (CSS
+      values inside style/className are ignored)
 */
 
 import { describe, expect, it } from "vitest";
@@ -276,14 +278,35 @@ describe("§220 StaffingLanding — no invented stats", () => {
     );
   }
 
-  it("contains bracketed placeholders, not hard-coded headline stats", () => {
-    expect(src).toContain("[XX]");
-    expect(src).toMatch(/\[XX\]%/);
+  // §231: the four hero stat-band figures are now REAL, user-approved values
+  // (65% reports <24h, 8 hrs median TAT, 30% time-to-fill reduction, 150+
+  // clients). They replaced the former [XX] placeholders on explicit owner
+  // confirmation. These four are the ONLY approved hard numbers; any other
+  // bare metric claim must still stay bracketed.
+  const APPROVED_STATS = [
+    'value="65%" label="Reports < 24 hrs"',
+    'value="8 hrs" label="Median turnaround"',
+    'value="30%" label="Time-to-fill reduction"',
+    'value="150+" label="Staffing clients"',
+  ];
+
+  it("§231 renders the approved real hero stats and drops the [XX] hero placeholders", () => {
+    for (const stat of APPROVED_STATS) {
+      expect(src).toContain(stat);
+    }
+    // The hero stat band must no longer carry [XX] placeholders.
+    expect(src).not.toMatch(/value="\[XX\][^"]*"\s+label="(Reports < 24 hrs|Median turnaround|Time-to-fill reduction|Staffing clients)"/);
   });
 
-  it("has no bare 'NN% accuracy/faster/reduction' style claims in copy", () => {
-    const text = visibleText(src);
-    // Catch claims like "98% accuracy", "40% faster", "99.9% ..."
+  it("has no UNAPPROVED bare 'NN% accuracy/faster/reduction' style claims in copy", () => {
+    let text = visibleText(src);
+    // Allow the four approved stat values, then ensure nothing else leaks.
+    for (const stat of APPROVED_STATS) {
+      text = text.split(stat).join(" ");
+    }
+    // Also drop the bare approved tokens in case they appear elsewhere as values.
+    text = text.replace(/\b(65%|30%|8 hrs|150\+)\b/g, " ");
+    // Catch remaining claims like "98% accuracy", "40% faster", "99.9% ..."
     const bad = text.match(/\b\d{2,3}(\.\d+)?%\s*(accuracy|faster|reduction|of)\b/gi);
     expect(bad).toBeNull();
   });

@@ -983,10 +983,10 @@ export default function StaffingLanding() {
             ref={stats.ref}
             className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 pt-10 border-t border-white/15"
           >
-            <PlaceholderStat value="[XX]%" label="Reports < 24 hrs" start={stats.seen} onDark />
-            <PlaceholderStat value="[XX] hrs" label="Median turnaround" start={stats.seen} onDark />
-            <PlaceholderStat value="[XX]%" label="Time-to-fill reduction" start={stats.seen} onDark />
-            <PlaceholderStat value="[XX]+" label="Staffing clients" start={stats.seen} onDark />
+            <PlaceholderStat value="65%" label="Reports < 24 hrs" start={stats.seen} onDark />
+            <PlaceholderStat value="8 hrs" label="Median turnaround" start={stats.seen} onDark />
+            <PlaceholderStat value="30%" label="Time-to-fill reduction" start={stats.seen} onDark />
+            <PlaceholderStat value="150+" label="Staffing clients" start={stats.seen} onDark />
           </div>
         </div>
       </section>

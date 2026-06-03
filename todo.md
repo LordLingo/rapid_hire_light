@@ -2052,3 +2052,10 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Desktop/tablet (>=sm): keep the existing bento grid unchanged (hidden sm:grid split)
 - [x] Preserve hover-lift + placeholder copy; reduced-motion still respected
 - [x] Add §230 regression pin (carousel import, mobile branch, responsive split); tsc clean; LP tests 31/31; verified mobile + desktop; checkpoint
+
+## 231. §231 — Replace hero [XX] stat placeholders with approved real values
+- [x] 65% Reports < 24 hrs / 8 hrs Median turnaround / 30% Time-to-fill reduction / 150+ Staffing clients (owner-confirmed)
+- [x] Update §220/§231 test pins: assert the four approved values, drop [XX] hero placeholder requirement, keep guarding other unapproved bare-number claims
+- [x] Update stale §220 header comment to reflect approved stats
+- [x] Leave the separate Turnaround-timeline "[XX] hrs" step as-is (not in scope)
+- [x] tsc clean; LP tests 31/31; verified stat band renders real values; checkpoint
