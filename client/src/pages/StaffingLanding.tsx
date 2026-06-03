@@ -69,7 +69,7 @@ import { StaffingShaderBackground } from "@/components/StaffingShaderHero";
 // dev server AND the published static build. The /manus-storage/* signed-redirect endpoint
 // only exists on the dev server and 404s on the published domain, which broke these images.
 // (The former HERO_IMG photo was replaced by the §223 WebGL shader hero.)
-const SPEED_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/sSAYXLZlHWgbVQTZ.png";
+const SPEED_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/gXHYijayUMgKZqUP.png";
 const HANDSHAKE_IMG = "https://files.manuscdn.com/user_upload_by_module/session_file/310419663030097116/iHizSpGdlPhtPCqE.png";
 
 /* ------------------------------------------------------------------ */
@@ -809,7 +809,7 @@ export default function StaffingLanding() {
       <section className="border-b border-border">
         <div className="container py-16 md:py-24">
           <div className="grid grid-cols-12 gap-x-0 lg:gap-x-10 gap-y-10 items-center">
-            <div className="col-span-12 lg:col-span-7 reveal-on-scroll">
+            <div className="col-span-12 lg:col-span-6 reveal-on-scroll">
               <p className="eyebrow">The staffing bottleneck</p>
               <h2 className="mt-3 font-display text-[32px] md:text-[40px] leading-tight">
                 A candidate who waits is a candidate who ghosts.
@@ -833,7 +833,7 @@ export default function StaffingLanding() {
                 ))}
               </ul>
             </div>
-            <div className="col-span-12 lg:col-span-5 reveal-on-scroll">
+            <div className="col-span-12 lg:col-span-6 reveal-on-scroll">
               <img
                 src={SPEED_IMG}
                 alt="Speed, Price, Accuracy — background checks that keep you moving, from candidate applied to hired"

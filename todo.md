@@ -2025,3 +2025,8 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Point SPEED_IMG at the new CDN URL; update alt text
 - [x] Switch this image to object-contain + h-auto + bg-white so the wide infographic shows fully (no crop), keeping sane column-fit size
 - [x] tsc clean; LP tests 27/27 (SPEED_IMG CDN-url pin still passes); desktop screenshot verified
+
+## 227. §227 — Enlarge staffing-bottleneck infographic for readability
+- [x] Upload full-size artwork to public Manus CDN; point SPEED_IMG at it
+- [x] Widen image column 5/12 -> 6/12 (text column 7/12 -> 6/12) so the infographic renders larger and text is legible
+- [x] tsc clean; LP tests 27/27; desktop screenshot verified (labels + categories + tagline readable)
