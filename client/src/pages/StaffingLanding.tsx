@@ -42,6 +42,12 @@ import {
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import { toast } from "sonner";
 import { useSeo } from "@/hooks/useSeo";
 import { useReveal } from "@/hooks/useReveal";
@@ -417,8 +423,62 @@ function TestimonialCite({ t }: { t: Testimonial }) {
   );
 }
 
+function TestimonialCard({
+  t,
+  emphasis = false,
+  className = "",
+}: {
+  t: Testimonial;
+  emphasis?: boolean;
+  className?: string;
+}) {
+  return (
+    <Card
+      className={
+        "hover-lift-card h-full rounded-[20px] border-border bg-[color:var(--color-paper)] " +
+        className
+      }
+    >
+      <CardContent className={"flex h-full flex-col " + (emphasis ? "p-6 md:p-8" : "p-6")}>
+        <Quote
+          className={
+            (emphasis ? "size-8" : "size-6") +
+            " text-[color:var(--color-accent-ink)]/30"
+          }
+          strokeWidth={1.75}
+        />
+        {emphasis ? (
+          <blockquote className="mt-5 flex-1 font-display text-[22px] md:text-[26px] leading-[1.4] text-[color:var(--color-ink)]">
+            {t.quote}
+          </blockquote>
+        ) : (
+          <blockquote className="mt-4 flex-1 text-[16px] leading-[1.6] text-[color:var(--color-ink-soft)]">
+            {t.quote}
+          </blockquote>
+        )}
+        <TestimonialCite t={t} />
+      </CardContent>
+    </Card>
+  );
+}
+
 function StaffingTestimonials() {
   const [featured, ...rest] = TESTIMONIALS;
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    if (!carouselApi) return;
+    const onSelect = () => setSelected(carouselApi.selectedScrollSnap());
+    onSelect();
+    carouselApi.on("select", onSelect);
+    carouselApi.on("reInit", onSelect);
+    return () => {
+      carouselApi.off("select", onSelect);
+      carouselApi.off("reInit", onSelect);
+    };
+  }, [carouselApi]);
+
   return (
     <section className="border-b border-border" data-testid="lp-testimonials">
       <div className="container py-16 md:py-24">
@@ -433,35 +493,57 @@ function StaffingTestimonials() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 reveal-on-scroll">
-          {/* Featured card spans 2x2 */}
-          <Card className="hover-lift-card sm:col-span-2 lg:row-span-2 rounded-[20px] border-border bg-[color:var(--color-paper)]">
-            <CardContent className="flex h-full flex-col p-6 md:p-8">
-              <Quote className="size-8 text-[color:var(--color-accent-ink)]/30" strokeWidth={1.75} />
-              <blockquote className="mt-5 flex-1 font-display text-[22px] md:text-[26px] leading-[1.4] text-[color:var(--color-ink)]">
-                {featured.quote}
-              </blockquote>
-              <TestimonialCite t={featured} />
-            </CardContent>
-          </Card>
+        {/* Mobile (<sm): swipeable carousel to save vertical space */}
+        <div className="mt-10 sm:hidden reveal-on-scroll" data-testid="lp-testimonials-carousel">
+          <Carousel
+            setApi={setCarouselApi}
+            opts={{ align: "start", loop: false }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-3">
+              {TESTIMONIALS.map((t, i) => (
+                <CarouselItem key={i} className="pl-3 basis-[88%]">
+                  <TestimonialCard t={t} emphasis={i === 0} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+          {/* Dot indicators */}
+          <div className="mt-4 flex items-center justify-center gap-2" aria-hidden="true">
+            {TESTIMONIALS.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => carouselApi?.scrollTo(i)}
+                className={
+                  "h-1.5 rounded-full transition-all duration-200 " +
+                  (selected === i
+                    ? "w-5 bg-[color:var(--color-accent-ink)]"
+                    : "w-1.5 bg-[color:var(--color-ink-muted)]/30")
+                }
+              />
+            ))}
+          </div>
+          <p className="mt-3 text-center text-[12px] text-[color:var(--color-ink-muted)]">
+            Swipe to see more · {selected + 1} of {TESTIMONIALS.length}
+          </p>
+        </div>
 
+        {/* Desktop / tablet (>=sm): bento grid */}
+        <div className="mt-10 hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 reveal-on-scroll">
+          {/* Featured card spans 2x2 */}
+          <TestimonialCard
+            t={featured}
+            emphasis
+            className="sm:col-span-2 lg:row-span-2"
+          />
           {/* Supporting cards */}
           {rest.map((t, i) => (
-            <Card
+            <TestimonialCard
               key={i}
-              className={
-                "hover-lift-card rounded-[20px] border-border bg-[color:var(--color-paper)] " +
-                (i === 0 ? "sm:col-span-2 lg:col-span-2" : "")
-              }
-            >
-              <CardContent className="flex h-full flex-col p-6">
-                <Quote className="size-6 text-[color:var(--color-accent-ink)]/30" strokeWidth={1.75} />
-                <blockquote className="mt-4 flex-1 text-[16px] leading-[1.6] text-[color:var(--color-ink-soft)]">
-                  {t.quote}
-                </blockquote>
-                <TestimonialCite t={t} />
-              </CardContent>
-            </Card>
+              t={t}
+              className={i === 0 ? "sm:col-span-2 lg:col-span-2" : ""}
+            />
           ))}
         </div>
 

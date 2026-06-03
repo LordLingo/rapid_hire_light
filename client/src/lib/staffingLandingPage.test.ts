@@ -108,11 +108,25 @@ describe("§228 StaffingLanding — testimonials grid", () => {
 
   it("§229 applies the subtle hover-lift effect to the testimonial cards", () => {
     // §229: cards lift + cast a soft shadow on hover via the shared
-    // .hover-lift-card utility (reduced-motion gated in index.css). Pin both
-    // the featured card and the supporting-card map so the affordance can't
-    // silently regress.
-    expect(src).toContain('className="hover-lift-card sm:col-span-2 lg:row-span-2');
-    expect(src).toMatch(/"hover-lift-card rounded-\[20px\] border-border/);
+    // .hover-lift-card utility (reduced-motion gated in index.css). §230 moved
+    // the card markup into the shared <TestimonialCard> renderer, so the
+    // hover-lift class now lives there (still applied to every card).
+    expect(src).toContain("function TestimonialCard(");
+    expect(src).toMatch(/"hover-lift-card h-full rounded-\[20px\] border-border/);
+  });
+
+  it("§230 renders a swipeable carousel on mobile and the bento grid on >=sm", () => {
+    // §230: below the sm breakpoint the four testimonials become a swipeable
+    // embla carousel to save vertical space; the existing bento grid is kept
+    // for tablet/desktop. Guard the import, the mobile-only carousel branch,
+    // and the sm:hidden / hidden sm:grid responsive split.
+    expect(src).toContain('from "@/components/ui/carousel"');
+    expect(src).toContain('data-testid="lp-testimonials-carousel"');
+    expect(src).toContain("<Carousel");
+    expect(src).toContain("<CarouselItem");
+    // mobile carousel hidden at >=sm; grid hidden below sm
+    expect(src).toMatch(/sm:hidden[^"]*"\s+data-testid="lp-testimonials-carousel"/);
+    expect(src).toContain("hidden gap-4 sm:grid");
   });
 });
 

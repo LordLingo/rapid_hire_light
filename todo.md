@@ -2044,3 +2044,11 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Reuse the existing reduced-motion-gated `.hover-lift-card` utility (3px lift, soft elevated shadow, sky-halo border tint, 220ms ease-out) on the featured + 3 supporting testimonial cards
 - [x] Add §229 regression pin to staffingLandingPage.test.ts (featured + supporting-card map both carry hover-lift-card)
 - [x] tsc clean; LP page tests 30/30; checkpoint
+
+## 230. §230 — Swipeable testimonial carousel on mobile
+- [x] Reuse the existing shadcn/embla `carousel` primitive (no new dependency)
+- [x] Extract shared `TestimonialCard` renderer (featured vs supporting) so grid + carousel stay in sync
+- [x] Mobile (<sm): swipeable one-card carousel (~88% basis, next card peeks) with dot indicators + "Swipe to see more · N of M" hint
+- [x] Desktop/tablet (>=sm): keep the existing bento grid unchanged (hidden sm:grid split)
+- [x] Preserve hover-lift + placeholder copy; reduced-motion still respected
+- [x] Add §230 regression pin (carousel import, mobile branch, responsive split); tsc clean; LP tests 31/31; verified mobile + desktop; checkpoint
