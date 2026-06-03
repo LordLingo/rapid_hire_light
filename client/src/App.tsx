@@ -45,6 +45,7 @@ import ResourcesK12ComplianceGuide from "./pages/ResourcesK12ComplianceGuide";
 import ResourcesCaseStudies from "./pages/ResourcesCaseStudies";
 import Spa from "./pages/Spa";
 import Shrm from "./pages/Shrm";
+import StaffingLanding from "./pages/StaffingLanding";
 
 
 function Router() {
@@ -81,6 +82,7 @@ function Router() {
       <Route path={"/compliance"} component={Compliance} />
       <Route path={"/trust"} component={Trust} />
       <Route path={"/spa"} component={Spa} />
+      <Route path={"/lp/staffing"} component={StaffingLanding} />
       <Route path={"/shrm"} component={Shrm} />
       <Route path={"/shrm-2026"} component={Shrm} />
       <Route path={"/booth"} component={Shrm} />

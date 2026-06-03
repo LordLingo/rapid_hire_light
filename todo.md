@@ -1965,3 +1965,16 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Remove the StaffingLanding import + /lp/staffing route from App.tsx
 - [x] Revert the §218 entry in paperSoftAudit.test.ts allowlist
 - [x] Verify pnpm test + tsc green, save checkpoint
+
+
+## 220. §220 — Build robust B2B staffing landing page (v2) with hero imagery + motion
+- [x] Review brand tokens (index.css), GetAQuote form/Formspree/HubSpot plumbing, useSeo hook
+- [x] Generate custom hero image + supporting section visuals (B2B staffing, speed/turnaround theme)
+- [x] Build StaffingLanding.tsx: own minimal chrome, animated hero, speed/turnaround focus, multiple sections
+- [x] Add tasteful motion: animated counters, marquee/logo strip, reveal-on-scroll, animated turnaround timeline
+- [x] Above-the-fold lead form posting to Formspree + HubSpot, hidden UTM/gclid, scroll-to-success
+- [x] Bracketed [PLACEHOLDER] stats only (no invented numbers)
+- [x] Mobile sticky CTA, click-to-call
+- [x] Wire /lp/staffing route + useSeo meta + conversion hook
+- [x] Add regression tests (lib + page structure pins)
+- [x] Verify in browser, pnpm test + tsc green, save checkpoint
