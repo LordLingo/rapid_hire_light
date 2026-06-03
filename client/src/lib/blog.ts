@@ -217,6 +217,8 @@ import { post as postMiIchatCleanSlate } from "@/content/blog/michigan-ichat-cle
 import { post as postMnCoraCannabis } from "@/content/blog/minnesota-criminal-history-cannabis-employer-guide";
 // §217 — Georgia employer background-check compliance (O.C.G.A. §35-3-34 GCIC access + §35-3-34(b.1) adverse-notice + First Offender Act §42-8-60/§42-8-62.1 + record restriction §35-3-37 + SB 288 (2020) + 2015 state-agency ban-the-box EO)
 import { post as postGaCompliance } from "@/content/blog/georgia-employer-background-check-compliance-guide";
+// §220 — Texas employer background-check compliance (Tex. Gov't Code ch. 411 DPS/CCH + FACT program + §411.135 public records + Tex. Bus. & Com. Code ch. 20 §20.05 seven-year cap under $75k + orders of nondisclosure subch. E-1/§552.142 + Austin Fair Chance Ordinance ch. 4-15 + Tex. Civ. Prac. & Rem. Code §142.002 negligent-hiring protection + Tex. Lab. Code §21.051)
+import { post as postTxCompliance } from "@/content/blog/texas-employer-background-check-compliance-guide";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -355,6 +357,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postMiIchatCleanSlate,
   postMnCoraCannabis,
   postGaCompliance,
+  postTxCompliance,
 ]);
 
 /**

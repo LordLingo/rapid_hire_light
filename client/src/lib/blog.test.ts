@@ -41,8 +41,8 @@ function wordCount(s: string): number {
 describe("listPosts", () => {
   const posts = listPosts();
 
-  it("returns exactly one hundred thirty-four posts", () => {
-    expect(posts).toHaveLength(134);
+  it("returns exactly one hundred thirty-five posts", () => {
+    expect(posts).toHaveLength(135);
   });
 
   it("is sorted newest-first by publishedAt", () => {
