@@ -393,7 +393,7 @@ export function createApp(opts: { apiOnly?: boolean } = {}) {
   app.use(express.json({ limit: "1mb" }));
 
   // POST /api/contact — append a new submission
-  app.post("/api/contact", (req, res) => {
+  app.post("/api/contact", (req: any, res: any) => {
     const result = validateContactPayload(req.body);
     if (!result.ok) {
       res.status(400).json({ ok: false, error: result.error });
