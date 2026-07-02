@@ -42,14 +42,6 @@ import ReferralCalculator from "@/components/site/ReferralCalculator";
 const REFERRAL_HERO_URL =
   "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/referral-hero-portrait-kuthHSix6w7dfBXegtTBRA.webp";
 
-const PARTNER_TYPES = [
-  "HR consulting firm",
-  "Staffing / temp agency",
-  "Investigation agency",
-  "Insurance agency",
-  "Business advisor",
-  "Other",
-];
 
 const HOW_IT_WORKS = [
   {
@@ -127,7 +119,6 @@ function fmtMoney(n: number) {
 }
 
 export default function Referral() {
-  const [partnerType, setPartnerType] = useState<string>("");
   const [submitted, setSubmitted] = useState(false);
   const [submittedName, setSubmittedName] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -172,7 +163,6 @@ export default function Referral() {
       email: values.email,
       company: values.company,
       phone: values.phone,
-      partnerType: partnerType || "Not specified",
       message: values.message,
       _subject: `New referral-partner inquiry — ${values.company}`.trim(),
       source: "referral-partner-program",
@@ -608,33 +598,6 @@ export default function Referral() {
                         autoComplete="tel"
                         className="form-field"
                       />
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-[12.5px] uppercase tracking-wider text-[color:var(--color-ink-muted)]">
-                      What kind of partner are you?
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {PARTNER_TYPES.map((p) => {
-                        const active = partnerType === p;
-                        return (
-                          <button
-                            type="button"
-                            key={p}
-                            onClick={() => setPartnerType(active ? "" : p)}
-                            aria-pressed={active}
-                            className={[
-                              "btn-press text-[13px] rounded-full border px-4 py-2 transition-colors",
-                              active
-                                ? "border-[color:var(--color-accent-ink)] bg-[color:var(--color-accent-ink)] text-white"
-                                : "border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]",
-                            ].join(" ")}
-                          >
-                            {p}
-                          </button>
-                        );
-                      })}
                     </div>
                   </div>
 

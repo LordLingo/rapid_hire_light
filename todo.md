@@ -2077,3 +2077,6 @@ The §150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide �
 - [x] Fixed mobile horizontal overflow: replaced grid-cols-12 layouts in the form section and calculator results with flex flex-col lg:flex-row (grid tracks were collapsing to 0 and letting cards size to min-content); /referral now matches the known-good Contact page at 390px (docScrollW 461, maxScrollX 0)
 - [x] Hardened .form-field with min-width:0; max-width:100% site-wide
 - [x] Tests pass (referral 8, referralPage 5), tsc clean
+
+- [x] Referral form: point at dedicated Formspree inbox mwvdwqoa (FORMSPREE_REFERRAL_*, §233 tests)
+- [x] Referral form: remove the "What kind of partner are you?" chip selector (differentiate from other site forms); dropped PARTNER_TYPES + partnerType state/payload; tsc clean, tests 59/59
