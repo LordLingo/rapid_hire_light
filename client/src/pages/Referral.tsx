@@ -641,7 +641,7 @@ export default function Referral() {
                         </>
                       ) : (
                         <>
-                          Request my partner form
+                          Referral Partner Request
                           <ArrowUpRight className="size-4" />
                         </>
                       )}
