@@ -670,14 +670,6 @@ export default function Referral() {
               </div>
             ))}
           </div>
-          <p className="mt-10 text-[12px] leading-relaxed text-[color:var(--color-ink-muted)]">
-            Summary only. Referral payments and eligibility are governed by the
-            full program terms.{" "}
-            <a href="#referral-interest" className="ink-link text-[color:var(--color-ink)]">
-              Contact Rapid Hire Solutions
-            </a>{" "}
-            to register and receive your custom referral partner form.
-          </p>
         </div>
       </section>
     </SiteShell>
