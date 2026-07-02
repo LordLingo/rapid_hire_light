@@ -27,6 +27,10 @@
            email) than the sales pipeline; tagging them at the inbox boundary
            keeps the sales team's signal-to-noise ratio intact and lets us
            route signups straight to whoever owns the newsletter.
+    §233 — added a dedicated inbox (mwvdwqoa) for the nav-hidden /referral
+           partner-program page. Referral partner sign-ups are a distinct
+           pipeline (channel/agency partners, not end customers), so they get
+           their own inbox and don't dilute the sales queue.
 */
 
 /**
@@ -70,3 +74,16 @@ export const FORMSPREE_NEWSLETTER_FORM_ID = "xdajwoqo";
  */
 export const FORMSPREE_NEWSLETTER_ENDPOINT =
   `https://formspree.io/f/${FORMSPREE_NEWSLETTER_FORM_ID}` as const;
+
+/**
+ * Dedicated referral partner program inbox.
+ * Used by the nav-hidden /referral page only. Referral partner sign-ups are
+ * a separate pipeline from customer sales, so they route to their own inbox.
+ */
+export const FORMSPREE_REFERRAL_FORM_ID = "mwvdwqoa";
+
+/**
+ * Full HTTPS endpoint for the referral partner program form on /referral.
+ */
+export const FORMSPREE_REFERRAL_ENDPOINT =
+  `https://formspree.io/f/${FORMSPREE_REFERRAL_FORM_ID}` as const;

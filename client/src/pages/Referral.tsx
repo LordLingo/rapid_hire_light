@@ -27,7 +27,7 @@ import { ArrowUpRight, Check, Loader2, ShieldCheck, Repeat, HandCoins } from "lu
 import { toast } from "sonner";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
-import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { FORMSPREE_REFERRAL_ENDPOINT } from "@/lib/formspree";
 import {
   validateFields,
   hasErrors,
@@ -179,7 +179,7 @@ export default function Referral() {
     };
     setSubmitting(true);
     try {
-      const resp = await fetch(FORMSPREE_ENDPOINT, {
+      const resp = await fetch(FORMSPREE_REFERRAL_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

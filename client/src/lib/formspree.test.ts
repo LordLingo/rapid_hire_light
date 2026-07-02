@@ -335,3 +335,75 @@ describe("§168 — dedicated newsletter Formspree inbox (xdajwoqo)", () => {
     }
   });
 });
+
+describe("§233 — dedicated referral partner Formspree inbox (mwvdwqoa)", () => {
+  const REFERRAL = read("client/src/pages/Referral.tsx");
+
+  it("FORMSPREE_REFERRAL_FORM_ID is the live referral form id 'mwvdwqoa'", async () => {
+    const { FORMSPREE_REFERRAL_FORM_ID } = await import("./formspree");
+    expect(FORMSPREE_REFERRAL_FORM_ID).toBe("mwvdwqoa");
+  });
+
+  it("FORMSPREE_REFERRAL_ENDPOINT is the full https URL for that form id", async () => {
+    const { FORMSPREE_REFERRAL_ENDPOINT } = await import("./formspree");
+    expect(FORMSPREE_REFERRAL_ENDPOINT).toBe(
+      "https://formspree.io/f/mwvdwqoa",
+    );
+  });
+
+  it("the referral endpoint is built from the referral form id — not a duplicate literal", async () => {
+    const { FORMSPREE_REFERRAL_ENDPOINT, FORMSPREE_REFERRAL_FORM_ID } =
+      await import("./formspree");
+    expect(FORMSPREE_REFERRAL_ENDPOINT).toBe(
+      `https://formspree.io/f/${FORMSPREE_REFERRAL_FORM_ID}`,
+    );
+  });
+
+  it("referral, sales, integrations, and newsletter inboxes are all distinct destinations", async () => {
+    const { FORMSPREE_REFERRAL_ENDPOINT, FORMSPREE_REFERRAL_FORM_ID } =
+      await import("./formspree");
+    expect(FORMSPREE_REFERRAL_ENDPOINT).not.toBe(FORMSPREE_ENDPOINT);
+    expect(FORMSPREE_REFERRAL_ENDPOINT).not.toBe(FORMSPREE_INTEGRATIONS_ENDPOINT);
+    expect(FORMSPREE_REFERRAL_ENDPOINT).not.toBe(FORMSPREE_NEWSLETTER_ENDPOINT);
+    expect(FORMSPREE_REFERRAL_FORM_ID).not.toBe(FORMSPREE_FORM_ID);
+    expect(FORMSPREE_REFERRAL_FORM_ID).not.toBe(FORMSPREE_INTEGRATIONS_FORM_ID);
+    expect(FORMSPREE_REFERRAL_FORM_ID).not.toBe(FORMSPREE_NEWSLETTER_FORM_ID);
+  });
+
+  it("the shared module exports both referral constants", () => {
+    expect(FORMSPREE_LIB).toMatch(
+      /export const FORMSPREE_REFERRAL_FORM_ID\s*=\s*"mwvdwqoa"/,
+    );
+    expect(FORMSPREE_LIB).toMatch(/export const FORMSPREE_REFERRAL_ENDPOINT/);
+  });
+
+  it("the referral endpoint is built from the form id constant in the shared module", () => {
+    expect(FORMSPREE_LIB).toMatch(
+      /FORMSPREE_REFERRAL_ENDPOINT[\s\S]{0,80}formspree\.io\/f\/\$\{FORMSPREE_REFERRAL_FORM_ID\}/,
+    );
+  });
+
+  it("Referral.tsx imports FORMSPREE_REFERRAL_ENDPOINT from @/lib/formspree", () => {
+    expect(REFERRAL).toMatch(
+      /import \{ FORMSPREE_REFERRAL_ENDPOINT \} from "@\/lib\/formspree"/,
+    );
+  });
+
+  it("Referral.tsx posts to FORMSPREE_REFERRAL_ENDPOINT (not the sales/integrations/newsletter endpoints)", () => {
+    expect(REFERRAL).toMatch(/fetch\(\s*FORMSPREE_REFERRAL_ENDPOINT\b/);
+    expect(REFERRAL).not.toMatch(/fetch\(\s*FORMSPREE_ENDPOINT\b/);
+    expect(REFERRAL).not.toMatch(/fetch\(\s*FORMSPREE_INTEGRATIONS_ENDPOINT\b/);
+    expect(REFERRAL).not.toMatch(/fetch\(\s*FORMSPREE_NEWSLETTER_ENDPOINT\b/);
+  });
+
+  it("non-referral forms do NOT post to the referral endpoint (ring-fence)", () => {
+    for (const [, src] of [
+      ["Contact", CONTACT],
+      ["ComplianceAudit", COMPLIANCE_AUDIT],
+      ["GetAQuote", GET_A_QUOTE],
+      ["Integrations", INTEGRATIONS],
+    ] as const) {
+      expect(src).not.toMatch(/FORMSPREE_REFERRAL_ENDPOINT/);
+    }
+  });
+});
