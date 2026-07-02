@@ -865,6 +865,11 @@
        text-[15px]) so the surrounding label rhythm is unchanged */
     margin-top: 0.5rem;
     width: 100%;
+    /* prevent inputs/textareas from forcing their track wider than the
+       container (their UA default min-width is `auto`, which ignores
+       width:100% inside flex/grid tracks and causes horizontal overflow) */
+    min-width: 0;
+    max-width: 100%;
     padding: 0.625rem 0.875rem;
     font-size: 15px;
     line-height: 1.5;

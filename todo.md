@@ -2065,3 +2065,15 @@ The ยง150 K-12 archetype CTA links a secondary "Read the K-12 compliance guide โ
 - [x] Keep step number badge + title + subtitle
 - [x] Remove the now-stale "Timeline figures shown as [PLACEHOLDER]" caption beneath the timeline
 - [x] tsc clean; LP tests 31/31; verified section renders without labels/caption; checkpoint
+
+## Referral Partner Program (nav-hidden, sales-shareable)
+- [x] Extract exact numbers/examples from RHSBackgroundChecksReferralPartnerProgram.pdf (saved to marketing/referral-program-source-notes.md)
+- [x] referral.ts math lib (tier lookup + payout calc) with referral.test.ts covering the PDF examples
+- [x] /referral page: hero, revenue-share tiers, worked examples, how-it-works, live earnings calculator, lead-capture form (name/email/company/phone/partner-type/message)
+- [x] ReferralCalculator.tsx modeled on PricingCalculator
+- [x] Custom editorial hero illustration in site palette (uploaded to CDN)
+- [x] Route /referral registered in App.tsx and intentionally NOT added to Header/Footer nav or sitemap (private, share-by-link)
+- [x] referralPage.test.ts asserts route wiring + nav exclusion
+- [x] Fixed mobile horizontal overflow: replaced grid-cols-12 layouts in the form section and calculator results with flex flex-col lg:flex-row (grid tracks were collapsing to 0 and letting cards size to min-content); /referral now matches the known-good Contact page at 390px (docScrollW 461, maxScrollX 0)
+- [x] Hardened .form-field with min-width:0; max-width:100% site-wide
+- [x] Tests pass (referral 8, referralPage 5), tsc clean

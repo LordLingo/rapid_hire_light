@@ -46,6 +46,7 @@ import ResourcesCaseStudies from "./pages/ResourcesCaseStudies";
 import Spa from "./pages/Spa";
 import Shrm from "./pages/Shrm";
 import StaffingLanding from "./pages/StaffingLanding";
+import Referral from "./pages/Referral";
 
 
 function Router() {
@@ -83,6 +84,9 @@ function Router() {
       <Route path={"/trust"} component={Trust} />
       <Route path={"/spa"} component={Spa} />
       <Route path={"/lp/staffing"} component={StaffingLanding} />
+      {/* §221 — Referral Partner Program. Intentionally NOT linked from Header/Footer nav;
+          reached only by direct URL so a sales rep can share it privately. */}
+      <Route path={"/referral"} component={Referral} />
       <Route path={"/shrm"} component={Shrm} />
       <Route path={"/shrm-2026"} component={Shrm} />
       <Route path={"/booth"} component={Shrm} />
