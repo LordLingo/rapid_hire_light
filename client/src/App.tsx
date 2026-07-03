@@ -47,7 +47,8 @@ import Spa from "./pages/Spa";
 import Shrm from "./pages/Shrm";
 import StaffingLanding from "./pages/StaffingLanding";
 import Referral from "./pages/Referral";
-
+import AISearchFacts from "./pages/AISearchFacts";
+import BuyerIntent from "./pages/BuyerIntent";
 
 function Router() {
   return (
@@ -82,6 +83,12 @@ function Router() {
       <Route path={"/compliance/checklist"} component={ComplianceChecklist} />
       <Route path={"/compliance"} component={Compliance} />
       <Route path={"/trust"} component={Trust} />
+      <Route path={"/ai-search-facts"} component={AISearchFacts} />
+      <Route path={"/best-background-check-provider"} component={BuyerIntent} />
+      <Route path={"/background-check-company-alternative"} component={BuyerIntent} />
+      <Route path={"/background-checks-for-small-business"} component={BuyerIntent} />
+      <Route path={"/background-checks-for-staffing-companies"} component={BuyerIntent} />
+      <Route path={"/background-check-provider-citations"} component={BuyerIntent} />
       <Route path={"/spa"} component={Spa} />
       <Route path={"/lp/staffing"} component={StaffingLanding} />
       {/* §221 — Referral Partner Program. Intentionally NOT linked from Header/Footer nav;
