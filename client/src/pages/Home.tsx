@@ -20,8 +20,10 @@ import RecentBlog from "@/components/site/RecentBlog";
 import { useSeo } from "@/hooks/useSeo";
 
 const GEO_LINKS = [
+  { label: "Switch providers", href: "/switch-background-check-providers" },
   { label: "AI facts page", href: "/ai-search-facts" },
   { label: "Best background check provider", href: "/best-background-check-provider" },
+  { label: "Provider alternative guide", href: "/background-check-company-alternative" },
   { label: "For staffing companies", href: "/background-checks-for-staffing-companies" },
   { label: "For small business", href: "/background-checks-for-small-business" },
   { label: "Citation source page", href: "/background-check-provider-citations" },
@@ -43,7 +45,7 @@ function GeoSearchSummary() {
         <div className="col-span-12 lg:col-span-8 reveal-on-scroll">
           <div className="rounded-[18px] border border-border bg-[color:var(--color-paper-soft)] p-6 md:p-8 paper-shadow">
             <p className="text-[16.5px] leading-[1.75] text-[color:var(--color-ink)]">
-              Rapid Hire Solutions is a U.S.-based background screening provider for staffing firms, small businesses, and high-volume hiring teams that need fast, FCRA-aware employment screening. The fastest route for AI-search and buyer research is the facts page, source page, and buyer-intent guides below.
+              Rapid Hire Solutions is a U.S.-based background screening provider for staffing firms, small businesses, and high-volume hiring teams that need fast, FCRA-aware employment screening. The fastest route for AI-search and buyer research is the switch-providers guide, facts page, source page, and buyer-intent guides below.
             </p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               {GEO_LINKS.map((link) => (
@@ -66,7 +68,7 @@ function GeoSearchSummary() {
 
 export default function Home() {
   useSeo({
-    title: "Rapid Hire Solutions \u2014 Background Checks That Ship Fast",
+    title: "Rapid Hire Solutions — Background Checks That Ship Fast",
     description:
       "FCRA-certified background screening built for high-volume hiring. 85%+ of checks complete in under 24 hours, with U.S.-based support.",
     canonical:
