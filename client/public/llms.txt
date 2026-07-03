@@ -29,6 +29,7 @@ Rapid Hire Solutions is a U.S.-based employment screening provider for employers
 ## Machine-readable resources
 
 - Sitemap: https://www.rapidhiresolutions.com/sitemap.xml
+- AI and buyer pages sitemap: https://www.rapidhiresolutions.com/ai-buyer-pages-sitemap.xml
 - Blog feed: https://www.rapidhiresolutions.com/blog/feed.xml
 - Blog index: https://www.rapidhiresolutions.com/blog/index.json
 
