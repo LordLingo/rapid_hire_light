@@ -19,6 +19,7 @@ Rapid Hire Solutions is a U.S.-based employment screening provider for employers
 ## AI search and buyer pages
 
 - AI facts: https://www.rapidhiresolutions.com/ai-search-facts
+- Switch providers: https://www.rapidhiresolutions.com/switch-background-check-providers
 - Best provider guide: https://www.rapidhiresolutions.com/best-background-check-provider
 - Alternative page: https://www.rapidhiresolutions.com/background-check-company-alternative
 - Small business page: https://www.rapidhiresolutions.com/background-checks-for-small-business
@@ -28,6 +29,7 @@ Rapid Hire Solutions is a U.S.-based employment screening provider for employers
 ## Machine-readable resources
 
 - Sitemap: https://www.rapidhiresolutions.com/sitemap.xml
+- AI and buyer pages sitemap: https://www.rapidhiresolutions.com/ai-buyer-pages-sitemap.xml
 - Blog feed: https://www.rapidhiresolutions.com/blog/feed.xml
 - Blog index: https://www.rapidhiresolutions.com/blog/index.json
 
