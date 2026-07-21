@@ -59,7 +59,7 @@ export default function ReferralCalculator() {
               </span>
             </h2>
             <p className="mt-5 max-w-2xl text-[15px] leading-[1.8] text-[color:var(--color-ink-soft)]">
-              Enter a referred client's eligible monthly Rapid Hire billing. The
+              Enter a referred client's eligible monthly Rapid Hire Net Revenue. The
               estimate updates live using the program's revenue-share tiers.
             </p>
           </div>
@@ -72,10 +72,10 @@ export default function ReferralCalculator() {
               <div className="flex items-end justify-between gap-6">
                 <div>
                   <label htmlFor="ref-calc-billing" className="eyebrow">
-                    Client's monthly RHS billing
+                    Client's monthly RHS Net Revenue
                   </label>
                   <p className="mt-1 text-[13px] text-[color:var(--color-ink-soft)]">
-                    Eligible background-check billing per month.
+                    Eligible background-check Net Revenue per month.
                   </p>
                 </div>
                 <div className="text-right">
@@ -93,7 +93,7 @@ export default function ReferralCalculator() {
                   onClick={() =>
                     setBilling((b) => clampBilling(b - 500))
                   }
-                  aria-label="Decrease monthly billing by $500"
+                  aria-label="Decrease monthly Net Revenue by $500"
                   className="btn-press grid place-items-center size-12 shrink-0 rounded-[12px] border border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]"
                 >
                   <span aria-hidden="true" className="text-[20px] leading-none">−</span>
@@ -125,7 +125,7 @@ export default function ReferralCalculator() {
                   onClick={() =>
                     setBilling((b) => clampBilling(b + 500))
                   }
-                  aria-label="Increase monthly billing by $500"
+                  aria-label="Increase monthly Net Revenue by $500"
                   className="btn-press grid place-items-center size-12 shrink-0 rounded-[12px] border border-border bg-white text-[color:var(--color-ink)] hover:border-[color:var(--color-accent-ink)] hover:text-[color:var(--color-accent-ink)]"
                 >
                   <span aria-hidden="true" className="text-[20px] leading-none">+</span>
@@ -158,13 +158,13 @@ export default function ReferralCalculator() {
               <div className="mt-4 flex items-center justify-between gap-3">
                 <p className="text-[11.5px] text-[color:var(--color-ink-muted)]">
                   Your share rate steps up at $1K, $5K, $20K, and $50K of
-                  monthly billing.
+                  monthly Net Revenue.
                 </p>
                 <button
                   type="button"
                   onClick={() => setBilling(DEFAULT_BILLING)}
                   className="btn-press inline-flex items-center gap-1.5 rounded-full border border-transparent px-2.5 py-1 text-[11.5px] text-[color:var(--color-ink-soft)] hover:border-border hover:text-[color:var(--color-accent-ink)]"
-                  aria-label="Reset billing to default"
+                  aria-label="Reset Net Revenue to default"
                 >
                   <RotateCcw className="size-3.5" aria-hidden="true" />
                   Reset
@@ -216,7 +216,7 @@ export default function ReferralCalculator() {
                     Let's talk numbers.
                   </p>
                   <p className="mt-2 text-[13.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                    Clients billing over {fmtMoney(50000)} a month fall into our
+                    Clients with Net Revenue over {fmtMoney(50000)} a month fall into our
                     negotiable band — the share is set individually and can go
                     beyond the published tiers. Reach out and we'll size it with
                     you.
@@ -234,7 +234,7 @@ export default function ReferralCalculator() {
 
               <p className="mt-5 text-[11.5px] leading-relaxed text-[color:var(--color-ink-muted)]">
                 Illustrative estimate only. Referral percentages apply to
-                eligible monthly billing and exclude pass-through expenses.
+                eligible monthly Net Revenue and exclude pass-through expenses.
                 Actual payouts are governed by the full program terms and your
                 signed referral agreement.
               </p>
