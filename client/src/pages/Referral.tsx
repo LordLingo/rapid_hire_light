@@ -65,7 +65,7 @@ const SUPPORT_CARDS = [
   {
     icon: Repeat,
     title: "No account babysitting",
-    body: "Rapid Hire handles day-to-day client questions, support, billing workflow, and account service. No further intervention is required from you after the introduction.",
+    body: "Rapid Hire handles day-to-day client questions, support, Net Revenue tracking, and account service. No further intervention is required from you after the introduction.",
   },
   {
     icon: ShieldCheck,
@@ -81,7 +81,7 @@ const SUPPORT_CARDS = [
 
 const PROGRAM_TERMS = [
   {
-    label: "Eligible billing",
+    label: "Eligible Net Revenue",
     body: "Referral percentages exclude Rapid Hire pass-through expenses, including county courthouse fees, third-party verification fees, state fees, communications, and related costs.",
   },
   {
@@ -235,7 +235,7 @@ export default function Referral() {
             </span>
           </>
         }
-        lede="Introduce a client to Rapid Hire Solutions and earn a percentage of their eligible monthly background-check billing — every month they stay with us. We contract with the client, service the account, and pay you after they pay us."
+        lede="Introduce a client to Rapid Hire Solutions and earn a percentage of their eligible monthly Net Revenue — every month they stay with us. We contract with the client, service the account, and pay you after they pay us."
         afterLede={
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <a
@@ -290,13 +290,13 @@ export default function Referral() {
             </div>
             <div className="col-span-12 lg:col-span-8">
               <h2 className="font-display text-[30px] sm:text-[38px] leading-[1.1] tracking-[-0.02em] text-[color:var(--color-ink)]">
-                The more they bill,{" "}
+                The more Net Revenue they generate,{" "}
                 <span className="italic font-light text-[color:var(--color-accent-ink)]">
                   the higher your share.
                 </span>
               </h2>
               <p className="mt-5 max-w-2xl text-[15px] leading-[1.8] text-[color:var(--color-ink-soft)]">
-                Your payment is based on the eligible monthly Rapid Hire billing
+                Your payment is based on the eligible monthly Rapid Hire Net Revenue
                 for each referred client. Paid net 15 calendar days after Rapid
                 Hire receives payment from the client.
               </p>
@@ -311,7 +311,7 @@ export default function Referral() {
                   <thead>
                     <tr className="bg-[color:var(--color-accent-ink)] text-white">
                       <th className="px-5 py-4 text-[12.5px] font-medium uppercase tracking-[0.14em]">
-                        Monthly RHS billing
+                        Monthly RHS Net Revenue
                       </th>
                       <th className="px-5 py-4 text-[12.5px] font-medium uppercase tracking-[0.14em] text-right">
                         Partner share
@@ -359,7 +359,7 @@ export default function Referral() {
                       {ex.name}
                     </p>
                     <p className="mt-3 text-[13px] text-[color:var(--color-ink-soft)]">
-                      {fmtMoney(ex.billing)} billing
+                      {fmtMoney(ex.billing)} Net Revenue
                     </p>
                     <p className="text-[13px] text-[color:var(--color-ink-soft)]">
                       {ex.shareLabel}
