@@ -46,6 +46,13 @@ import ResourcesCaseStudies from "./pages/ResourcesCaseStudies";
 import Spa from "./pages/Spa";
 import Shrm from "./pages/Shrm";
 import StaffingLanding from "./pages/StaffingLanding";
+import {
+  EmployerCriminalBackgroundChecksLanding,
+  HealthcareEmployeeScreeningLanding,
+  PreEmploymentScreeningLanding,
+  StaffingBackgroundChecksLanding,
+} from "./pages/EmployerScreeningLanding";
+import HireQuestPartner from "./pages/HireQuestPartner";
 import Referral from "./pages/Referral";
 import AISearchFacts from "./pages/AISearchFacts";
 import BuyerIntent from "./pages/BuyerIntent";
@@ -93,6 +100,24 @@ function Router() {
       <Route path={"/switch-background-check-providers"} component={SwitchProviders} />
       <Route path={"/spa"} component={Spa} />
       <Route path={"/lp/staffing"} component={StaffingLanding} />
+      <Route
+        path={"/lp/staffing-background-checks"}
+        component={StaffingBackgroundChecksLanding}
+      />
+      <Route
+        path={"/lp/healthcare-employee-screening"}
+        component={HealthcareEmployeeScreeningLanding}
+      />
+      <Route
+        path={"/lp/employer-criminal-background-checks"}
+        component={EmployerCriminalBackgroundChecksLanding}
+      />
+      <Route
+        path={"/lp/pre-employment-screening"}
+        component={PreEmploymentScreeningLanding}
+      />
+      <Route path={"/hirequest-partner"} component={HireQuestPartner} />
+      <Route path={"/hirequest-partner/"} component={HireQuestPartner} />
       {/* §221 — Referral Partner Program. Intentionally NOT linked from Header/Footer nav;
           reached only by direct URL so a sales rep can share it privately. */}
       <Route path={"/referral"} component={Referral} />
