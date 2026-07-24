@@ -1,0 +1,140 @@
+.lp-page [data-lp-reveal] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lp-motion-ready .lp-hero-item {
+    animation: lp-hero-rise 520ms ease-out both;
+    animation-delay: var(--lp-hero-delay, 0ms);
+  }
+
+  .lp-motion-ready .lp-hero-visual {
+    animation-name: lp-hero-visual-in;
+  }
+
+  .lp-motion-ready .lp-hero-form {
+    animation-name: lp-hero-form-in;
+  }
+
+  .lp-hero-delay-1 {
+    --lp-hero-delay: 0ms;
+  }
+
+  .lp-hero-delay-2 {
+    --lp-hero-delay: 60ms;
+  }
+
+  .lp-hero-delay-3 {
+    --lp-hero-delay: 120ms;
+  }
+
+  .lp-hero-delay-4 {
+    --lp-hero-delay: 180ms;
+  }
+
+  .lp-hero-delay-5 {
+    --lp-hero-delay: 240ms;
+  }
+
+  .lp-hero-delay-6 {
+    --lp-hero-delay: 300ms;
+  }
+
+  .lp-hero-delay-7 {
+    --lp-hero-delay: 360ms;
+  }
+
+  .lp-motion-ready [data-lp-reveal] {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition:
+      opacity 520ms ease-out,
+      transform 520ms ease-out;
+    will-change: opacity, transform;
+  }
+
+  .lp-motion-ready [data-lp-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .lp-cta .lp-cta-arrow {
+    transition: transform 160ms ease-out;
+  }
+
+  .lp-cta:hover .lp-cta-arrow {
+    transform: translateX(4px);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .lp-hero-visual {
+    transition:
+      transform 180ms ease-out,
+      box-shadow 180ms ease-out;
+  }
+
+  .lp-hero-visual:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 54px -38px rgba(15, 23, 42, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-page *,
+  .lp-page *::before,
+  .lp-page *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .lp-page .lp-hero-item,
+  .lp-page [data-lp-reveal] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .lp-page .lp-cta-arrow,
+  .lp-page .lp-hero-visual {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@keyframes lp-hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lp-hero-visual-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lp-hero-form-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -30,6 +30,13 @@ const PROJECT_ROOT = path.resolve(__dirname, "..");
 const DIST = path.resolve(PROJECT_ROOT, "dist", "public");
 const META_FILE = path.resolve(PROJECT_ROOT, "shared", "blog-meta.json");
 const OG_FILE = path.resolve(PROJECT_ROOT, "shared", "blog-og.json");
+const LANDING_PAGE_CONFIG_SOURCE = path.resolve(
+  PROJECT_ROOT,
+  "client",
+  "src",
+  "content",
+  "employerScreeningLandingPages.ts",
+);
 const SHELL = path.join(DIST, "index.html");
 
 const TOP_POSTS = 20;
@@ -40,6 +47,67 @@ const TAG_OG = (tag) => `${SITE_BASE}/api/og/blog/tag/${tag}.svg`;
 // Default OG for year hubs falls back to the brand card.
 const SITE_OG = `${SITE_BASE}/og.svg`;
 const SHOULD_MINIFY = process.env.PRERENDER_MINIFY !== "0";
+
+const LANDING_PAGES = [
+  {
+    clientConst: "staffing",
+    route: "/lp/staffing-background-checks",
+    slug: "staffing-background-checks",
+    title: "Background Checks for Staffing & Recruiting Firms",
+    description:
+      "Employer background screening for staffing and recruiting firms, with mobile candidate intake, role-based packages, workflow options, and U.S.-based support.",
+    canonical:
+      "https://www.rapidhiresolutions.com/lp/staffing-background-checks",
+    ogImage: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+  },
+  {
+    clientConst: "healthcare",
+    route: "/lp/healthcare-employee-screening",
+    slug: "healthcare-employee-screening",
+    title: "Healthcare Employee Background Screening",
+    description:
+      "Role-specific employee screening for hospitals, clinics, home health, and care teams, including exclusions, license checks, verifications, and drug testing.",
+    canonical:
+      "https://www.rapidhiresolutions.com/lp/healthcare-employee-screening",
+    ogImage: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+  },
+  {
+    clientConst: "criminal",
+    route: "/lp/employer-criminal-background-checks",
+    slug: "employer-criminal-background-checks",
+    title: "Criminal Background Checks for Employers",
+    description:
+      "Employer criminal background checks with national database, federal, state, county, and sex-offender registry options plus candidate-focused workflows.",
+    canonical:
+      "https://www.rapidhiresolutions.com/lp/employer-criminal-background-checks",
+    ogImage: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+  },
+  {
+    clientConst: "preEmployment",
+    route: "/lp/pre-employment-screening",
+    slug: "pre-employment-screening",
+    title: "Pre-Employment Screening & Employment Verification",
+    description:
+      "Pre-employment screening and employment verification for employers, with mobile candidate intake, role-based services, and verified integration options.",
+    canonical: "https://www.rapidhiresolutions.com/lp/pre-employment-screening",
+    ogImage: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+  },
+];
+
+const PARTNER_PAGES = [
+  {
+    route: "/hirequest-partner/",
+    slug: "hirequest-partner",
+    marker: "prerendered:hirequest-partner",
+    title: "HireQuest Background Checks | Rapid Hire Solutions",
+    description:
+      "HireQuest franchise offices can access Rapid Hire Solutions background screening, group-rate packages, and dedicated account onboarding.",
+    canonical:
+      "https://www.rapidhiresolutions.com/hirequest-partner/",
+    ogImage:
+      "https://www.rapidhiresolutions.com/static/partners/hirequest/hirequest-logo.webp",
+  },
+];
 
 function htmlEscape(s) {
   return String(s)
@@ -145,6 +213,32 @@ function buildPostHtml(post, shell) {
   });
 }
 
+function buildLandingPageHtml(page, shell) {
+  const jsonld = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: page.title,
+    url: page.canonical,
+    description: page.description,
+    publisher: {
+      "@type": "Organization",
+      name: "Rapid Hire Solutions",
+    },
+  };
+  return injectHead(shell, {
+    marker: page.marker ?? `prerendered:lp/${page.slug}`,
+    title: page.title,
+    description: page.description,
+    canonical: page.canonical,
+    ogType: "website",
+    ogImage: page.ogImage,
+    ogDescription: page.description,
+    twitterDescription: page.description,
+    jsonld,
+    dedupeRouteMetadata: true,
+  });
+}
+
 function buildTagHtml(tagEntry, shell) {
   const url = `${SITE_BASE}/blog/tag/${tagEntry.tag}`;
   const og = TAG_OG(tagEntry.tag);
@@ -192,6 +286,45 @@ function buildYearHtml(year, shell) {
   });
 }
 
+function stripRouteMetadata(html) {
+  let out = html.replace(
+    /^[ \t]*<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>\s*\n?/gim,
+    "",
+  );
+  const propertyMeta = [
+    "og:type",
+    "og:title",
+    "og:description",
+    "og:url",
+    "og:image",
+  ];
+  const namedMeta = [
+    "twitter:card",
+    "twitter:title",
+    "twitter:description",
+    "twitter:image",
+  ];
+  for (const property of propertyMeta) {
+    out = out.replace(
+      new RegExp(
+        `^[ \\t]*<meta\\b(?=[^>]*\\bproperty=["']${property}["'])[^>]*>\\s*\\n?`,
+        "gim",
+      ),
+      "",
+    );
+  }
+  for (const name of namedMeta) {
+    out = out.replace(
+      new RegExp(
+        `^[ \\t]*<meta\\b(?=[^>]*\\bname=["']${name}["'])[^>]*>\\s*\\n?`,
+        "gim",
+      ),
+      "",
+    );
+  }
+  return out;
+}
+
 function injectHead(shell, opts) {
   // 1) Replace <title>.
   let html = shell.replace(/<title>[\s\S]*?<\/title>/i, `<title>${htmlEscape(opts.title)}</title>`);
@@ -200,6 +333,8 @@ function injectHead(shell, opts) {
     /<meta\s+name="description"\s+content="[^"]*"\s*\/?>/i,
     `<meta name="description" content="${htmlEscape(opts.description)}" />`,
   );
+  if (opts.dedupeRouteMetadata) html = stripRouteMetadata(html);
+
   // 3) Inject canonical + OG meta + JSON-LD just before </head> (idempotent block).
   const inject =
     `\n    <!-- ${opts.marker} -->\n` +
@@ -207,10 +342,12 @@ function injectHead(shell, opts) {
     `    <meta property="og:type" content="${htmlEscape(opts.ogType)}" />\n` +
     `    <meta property="og:title" content="${htmlEscape(opts.title)}" />\n` +
     `    <meta property="og:url" content="${htmlEscape(opts.canonical)}" />\n` +
+    (opts.ogDescription ? `    <meta property="og:description" content="${htmlEscape(opts.ogDescription)}" />\n` : "") +
     `    <meta property="og:image" content="${htmlEscape(opts.ogImage)}" />\n` +
     `    <meta name="twitter:card" content="summary_large_image" />\n` +
     `    <meta name="twitter:title" content="${htmlEscape(opts.title)}" />\n` +
     `    <meta name="twitter:image" content="${htmlEscape(opts.ogImage)}" />\n` +
+    (opts.twitterDescription ? `    <meta name="twitter:description" content="${htmlEscape(opts.twitterDescription)}" />\n` : "") +
     `    <script type="application/ld+json">${JSON.stringify(opts.jsonld)}</script>\n  `;
   html = html.replace(/<\/head>/i, `${inject}</head>`);
   // 4) Replace whatever's inside <div id="root">...</div> with a route-aware
@@ -331,6 +468,46 @@ function minifyHtml(html) {
   return out;
 }
 
+function assertLandingMetadataMatchesClientConfig() {
+  if (!fs.existsSync(LANDING_PAGE_CONFIG_SOURCE)) {
+    throw new Error(
+      `prerender: missing landing page config (${LANDING_PAGE_CONFIG_SOURCE})`,
+    );
+  }
+  const source = fs.readFileSync(LANDING_PAGE_CONFIG_SOURCE, "utf-8");
+  for (const page of LANDING_PAGES) {
+    const marker = `const ${page.clientConst}: EmployerScreeningLandingPageConfig = {`;
+    const start = source.indexOf(marker);
+    const end = start >= 0 ? source.indexOf("\n};", start) : -1;
+    if (start === -1 || end === -1) {
+      throw new Error(
+        `prerender: missing landing page config block for ${page.clientConst}`,
+      );
+    }
+    const block = source.slice(start, end);
+    for (const [label, value] of [
+      ["route", page.route],
+      ["title", page.title],
+      ["description", page.description],
+      ["canonical", page.canonical],
+    ]) {
+      if (!block.includes(JSON.stringify(value))) {
+        throw new Error(
+          `prerender: ${page.route} ${label} does not match client config`,
+        );
+      }
+    }
+    if (
+      !source.includes(JSON.stringify(page.ogImage)) ||
+      !block.includes("image: SOCIAL_IMAGE")
+    ) {
+      throw new Error(
+        `prerender: ${page.route} image does not match client config`,
+      );
+    }
+  }
+}
+
 function main() {
   if (!fs.existsSync(SHELL)) {
     console.warn(`[prerender] no shell at ${SHELL}; skipping (likely a dev build)`);
@@ -338,6 +515,7 @@ function main() {
   }
   const shell = fs.readFileSync(SHELL, "utf-8");
   const { posts, tags, years } = loadInputs();
+  assertLandingMetadataMatchesClientConfig();
 
   const writtenPosts = [];
   for (const post of posts) {
@@ -366,6 +544,24 @@ function main() {
     writtenYears.push({ year, file: path.relative(DIST, out) });
   }
 
+  const writtenLandingPages = [];
+  for (const page of LANDING_PAGES) {
+    const dir = path.join(DIST, "lp", page.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    const out = path.join(dir, "index.html");
+    fs.writeFileSync(out, minifyHtml(buildLandingPageHtml(page, shell)), "utf-8");
+    writtenLandingPages.push({ route: page.route, file: path.relative(DIST, out), title: page.title });
+  }
+
+  const writtenPartnerPages = [];
+  for (const page of PARTNER_PAGES) {
+    const dir = path.join(DIST, page.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    const out = path.join(dir, "index.html");
+    fs.writeFileSync(out, minifyHtml(buildLandingPageHtml(page, shell)), "utf-8");
+    writtenPartnerPages.push({ route: page.route, file: path.relative(DIST, out), title: page.title });
+  }
+
   const manifest = {
     generatedAt: new Date().toISOString(),
     siteBaseUrl: SITE_BASE,
@@ -374,6 +570,8 @@ function main() {
     posts: writtenPosts,
     tags: writtenTags,
     years: writtenYears,
+    landingPages: writtenLandingPages,
+    partnerPages: writtenPartnerPages,
   };
   fs.writeFileSync(
     path.join(DIST, "_prerender-manifest.json"),
@@ -382,6 +580,12 @@ function main() {
   );
   console.log(
     `[prerender] wrote ${writtenPosts.length} post stubs, ${writtenTags.length} tag stubs, ${writtenYears.length} year stubs (minified=${SHOULD_MINIFY})`,
+  );
+  console.log(
+    `[prerender] wrote ${writtenLandingPages.length} landing page stubs`,
+  );
+  console.log(
+    `[prerender] wrote ${writtenPartnerPages.length} partner page stubs`,
   );
 }
 
