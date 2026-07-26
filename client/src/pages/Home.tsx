@@ -113,6 +113,13 @@ export default function Home() {
   return (
     <SiteShell>
       <Hero />
+      <section aria-label="Temporary deployment test" className="border-y border-border bg-white">
+        <div className="container py-4 text-center">
+          <p className="text-sm font-semibold text-[color:var(--color-accent-ink)]">
+            Temporary deployment test: GitHub publishing is working.
+          </p>
+        </div>
+      </section>
       <LogoStrip />
       <SampleReportSection />
       <StopGambling />
