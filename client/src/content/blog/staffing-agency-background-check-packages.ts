@@ -79,5 +79,5 @@ The cheapest line item is not always the lowest-cost program. Recruiter follow-u
 
 Start with four or five packages, not dozens. Name them by role family, document when add-ons are allowed, and assign client-specific exceptions. Then connect those packages to recruiter permissions and measure completion time, exception rate, candidate drop-off, and cost per cleared placement.
 
-Rapid Hire Solutions helps staffing firms design role-based packages, connect screening to recruiter workflows, and support candidates from invitation through completion. Explore our [staffing background check services](/industries/staffing), review [transparent pricing](/pricing), or [book a conversation with our U.S.-based team](/contact) to compare your current process.`,
+Rapid Hire Solutions helps staffing firms design role-based packages around Speed, Price & Accuracy, connect screening to recruiter workflows, and support candidates from invitation through completion. Explore our [staffing background check services](/industries/staffing), review [transparent pricing](/pricing), or [book a conversation with our U.S.-based team](/contact) to compare your current process.`,
 };
