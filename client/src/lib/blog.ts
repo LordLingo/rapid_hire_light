@@ -220,6 +220,8 @@ import { post as postGaCompliance } from "@/content/blog/georgia-employer-backgr
 // §220 — Texas employer background-check compliance (Tex. Gov't Code ch. 411 DPS/CCH + FACT program + §411.135 public records + Tex. Bus. & Com. Code ch. 20 §20.05 seven-year cap under $75k + orders of nondisclosure subch. E-1/§552.142 + Austin Fair Chance Ordinance ch. 4-15 + Tex. Civ. Prac. & Rem. Code §142.002 negligent-hiring protection + Tex. Lab. Code §21.051)
 import { post as postTxCompliance } from "@/content/blog/texas-employer-background-check-compliance-guide";
 import { post as postWhatIncludes } from "@/content/blog/what-does-a-pre-employment-background-check-include";
+// Weekly SEO resource series — commercial-intent staffing guide
+import { post as postStaffingPackages } from "@/content/blog/staffing-agency-background-check-packages";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -359,7 +361,8 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postMnCoraCannabis,
   postGaCompliance,
   postTxCompliance,
-    postWhatIncludes,
+  postWhatIncludes,
+  postStaffingPackages,
 ]);
 
 /**

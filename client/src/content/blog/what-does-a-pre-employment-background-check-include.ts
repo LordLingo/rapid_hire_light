@@ -29,7 +29,7 @@ export const post: BlogPost = {
     "What does a pre-employment background check actually include?",
   metaTitle: "What's in a Pre-Employment Background Check?",
   metaDescription:
-    "There is no single universal background check. It's a stack of searches — identity, criminal, verifications, and role-based add-ons — assembled to the job. Here's what each one covers.",
+    "There is no universal background check. It is a stack of identity, criminal, verification, and role-based searches assembled to fit the job. See what each covers.",
   excerpt:
     "Most people picture a background check as one search. It isn't. It's a stack of components — identity trace, criminal records, verifications, and role-specific add-ons — assembled to fit the job. Here's exactly what each piece checks, and how to know which ones you actually need.",
   publishedAt: "2026-06-08",
