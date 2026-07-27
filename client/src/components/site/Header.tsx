@@ -158,6 +158,7 @@ export function isActiveGroup(
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -165,6 +166,18 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  useEffect(() => {
+    if (!open) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <header
@@ -187,12 +200,9 @@ export default function Header() {
            is unconditional. */}
       <ConferenceStrip />
 
-      {/* Trust strip — §83 upgrade. The competitor audit found that
-           Sterling/HireRight surface 4–6 attestations in their persistent
-           top bar; we previously surfaced two. Adding FCRA-certified +
-           PBSA-accredited and turning the band into a single Link to
-           /trust closes the gap without breaking the editorial-calm
-           cadence (still small-caps eyebrow, same hairline divider). */}
+      {/* Trust strip. Use only the precise attestation language documented
+           on /trust. The strip links to the supporting scope, cadence, and
+           verification details and remains a concise three-item band. */}
       <div className="container">
         <div className="flex items-center justify-between gap-6 py-2.5 text-[11px]">
           <Link
@@ -202,7 +212,7 @@ export default function Header() {
           >
             <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
               <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
-              FCRA Certified
+              FCRA-aligned
             </span>
             <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
               <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
@@ -210,11 +220,7 @@ export default function Header() {
             </span>
             <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
               <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
-              HIPAA Compliant
-            </span>
-            <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
-              <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
-              PBSA Accredited
+              PBSA Member
             </span>
           </Link>
           <div className="ml-auto eyebrow text-[color:var(--color-ink-muted)]">
@@ -244,7 +250,7 @@ export default function Header() {
             <Logo />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-7">
+          <nav className="hidden min-[1360px]:flex items-center gap-4">
             {NAV.map((item) => {
               if (item.kind === "route") {
                 return (
@@ -274,7 +280,7 @@ export default function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-3">
             {/*
               §60: outlined "Sign in" pill, sibling of Get a Quote.
               §106: now a real anchor pointing at the existing client portal
@@ -324,7 +330,7 @@ export default function Header() {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[color:var(--color-accent-ink)] focus-visible:ring-offset-[color:var(--color-paper)]",
               ].join(" ")}
             >
-              Get a Quote
+              Get a Custom Quote
               <span
                 aria-hidden
                 className="transition-transform duration-200 ease-out group-hover/cta:translate-x-0.5"
@@ -333,9 +339,13 @@ export default function Header() {
               </span>
             </Link>
             <button
-              className="lg:hidden grid place-items-center size-10 rounded-full border border-border"
+              ref={menuButtonRef}
+              type="button"
+              className="grid size-10 place-items-center rounded-full border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent-ink)] focus-visible:ring-offset-2 min-[1360px]:hidden"
               onClick={() => setOpen((v) => !v)}
-              aria-label="Open navigation"
+              aria-expanded={open}
+              aria-controls="header-compact-navigation"
+              aria-label={open ? "Close navigation" : "Open navigation"}
             >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
@@ -355,8 +365,9 @@ export default function Header() {
           keeps the bottom CTAs reachable above any iOS safe area.
         */
         <div
+          id="header-compact-navigation"
           data-testid="header-mobile-sheet"
-          className="lg:hidden border-t border-border bg-[color:var(--color-paper)] max-h-[calc(100vh-64px)] overflow-y-auto overscroll-contain [scrollbar-gutter:stable]"
+          className="border-t border-border bg-[color:var(--color-paper)] max-h-[calc(100vh-64px)] overflow-y-auto overscroll-contain [scrollbar-gutter:stable] min-[1360px]:hidden"
         >
           <div className="container py-5 pb-8 grid gap-3">
             {/* Brand mark stays visible inside the open sheet so users
@@ -428,7 +439,7 @@ export default function Header() {
               onClick={() => setOpen(false)}
               className="mt-2 btn-press inline-flex items-center justify-center rounded-full bg-[color:var(--color-accent-ink)] px-5 py-3 text-[14px] font-medium text-white"
             >
-              Get a Quote
+              Get a Custom Quote
             </Link>
             {/* §60/§106: mobile counterpart — same client-portal target,
                 closes the mobile drawer on click for a clean handoff. */}
@@ -857,7 +868,7 @@ function Logo() {
       decoding="async"
       fetchPriority="high"
       draggable={false}
-      className="block h-16 sm:h-20 lg:h-28 w-auto select-none"
+      className="block h-16 w-auto select-none sm:h-20"
     />
   );
 }

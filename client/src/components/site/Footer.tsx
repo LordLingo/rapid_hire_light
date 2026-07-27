@@ -83,6 +83,8 @@ export default function Footer() {
   // logic stays in one place — a deep /blog/some-post path will
   // light up Blog in both header AND footer.
   const [location] = useLocation();
+  const usesHomepageTurnaroundClaim =
+    location === "/" || location === "/get-a-quote" || location === "/get-a-quote/";
   return (
     <footer
       className="relative bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)]"
@@ -187,7 +189,9 @@ export default function Footer() {
             </span>
           </p>
           <p className="eyebrow text-[color:var(--color-footer-muted)]">
-            Avg. 6.5 hr turnaround · 99.4% on-time SLA
+            {usesHomepageTurnaroundClaim
+              ? "85% of standard checks completed within 24 hours"
+              : "Avg. 6.5 hr turnaround · 99.4% on-time SLA"}
           </p>
         </div>
       </div>

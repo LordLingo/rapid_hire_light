@@ -269,15 +269,17 @@ describe("Sample report image reuse across pages (§55)", () => {
     expect(sampleSectionSrc).not.toMatch(/from\s+"\.\/SampleReportCard"/);
   });
 
-  it("Home.tsx mounts SampleReportSection between LogoStrip and StopGambling", () => {
+it("Home.tsx keeps the verified logo and sample-report proof inside the outcome-led flow", () => {
     const logoIdx = homeSrc.indexOf("<LogoStrip");
     const sampleIdx = homeSrc.indexOf("<SampleReportSection");
-    const stopIdx = homeSrc.indexOf("<StopGambling");
+    const processIdx = homeSrc.indexOf('id="home-process-heading"');
     expect(logoIdx).toBeGreaterThan(-1);
     expect(sampleIdx).toBeGreaterThan(-1);
-    expect(stopIdx).toBeGreaterThan(-1);
+    expect(processIdx).toBeGreaterThan(-1);
     expect(logoIdx).toBeLessThan(sampleIdx);
-    expect(sampleIdx).toBeLessThan(stopIdx);
+    expect(sampleIdx).toBeLessThan(processIdx);
+    expect(homeSrc).toContain('id="home-outcome-heading"');
+    expect(homeSrc).not.toContain("<StopGambling");
   });
 
   it("Services.tsx imports + renders SampleReportImage on the #sample-report block", () => {
