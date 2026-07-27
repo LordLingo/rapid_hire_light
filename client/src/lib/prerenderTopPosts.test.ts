@@ -29,6 +29,7 @@ const SHELL_HTML = `<!doctype html>
     <meta name="description" content="Default description." />
   </head>
   <body>
+    <!-- The client shell documents <div id="root"> before the real mount node. -->
     <div id="root">
       <main hidden aria-hidden="true" data-pre-hydration-seo="true">
         <h1>Homepage H1 placeholder</h1>
