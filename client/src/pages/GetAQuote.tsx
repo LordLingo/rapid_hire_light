@@ -40,6 +40,7 @@ import {
 // original name so the existing §111 tests + downstream importers keep
 // working without a rename.
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 // §209 — Direct HubSpot Forms API submission. Fires in parallel with
 // the Formspree submission so the form is wired to HubSpot end-to-end
 // even if the Formspree → HubSpot integration mapping is incomplete.
@@ -187,6 +188,7 @@ export default function GetAQuote() {
   // below scrolls this panel into view so the "Quote request received"
   // confirmation is what they actually see after pressing the button.
   const successRef = useRef<HTMLDivElement | null>(null);
+  const leadSuccessTrackedRef = useRef(false);
 
   // Re-sync if user navigates between pre-fills within the SPA.
   useEffect(() => {
@@ -397,6 +399,10 @@ export default function GetAQuote() {
         setError(msg);
         toast.error(msg);
         return;
+      }
+      if (!leadSuccessTrackedRef.current) {
+        leadSuccessTrackedRef.current = true;
+        pushLeadSubmitSuccess(LEAD_FORM_IDS.getAQuote);
       }
       setSubmitted(true);
       toast.success("Quote request received — a U.S.-based specialist will reply same business day.");

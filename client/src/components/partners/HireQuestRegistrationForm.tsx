@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useSearch } from "wouter";
 import { EMPLOYER_LANDING_CONSENT } from "@/content/employerScreeningLandingPages";
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 import {
   clearFieldError,
   hasErrors,
@@ -122,6 +123,7 @@ export default function HireQuestRegistrationForm({
   const [submitted, setSubmitted] = useState(false);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const successRef = useRef<HTMLDivElement | null>(null);
+  const leadSuccessTrackedRef = useRef(false);
 
   useEffect(() => {
     setTracking(initTracking(search));
@@ -253,6 +255,10 @@ export default function HireQuestRegistrationForm({
         setSubmissionError(message);
         toast.error(message);
         return;
+      }
+      if (!leadSuccessTrackedRef.current) {
+        leadSuccessTrackedRef.current = true;
+        pushLeadSubmitSuccess(LEAD_FORM_IDS.hireQuest);
       }
       setSubmitted(true);
       toast.success("Your HireQuest account request was received.");

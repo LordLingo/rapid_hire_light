@@ -18,10 +18,16 @@ import { toast } from "sonner";
 import { useSearch } from "wouter";
 import type {
   EmployerScreeningLandingPageConfig,
+  EmployerLandingPageKey,
   LandingDetailField,
 } from "@/content/employerScreeningLandingPages";
 import { EMPLOYER_LANDING_CONSENT } from "@/content/employerScreeningLandingPages";
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import {
+  LEAD_FORM_IDS,
+  pushLeadSubmitSuccess,
+  type LeadFormId,
+} from "@/lib/leadAnalytics";
 import {
   clearFieldError,
   hasErrors,
@@ -46,6 +52,16 @@ import {
 interface EmployerLeadFormProps {
   readonly config: EmployerScreeningLandingPageConfig;
 }
+
+const EMPLOYER_FORM_IDS_BY_KEY: Record<
+  EmployerLandingPageKey,
+  LeadFormId
+> = {
+  staffing: LEAD_FORM_IDS.staffing,
+  healthcare: LEAD_FORM_IDS.healthcare,
+  criminal: LEAD_FORM_IDS.criminal,
+  preEmployment: LEAD_FORM_IDS.preEmployment,
+};
 
 function initialDetailValues(
   fields: readonly LandingDetailField[],
@@ -278,6 +294,7 @@ export default function EmployerLeadForm({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const successRef = useRef<HTMLDivElement | null>(null);
+  const leadSuccessTrackedRef = useRef(false);
 
   const servicesValue = useMemo(
     () => selectedServices.join(", "),
@@ -459,6 +476,10 @@ export default function EmployerLeadForm({
         setError(message);
         toast.error(message);
         return;
+      }
+      if (!leadSuccessTrackedRef.current) {
+        leadSuccessTrackedRef.current = true;
+        pushLeadSubmitSuccess(EMPLOYER_FORM_IDS_BY_KEY[config.key]);
       }
       setSubmitted(true);
       toast.success(
