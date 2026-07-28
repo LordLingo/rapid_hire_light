@@ -108,6 +108,22 @@ const PARTNER_PAGES = [
       "https://www.rapidhiresolutions.com/static/partners/hirequest/hirequest-logo.webp",
   },
 ];
+const MARKETING_PAGES = [
+  {
+    route: "/get-a-quote",
+    slug: "get-a-quote",
+    marker: "prerendered:get-a-quote",
+    title: "Get a Background Check Quote | Rapid Hire Solutions",
+    description:
+      "Tell us your hiring volume and screening needs. Get a clear, line-itemized background screening quote from Rapid Hire Solutions.",
+    canonical: "https://www.rapidhiresolutions.com/get-a-quote",
+    ogImage: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+    preHydrationBody:
+      `        <h1>Get a screening plan built around how you hire.</h1>\n` +
+      `        <p>Tell us your hiring volume, role mix, and screening needs. A Rapid Hire specialist will review your request and send a clear, line-itemized recommendation.</p>\n` +
+      `        <p><a href="/services">Explore screening services</a> or <a href="/">return to the Rapid Hire Solutions homepage</a>.</p>`,
+  },
+];
 
 function htmlEscape(s) {
   return String(s)
@@ -236,6 +252,7 @@ function buildLandingPageHtml(page, shell) {
     twitterDescription: page.description,
     jsonld,
     dedupeRouteMetadata: true,
+    preHydrationBody: page.preHydrationBody,
   });
 }
 
@@ -358,7 +375,9 @@ function injectHead(shell, opts) {
     // Find <div id="root"> ... </div> by walking the string and balancing
     // <div>/</div> pairs. Regex won't do this safely once the production
     // shell carries the §101 SEO block (potentially nested elements).
-    const startIdx = html.indexOf('<div id="root">');
+    // The real shell documents <div id="root"> in a comment before the mount node.
+    // The last exact match is the actual React root, not that comment text.
+    const startIdx = html.lastIndexOf('<div id="root">');
     if (startIdx >= 0) {
       const openLen = '<div id="root">'.length;
       let depth = 1;
@@ -562,6 +581,15 @@ function main() {
     writtenPartnerPages.push({ route: page.route, file: path.relative(DIST, out), title: page.title });
   }
 
+  const writtenMarketingPages = [];
+  for (const page of MARKETING_PAGES) {
+    const dir = path.join(DIST, page.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    const out = path.join(dir, "index.html");
+    fs.writeFileSync(out, minifyHtml(buildLandingPageHtml(page, shell)), "utf-8");
+    writtenMarketingPages.push({ route: page.route, file: path.relative(DIST, out), title: page.title });
+  }
+
   const manifest = {
     generatedAt: new Date().toISOString(),
     siteBaseUrl: SITE_BASE,
@@ -572,6 +600,7 @@ function main() {
     years: writtenYears,
     landingPages: writtenLandingPages,
     partnerPages: writtenPartnerPages,
+    marketingPages: writtenMarketingPages,
   };
   fs.writeFileSync(
     path.join(DIST, "_prerender-manifest.json"),
@@ -586,6 +615,9 @@ function main() {
   );
   console.log(
     `[prerender] wrote ${writtenPartnerPages.length} partner page stubs`,
+  );
+  console.log(
+    `[prerender] wrote ${writtenMarketingPages.length} marketing page stubs`,
   );
 }
 
