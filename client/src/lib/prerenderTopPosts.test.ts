@@ -18,6 +18,19 @@ const PROJECT_ROOT = path.resolve(__dirname, "..", "..", "..");
 const DIST = path.resolve(PROJECT_ROOT, "dist", "public");
 const SHELL = path.join(DIST, "index.html");
 const MANIFEST = path.join(DIST, "_prerender-manifest.json");
+const INDEX_SOURCE = fs.readFileSync(
+  path.join(PROJECT_ROOT, "client", "index.html"),
+  "utf8",
+);
+const GTM_HEAD_BLOCK = INDEX_SOURCE.match(
+  /<!-- Google Tag Manager -->[\s\S]*?<!-- End Google Tag Manager -->/,
+)?.[0];
+const GTM_BODY_BLOCK = INDEX_SOURCE.match(
+  /<!-- Google Tag Manager \(noscript\) -->[\s\S]*?<!-- End Google Tag Manager \(noscript\) -->/,
+)?.[0];
+if (!GTM_HEAD_BLOCK || !GTM_BODY_BLOCK) {
+  throw new Error("The shared shell is missing the required GTM blocks.");
+}
 // Mirror the real production shell shape: a non-empty #root with the §101
 // homepage SEO block, so we can confirm the prerender script's div-walker
 // correctly replaces a populated #root with the route-specific block.
@@ -27,8 +40,10 @@ const SHELL_HTML = `<!doctype html>
     <meta charset="utf-8" />
     <title>Default Title</title>
     <meta name="description" content="Default description." />
+    ${GTM_HEAD_BLOCK}
   </head>
   <body>
+    ${GTM_BODY_BLOCK}
     <div id="root">
       <main hidden aria-hidden="true" data-pre-hydration-seo="true">
         <h1>Homepage H1 placeholder</h1>
@@ -77,6 +92,29 @@ describe("prerender_top_posts.mjs", () => {
     expect(manifest.tags).toHaveLength(4);
     expect(Array.isArray(manifest.years)).toBe(true);
     expect(manifest.years.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("preserves one GTM head script and one noscript iframe in generated documents", () => {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf-8"));
+    const files = [
+      SHELL,
+      path.join(DIST, manifest.posts[0].file),
+      path.join(DIST, manifest.landingPages[0].file),
+      path.join(DIST, manifest.partnerPages[0].file),
+    ];
+
+    for (const file of files) {
+      const html = fs.readFileSync(file, "utf-8");
+      expect(html.match(/GTM-WMQPS3T3/g) ?? [], file).toHaveLength(2);
+      expect(
+        html.match(/googletagmanager\.com\/gtm\.js/g) ?? [],
+        file,
+      ).toHaveLength(1);
+      expect(
+        html.match(/googletagmanager\.com\/ns\.html/g) ?? [],
+        file,
+      ).toHaveLength(1);
+    }
   });
 
   it("emits a per-slug HTML stub for each manifest entry, with rewritten head", () => {
