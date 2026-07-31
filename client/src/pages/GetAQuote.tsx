@@ -40,6 +40,7 @@ import {
 // original name so the existing §111 tests + downstream importers keep
 // working without a rename.
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
 import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 // §209 — Direct HubSpot Forms API submission. Fires in parallel with
 // the Formspree submission so the form is wired to HubSpot end-to-end
@@ -280,6 +281,8 @@ export default function GetAQuote() {
       ...loadTrackingParams(),
       ...tracking,
     };
+    const formLeadSource = String(fd.get("lead_source") ?? "Get Started Form");
+    const attribution = buildAttributionSubmission();
     const payload = {
       firstName: String(fd.get("firstName") ?? ""),
       lastName: String(fd.get("lastName") ?? ""),
@@ -303,6 +306,7 @@ export default function GetAQuote() {
       _subject: company
         ? `New quote request — ${company}`
         : "New quote request",      ...effectiveTracking,
+      ...attribution.fields,
 
       // §215 — NOTE: do NOT add a `_cc` field here. The owner-requested
       // partner-recipient distribution (Mark / Arthur / Stewart) is now
@@ -357,7 +361,7 @@ export default function GetAQuote() {
       phone: payload.phone,
       company: payload.company,
       industry: payload.industry,
-      lead_source: payload.lead_source,
+      lead_source: formLeadSource,
       quote_request_details: quoteDetails,
     });
     const hubspotPromise = submitToHubspot({
@@ -402,7 +406,7 @@ export default function GetAQuote() {
       }
       if (!leadSuccessTrackedRef.current) {
         leadSuccessTrackedRef.current = true;
-        pushLeadSubmitSuccess(LEAD_FORM_IDS.getAQuote);
+        pushLeadSubmitSuccess(LEAD_FORM_IDS.getAQuote, attribution.clientSubmissionId, attribution.leadSource);
       }
       setSubmitted(true);
       toast.success("Quote request received — a U.S.-based specialist will reply same business day.");

@@ -61,6 +61,8 @@ import {
 } from "@/lib/apiSnippets";
 import { searchApi } from "@/lib/apiSearch";
 import { FORMSPREE_INTEGRATIONS_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
+import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 import {
   clearFieldError,
   hasErrors,
@@ -271,6 +273,7 @@ export default function Integrations() {
       return;
     }
     setFieldErrors({});
+    const attribution = buildAttributionSubmission();
     const payload: Record<string, string> = {
       name: values.name,
       email: values.email,
@@ -286,6 +289,7 @@ export default function Integrations() {
       notes: String(fd.get("notes") ?? "").trim(),
       _subject: `Integration request — ${values.ats}`,
       _source: "Integrations page · /integrations#request-integration",
+      ...attribution.fields,
     };
     setSubmitting(true);
     try {
@@ -307,6 +311,11 @@ export default function Integrations() {
         setSubmitError(msg);
         return;
       }
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.integrations,
+        attribution.clientSubmissionId,
+        attribution.leadSource,
+      );
       setSubmitted(true);
       formEl.reset();
     } catch {

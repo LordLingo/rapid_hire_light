@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useSearch } from "wouter";
 import { EMPLOYER_LANDING_CONSENT } from "@/content/employerScreeningLandingPages";
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
 import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 import {
   clearFieldError,
@@ -220,7 +221,8 @@ export default function HireQuestRegistrationForm({
       typeof window !== "undefined"
         ? window.location.href
         : "https://www.rapidhiresolutions.com/hirequest-partner/";
-    const payload = buildHireQuestPayload(values, effectiveTracking);
+    const attribution = buildAttributionSubmission();
+    const payload = { ...buildHireQuestPayload(values, effectiveTracking), ...attribution.fields };
     const hubspotBody = buildHireQuestHubspotBody(
       values,
       effectiveTracking,
@@ -258,7 +260,7 @@ export default function HireQuestRegistrationForm({
       }
       if (!leadSuccessTrackedRef.current) {
         leadSuccessTrackedRef.current = true;
-        pushLeadSubmitSuccess(LEAD_FORM_IDS.hireQuest);
+        pushLeadSubmitSuccess(LEAD_FORM_IDS.hireQuest, attribution.clientSubmissionId, attribution.leadSource);
       }
       setSubmitted(true);
       toast.success("Your HireQuest account request was received.");

@@ -23,6 +23,7 @@ import type {
 } from "@/content/employerScreeningLandingPages";
 import { EMPLOYER_LANDING_CONSENT } from "@/content/employerScreeningLandingPages";
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
 import {
   LEAD_FORM_IDS,
   pushLeadSubmitSuccess,
@@ -436,11 +437,15 @@ export default function EmployerLeadForm({
     };
     const pageUri =
       typeof window !== "undefined" ? window.location.href : config.seo.canonical;
-    const payload = buildEmployerLandingPayload(
-      config,
-      values,
-      effectiveTracking,
-    );
+    const attribution = buildAttributionSubmission();
+    const payload = {
+      ...buildEmployerLandingPayload(
+        config,
+        values,
+        effectiveTracking,
+      ),
+      ...attribution.fields,
+    };
     const hubspotBody = buildEmployerLandingHubspotBody(
       config,
       values,
@@ -479,7 +484,7 @@ export default function EmployerLeadForm({
       }
       if (!leadSuccessTrackedRef.current) {
         leadSuccessTrackedRef.current = true;
-        pushLeadSubmitSuccess(EMPLOYER_FORM_IDS_BY_KEY[config.key]);
+        pushLeadSubmitSuccess(EMPLOYER_FORM_IDS_BY_KEY[config.key], attribution.clientSubmissionId, attribution.leadSource);
       }
       setSubmitted(true);
       toast.success(

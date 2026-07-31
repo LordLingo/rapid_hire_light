@@ -28,6 +28,8 @@ import { toast } from "sonner";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import { FORMSPREE_REFERRAL_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
+import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 import {
   validateFields,
   hasErrors,
@@ -158,6 +160,7 @@ export default function Referral() {
       return;
     }
 
+    const attribution = buildAttributionSubmission();
     const payload = {
       name: values.name,
       email: values.email,
@@ -166,6 +169,7 @@ export default function Referral() {
       message: values.message,
       _subject: `New referral-partner inquiry — ${values.company}`.trim(),
       source: "referral-partner-program",
+      ...attribution.fields,
     };
     setSubmitting(true);
     try {
@@ -189,6 +193,11 @@ export default function Referral() {
         toast.error(msg);
         return;
       }
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.referral,
+        attribution.clientSubmissionId,
+        attribution.leadSource,
+      );
       setSubmittedName(values.name);
       setSubmitted(true);
       toast.success("Thanks — we'll send your referral partner form the same business day.");

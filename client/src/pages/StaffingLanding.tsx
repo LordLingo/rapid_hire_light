@@ -72,6 +72,8 @@ import {
   type TrackingParams,
 } from "@/lib/staffingLp";
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
+import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 import { StaffingShaderBackground } from "@/components/StaffingShaderHero";
 
 // Hosted on the public Manus CDN (absolute https URLs) so they resolve identically on the
@@ -654,11 +656,13 @@ function LeadForm({ tracking }: { tracking: TrackingParams }) {
     const merged = { ...loadTrackingParams(), ...tracking };
     const submittedAtIso = new Date().toISOString();
 
+    const attribution = buildAttributionSubmission();
     const payload: Record<string, string> = {
       ...values,
       lead_source: "staffing_lp",
       _subject: "New staffing lead — /lp/staffing",
       ...Object.fromEntries(Object.entries(merged).map(([k, v]) => [k, v ?? ""])),
+      ...attribution.fields,
     };
 
     // Fire HubSpot in parallel (fire-and-forget; never blocks success).
@@ -704,6 +708,11 @@ function LeadForm({ tracking }: { tracking: TrackingParams }) {
       }
       fireLeadConversion();
       setSubmitted(true);
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.staffingLegacy,
+        attribution.clientSubmissionId,
+        attribution.leadSource,
+      );
       toast.success("Request received — a specialist will reply same business day.");
     } catch {
       const msg = "Network error. Please try again.";
