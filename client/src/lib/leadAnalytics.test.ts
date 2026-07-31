@@ -20,6 +20,13 @@ const EMPLOYER_FORM = read(
 const HIREQUEST_FORM = read(
   "client/src/components/partners/HireQuestRegistrationForm.tsx",
 );
+const ADDITIONAL_EMPLOYER_FORMS = [
+  "client/src/pages/Contact.tsx",
+  "client/src/pages/ComplianceAudit.tsx",
+  "client/src/pages/StaffingLanding.tsx",
+  "client/src/pages/Integrations.tsx",
+  "client/src/pages/Referral.tsx",
+].map(read);
 const PRERENDER = read("scripts/prerender_top_posts.mjs");
 
 function count(source: string, pattern: RegExp): number {
@@ -92,6 +99,11 @@ describe("privacy-safe employer lead success event", () => {
       criminal: "employer_criminal_background_checks",
       preEmployment: "pre_employment_screening",
       hireQuest: "hirequest_partner",
+      contact: "contact",
+      complianceAudit: "compliance_audit",
+      integrations: "integrations_request",
+      referral: "referral_partner",
+      staffingLegacy: "staffing_legacy",
     });
     expect(LEAD_FORM_PAGE_PATHS).toEqual({
       get_a_quote: "/get-a-quote",
@@ -101,17 +113,40 @@ describe("privacy-safe employer lead success event", () => {
         "/lp/employer-criminal-background-checks",
       pre_employment_screening: "/lp/pre-employment-screening",
       hirequest_partner: "/hirequest-partner/",
+      contact: "/contact",
+      compliance_audit: "/compliance/audit",
+      integrations_request: "/integrations",
+      referral_partner: "/referral",
+      staffing_legacy: "/lp/staffing",
     });
   });
 
-  it("pushes only event, form_id, and page_path with no PII", () => {
+  it("pushes the approved privacy-safe schema and deduplicates by submission ID", () => {
     const dataLayer: unknown[] = [];
-    vi.stubGlobal("window", { dataLayer });
+    vi.stubGlobal("window", {
+      dataLayer,
+      location: { pathname: "/get-a-quote" },
+    });
 
-    expect(pushLeadSubmitSuccess(LEAD_FORM_IDS.getAQuote)).toBe(true);
+    expect(
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.getAQuote,
+        "submission-1",
+        "Google Ads",
+      ),
+    ).toBe(true);
+    expect(
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.getAQuote,
+        "submission-1",
+        "Google Ads",
+      ),
+    ).toBe(false);
     expect(dataLayer).toEqual([
       {
         event: RHS_LEAD_SUBMIT_SUCCESS_EVENT,
+        lead_id: "submission-1",
+        lead_source: "Google Ads",
         form_id: "get_a_quote",
         page_path: "/get-a-quote",
       },
@@ -119,19 +154,42 @@ describe("privacy-safe employer lead success event", () => {
     expect(Object.keys(dataLayer[0] as object).sort()).toEqual([
       "event",
       "form_id",
+      "lead_id",
+      "lead_source",
       "page_path",
     ]);
   });
 
   it("is a no-op outside the browser", () => {
     vi.stubGlobal("window", undefined);
-    expect(pushLeadSubmitSuccess(LEAD_FORM_IDS.getAQuote)).toBe(false);
+    expect(
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.getAQuote,
+        "server-submission",
+        "Direct/Unknown",
+      ),
+    ).toBe(false);
   });
 
   it("is called once only after each listed endpoint confirms success", () => {
     expectConfirmedSuccessWiring(GET_QUOTE, "if (!resp.ok)");
     expectConfirmedSuccessWiring(EMPLOYER_FORM, "if (!response.ok)");
     expectConfirmedSuccessWiring(HIREQUEST_FORM, "if (!response.ok)");
+  });
+
+  it("wires additional employer forms once in the confirmed-success path", () => {
+    for (const source of ADDITIONAL_EMPLOYER_FORMS) {
+      const fetchIndex = source.indexOf("await fetch(");
+      const failureIndex = source.indexOf("if (!resp.ok)", fetchIndex);
+      const eventIndex = source.indexOf("pushLeadSubmitSuccess(", fetchIndex);
+      const catchIndex = source.indexOf("} catch", fetchIndex);
+      expect(fetchIndex).toBeGreaterThan(-1);
+      expect(failureIndex).toBeGreaterThan(fetchIndex);
+      expect(eventIndex).toBeGreaterThan(failureIndex);
+      expect(eventIndex).toBeLessThan(catchIndex);
+      expect(count(source, /pushLeadSubmitSuccess\(/g)).toBe(1);
+      expect(source).toContain("...attribution.fields");
+    }
   });
 
   it("does not run from validation, honeypot, failure, or page-load paths", () => {

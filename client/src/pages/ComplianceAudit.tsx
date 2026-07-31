@@ -37,6 +37,8 @@ import {
 // same mvzyoyoz inbox as quote + contact submissions. Previously posted
 // to the local /api/contact JSON store.
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
+import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 import {
   ArrowUpRight,
   CalendarCheck2,
@@ -283,7 +285,9 @@ export default function ComplianceAudit() {
       notes || "(none)",
     ];
 
+    const attribution = buildAttributionSubmission();
     const payload = {
+      ...attribution.fields,
       fullName: `${firstName} ${lastName}`.trim(),
       email,
       company,
@@ -319,6 +323,11 @@ export default function ComplianceAudit() {
         toast.error(msg);
         return;
       }
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.complianceAudit,
+        attribution.clientSubmissionId,
+        attribution.leadSource,
+      );
       setSubmitted(true);
       toast.success(
         "Audit request received — we'll confirm within one business day.",

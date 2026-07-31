@@ -41,6 +41,8 @@ import { getShrmSlot, formatShrmSlot } from "@/lib/shrmSlots";
 // §159 — Formspree endpoint centralized in @/lib/formspree so all
 // quote/contact forms post to the same mvzyoyoz inbox and cannot drift.
 import { FORMSPREE_ENDPOINT } from "@/lib/formspree";
+import { buildAttributionSubmission } from "@/lib/leadAttribution";
+import { LEAD_FORM_IDS, pushLeadSubmitSuccess } from "@/lib/leadAnalytics";
 
 /*
   §140.3 — UTM attribution helper.
@@ -286,7 +288,9 @@ export default function Contact() {
     // @/lib/formspree) using its JSON endpoint so we keep structured fields
     // (services as an array, etc). Formspree responds with { ok: true } on
     // success and surfaces validation errors via { errors }.
+    const attribution = buildAttributionSubmission();
     const payload = {
+      ...attribution.fields,
       name: values.name,
       email: values.email,
       company: values.company,
@@ -340,6 +344,11 @@ export default function Contact() {
         toast.error(msg);
         return;
       }
+      pushLeadSubmitSuccess(
+        LEAD_FORM_IDS.contact,
+        attribution.clientSubmissionId,
+        attribution.leadSource,
+      );
       setSubmittedCompany(values.company);
       setSubmitted(true);
       toast.success(
