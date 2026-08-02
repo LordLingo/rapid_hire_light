@@ -222,6 +222,8 @@ import { post as postTxCompliance } from "@/content/blog/texas-employer-backgrou
 import { post as postWhatIncludes } from "@/content/blog/what-does-a-pre-employment-background-check-include";
 // Weekly SEO resource series — commercial-intent staffing guide
 import { post as postStaffingPackages } from "@/content/blog/staffing-agency-background-check-packages";
+// Weekly SEO resource series — commercial-intent provider switching guide
+import { post as postSwitchProviders } from "@/content/blog/how-to-switch-background-check-providers";
 
 const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postFcraGuide,
@@ -363,6 +365,7 @@ const ALL_POSTS: readonly BlogPost[] = Object.freeze([
   postTxCompliance,
   postWhatIncludes,
   postStaffingPackages,
+  postSwitchProviders,
 ]);
 
 /**
