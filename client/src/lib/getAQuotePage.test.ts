@@ -29,6 +29,7 @@ import {
   QUOTE_ATS_OPTIONS,
   QUOTE_TIMELINES,
   QUOTE_SERVICE_ALIASES,
+  resolveQuoteIndustryPrefill,
 } from "@/pages/GetAQuote";
 
 const ROOT = resolve(__dirname, "../../..");
@@ -61,6 +62,22 @@ describe("§111 — GetAQuote page wiring", () => {
     expect(QUOTE_VOLUMES.length).toBeGreaterThanOrEqual(4);
     expect(QUOTE_ATS_OPTIONS.length).toBeGreaterThanOrEqual(5);
     expect(QUOTE_TIMELINES.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("maps industry-page slugs to safe quote options without falling back to Healthcare", () => {
+    const cleaning = resolveQuoteIndustryPrefill("cleaning-companies");
+    const moving = resolveQuoteIndustryPrefill("moving-companies");
+
+    expect(cleaning).toBe("Other");
+    expect(moving).toBe("Transportation & Logistics");
+    expect(cleaning).not.toBe("Healthcare");
+    expect(moving).not.toBe("Healthcare");
+    expect(QUOTE_INDUSTRIES).toContain(cleaning);
+    expect(QUOTE_INDUSTRIES).toContain(moving);
+    expect(resolveQuoteIndustryPrefill("Finance & Insurance")).toBe(
+      "Finance & Insurance",
+    );
+    expect(resolveQuoteIndustryPrefill("unsupported-industry")).toBe("");
   });
 
   it("aliases calculator addon ids to QUOTE_SERVICES ids so calculator deep links round-trip", () => {

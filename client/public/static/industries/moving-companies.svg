@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640" fill="none">
+  <title>Moving crew, truck, household goods, and driver verification illustration</title>
+  <rect width="800" height="640" rx="28" fill="#F7F3EA"/>
+  <path d="M74 510H726" stroke="#D7D0C2" stroke-width="3" stroke-linecap="round"/>
+  <path d="M119 225H506V471H119V225Z" fill="#E7EEF4" stroke="#102A4B" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M506 306H615L686 382V471H506V306Z" fill="#2B6EA8" stroke="#102A4B" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M545 329H605L650 380H545V329Z" fill="#D9E8F4" stroke="#102A4B" stroke-width="7" stroke-linejoin="round"/>
+  <rect x="157" y="263" width="132" height="102" rx="6" fill="#FFFDF8" stroke="#102A4B" stroke-width="7"/>
+  <path d="M223 263V365M178 297H268" stroke="#D7D0C2" stroke-width="5"/>
+  <rect x="307" y="293" width="152" height="132" rx="6" fill="#F0D4B8" stroke="#102A4B" stroke-width="7"/>
+  <path d="M383 293V425M328 331H438" stroke="#C09369" stroke-width="5"/>
+  <circle cx="226" cy="476" r="53" fill="#FFFDF8" stroke="#102A4B" stroke-width="9"/>
+  <circle cx="226" cy="476" r="19" fill="#102A4B"/>
+  <circle cx="608" cy="476" r="53" fill="#FFFDF8" stroke="#102A4B" stroke-width="9"/>
+  <circle cx="608" cy="476" r="19" fill="#102A4B"/>
+  <rect x="121" y="174" width="270" height="69" rx="12" fill="#102A4B"/>
+  <path d="M159 209H313" stroke="white" stroke-width="9" stroke-linecap="round"/>
+  <path d="M337 209L350 222L373 190" stroke="#93C95E" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="79" y="405" width="93" height="105" rx="5" fill="#F0D4B8" stroke="#102A4B" stroke-width="7"/>
+  <path d="M125 405V510M96 440H155" stroke="#C09369" stroke-width="5"/>
+  <rect x="659" y="217" width="86" height="124" rx="12" fill="#FFFDF8" stroke="#102A4B" stroke-width="7"/>
+  <circle cx="702" cy="254" r="18" fill="#CFE1EF" stroke="#102A4B" stroke-width="5"/>
+  <path d="M677 295H727M677 313H714" stroke="#102A4B" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="563" cy="155" r="70" fill="#FFFDF8" stroke="#102A4B" stroke-width="8"/>
+  <path d="M531 156L552 177L596 126" stroke="#65A832" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M492 546H689" stroke="#2B6EA8" stroke-width="8" stroke-linecap="round"/>
+  <path d="M666 527L690 546L666 565" stroke="#2B6EA8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="87" cy="109" r="22" fill="#CFE1EF"/>
+  <circle cx="718" cy="92" r="15" fill="#93C95E"/>
+</svg>

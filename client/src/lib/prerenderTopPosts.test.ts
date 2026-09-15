@@ -93,6 +93,8 @@ describe("prerender_top_posts.mjs", () => {
     expect(manifest.tags).toHaveLength(4);
     expect(Array.isArray(manifest.years)).toBe(true);
     expect(manifest.years.length).toBeGreaterThanOrEqual(1);
+    expect(Array.isArray(manifest.industryPages)).toBe(true);
+    expect(manifest.industryPages).toHaveLength(2);
   });
 
   it("preserves one GTM head script and one noscript iframe in generated documents", () => {
@@ -102,6 +104,9 @@ describe("prerender_top_posts.mjs", () => {
       path.join(DIST, manifest.posts[0].file),
       path.join(DIST, manifest.landingPages[0].file),
       path.join(DIST, manifest.partnerPages[0].file),
+      ...manifest.industryPages.map((entry: { file: string }) =>
+        path.join(DIST, entry.file),
+      ),
     ];
 
     for (const file of files) {
@@ -115,6 +120,101 @@ describe("prerender_top_posts.mjs", () => {
         html.match(/googletagmanager\.com\/ns\.html/g) ?? [],
         file,
       ).toHaveLength(1);
+    }
+  });
+
+  it("emits route-specific initial HTML for both company industry pages", () => {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf-8"));
+    const expected = [
+      {
+        route: "/industries/cleaning-companies",
+        title:
+          "Background Checks for Cleaning Companies | Rapid Hire Solutions",
+        description:
+          "Build a faster, role-specific employee screening program for residential and commercial cleaning teams, including criminal checks, MVRs, employment verification and more.",
+        canonical:
+          "https://www.rapidhiresolutions.com/industries/cleaning-companies",
+        marker: "prerendered:industries/cleaning-companies",
+        jsonLdKey: "industry-company-cleaning-companies",
+        h1: "Hire Cleaning Staff You Can Confidently Send Into a Customer’s Home.",
+        links: [
+          "/industries",
+          "/services/criminal-records",
+          "/get-a-quote?industry=cleaning-companies",
+        ],
+        faq: "Should a cleaning company background check every employee?",
+      },
+      {
+        route: "/industries/moving-companies",
+        title:
+          "Background Checks for Moving Companies | Rapid Hire Solutions",
+        description:
+          "Screen movers, drivers, crew leaders and storage staff with role-specific background checks built for residential and commercial moving companies.",
+        canonical:
+          "https://www.rapidhiresolutions.com/industries/moving-companies",
+        marker: "prerendered:industries/moving-companies",
+        jsonLdKey: "industry-company-moving-companies",
+        h1: "Screen the People Customers Trust With Everything They Own.",
+        links: [
+          "/industries",
+          "/industries/transportation",
+          "/get-a-quote?industry=moving-companies",
+        ],
+        faq: "Does every mover fall under DOT regulations?",
+      },
+    ];
+
+    expect(
+      manifest.industryPages.map((entry: { route: string }) => entry.route),
+    ).toEqual(expected.map((entry) => entry.route));
+
+    for (const page of expected) {
+      const entry = manifest.industryPages.find(
+        (item: { route: string }) => item.route === page.route,
+      );
+      const file = path.join(DIST, entry.file);
+      expect(fs.existsSync(file), file).toBe(true);
+      const html = fs.readFileSync(file, "utf-8");
+      expect(html).toContain(`<title>${escapeHtml(page.title)}</title>`);
+      expect(html).toContain(
+        `<meta name="description" content="${escapeHtml(page.description)}"`,
+      );
+      expect(html.match(/<link rel="canonical"/g) ?? []).toHaveLength(1);
+      expect(html).toContain(
+        `<link rel="canonical" href="${page.canonical}"`,
+      );
+      for (const property of [
+        "og:type",
+        "og:title",
+        "og:description",
+        "og:url",
+        "og:image",
+      ]) {
+        expect(
+          html.match(new RegExp(`property="${property}"`, "g")) ?? [],
+        ).toHaveLength(1);
+      }
+      expect(html).toContain(`<!-- ${page.marker} -->`);
+      expect(html).toContain(`data-pre-hydration-seo="${page.marker}"`);
+      expect(html).toContain(`<h1>${page.h1}</h1>`);
+      expect(html).not.toContain("Homepage H1 placeholder");
+      expect(html).toContain('"@type":"FAQPage"');
+      expect(html).toContain(page.faq);
+      const routeJsonLd = html.match(
+        new RegExp(
+          `<script type="application/ld\\+json" data-use-seo-key="${page.jsonLdKey}">[\\s\\S]*?<\\/script>`,
+          "g",
+        ),
+      ) ?? [];
+      expect(routeJsonLd).toHaveLength(1);
+      expect(routeJsonLd[0]).toContain('"@type":"FAQPage"');
+      expect(html.match(/<script type="application\/ld\+json"/g) ?? []).toHaveLength(1);
+      for (const href of page.links) {
+        expect(html).toContain(`href="${href}"`);
+      }
+      if (page.route === "/industries/moving-companies") {
+        expect(html).toContain("last-mile household delivery operations");
+      }
     }
   });
 

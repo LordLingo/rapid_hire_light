@@ -2,9 +2,10 @@
   §83 — Tier 3 anti-regression spec.
   -----------------------------------
   Pins:
-    - industryCatalog has all 9 verticals (6 existing + 3 new) with required
-      fields populated; the 3 new slugs (gig-1099, manufacturing, education)
-      are registered in App.tsx routing and the sitemap.
+    - industryCatalog has all 11 verticals (6 original + 5 specialties) with
+      required fields populated; the specialty slugs (gig-1099,
+      manufacturing, education, cleaning-companies, moving-companies) are
+      registered in App.tsx routing and the sitemap.
     - glossary has at least 30 entries; key FCRA terms are present;
       /resources/glossary route is wired and listed in sitemap.
     - Resources hub exposes the new "Browse by type" filter strip with
@@ -26,8 +27,8 @@ const sitemap = file("vite.config.ts");
 const resourcesPage = file("client/src/pages/Resources.tsx");
 const industriesPage = file("client/src/pages/Industries.tsx");
 
-describe("§83 — industry catalog (9 verticals)", () => {
-  it("declares all six original verticals + three new ones", () => {
+describe("§83 — industry catalog (11 verticals)", () => {
+  it("declares all six original verticals + five focused specialties", () => {
     const slugs = INDUSTRIES.map((i) => i.slug);
     expect(slugs).toEqual([
       "healthcare",
@@ -39,6 +40,8 @@ describe("§83 — industry catalog (9 verticals)", () => {
       "gig-1099",
       "manufacturing",
       "education",
+      "cleaning-companies",
+      "moving-companies",
     ]);
   });
 
@@ -56,6 +59,8 @@ describe("§83 — industry catalog (9 verticals)", () => {
   it("getIndustryBySlug resolves and returns undefined on miss", () => {
     expect(getIndustryBySlug("healthcare")?.name).toBe("Healthcare");
     expect(getIndustryBySlug("gig-1099")?.name).toBe("Gig & 1099 Platforms");
+    expect(getIndustryBySlug("cleaning-companies")?.name).toBe("Cleaning Companies");
+    expect(getIndustryBySlug("moving-companies")?.name).toBe("Moving Companies");
     expect(getIndustryBySlug("does-not-exist")).toBeUndefined();
   });
 
@@ -66,15 +71,21 @@ describe("§83 — industry catalog (9 verticals)", () => {
     );
   });
 
-  it("sitemap includes all 9 industry detail routes", () => {
+  it("sitemap includes all 11 industry detail routes", () => {
     for (const i of INDUSTRIES) {
       expect(sitemap).toContain(`"/industries/${i.slug}"`);
     }
   });
 
-  it("Industries hub surfaces the 3 new vertical cards in a 'newer specialties' rail", () => {
+  it("Industries hub surfaces the 5 specialty cards in its dedicated rail", () => {
     expect(industriesPage).toMatch(/data-testid="industries-new-rail"/);
-    for (const slug of ["gig-1099", "manufacturing", "education"]) {
+    for (const slug of [
+      "gig-1099",
+      "manufacturing",
+      "education",
+      "cleaning-companies",
+      "moving-companies",
+    ]) {
       // The new-rail uses a literal `path:` field interpolated into
       // `/industries/${v.path}`, so the slug appears as a quoted literal.
       expect(industriesPage).toContain(`"${slug}"`);

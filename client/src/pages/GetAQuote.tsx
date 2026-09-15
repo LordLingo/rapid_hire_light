@@ -71,6 +71,21 @@ export const QUOTE_INDUSTRIES = [
   "Other",
 ];
 
+const QUOTE_INDUSTRY_PREFILL_ALIASES: Readonly<Record<string, string>> = {
+  "cleaning-companies": "Other",
+  "moving-companies": "Transportation & Logistics",
+};
+
+export function resolveQuoteIndustryPrefill(
+  requestedIndustry: string | null | undefined,
+): string {
+  const requested = requestedIndustry?.trim() ?? "";
+  if (!requested) return "";
+
+  const candidate = QUOTE_INDUSTRY_PREFILL_ALIASES[requested] ?? requested;
+  return QUOTE_INDUSTRIES.includes(candidate) ? candidate : "";
+}
+
 /** Monthly volume buckets (CRA-typical breakpoints). */
 export const QUOTE_VOLUMES = [
   "1–25 checks / month",
@@ -156,7 +171,7 @@ export default function GetAQuote() {
     ogType: "website",
   });
   const params = useMemo(() => new URLSearchParams(search), [search]);
-  const prefillIndustry = params.get("industry") ?? "";
+  const prefillIndustry = resolveQuoteIndustryPrefill(params.get("industry"));
   const prefillVolume = params.get("volume") ?? "";
   const prefillNote = params.get("note") ?? params.get("topic") ?? "";
   const prefillServiceIds = (params.get("service") ?? params.get("services") ?? "")

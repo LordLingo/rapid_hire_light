@@ -1,5 +1,6 @@
 import type {
-  EmployerScreeningLandingPageConfig,
+  EmployerLandingFormConfig,
+  EmployerLandingPageKey,
   LandingDetailField,
 } from "@/content/employerScreeningLandingPages";
 import {
@@ -13,6 +14,22 @@ import {
 } from "@/lib/staffingLp";
 
 export const EMPLOYER_LANDING_LEAD_SOURCE = "Get Started Form";
+
+/**
+ * The shared employer form only needs this narrow page contract. Keeping the
+ * contract independent from the four-page /lp/ registry lets other approved
+ * employer pages reuse the same submission, attribution, and CRM plumbing.
+ */
+export interface EmployerLeadFormPageConfig {
+  readonly key?: EmployerLandingPageKey;
+  readonly route: string;
+  readonly seo: {
+    readonly title: string;
+    readonly canonical: string;
+  };
+  readonly cta: string;
+  readonly form: EmployerLandingFormConfig;
+}
 
 export interface EmployerLandingFormValues {
   readonly name: string;
@@ -42,7 +59,7 @@ function detailMessageLines(
 }
 
 export function buildEmployerLandingMessage(
-  config: EmployerScreeningLandingPageConfig,
+  config: EmployerLeadFormPageConfig,
   values: EmployerLandingFormValues,
   tracking: TrackingParams,
 ): string {
@@ -60,7 +77,7 @@ export function buildEmployerLandingMessage(
 }
 
 export function buildEmployerLandingPayload(
-  config: EmployerScreeningLandingPageConfig,
+  config: EmployerLeadFormPageConfig,
   values: EmployerLandingFormValues,
   tracking: TrackingParams,
 ): Record<string, string> {
@@ -95,7 +112,7 @@ export function buildEmployerLandingPayload(
 }
 
 export function buildEmployerLandingHubspotBody(
-  config: EmployerScreeningLandingPageConfig,
+  config: EmployerLeadFormPageConfig,
   values: EmployerLandingFormValues,
   tracking: TrackingParams,
   pageUri: string,

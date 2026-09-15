@@ -12,6 +12,8 @@ export const LEAD_FORM_IDS = {
   integrations: "integrations_request",
   referral: "referral_partner",
   staffingLegacy: "staffing_legacy",
+  cleaningCompanies: "cleaning_companies",
+  movingCompanies: "moving_companies",
 } as const;
 
 export type LeadFormId =
@@ -30,6 +32,8 @@ export const LEAD_FORM_PAGE_PATHS: Record<LeadFormId, string> = {
   integrations_request: "/integrations",
   referral_partner: "/referral",
   staffing_legacy: "/lp/staffing",
+  cleaning_companies: "/industries/cleaning-companies",
+  moving_companies: "/industries/moving-companies",
 };
 
 export interface LeadSubmitSuccessEvent {
