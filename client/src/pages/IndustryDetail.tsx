@@ -35,6 +35,11 @@ import {
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
 import CtaBanner from "@/components/site/CtaBanner";
+import IndustryCompanyPage from "@/components/industries/IndustryCompanyPage";
+import {
+  buildIndustryCompanyStructuredData,
+  getIndustryCompanyPage,
+} from "@/content/industryCompanyPages";
 import NotFound from "@/pages/NotFound";
 import { useSeo } from "@/hooks/useSeo";
 import { getIndustryBySlug, type Industry } from "@/lib/industryCatalog";
@@ -55,18 +60,32 @@ export default function IndustryDetail() {
   const [, params] = useRoute("/industries/:slug");
   const slug = params?.slug ?? "";
   const industry = getIndustryBySlug(slug);
+  const companyPage = getIndustryCompanyPage(slug);
 
-  useSeo({
-    title: industry
-      ? `${industry.name} — Background Check Packages | Rapid Hire`
-      : "Industries — Rapid Hire Solutions",
-    description:
-      industry?.blurb ?? "Industry-specific background check packages.",
-    canonical: industry
-      ? `https://www.rapidhiresolutions.com/industries/${industry.slug}`
-      : "https://www.rapidhiresolutions.com/industries",
-    ogType: "article",
-  });
+  useSeo(
+    companyPage
+      ? {
+          title: companyPage.seo.title,
+          description: companyPage.seo.description,
+          canonical: companyPage.seo.canonical,
+          image: companyPage.seo.image,
+          keywords: [...companyPage.seo.keywords],
+          ogType: "website",
+          jsonLd: buildIndustryCompanyStructuredData(companyPage),
+          jsonLdKey: `industry-company-${companyPage.slug}`,
+        }
+      : {
+          title: industry
+            ? `${industry.name} — Background Check Packages | Rapid Hire`
+            : "Industries — Rapid Hire Solutions",
+          description:
+            industry?.blurb ?? "Industry-specific background check packages.",
+          canonical: industry
+            ? `https://www.rapidhiresolutions.com/industries/${industry.slug}`
+            : "https://www.rapidhiresolutions.com/industries",
+          ogType: "article" as const,
+        },
+  );
 
   // Scroll to top on slug change so the page reads from its hero.
   useEffect(() => {
@@ -75,6 +94,10 @@ export default function IndustryDetail() {
 
   if (!industry) {
     return <NotFound />;
+  }
+
+  if (companyPage) {
+    return <IndustryCompanyPage config={companyPage} />;
   }
 
   const Icon = ICON_MAP[industry.iconKey];

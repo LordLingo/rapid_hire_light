@@ -21,7 +21,9 @@ export type IndustrySlug =
   | "nonprofit"
   | "gig-1099"
   | "manufacturing"
-  | "education";
+  | "education"
+  | "cleaning-companies"
+  | "moving-companies";
 
 export type Industry = {
   slug: IndustrySlug;
@@ -460,6 +462,96 @@ export const INDUSTRIES: ReadonlyArray<Industry> = [
     heroImage: {
       url: "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/industries-education-AetotHvhbiXAUhpCCRUXiY.webp",
       alt: "Editorial illustration of a small navy-line schoolhouse with a peaked roof and a tiny bell tower, with a folded volunteer-fingerprint clearance sheet leaning against the base showing a soft sage check mark — representing fingerprint-aware K-12 and higher-ed staff and volunteer screening with continuous monitoring.",
+    },
+  },
+  {
+    slug: "cleaning-companies",
+    n: "11",
+    name: "Cleaning Companies",
+    iconKey: "Building2",
+    accent: "role-specific",
+    blurb:
+      "Role-specific screening for residential cleaners, commercial janitorial teams, supervisors, and drivers.",
+    intro:
+      "Cleaning companies hire people into homes, offices, and customer facilities where access, schedules, driving, and contract terms can differ from one role to the next. A practical program maps screening components to those real responsibilities without turning every hire into the same generic package.",
+    defaults: [
+      "Identity inputs and jurisdictional research appropriate to the role",
+      "County criminal searches with broader databases used as supplemental pointers",
+      "Employment verification for selected leadership or specialty roles",
+      "Motor Vehicle Records when driving is an essential duty",
+      "Drug screening or continuous monitoring when policy and applicable law support it",
+    ],
+    regulatory: {
+      label: "Compliance posture",
+      body:
+        "Employers should use clear disclosure and authorization, apply documented job-related criteria, and follow the Fair Credit Reporting Act plus applicable state and local requirements. Customer contract terms may shape a package, but they are not universal legal requirements.",
+    },
+    stats: [
+      { value: "Role-based", label: "Package design", sub: "aligned to duties and access" },
+      { value: "Location-aware", label: "Program scope", sub: "built for each hiring market" },
+      { value: "Repeatable", label: "Hiring workflow", sub: "consistent across branches" },
+    ],
+    posture:
+      "The cleaning-company posture starts with the actual work environment: private-home access, after-hours commercial access, driving, supervision, and any facility or customer terms. Screening supports a broader hiring and risk-management process; it does not guarantee safety or prevent loss.",
+    whenToUse:
+      "Use this page when building packages for residential cleaners, janitorial teams, crew leaders, drivers, or specialty cleaning staff. The detailed guide separates residential and commercial considerations and includes an embedded request form for a customized scope.",
+    relatedChecks: [
+      { slug: "/services/identity-verification", label: "Identity verification" },
+      { slug: "/services/criminal-records", label: "Criminal records" },
+      { slug: "/services/employment-verification", label: "Employment verification" },
+      { slug: "/services/motor-vehicle-records", label: "Motor vehicle records" },
+      { slug: "/services/drug-screening", label: "Drug screening" },
+      { slug: "/services/continuous-monitoring", label: "Continuous monitoring" },
+    ],
+    dark: false,
+    heroImage: {
+      url: "/static/industries/cleaning-companies.svg",
+      alt: "Editorial scene of a uniformed cleaning professional, property key, access badge, and completed screening checklist",
+    },
+  },
+  {
+    slug: "moving-companies",
+    n: "12",
+    name: "Moving Companies",
+    iconKey: "Truck",
+    accent: "crew-ready",
+    blurb:
+      "Background and driver screening for residential movers, household-goods crews, fleet drivers, and storage teams.",
+    intro:
+      "Moving companies hire crews who enter homes, handle household goods, operate vehicles, and represent the brand during a demanding customer experience. Role-specific screening helps owners and operations leaders build a consistent process without treating helpers, drivers, warehouse staff, and regulated roles as interchangeable.",
+    defaults: [
+      "Identity inputs and criminal research appropriate to each role",
+      "Employment verification for selected crew, warehouse, or leadership positions",
+      "Motor Vehicle Records and license status when driving is part of the job",
+      "Drug screening when employer policy or applicable regulation supports it",
+      "Continuous monitoring for appropriate post-hire programs",
+    ],
+    regulatory: {
+      label: "Driver-aware posture",
+      body:
+        "A non-regulated moving driver is not automatically a DOT driver. Screening and driver-program requirements depend on duties, vehicle type, operating authority, jurisdiction, and operating circumstances. Employers should scope regulated roles separately when those rules apply.",
+    },
+    stats: [
+      { value: "Role-based", label: "Crew packages", sub: "helpers, leaders, drivers, storage" },
+      { value: "Driver-aware", label: "MVR scope", sub: "matched to actual duties" },
+      { value: "Scalable", label: "Seasonal hiring", sub: "repeatable across branches" },
+    ],
+    posture:
+      "The moving-company posture separates household-goods access, vehicle responsibility, warehouse access, and regulated driving activity. Background screening is one part of a broader hiring, training, supervision, and risk-management program—not a promise against theft, damage, accidents, or misconduct.",
+    whenToUse:
+      "Use this page for residential and household-goods movers, local or interstate moving operations, storage teams, furniture or appliance delivery crews, white-glove delivery, and last-mile household delivery. The detailed guide includes driver distinctions and a role-based planning matrix.",
+    relatedChecks: [
+      { slug: "/services/identity-verification", label: "Identity verification" },
+      { slug: "/services/criminal-records", label: "Criminal records" },
+      { slug: "/services/employment-verification", label: "Employment verification" },
+      { slug: "/services/motor-vehicle-records", label: "Motor vehicle records" },
+      { slug: "/services/drug-screening", label: "Drug screening" },
+      { slug: "/services/continuous-monitoring", label: "Continuous monitoring" },
+    ],
+    dark: true,
+    heroImage: {
+      url: "/static/industries/moving-companies.svg",
+      alt: "Editorial scene of a residential moving crew, box truck, household boxes, driver credential, and screening checklist",
     },
   },
 ];

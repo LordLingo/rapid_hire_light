@@ -125,6 +125,125 @@ const MARKETING_PAGES = [
   },
 ];
 
+const INDUSTRY_PAGES = [
+  {
+    route: "/industries/cleaning-companies",
+    slug: "cleaning-companies",
+    marker: "prerendered:industries/cleaning-companies",
+    title: "Background Checks for Cleaning Companies | Rapid Hire Solutions",
+    description:
+      "Build a faster, role-specific employee screening program for residential and commercial cleaning teams, including criminal checks, MVRs, employment verification and more.",
+    canonical:
+      "https://www.rapidhiresolutions.com/industries/cleaning-companies",
+    ogImage: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+    name: "Cleaning Companies",
+    h1: "Hire Cleaning Staff You Can Confidently Send Into a Customer’s Home.",
+    faq: [
+      {
+        question: "Should a cleaning company background check every employee?",
+        answer:
+          "A cleaning company should define screening by the duties, access, work location, customer commitments, and applicable law for each role. A residential cleaner, commercial crew leader, office coordinator, and driver may not need identical packages. Employers should document a consistent, job-related process rather than assume one universal package fits every worker.",
+      },
+      {
+        question: "What background checks are commonly considered for residential cleaners?",
+        answer:
+          "Depending on the position, employers may consider identity inputs, appropriate county-level criminal searches, a broader criminal database used as a pointer, federal criminal searches, sex offender registry searches where appropriate and legally permissible, and employment verification. The final scope should reflect the role, jurisdiction, and level of access to customers' homes.",
+      },
+      {
+        question: "Should cleaning-company drivers receive MVR checks?",
+        answer:
+          "When driving a company vehicle or routinely traveling between customer locations is an essential duty, a Motor Vehicle Record can help an employer review license status and relevant driving history. The employer should define the driving criteria in advance and apply them consistently under applicable law.",
+      },
+      {
+        question: "Can screening packages differ by role?",
+        answer:
+          "Yes. A role-specific structure lets a cleaning company align checks with actual responsibilities. Drivers may warrant MVR screening, supervisors may have added access responsibilities, and specialty crews may need checks driven by a facility or customer contract. Rapid Hire can help organize those packages without treating every position the same.",
+      },
+      {
+        question: "How should a cleaning company handle criminal-history information?",
+        answer:
+          "Employers should evaluate screening information according to the Fair Credit Reporting Act, applicable state and local requirements, and their documented hiring policies. Decisions should consider job relevance and any required individualized assessment. This page provides general information, not legal advice.",
+      },
+      {
+        question: "Can Rapid Hire support multi-location cleaning companies?",
+        answer:
+          "Rapid Hire can help structure repeatable packages for different roles, branches, and service environments. The employer remains responsible for identifying the positions, locations, customer commitments, and policies that shape each package.",
+      },
+      {
+        question: "Can screening requirements vary by customer contract?",
+        answer:
+          "Yes. Property managers, healthcare facilities, schools, government contractors, and other customers may set their own access or screening terms. Those requirements are not universal, so they should be reviewed contract by contract and translated into a documented package for the affected roles.",
+      },
+    ],
+    preHydrationBody:
+      `        <nav aria-label="Breadcrumb"><a href="/">Home</a> &middot; <a href="/industries">Industries</a></nav>\n` +
+      `        <h1>Hire Cleaning Staff You Can Confidently Send Into a Customer’s Home.</h1>\n` +
+      `        <p>Your employees may work inside homes, offices, healthcare facilities, schools, and other spaces where customers expect trust from the moment the door opens. Rapid Hire helps cleaning companies build practical screening programs without turning hiring into a bottleneck.</p>\n` +
+      `        <p><a href="/services/criminal-records">Criminal screening</a>, <a href="/services/employment-verification">employment verification</a>, <a href="/services/motor-vehicle-records">Motor Vehicle Records</a>, and <a href="/get-a-quote?industry=cleaning-companies">a custom cleaning-company quote</a>.</p>`,
+  },
+  {
+    route: "/industries/moving-companies",
+    slug: "moving-companies",
+    marker: "prerendered:industries/moving-companies",
+    title: "Background Checks for Moving Companies | Rapid Hire Solutions",
+    description:
+      "Screen movers, drivers, crew leaders and storage staff with role-specific background checks built for residential and commercial moving companies.",
+    canonical:
+      "https://www.rapidhiresolutions.com/industries/moving-companies",
+    ogImage: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+    name: "Moving Companies",
+    h1: "Screen the People Customers Trust With Everything They Own.",
+    faq: [
+      {
+        question: "What background checks are commonly used for movers?",
+        answer:
+          "Depending on the role, a moving company may consider identity inputs, role-appropriate county and broader criminal searches, employment verification, and driving-record checks for employees who operate company vehicles. The package should follow the person's actual duties, locations, and applicable law.",
+      },
+      {
+        question: "Should every moving-company employee receive the same package?",
+        answer:
+          "No. Movers, helpers, crew leaders, drivers, warehouse employees, and dispatch staff carry different responsibilities. A role-based screening matrix helps the employer apply relevant checks consistently without ordering driving or regulated-role components for positions that do not need them.",
+      },
+      {
+        question: "Do moving-company drivers need MVR checks?",
+        answer:
+          "An MVR is commonly considered when driving is an essential job duty because it can confirm license status and report relevant driving history. The scope and decision criteria should be tied to the role, vehicle, jurisdiction, insurance requirements, and documented employer policy.",
+      },
+      {
+        question: "Does every mover fall under DOT regulations?",
+        answer:
+          "No. DOT and FMCSA applicability depends on the employee's duties, vehicle, operating authority, jurisdiction, and operating circumstances. A non-regulated moving driver is not automatically a DOT driver. Employers should determine the applicable requirements for each operation and seek qualified legal or compliance guidance when needed.",
+      },
+      {
+        question: "Can Rapid Hire screen seasonal moving crews?",
+        answer:
+          "Rapid Hire can help a moving company define repeatable packages and a consistent invitation workflow for seasonal or surge hiring. Turnaround still varies by service, jurisdiction, court access, source availability, and third-party response.",
+      },
+      {
+        question: "Can we use different packages for drivers and helpers?",
+        answer:
+          "Yes. A helper package can focus on the checks relevant to home access and property handling, while a driver package can add MVR, license-status, or drug-screening components when appropriate. Regulated-driver requirements should be scoped separately when they apply.",
+      },
+      {
+        question: "Can Rapid Hire support multiple branches?",
+        answer:
+          "Rapid Hire can help organize consistent role packages across branches while accounting for different locations, customer requirements, and job duties. That gives operations leaders a common process without assuming every jurisdiction is identical.",
+      },
+      {
+        question: "Can driver monitoring continue after hire?",
+        answer:
+          "Continuous monitoring is available as a screening component and may be considered for appropriate driving roles. Its use, notices, authorization, review process, and employment decisions should follow applicable law and the employer's documented policy.",
+      },
+    ],
+    preHydrationBody:
+      `        <nav aria-label="Breadcrumb"><a href="/">Home</a> &middot; <a href="/industries">Industries</a></nav>\n` +
+      `        <h1>Screen the People Customers Trust With Everything They Own.</h1>\n` +
+      `        <p>Moving crews enter homes, handle valuable property, operate vehicles, and represent your company during one of the most stressful days your customer will experience. Rapid Hire helps moving companies build role-specific screening programs without unnecessarily slowing down hiring.</p>\n` +
+      `        <p>Built for residential movers and household-goods movers, this guide also covers local moving companies, interstate movers, storage and moving companies, furniture/appliance delivery crews, white-glove delivery businesses, door-to-door moving companies, and last-mile household delivery operations.</p>\n` +
+      `        <p><a href="/industries/transportation">Transportation screening</a>, <a href="/services/motor-vehicle-records">Motor Vehicle Records</a>, <a href="/services/drug-screening">drug screening</a>, and <a href="/get-a-quote?industry=moving-companies">a custom moving-company quote</a>.</p>`,
+  },
+];
+
 function htmlEscape(s) {
   return String(s)
     .replace(/&/g, "&amp;")
@@ -230,7 +349,7 @@ function buildPostHtml(post, shell) {
 }
 
 function buildLandingPageHtml(page, shell) {
-  const jsonld = {
+  const defaultJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: page.title,
@@ -241,6 +360,7 @@ function buildLandingPageHtml(page, shell) {
       name: "Rapid Hire Solutions",
     },
   };
+  const jsonld = page.jsonld ?? defaultJsonLd;
   return injectHead(shell, {
     marker: page.marker ?? `prerendered:lp/${page.slug}`,
     title: page.title,
@@ -251,9 +371,63 @@ function buildLandingPageHtml(page, shell) {
     ogDescription: page.description,
     twitterDescription: page.description,
     jsonld,
+    jsonLdKey: page.jsonLdKey,
     dedupeRouteMetadata: true,
     preHydrationBody: page.preHydrationBody,
   });
+}
+
+function buildIndustryPageHtml(page, shell) {
+  const jsonld = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Industries",
+          item: `${SITE_BASE}/industries`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: page.name,
+          item: page.canonical,
+        },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: page.title.replace(" | Rapid Hire Solutions", ""),
+      description: page.description,
+      url: page.canonical,
+      provider: {
+        "@type": "Organization",
+        name: "Rapid Hire Solutions",
+        url: SITE_BASE,
+      },
+      areaServed: "US",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: page.faq.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
+    },
+  ];
+  return buildLandingPageHtml({
+    ...page,
+    jsonld,
+    jsonLdKey: `industry-company-${page.slug}`,
+  }, shell);
 }
 
 function buildTagHtml(tagEntry, shell) {
@@ -353,6 +527,9 @@ function injectHead(shell, opts) {
   if (opts.dedupeRouteMetadata) html = stripRouteMetadata(html);
 
   // 3) Inject canonical + OG meta + JSON-LD just before </head> (idempotent block).
+  const jsonLdKeyAttribute = opts.jsonLdKey
+    ? ` data-use-seo-key="${htmlEscape(opts.jsonLdKey)}"`
+    : "";
   const inject =
     `\n    <!-- ${opts.marker} -->\n` +
     `    <link rel="canonical" href="${htmlEscape(opts.canonical)}" />\n` +
@@ -365,7 +542,7 @@ function injectHead(shell, opts) {
     `    <meta name="twitter:title" content="${htmlEscape(opts.title)}" />\n` +
     `    <meta name="twitter:image" content="${htmlEscape(opts.ogImage)}" />\n` +
     (opts.twitterDescription ? `    <meta name="twitter:description" content="${htmlEscape(opts.twitterDescription)}" />\n` : "") +
-    `    <script type="application/ld+json">${JSON.stringify(opts.jsonld)}</script>\n  `;
+    `    <script type="application/ld+json"${jsonLdKeyAttribute}>${JSON.stringify(opts.jsonld)}</script>\n  `;
   html = html.replace(/<\/head>/i, `${inject}</head>`);
   // 4) Replace whatever's inside <div id="root">...</div> with a route-aware
   //    pre-hydration SEO block. Same crawler/auditor rationale as the homepage
@@ -590,6 +767,15 @@ function main() {
     writtenMarketingPages.push({ route: page.route, file: path.relative(DIST, out), title: page.title });
   }
 
+  const writtenIndustryPages = [];
+  for (const page of INDUSTRY_PAGES) {
+    const dir = path.join(DIST, "industries", page.slug);
+    fs.mkdirSync(dir, { recursive: true });
+    const out = path.join(dir, "index.html");
+    fs.writeFileSync(out, minifyHtml(buildIndustryPageHtml(page, shell)), "utf-8");
+    writtenIndustryPages.push({ route: page.route, file: path.relative(DIST, out), title: page.title });
+  }
+
   const manifest = {
     generatedAt: new Date().toISOString(),
     siteBaseUrl: SITE_BASE,
@@ -601,6 +787,7 @@ function main() {
     landingPages: writtenLandingPages,
     partnerPages: writtenPartnerPages,
     marketingPages: writtenMarketingPages,
+    industryPages: writtenIndustryPages,
   };
   fs.writeFileSync(
     path.join(DIST, "_prerender-manifest.json"),
@@ -618,6 +805,9 @@ function main() {
   );
   console.log(
     `[prerender] wrote ${writtenMarketingPages.length} marketing page stubs`,
+  );
+  console.log(
+    `[prerender] wrote ${writtenIndustryPages.length} industry page stubs`,
   );
 }
 

@@ -356,15 +356,15 @@ export default function Industries() {
               85%+ of reports cleared inside 24 hours.
             </p>
             <p className="mt-4 text-[14px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-              Median turnaround across the six verticals on this page,
-              measured from candidate consent to final report. The slow
+              Median turnaround across the original six measured verticals,
+              from candidate consent to final report. The slower
               third comes from court closures, school registrars, and a
               handful of international jurisdictions — not the desk.
             </p>
             <ul className="mt-6 grid grid-cols-3 gap-3 text-center">
               <li className="rounded-2xl border border-border bg-[color:var(--color-paper)] py-3">
                 <p className="font-display text-[18px] leading-none text-[color:var(--color-ink)]">
-                  9
+                  11
                 </p>
                 <p className="mt-1 text-[10.5px] tracking-[0.16em] uppercase text-[color:var(--color-ink-muted)]">
                   Verticals
@@ -405,7 +405,7 @@ export default function Industries() {
             </div>
             <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
               <h2 className="font-display text-[36px] md:text-[48px] leading-[1.1] tracking-[-0.015em] text-[color:var(--color-ink)]">
-                Nine verticals.{" "}
+                Eleven verticals.{" "}
                 <span className="italic font-light text-[color:var(--color-accent-ink)]">
                   One specialist desk.
                 </span>
@@ -476,20 +476,22 @@ export default function Industries() {
             </div>
             <div className="col-span-12 lg:col-span-9 reveal-on-scroll">
               <h2 className="font-display text-[28px] md:text-[36px] leading-[1.1] tracking-[-0.02em] text-[color:var(--color-ink)]">
-                Three more verticals our specialist desk now supports.
+                Five focused specialties with their own screening guides.
               </h2>
               <p className="mt-5 max-w-3xl text-[14.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                Added in 2026 to match the inbound demand we&apos;ve been getting
-                from marketplaces, plant-floor operators, and K-12 districts.
+                Explore detailed guidance for marketplaces, industrial and
+                education teams, plus cleaning and moving operations.
               </p>
             </div>
           </div>
 
-          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[
               { path: "gig-1099", name: "Gig & 1099 Platforms", blurb: "Identity-first, mobile-only onboarding with continuous monitoring for marketplaces." },
               { path: "manufacturing", name: "Manufacturing & Industrial", blurb: "Safety-sensitive scoping, drug & alcohol programs, and credential verification." },
               { path: "education", name: "Education (K-12 + Higher Ed)", blurb: "Fingerprint coordination, sex-offender deep search, annual re-screen for current employees." },
+              { path: "cleaning-companies", name: "Cleaning Companies", blurb: "Role-specific screening for residential cleaners, commercial janitorial teams, supervisors and drivers." },
+              { path: "moving-companies", name: "Moving Companies", blurb: "Background and driver screening for residential movers, household-goods crews, fleet drivers and storage teams." },
             ].map((v) => (
               <li key={v.path} className="reveal-on-scroll">
                 <Link

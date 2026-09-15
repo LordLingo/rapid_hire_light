@@ -28,6 +28,11 @@ export type SeoOptions = {
   /** Optional JSON-LD payload that will be serialized into a <script>. */
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /**
+   * Stable key for adopting route JSON-LD emitted by the prerenderer.
+   * Omit this for pages that do not have a matching prerendered block.
+   */
+  jsonLdKey?: string;
+  /**
    * Optional `<meta name="keywords">` content. Modern Google ignores this
    * tag, but several SEO auditors still flag its absence as a warning, so
    * we render a small, on-topic, non-stuffed list per page when supplied.
@@ -37,6 +42,34 @@ export type SeoOptions = {
 };
 
 const SITE_SUFFIX = "Rapid Hire Solutions";
+export const SEO_JSON_LD_KEY_ATTRIBUTE = "data-use-seo-key";
+
+type SeoJsonLd = Record<string, unknown> | Record<string, unknown>[];
+
+export function reconcileSeoJsonLd(
+  doc: Document,
+  jsonLd: SeoJsonLd,
+  key?: string,
+): HTMLScriptElement {
+  const existing = key
+    ? Array.from(
+        doc.head.querySelectorAll<HTMLScriptElement>(
+          `script[type="application/ld+json"][${SEO_JSON_LD_KEY_ATTRIBUTE}]`,
+        ),
+      ).find(
+        (script) => script.getAttribute(SEO_JSON_LD_KEY_ATTRIBUTE) === key,
+      )
+    : undefined;
+  const script = existing ?? doc.createElement("script");
+
+  script.type = "application/ld+json";
+  script.text = JSON.stringify(jsonLd);
+  script.dataset.useSeo = "true";
+  if (key) script.setAttribute(SEO_JSON_LD_KEY_ATTRIBUTE, key);
+  if (!existing) doc.head.appendChild(script);
+
+  return script;
+}
 
 function setMeta(name: string, content: string, attr: "name" | "property" = "name") {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${name}"]`);
@@ -109,12 +142,11 @@ export function useSeo(opts: SeoOptions): void {
 
     let scriptEl: HTMLScriptElement | null = null;
     if (opts.jsonLd) {
-      scriptEl = document.createElement("script");
-      scriptEl.type = "application/ld+json";
-      scriptEl.text = JSON.stringify(opts.jsonLd);
-      // Tag with a data attribute so we can identify and remove on unmount.
-      scriptEl.dataset.useSeo = "true";
-      document.head.appendChild(scriptEl);
+      scriptEl = reconcileSeoJsonLd(
+        document,
+        opts.jsonLd,
+        opts.jsonLdKey,
+      );
     }
 
     return () => {

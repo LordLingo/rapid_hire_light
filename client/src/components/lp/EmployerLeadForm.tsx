@@ -17,7 +17,6 @@ import {
 import { toast } from "sonner";
 import { useSearch } from "wouter";
 import type {
-  EmployerScreeningLandingPageConfig,
   EmployerLandingPageKey,
   LandingDetailField,
 } from "@/content/employerScreeningLandingPages";
@@ -42,6 +41,7 @@ import {
 import {
   buildEmployerLandingHubspotBody,
   buildEmployerLandingPayload,
+  type EmployerLeadFormPageConfig,
   type EmployerLandingFormValues,
 } from "@/lib/employerLandingForms";
 import {
@@ -51,7 +51,9 @@ import {
 } from "@/lib/staffingLp";
 
 interface EmployerLeadFormProps {
-  readonly config: EmployerScreeningLandingPageConfig;
+  readonly config: EmployerLeadFormPageConfig;
+  readonly formId?: LeadFormId;
+  readonly anchorId?: string;
 }
 
 const EMPLOYER_FORM_IDS_BY_KEY: Record<
@@ -281,7 +283,12 @@ function ServicesMultiSelect({
 
 export default function EmployerLeadForm({
   config,
+  formId,
+  anchorId = "lead-form",
 }: EmployerLeadFormProps) {
+  const analyticsFormId =
+    formId ??
+    (config.key ? EMPLOYER_FORM_IDS_BY_KEY[config.key] : undefined);
   const search = useSearch();
   const [tracking, setTracking] = useState<TrackingParams>(() =>
     initTracking(search),
@@ -482,9 +489,13 @@ export default function EmployerLeadForm({
         toast.error(message);
         return;
       }
-      if (!leadSuccessTrackedRef.current) {
+      if (!leadSuccessTrackedRef.current && analyticsFormId) {
         leadSuccessTrackedRef.current = true;
-        pushLeadSubmitSuccess(EMPLOYER_FORM_IDS_BY_KEY[config.key], attribution.clientSubmissionId, attribution.leadSource);
+        pushLeadSubmitSuccess(
+          analyticsFormId,
+          attribution.clientSubmissionId,
+          attribution.leadSource,
+        );
       }
       setSubmitted(true);
       toast.success(
@@ -502,7 +513,7 @@ export default function EmployerLeadForm({
   if (submitted) {
     return (
       <div
-        id="lead-form"
+        id={anchorId}
         className="scroll-mt-24"
       >
         <div
@@ -530,7 +541,7 @@ export default function EmployerLeadForm({
   }
 
   return (
-    <div id="lead-form" className="scroll-mt-24">
+    <div id={anchorId} className="scroll-mt-24">
     <form
       noValidate
       onSubmit={onSubmit}

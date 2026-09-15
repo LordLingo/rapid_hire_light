@@ -104,6 +104,8 @@ describe("privacy-safe employer lead success event", () => {
       integrations: "integrations_request",
       referral: "referral_partner",
       staffingLegacy: "staffing_legacy",
+      cleaningCompanies: "cleaning_companies",
+      movingCompanies: "moving_companies",
     });
     expect(LEAD_FORM_PAGE_PATHS).toEqual({
       get_a_quote: "/get-a-quote",
@@ -118,7 +120,12 @@ describe("privacy-safe employer lead success event", () => {
       integrations_request: "/integrations",
       referral_partner: "/referral",
       staffing_legacy: "/lp/staffing",
+      cleaning_companies: "/industries/cleaning-companies",
+      moving_companies: "/industries/moving-companies",
     });
+    expect(new Set(Object.values(LEAD_FORM_IDS)).size).toBe(
+      Object.values(LEAD_FORM_IDS).length,
+    );
   });
 
   it("pushes the approved privacy-safe schema and deduplicates by submission ID", () => {
