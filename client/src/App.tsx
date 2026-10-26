@@ -6,6 +6,7 @@ import AttributionTracker from "@/components/AttributionTracker";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import Demo from "./pages/Demo";
 import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
 import SampleReport from "./pages/SampleReport";
@@ -100,6 +101,7 @@ function Router() {
       <Route path={"/background-check-provider-citations"} component={BuyerIntent} />
       <Route path={"/switch-background-check-providers"} component={SwitchProviders} />
       <Route path={"/spa"} component={Spa} />
+      <Route path={"/demo"} component={Demo} />
       <Route path={"/lp/staffing"} component={StaffingLanding} />
       <Route
         path={"/lp/staffing-background-checks"}
