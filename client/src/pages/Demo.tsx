@@ -301,8 +301,7 @@ export default function Demo() {
               </p>
               <dl className="contact">
                 <div><dt>Phone</dt><dd>{DEMO_PHONE_DISPLAY}</dd></div>
-                <div><dt>Pricing requests</dt><dd>quotes@rapidhiresolutions.com</dd></div>
-                <div><dt>New business</dt><dd>sales@rapidhiresolutions.com</dd></div>
+                <div><dt>Pricing and new business</dt><dd>constanta@rapidhiresolutions.com</dd></div>
               </dl>
             </div>
             <div className="book-card">
