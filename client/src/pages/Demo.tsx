@@ -82,7 +82,7 @@ const COMPARE = [
 ];
 
 const STEPS = [
-  ["Book 15 minutes", "Pick a time with Mark. Bring what you pay per check today if you have it handy."],
+  ["Book 15 minutes", "Pick a time that works for you. Bring what you pay per check today if you have it handy."],
   ["Run one real check", "We run the same search your current provider runs, on the same candidate, at no cost to you."],
   ["Compare the results", "Put the price, the turnaround and the support experience next to each other and decide."],
 ];
@@ -296,8 +296,8 @@ export default function Demo() {
               <span className="eyebrow">Book your demo</span>
               <h2>See how much you'd save in 15 minutes.</h2>
               <p className="intro">
-                You'll meet with Mark Lingo, our founder. He'll walk you through the platform and set up your free
-                side-by-side test.
+                You'll meet with Mark Lingo, our founder, and Constanta from our sales team. They'll walk you through
+                the platform and set up your free side-by-side test.
               </p>
               <dl className="contact">
                 <div><dt>Phone</dt><dd>{DEMO_PHONE_DISPLAY}</dd></div>
@@ -306,12 +306,21 @@ export default function Demo() {
               </dl>
             </div>
             <div className="book-card">
-              <div className="who">
-                <div className="avatar" aria-hidden="true">ML</div>
-                <div>
-                  <strong>Mark Lingo</strong>
-                  <small>Founder, {BRAND_NAME}</small>
-                </div>
+              <div className="team">
+                {[
+                  { initials: "ML", name: "Mark Lingo", role: "Founder" },
+                  { initials: "C", name: "Constanta", role: "Sales" },
+                ].map((p) => (
+                  <div className="who" key={p.name}>
+                    <div className="avatar" aria-hidden="true">{p.initials}</div>
+                    <div>
+                      <strong>{p.name}</strong>
+                      <small>
+                        {p.role}, {BRAND_NAME}
+                      </small>
+                    </div>
+                  </div>
+                ))}
               </div>
               <CheckList
                 items={[

@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { resolveDemoBookingCta, DEMO_PHONE_TEL } from "./demoPage";
+import { resolveDemoBookingCta, DEMO_PHONE_TEL, DEMO_BOOKING_URL } from "./demoPage";
 
 describe("/demo booking CTA", () => {
   it("uses the booking page when an https link is set", () => {
     const cta = resolveDemoBookingCta("https://calendar.app.google/abc123");
     expect(cta).toEqual({
       href: "https://calendar.app.google/abc123",
-      label: "Pick a Time on Mark's Calendar",
+      label: "Pick a Time for Your Demo",
       external: true,
     });
   });
@@ -17,6 +17,10 @@ describe("/demo booking CTA", () => {
     const cta = resolveDemoBookingCta("");
     expect(cta.href).toBe(DEMO_PHONE_TEL);
     expect(cta.external).toBe(false);
+  });
+
+  it("ships with the live booking page", () => {
+    expect(resolveDemoBookingCta(DEMO_BOOKING_URL).external).toBe(true);
   });
 
   it("rejects non-https links", () => {
