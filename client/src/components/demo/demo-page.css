@@ -128,9 +128,9 @@
 .rhs-demo .contact dt{color:var(--ink-muted)}
 .rhs-demo .contact dd{margin:0;color:var(--ink);font-weight:500;word-break:break-all;font-variant-numeric:tabular-nums}
 .rhs-demo .book-card{background:var(--surface);border:1px solid var(--border);border-radius:21px;padding:29px;display:flex;flex-direction:column;gap:20px;box-shadow:var(--shadow-paper);min-width:0}
-.rhs-demo .team{display:flex;flex-direction:column;gap:14px}
+.rhs-demo .team{display:flex;flex-direction:column;gap:16px}
 .rhs-demo .who{display:flex;gap:14px;align-items:center}
-.rhs-demo .avatar{width:52px;height:52px;border-radius:50%;background:var(--tint);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--serif);font-size:20px;flex:none}
+.rhs-demo .avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;background:var(--tint);box-shadow:0 0 0 3px var(--surface),0 0 0 4px var(--border);flex:none}
 .rhs-demo .who strong{display:block;font-weight:600}
 .rhs-demo .who small{display:block;color:var(--ink-muted);font-size:13.5px}
 .rhs-demo .book-card .btn{width:100%}

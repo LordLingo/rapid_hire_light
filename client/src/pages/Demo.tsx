@@ -307,11 +307,11 @@ export default function Demo() {
             <div className="book-card">
               <div className="team">
                 {[
-                  { initials: "ML", name: "Mark Lingo", role: "Sales" },
-                  { initials: "C", name: "Constanta", role: "Sales" },
+                  { photo: "/static/demo/mark-lingo.jpg", name: "Mark Lingo", role: "Sales" },
+                  { photo: "/static/demo/constanta.jpg", name: "Constanta", role: "Sales" },
                 ].map((p) => (
                   <div className="who" key={p.name}>
-                    <div className="avatar" aria-hidden="true">{p.initials}</div>
+                    <img className="avatar" src={p.photo} alt={`Photo of ${p.name}`} width={80} height={80} loading="lazy" />
                     <div>
                       <strong>{p.name}</strong>
                       <small>
