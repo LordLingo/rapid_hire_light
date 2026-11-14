@@ -1,3 +1,5 @@
+import { useSeo } from "@/hooks/useSeo";
+import { routeSeo } from "@/lib/routeSeo";
 /*
   Editorial Calm — Pricing page
   Layout:
@@ -150,6 +152,18 @@ const PRICING_FAQ = [
 ];
 
 export default function Pricing() {
+  useSeo({
+    title: "Background Check Pricing | Rapid Hire Solutions",
+    description: "Background screening pricing for employers.",
+    image: "https://www.rapidhiresolutions.com/static/rhs5-og-card.png",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: "Background Check Pricing | Rapid Hire Solutions",
+      url: "https://www.rapidhiresolutions.com/pricing",
+    },
+    ...routeSeo("/pricing"),
+  });
   const [estimate, setEstimate] = useState<CalculatorEstimate | null>(null);
   const calculatorEndRef = useRef<HTMLDivElement | null>(null);
   const handleEstimate = useCallback((e: CalculatorEstimate) => {

@@ -299,3 +299,36 @@ function escapeHtml(s: string) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
+
+
+describe("five marketing route initial documents", () => {
+  const pages = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, "shared/route-seo.json"), "utf8"));
+  const config = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, "vercel.json"), "utf8"));
+  for (const [route, page] of Object.entries(pages) as [string, any][]) {
+    it(`serves route-specific metadata and body for ${route}`, () => {
+      const file = path.join(DIST, route.slice(1), "index.html");
+      const html = fs.readFileSync(file, "utf8");
+      expect(html).toContain(`<title>${escapeHtml(page.title)}</title>`);
+      expect(html).toContain(`<h1>${escapeHtml(page.h1)}</h1>`);
+      expect(html).toContain(escapeHtml(page.summary));
+      expect(html).toContain(`content="${escapeHtml(page.description)}"`);
+      expect(html).toContain(`href="${page.canonical}"`);
+      expect(html.match(/rel="canonical"/g)).toHaveLength(1);
+      expect(html.match(/<title>/g)).toHaveLength(1);
+      expect(html.match(/<h1[ >]/g)).toHaveLength(1);
+      expect(html).not.toContain("Homepage H1 placeholder");
+      expect(html.match(/application\/ld\+json/g)).toHaveLength(1);
+      expect(html).toContain(`data-use-seo-key="route-seo:${route}"`);
+      expect(html.match(/googletagmanager\.com\/gtm\.js/g)).toHaveLength(1);
+      expect(html.match(/googletagmanager\.com\/ns\.html/g)).toHaveLength(1);
+      for (const link of page.links) expect(html).toContain(`href="${link.href}"`);
+      const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
+      expect(manifest.marketingPages.find((p: any) => p.route === route)?.file).toBe(`${route.slice(1)}/index.html`);
+      for (const suffix of ["", "/"]) {
+        const rule = config.rewrites.find((r: any) => r.source === route + suffix);
+        expect(rule?.destination).toBe(`${route}/index.html`);
+        expect(config.rewrites.indexOf(rule)).toBeLessThan(config.rewrites.length - 1);
+      }
+    });
+  }
+});
