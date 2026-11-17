@@ -388,7 +388,13 @@ export default function Contact() {
             <div className="overflow-hidden rounded-[18px] border border-border paper-shadow bg-white">
               <img
                 src={CONTACT_HERO_URL}
-                alt=""
+                onError={(event) => {
+                  // Use our own asset if the externally hosted photograph is unavailable.
+                  const image = event.currentTarget;
+                  image.onerror = null;
+                  image.src = "/static/contact-hero-fallback.svg";
+                }}
+                alt="Two professionals discussing a hiring plan"
                 loading="eager"
                 decoding="async"
                 className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"

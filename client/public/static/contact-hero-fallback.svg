@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 840" role="img" aria-labelledby="title desc">
+<title id="title">A helpful conversation about hiring</title><desc id="desc">Editorial illustration of two professionals speaking across a table.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5f5ef"/><stop offset="1" stop-color="#e2ebef"/></linearGradient>
+ <linearGradient id="window" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d7e7ee"/><stop offset="1" stop-color="#f0f4f2"/></linearGradient>
+</defs>
+<rect width="800" height="840" fill="url(#bg)"/>
+<circle cx="665" cy="148" r="204" fill="#c8dfe4" opacity=".45"/>
+<rect x="65" y="60" width="670" height="540" rx="18" fill="#fafbf7" opacity=".8"/>
+<rect x="105" y="95" width="590" height="384" rx="10" fill="url(#window)"/>
+<path d="M397 95v384M105 315h590" stroke="#fafbf7" stroke-width="20"/>
+<path d="M117 457c82-90 163-85 253-8 114-133 213-120 313-25v55H117Z" fill="#b6ced1" opacity=".55"/>
+<path d="M0 577h800v263H0Z" fill="#e2ded1"/>
+<ellipse cx="405" cy="673" rx="320" ry="45" fill="#bec7c6" opacity=".38"/>
+<!-- person left -->
+<path d="M78 792v-92c0-97 62-163 161-163s161 72 161 163v92Z" fill="#38596a"/>
+<path d="M169 541l69 93 71-93" fill="#f4f0e7"/>
+<path d="M199 537v-47h77v47l-39 57Z" fill="#bc8065"/>
+<ellipse cx="238" cy="406" rx="88" ry="106" fill="#c98e73"/>
+<path d="M149 410c-14-99 26-142 102-143 71 0 103 50 76 146-14-10-21-24-24-50-54 9-99-4-141-23 0 28-4 50-13 70Z" fill="#263d46"/>
+<path d="M206 439q32 22 64 0" fill="none" stroke="#8c5347" stroke-width="5" stroke-linecap="round"/>
+<circle cx="204" cy="405" r="5" fill="#263d46"/><circle cx="269" cy="405" r="5" fill="#263d46"/>
+<!-- person right -->
+<path d="M454 792v-95c0-101 59-162 157-162 99 0 159 66 159 162v95Z" fill="#9bbaa9"/>
+<path d="M538 550l72 86 74-86" fill="#f6f4eb"/>
+<path d="M570 539v-52h83v52l-41 55Z" fill="#d6a083"/>
+<ellipse cx="611" cy="410" rx="88" ry="109" fill="#e0ad90"/>
+<path d="M524 412c-10-95 21-149 90-150 72-1 112 53 85 151-9-12-15-30-16-58-41-10-86-27-117-50-4 44-23 79-42 107Z" fill="#4b463f"/>
+<circle cx="578" cy="410" r="5" fill="#49382f"/><circle cx="643" cy="410" r="5" fill="#49382f"/>
+<path d="M582 448q30 21 60-1" fill="none" stroke="#ac725b" stroke-width="5" stroke-linecap="round"/>
+<!-- table & notebook -->
+<path d="M92 738h620v32H92Z" fill="#b39478"/><path d="M113 770h22v70h-22Zm554 0h22v70h-22Z" fill="#836f62"/>
+<path d="M315 726h179l-25 16H338Z" fill="#f9faf5" stroke="#889a9b" stroke-width="3"/>
+<path d="M357 728h112" stroke="#9aabad" stroke-width="3"/>
+<rect x="351" y="704" width="112" height="12" rx="6" fill="#bac5c4"/>
+</svg>
