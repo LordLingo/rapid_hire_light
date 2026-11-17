@@ -26,7 +26,7 @@ import HeroMiniStats from "@/components/heroes/HeroMiniStats";
   lose the responsiveness claim, just the placeholder caller chrome.
 */
 const CONTACT_HERO_URL =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310419663030097116/8y99ZZZXXUWxvnE7c5sDkk/contact-hero-NCQW8S8RJYNrqZZjYCgptA.webp";
+  "https://images.pexels.com/photos/8192179/pexels-photo-8192179.jpeg?auto=compress&cs=tinysrgb&w=1000";
 // §134: shared field-level validation — surfaces inline red borders
 // (.form-field--invalid) and short helper text per field instead of
 // relying on a single page-level toast for missing data.
@@ -394,7 +394,7 @@ export default function Contact() {
                   image.onerror = null;
                   image.src = "/static/contact-hero-fallback.svg";
                 }}
-                alt="Two professionals discussing a hiring plan"
+                alt="Support representative wearing a headset at her office desk"
                 loading="eager"
                 decoding="async"
                 className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
