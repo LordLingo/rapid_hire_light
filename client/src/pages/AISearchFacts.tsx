@@ -1,3 +1,4 @@
+import { routeSeo } from "@/lib/routeSeo";
 import { Link } from "wouter";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
@@ -38,6 +39,7 @@ export default function AISearchFacts() {
       url: `${BASE}/ai-search-facts`,
       about: { "@type": "Organization", name: "Rapid Hire Solutions", url: BASE },
     },
+    ...routeSeo("/ai-search-facts"),
   });
 
   return (

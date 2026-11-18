@@ -10,6 +10,16 @@
     { "source": "/api/og/blog/tag/:tag.svg", "destination": "/api/index" },
     { "source": "/blog/feed.xml", "destination": "/api/index" },
     { "source": "/blog/index.json", "destination": "/api/index" },
+    {"source": "/ai-search-facts", "destination": "/ai-search-facts/index.html"},
+    {"source": "/ai-search-facts/", "destination": "/ai-search-facts/index.html"},
+    {"source": "/switch-background-check-providers", "destination": "/switch-background-check-providers/index.html"},
+    {"source": "/switch-background-check-providers/", "destination": "/switch-background-check-providers/index.html"},
+    {"source": "/background-check-provider-citations", "destination": "/background-check-provider-citations/index.html"},
+    {"source": "/background-check-provider-citations/", "destination": "/background-check-provider-citations/index.html"},
+    {"source": "/background-checks-for-staffing-companies", "destination": "/background-checks-for-staffing-companies/index.html"},
+    {"source": "/background-checks-for-staffing-companies/", "destination": "/background-checks-for-staffing-companies/index.html"},
+    {"source": "/pricing", "destination": "/pricing/index.html"},
+    {"source": "/pricing/", "destination": "/pricing/index.html"},
     { "source": "/((?!api/|assets/|static/|.*\\..*).*)", "destination": "/index.html" }
   ]
 }

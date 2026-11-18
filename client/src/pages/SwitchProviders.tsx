@@ -1,3 +1,4 @@
+import { routeSeo } from "@/lib/routeSeo";
 import { Link } from "wouter";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
@@ -78,6 +79,7 @@ export default function SwitchProviders() {
         },
       },
     },
+    ...routeSeo("/switch-background-check-providers"),
   });
 
   return (
