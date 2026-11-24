@@ -19,7 +19,7 @@
     Closing dark CTA band — back to /services + forward to /contact.
 
   Copy is original to Rapid Hire Solutions and grounded in claims the rest
-  of the site already publishes (FCRA, HIPAA, SOC 2 Type II, U.S.-based
+  of the site already publishes (FCRA, HIPAA, PBSA, U.S.-based
   ops, 7am–7pm CT support window). No third-party CRA brand is referenced
   anywhere on the page (anti-regression assertion guards that).
 */
@@ -307,7 +307,7 @@ export default function Industries() {
   useSeo({
     title: "Industries we screen for — Rapid Hire Solutions",
     description:
-      "Pre-built screening packages for healthcare, transportation, staffing, finance, retail, and nonprofit hiring. FCRA-compliant by default, SOC 2 Type II, U.S.-based researchers — built around how your sector actually hires.",
+      "Pre-built screening packages for healthcare, transportation, staffing, finance, retail, and nonprofit hiring. FCRA-compliant by default, PBSA accredited, U.S.-based researchers — built around how your sector actually hires.",
   });
 
   return (

@@ -38,19 +38,19 @@ describe("§68 — credibility bar mounted between hero and §01", () => {
   });
 });
 
-describe("§68 — three certification badges (soc2 → pbsa → fcra)", () => {
+describe("§68 — two certification badges (pbsa → fcra), no SOC 2", () => {
   it("declares CRED_BADGES in the right order with the /trust slug → /static/ badge mapping", () => {
     const arr = compliance.match(/const CRED_BADGES:[\s\S]*?\];/)?.[0] ?? "";
     expect(arr).toBeTruthy();
-    const i1 = arr.indexOf('slug: "soc2"');
+    // Rapid Hire is not SOC 2 attested (only its host is): no soc2 badge.
+    expect(arr).not.toContain('slug: "soc2"');
     const i2 = arr.indexOf('slug: "pbsa"');
     const i3 = arr.indexOf('slug: "fcra"');
-    expect(i1).toBeGreaterThan(-1);
-    expect(i2).toBeGreaterThan(i1);
+    expect(i2).toBeGreaterThan(-1);
     expect(i3).toBeGreaterThan(i2);
     // §189: migrated from /manus-storage/ to /static/ so the assets ship
     // with the Vercel build. Each slug must map to its bundled badge image.
-    expect(arr).toMatch(/\/static\/badge-soc2-type2\.webp/);
+    expect(arr).not.toMatch(/badge-soc2/);
     expect(arr).toMatch(/\/static\/badge-pbsa-member\.webp/);
     expect(arr).toMatch(/\/static\/badge-fcra-aligned\.webp/);
   });
@@ -62,8 +62,7 @@ describe("§68 — three certification badges (soc2 → pbsa → fcra)", () => {
   });
 
   it("exposes the right human-readable badge titles + captions", () => {
-    expect(compliance).toMatch(/title:\s*"SOC 2 Type II"/);
-    expect(compliance).toMatch(/caption:\s*"Attested annually"/);
+    expect(compliance).not.toMatch(/SOC 2/);
     expect(compliance).toMatch(/title:\s*"PBSA Member"/);
     expect(compliance).toMatch(/caption:\s*"In good standing"/);
     expect(compliance).toMatch(/title:\s*"FCRA-aligned"/);

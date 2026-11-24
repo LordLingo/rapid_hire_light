@@ -156,7 +156,7 @@ describe("CTA, metadata, and responsive contracts", () => {
 
   it("uses only the trust labels documented by the repository trust page", () => {
     expect(HEADER).toContain("FCRA-aligned");
-    expect(HEADER).toContain("SOC 2 Type II");
+    expect(HEADER).not.toContain("SOC 2");
     expect(HEADER).toContain("PBSA Member");
     expect(HEADER).not.toContain("FCRA Certified");
     expect(HEADER).not.toContain("HIPAA Compliant");

@@ -50,31 +50,31 @@ describe("§62 — Compliance hero credibility badges", () => {
     expect(imgIdx).toBeGreaterThan(frameIdx);
   });
 
-  it("renders the SOC 2 top-right badge with all three text rows in order", () => {
+  it("renders the PBSA top-right badge with all three text rows in order", () => {
     const slice = visualSlice();
-    const soc2Idx = slice.indexOf('data-testid="compliance-hero-badge-soc2"');
-    expect(soc2Idx, "SOC 2 badge testid present").toBeGreaterThan(-1);
-    const eyebrow = slice.indexOf("SOC 2 Type II", soc2Idx);
-    const headline = slice.indexOf("Re-attested every 12 months", soc2Idx);
-    const caption = slice.indexOf("Report available under NDA", soc2Idx);
-    expect(eyebrow).toBeGreaterThan(soc2Idx);
+    const topIdx = slice.indexOf('data-testid="compliance-hero-badge-pbsa"');
+    expect(topIdx, "PBSA badge testid present").toBeGreaterThan(-1);
+    const eyebrow = slice.indexOf("PBSA accredited", topIdx);
+    const headline = slice.indexOf("Held to industry standards", topIdx);
+    const caption = slice.indexOf("FCRA-compliant, U.S.-based reps", topIdx);
+    expect(eyebrow).toBeGreaterThan(topIdx);
     expect(headline).toBeGreaterThan(eyebrow);
     expect(caption).toBeGreaterThan(headline);
   });
 
-  it("SOC 2 badge uses the dark footer surface tokens", () => {
+  it("PBSA badge uses the dark footer surface tokens", () => {
     const slice = visualSlice();
-    const soc2Idx = slice.indexOf('data-testid="compliance-hero-badge-soc2"');
-    const card = slice.slice(soc2Idx, soc2Idx + 1500);
+    const topIdx = slice.indexOf('data-testid="compliance-hero-badge-pbsa"');
+    const card = slice.slice(topIdx, topIdx + 1500);
     expect(card).toMatch(/bg-\[color:var\(--color-footer\)\]/);
     expect(card).toMatch(/text-\[color:var\(--color-footer-foreground\)\]/);
     expect(card).toMatch(/colorScheme: "dark"/);
   });
 
-  it("SOC 2 badge is positioned absolutely overhanging the top-right corner at sm: and up", () => {
+  it("PBSA badge is positioned absolutely overhanging the top-right corner at sm: and up", () => {
     const slice = visualSlice();
-    const soc2Idx = slice.indexOf('data-testid="compliance-hero-badge-soc2"');
-    const card = slice.slice(soc2Idx, soc2Idx + 1500);
+    const topIdx = slice.indexOf('data-testid="compliance-hero-badge-pbsa"');
+    const card = slice.slice(topIdx, topIdx + 1500);
     // Hidden on mobile (xs), shown sm: and up:
     expect(card).toMatch(/hidden sm:block/);
     expect(card).toMatch(/absolute/);
@@ -113,7 +113,7 @@ describe("§62 — Compliance hero credibility badges", () => {
     const card = slice.slice(dispIdx, dispIdx + 1500);
     expect(card).toMatch(/hidden sm:block/);
     expect(card).toMatch(/absolute/);
-    // Negative bottom + left offsets mirror the SOC 2 overhang across the
+    // Negative bottom + left offsets mirror the PBSA overhang across the
     // diagonal so the pair reads as a balanced floating-card composition.
     expect(card).toMatch(/-bottom-6/);
     expect(card).toMatch(/-left-4/);
@@ -134,11 +134,11 @@ describe("§62 — Compliance hero credibility badges", () => {
   it("both badges sit INSIDE the hero visual wrapper (above afterLede)", () => {
     // Both testids must appear before `afterLede={` in the file.
     const afterLedeIdx = compliance.indexOf("afterLede={");
-    const soc2Idx = compliance.indexOf('data-testid="compliance-hero-badge-soc2"');
+    const topIdx = compliance.indexOf('data-testid="compliance-hero-badge-pbsa"');
     const dispIdx = compliance.indexOf('data-testid="compliance-hero-badge-dispute"');
-    expect(soc2Idx).toBeGreaterThan(-1);
+    expect(topIdx).toBeGreaterThan(-1);
     expect(dispIdx).toBeGreaterThan(-1);
-    expect(soc2Idx).toBeLessThan(afterLedeIdx);
+    expect(topIdx).toBeLessThan(afterLedeIdx);
     expect(dispIdx).toBeLessThan(afterLedeIdx);
   });
 

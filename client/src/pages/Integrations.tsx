@@ -430,8 +430,7 @@ export default function Integrations() {
                 rides through the integration without manual re-entry.
               </p>
               <p className="mt-3 text-[12.5px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-                SOC 2 Type II · GDPR-aligned · end-to-end encrypted in transit
-                and at rest.
+                GDPR-aligned · end-to-end encrypted in transit and at rest.
               </p>
             </div>
             <div
@@ -441,7 +440,7 @@ export default function Integrations() {
               <figure className="mx-auto max-w-[560px] overflow-hidden rounded-[20px] border border-border bg-[color:var(--color-paper)] p-3 shadow-[0_1px_2px_rgba(16,42,75,0.08),0_12px_32px_-16px_rgba(16,42,75,0.22)]">
                 <img
                   src="/static/integrations-infographic.webp"
-                  alt="Vertical infographic showing how Rapid Hire integrates with ATS and HRIS systems: candidate hire → secure data sync → background check software running identity verification, criminal records, employment verification, and education verification, with status updates flowing back into the ATS/HRIS, ending in saved time, reduced risk, improved efficiency, and a better candidate experience. Footer notes SOC 2 Type II, GDPR compliance, and end-to-end encryption."
+                  alt="Vertical infographic showing how Rapid Hire integrates with ATS and HRIS systems: candidate hire → secure data sync → background check software running identity verification, criminal records, employment verification, and education verification, with status updates flowing back into the ATS/HRIS, ending in saved time, reduced risk, improved efficiency, and a better candidate experience. Footer notes GDPR compliance and end-to-end encryption."
                   loading="lazy"
                   decoding="async"
                   className="block h-auto w-full rounded-[14px]"

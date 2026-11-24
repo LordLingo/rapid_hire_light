@@ -9,16 +9,18 @@
     Hero with right-rail verification card (compliance contact + how to
       request the attestation pack — mirrors the precisehire structure
       but on our own warm-paper / Fraunces / sky-halo system).
-    Trio band — three certification badges in a single white card so the
+    Badge band — two certification badges in a single white card so the
       whole row reads as one clean credential block before the deep dive.
-    01 — paper        SOC 2 Type II      (scope · cadence · how to verify)
-    02 — DARK BAND    PBSA Member        (scope · cadence · how to verify)
-    03 — paper        FCRA-aligned       (scope · cadence · how to verify)
+    01 — paper        PBSA Member        (scope · cadence · how to verify)
+    02 — DARK BAND    FCRA-aligned       (scope · cadence · how to verify)
+
+  Rapid Hire Solutions does NOT hold a SOC 2 / SOC 2 Type II attestation
+  (only its hosting provider does). Never add a SOC 2 claim back.
     Procurement pack — "one email gets you the full pack" mid-page CTA.
     Closing dark CTA band — back to /compliance + forward to /compliance/audit.
 
   Copy is original to Rapid Hire and grounded in claims the rest of the
-  site already makes (SOC 2 Type II, FCRA, U.S.-based, FCRA-certified,
+  site already makes (PBSA, FCRA, U.S.-based, FCRA-certified,
   two-step adverse-action). Where the upstream reference page used
   Rapid-Hire-specific stack details we cannot verify, the language is
   generalised to defensible, truthful framing.
@@ -41,8 +43,6 @@ import { useSeo } from "@/hooks/useSeo";
 
 /* ---------- assets ---------- */
 
-const BADGE_SOC2_URL =
-  "/static/badge-soc2-type2.webp";
 const BADGE_PBSA_URL =
   "/static/badge-pbsa-member.webp";
 const BADGE_FCRA_URL =
@@ -58,7 +58,7 @@ const COMPLIANCE_PHONE_TEL = "+18667735486";
 
 type Badge = {
   /** Stable slug used as section anchor + testid suffix. */
-  slug: "soc2" | "pbsa" | "fcra";
+  slug: "pbsa" | "fcra";
   /** Image asset URL on /manus-storage. */
   src: string;
   /** Caption in the trio band (one short line). */
@@ -83,28 +83,10 @@ type Badge = {
 
 const BADGES: ReadonlyArray<Badge> = [
   {
-    slug: "soc2",
-    src: BADGE_SOC2_URL,
-    caption: "Attested annually by an independent CPA firm.",
-    n: "01",
-    title: "SOC 2 Type II",
-    accent: "attested annually",
-    intro:
-      "Our SOC 2 Type II report is the operational backbone of how we run a screening platform. It is not a one-time security review — it is a rolling, evidence-based attestation that the controls we say we run, we actually run, every day, for a year at a time.",
-    scope:
-      "The report covers the AICPA Trust Services Criteria for Security, Availability, and Confidentiality across the production environment that hosts our screening platform, candidate portal, researcher workbench, adverse-action workflow, and client portal — every system that touches a consumer report or PII in flight or at rest.",
-    cadence:
-      "The audit covers a rolling 12-month observation window and is re-attested every calendar year by an independent CPA firm. The current report is available under mutual NDA on request, typically within one business day.",
-    verify:
-      "Email compliance@rapidhiresolutions.com from a corporate domain with the words \"SOC 2 request\" in the subject. We will send back a mutual NDA, the latest report, and the bridge letter covering the gap to today.",
-    attribution: "Independent CPA firm — name disclosed under NDA.",
-    dark: false,
-  },
-  {
     slug: "pbsa",
     src: BADGE_PBSA_URL,
     caption: "Professional Background Screening Association — member in good standing.",
-    n: "02",
+    n: "01",
     title: "PBSA Member",
     accent: "in good standing",
     intro:
@@ -116,13 +98,13 @@ const BADGES: ReadonlyArray<Badge> = [
     verify:
       "Verify our listing directly at thepbsa.org. If you need our internal member number on a vendor-risk form, email compliance@rapidhiresolutions.com and we will send it within one business day.",
     attribution: "Professional Background Screening Association (PBSA).",
-    dark: true,
+    dark: false,
   },
   {
     slug: "fcra",
     src: BADGE_FCRA_URL,
     caption: "Fair Credit Reporting Act — 15 U.S.C. §1681 workflow, end to end.",
-    n: "03",
+    n: "02",
     title: "FCRA-aligned",
     accent: "end to end",
     intro:
@@ -134,7 +116,7 @@ const BADGES: ReadonlyArray<Badge> = [
     verify:
       "Email compliance@rapidhiresolutions.com or call our compliance desk directly at (866) 773-5486. We will send the current model-notice pack and walk you through the dispute flow on the same call.",
     attribution: "Reviewed annually by outside FCRA counsel.",
-    dark: false,
+    dark: true,
   },
 ];
 
@@ -144,7 +126,7 @@ export default function Trust() {
   useSeo({
     title: "Trust & verification — Rapid Hire Solutions",
     description:
-      "Every certification mark on the Rapid Hire Solutions site is verifiable. SOC 2 Type II attested annually by an independent CPA firm, PBSA member in good standing, and an FCRA-aligned workflow reviewed annually by outside counsel. Scope, cadence, and how to verify each one.",
+      "Every certification mark on the Rapid Hire Solutions site is verifiable. PBSA member in good standing and an FCRA-aligned workflow reviewed annually by outside counsel. Scope, cadence, and how to verify each one.",
   });
 
   return (
@@ -195,8 +177,7 @@ export default function Trust() {
               One email gets you the full attestation pack.
             </p>
             <p className="mt-4 text-[14px] leading-[1.7] text-[color:var(--color-ink-soft)]">
-              SOC 2 Type II report, current PBSA membership letter, our FCRA
-              model-notice pack, security questionnaire (CAIQ + SIG Lite
+              Current PBSA membership letter, our FCRA model-notice pack, security questionnaire (CAIQ + SIG Lite
               pre-filled), and a sample data-processing addendum — usually
               inside the same business day.
             </p>
@@ -219,11 +200,11 @@ export default function Trust() {
         className="bg-white"
       >
         <div className="container py-14 md:py-20">
-          <div className="mx-auto max-w-5xl rounded-[22px] border border-border paper-shadow bg-[color:var(--color-paper)] px-6 md:px-12 py-12 md:py-14 text-center">
+          <div className="mx-auto max-w-3xl rounded-[22px] border border-border paper-shadow bg-[color:var(--color-paper)] px-6 md:px-12 py-12 md:py-14 text-center">
             <p className="text-[10.5px] tracking-[0.2em] uppercase text-[color:var(--color-ink-muted)]">
-              Three marks. Each independently verifiable.
+              Two marks. Each independently verifiable.
             </p>
-            <ul className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 items-start">
+            <ul className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
               {BADGES.map((b) => (
                 <li
                   key={b.slug}
@@ -283,8 +264,7 @@ export default function Trust() {
                 </span>
               </h2>
               <p className="mt-6 max-w-[60ch] text-[16px] leading-[1.75] text-[color:var(--color-ink-soft)]">
-                SOC 2 Type II report (under mutual NDA), current PBSA
-                membership letter, FCRA model-notice pack, our security
+                Current PBSA membership letter, FCRA model-notice pack, our security
                 questionnaire pre-filled in both CAIQ and SIG Lite formats,
                 and a sample data-processing addendum. If your vendor-risk
                 team needs a specific format, tell us in the email and we

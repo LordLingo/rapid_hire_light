@@ -507,7 +507,7 @@ const healthcare: EmployerScreeningLandingPageConfig = {
       kind: "bullets",
       heading: "Review the documented trust and candidate-rights resources.",
       body:
-        "Review the Trust page for the current SOC 2 Type II, PBSA Member, and FCRA-aligned information and verification instructions.",
+        "Review the Trust page for the current PBSA Member and FCRA-aligned information and verification instructions.",
       disclaimer:
         "These tools support the employer’s screening process. They are not legal advice, a guarantee of compliance, or a guarantee of results.",
       links: [

@@ -6,7 +6,7 @@
 
   Topic structure mirrors what a typical CRA compliance page covers, but
   every line of copy is original and grounded in claims the rest of the
-  Rapid Hire site already makes (FCRA Certified, SOC 2 Type II, HIPAA,
+  Rapid Hire site already makes (FCRA Certified, PBSA, HIPAA,
   U.S.-based ops, two-step adverse action workflow, etc).
 
   Visual rhythm: warm-paper sections alternate with footer-family dark
@@ -184,8 +184,8 @@ const TRUST_CARDS: { title: string; body: string; icon: React.ReactNode }[] = [
     icon: <ShieldCheck className="size-5" />,
   },
   {
-    title: "SOC 2 Type II",
-    body: "Independently audited controls covering security, availability, confidentiality, and processing integrity.",
+    title: "PBSA accredited",
+    body: "Accredited by the Professional Background Screening Association, the industry body for U.S. employment screening firms.",
     icon: <Lock className="size-5" />,
   },
   {
@@ -203,7 +203,7 @@ const TRUST_CARDS: { title: string; body: string; icon: React.ReactNode }[] = [
 /* ---------- §68: credibility bar (under hero, before §01) ---------- */
 
 type CredItem = {
-  slug: "soc2" | "pbsa" | "fcra";
+  slug: "pbsa" | "fcra";
   badge: string; // /manus-storage URL of the round badge image
   title: string;
   caption: string; // small caption to the left of " · Verify"
@@ -211,13 +211,6 @@ type CredItem = {
 };
 
 const CRED_BADGES: CredItem[] = [
-  {
-    slug: "soc2",
-    badge: "/static/badge-soc2-type2.webp",
-    title: "SOC 2 Type II",
-    caption: "Attested annually",
-    alt: "SOC 2 Type II independently attested annually",
-  },
   {
     slug: "pbsa",
     badge: "/static/badge-pbsa-member.webp",
@@ -589,7 +582,7 @@ const SECURITY_LAYERS: { layer: string; body: string }[] = [
   },
   {
     layer: "Vendor management",
-    body: "Every lab, court runner, and verification vendor is on a SOC 2 program. New vendors don't see candidate data until the BAA and security review close.",
+    body: "Every lab, court runner, and verification vendor goes through a security review. New vendors don't see candidate data until the BAA and that review close.",
   },
 ];
 
@@ -671,8 +664,8 @@ function RightsTable() {
 
 const BADGES: { title: string; body: string; icon: React.ReactNode }[] = [
   {
-    title: "SOC 2 Type II",
-    body: "Annual independent audit of security, availability, confidentiality, and processing-integrity controls.",
+    title: "Data security",
+    body: "TLS 1.2+ in transit, AES-256 at rest, and role-based internal access that is audited weekly.",
     icon: <ShieldCheck className="size-5" />,
   },
   {
@@ -742,7 +735,7 @@ export default function Compliance() {
   useSeo({
     title: "Compliance — FCRA, EEOC, and data-security posture",
     description:
-      "How Rapid Hire Solutions runs an FCRA-certified, SOC 2 Type II, HIPAA-aligned screening program — adverse action workflow, state-law matrix, EEOC individualized assessment, drug screening, data security, and candidate rights.",
+      "How Rapid Hire Solutions runs an FCRA-certified, PBSA-accredited, HIPAA-aligned screening program — adverse action workflow, state-law matrix, EEOC individualized assessment, drug screening, data security, and candidate rights.",
   });
 
   return (
@@ -757,7 +750,7 @@ export default function Compliance() {
             </span>
           </>
         }
-        lede="Every screen Rapid Hire Solutions runs is governed by the same standards you'd want applied to your own employment record — the federal FCRA, the state and local laws that ride on top of it, the EEOC's individualized-assessment guidance, and a SOC 2 Type II / HIPAA-aligned data envelope. Here's how that works in practice."
+        lede="Every screen Rapid Hire Solutions runs is governed by the same standards you'd want applied to your own employment record — the federal FCRA, the state and local laws that ride on top of it, the EEOC's individualized-assessment guidance, and a HIPAA-aligned, encrypted data envelope. Here's how that works in practice."
         visualBleed
         visual={
           <div className="relative w-full">
@@ -772,28 +765,28 @@ export default function Compliance() {
                 className="w-full h-[280px] sm:h-[340px] md:h-[400px] lg:h-[420px] object-cover"
               />
             </div>
-            {/* Top-right credibility badge — SOC 2 Type II.
+            {/* Top-right credibility badge — PBSA accreditation.
                 Overhangs the frame by ~28px (top) and ~24px (right) at md+.
                 Sits OUTSIDE the rounded-frame's overflow-hidden wrapper so it
                 visually floats off the corner instead of covering the subject. */}
             <div
-              data-testid="compliance-hero-badge-soc2"
+              data-testid="compliance-hero-badge-pbsa"
               className="hidden sm:block absolute -top-6 -right-4 md:-top-7 md:-right-6 w-[200px] md:w-[214px] rounded-[14px] paper-shadow bg-[color:var(--color-footer)] text-[color:var(--color-footer-foreground)] px-4 py-3 ring-1 ring-[color:var(--color-accent-halo)]/15"
               style={{ colorScheme: "dark" }}
             >
               <p className="text-[10px] tracking-[0.18em] uppercase text-[color:var(--color-footer-muted)]">
-                SOC 2 Type II
+                PBSA accredited
               </p>
               <p className="mt-1 font-display text-[16px] leading-[1.2] text-[color:var(--color-footer-foreground)]">
-                Re-attested every 12 months
+                Held to industry standards
               </p>
               <p className="mt-1.5 text-[11px] leading-[1.45] text-[color:var(--color-footer-soft-text)]">
-                Report available under NDA
+                FCRA-compliant, U.S.-based reps
               </p>
             </div>
             {/* Bottom-left credibility badge — Dispute rate.
                 Overhangs the frame by ~24px (bottom) and ~24px (left) at md+,
-                mirroring the SOC 2 badge across the diagonal. */}
+                mirroring the PBSA badge across the diagonal. */}
             <div
               data-testid="compliance-hero-badge-dispute"
               className="hidden sm:block absolute -bottom-6 -left-4 md:-bottom-7 md:-left-6 w-[220px] md:w-[232px] rounded-[14px] paper-shadow bg-white px-4 py-3 ring-1 ring-[color:var(--color-border)]"
@@ -844,7 +837,7 @@ export default function Compliance() {
                 "FCRA §§604, 611, 613, 615 workflow",
                 "EEOC 2012 individualized assessment",
                 "35+ state & city overlays tracked",
-                "SOC 2 Type II + HIPAA aligned",
+                "PBSA accredited + HIPAA aligned",
               ].map((label) => (
                 <li key={label} className="flex items-center gap-2">
                   <CheckCircle2
@@ -863,7 +856,7 @@ export default function Compliance() {
         §68 — Credibility bar
         ----------------------
         Horizontal certification strip that sits directly under the hero,
-        before §01. Three round badges (SOC 2 Type II, PBSA Member,
+        before §01. Two round badges (PBSA Member,
         FCRA-aligned) each carry a Verify link that jumps to the matching
         per-badge anchor on /trust (§67), so procurement / vendor-risk
         teams can pivot from "we are compliant" to the attestation

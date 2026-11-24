@@ -99,7 +99,7 @@ export const CASE_STUDY_RESOURCES: CaseStudyResource[] = [
     whatWasBroken:
       "Their previous background check provider struggled with high-volume spikes, leading to massive bottlenecks. Worse, the accuracy of Motor Vehicle Records (MVR) and criminal checks began to slip. The provider frequently flagged minor, non-disqualifying infractions or missed critical records entirely, leading to a wave of manual disputes. The company's internal compliance team was overwhelmed by a \u201cwall of legalese\u201d and was forced to manually audit every single report.",
     whySwitched:
-      "The logistics giant required a highly scalable, automated solution that combined extreme speed with ironclad compliance. They chose Rapid Hire Solutions because of our PBSA-accredited, SOC 2 Type II-certified platform and our clear, audit-ready reports that present status pills and time-to-clear metrics visible at a glance.",
+      "The logistics giant required a highly scalable, automated solution that combined extreme speed with ironclad compliance. They chose Rapid Hire Solutions because of our PBSA-accredited, FCRA-compliant platform and our clear, audit-ready reports that present status pills and time-to-clear metrics visible at a glance.",
     resultsLede:
       "Rapid Hire's automated workflow allowed candidates to securely upload their driver's licenses and complete disclosures on their mobile phones, eliminating manual data entry errors.",
     metrics: [

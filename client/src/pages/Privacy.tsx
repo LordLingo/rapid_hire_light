@@ -150,7 +150,7 @@ const SECTIONS: { id: string; title: string; body: React.ReactNode }[] = [
     body: (
       <p>
         We maintain administrative, technical, and physical safeguards aligned
-        with SOC 2 Type II and HIPAA requirements: encrypted transport (TLS
+        with HIPAA requirements: encrypted transport (TLS
         1.2+), encrypted storage (AES-256), least-privilege access, audit
         logging, and annual third-party penetration testing. No system can
         guarantee absolute security; if you have reason to believe your

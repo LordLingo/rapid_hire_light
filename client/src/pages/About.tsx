@@ -18,7 +18,7 @@ import HeroMiniStats from "@/components/heroes/HeroMiniStats";
 const STATS = [
   { k: "85%+", v: "of checks complete in under 24 hours" },
   { k: "U.S.", v: "based support team — same-day response" },
-  { k: "FCRA", v: "certified, SOC 2 + HIPAA compliant" },
+  { k: "FCRA", v: "certified, HIPAA compliant" },
   { k: "12,000+", v: "drug & health collection sites nationwide" },
 ];
 
@@ -50,8 +50,8 @@ const BY_THE_NUMBERS = [
   {
     eyebrow: "05",
     k: "HIPAA",
-    unit: "+ SOC 2",
-    label: "Compliance posture audited annually; encryption at rest and in transit across the platform.",
+    unit: "compliant",
+    label: "Encryption at rest and in transit across the platform, with Business Associate Agreements on file for health screening.",
   },
   {
     eyebrow: "06",

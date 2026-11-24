@@ -504,7 +504,6 @@ export const SERVICE_CATALOG: ServiceDetail[] = [
     compliance: [
       "FCRA §605A active-duty alert and §605B identity-theft processes",
       "USCIS E-Verify Memorandum of Understanding",
-      "SOC 2 Type II controls for biometric data handling",
       "GDPR / CPRA biometric consent requirements",
     ],
     industries: ["Financial services", "Healthcare", "Gig economy", "Marketplaces"],

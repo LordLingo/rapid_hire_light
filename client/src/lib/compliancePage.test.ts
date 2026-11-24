@@ -167,8 +167,9 @@ describe("§59 — alternating warm-paper / dark-band rhythm", () => {
 });
 
 describe("§59 — certifications + audits content", () => {
-  it("names SOC 2 Type II, HIPAA, FCRA training, and the PBSA pathway", () => {
-    expect(PAGE_SRC).toContain("SOC 2 Type II");
+  it("names data security, HIPAA, FCRA training, and the PBSA pathway, and never SOC 2", () => {
+    expect(PAGE_SRC).not.toContain("SOC 2");
+    expect(PAGE_SRC).toContain("Data security");
     expect(PAGE_SRC).toContain("HIPAA");
     expect(PAGE_SRC).toContain("FCRA training");
     expect(PAGE_SRC).toContain("PBSA pathway");

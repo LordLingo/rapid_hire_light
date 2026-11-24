@@ -4,8 +4,9 @@
   Source-pinning vitest specs that lock in:
     - the page module exists and is registered under /trust in App.tsx
     - the hero eyebrow, italic-accented title fragment, and CTAs
-    - the badge trio band markup with the three certification badges
-    - the three per-badge sections (SOC 2 / PBSA / FCRA), each carrying the
+    - the badge band markup with the two certification badges (no SOC 2:
+      Rapid Hire is not SOC 2 attested, only its hosting provider is)
+    - the two per-badge sections (PBSA / FCRA), each carrying the
       scope · cadence · verify detail blocks
     - the procurement attestation-pack block + closing dark CTA band
     - the Footer link to /trust in the COMPANY column
@@ -78,33 +79,32 @@ describe("hero", () => {
 });
 
 describe("badge trio band", () => {
-  it("renders the three badges in order: soc2 → pbsa → fcra", () => {
+  it("renders the two badges in order: pbsa → fcra, with no SOC 2 badge", () => {
     expect(trust).toMatch(/data-testid="trust-trio"/);
     const soc2 = trust.indexOf('data-testid={`trust-trio-badge-${b.slug}`}');
     expect(soc2).toBeGreaterThan(0);
     // Verify the BADGES array preserves the three slugs in the right order.
     const badgesArr = trust.match(/const BADGES:[\s\S]*?\];/)?.[0] ?? "";
     expect(badgesArr).toBeTruthy();
-    const i1 = badgesArr.indexOf('slug: "soc2"');
+    expect(badgesArr).not.toContain('slug: "soc2"');
     const i2 = badgesArr.indexOf('slug: "pbsa"');
     const i3 = badgesArr.indexOf('slug: "fcra"');
-    expect(i1).toBeGreaterThan(-1);
-    expect(i2).toBeGreaterThan(i1);
+    expect(i2).toBeGreaterThan(-1);
     expect(i3).toBeGreaterThan(i2);
   });
 
-  it("uses the three uploaded /static/ badge assets", () => {
+  it("uses the two uploaded /static/ badge assets and never a SOC 2 badge", () => {
     // §189: migrated from /manus-storage/ to /static/ so the assets ship
     // with the Vercel build instead of relying on a Manus-only host route.
-    expect(trust).toMatch(/\/static\/badge-soc2-type2\.webp/);
+    expect(trust).not.toMatch(/badge-soc2/);
     expect(trust).toMatch(/\/static\/badge-pbsa-member\.webp/);
     expect(trust).toMatch(/\/static\/badge-fcra-aligned\.webp/);
   });
 });
 
 describe("per-badge detail sections (scope · cadence · verify)", () => {
-  it("renders a detail section for each of the three badges", () => {
-    for (const slug of ["soc2", "pbsa", "fcra"]) {
+  it("renders a detail section for each of the two badges", () => {
+    for (const slug of ["pbsa", "fcra"]) {
       expect(trust).toMatch(new RegExp(`id={badge\\.slug}`));
       expect(trust).toMatch(new RegExp(`trust-section-\\$\\{badge\\.slug\\}`));
       // Sanity: each slug appears in the BADGES array.
@@ -116,11 +116,11 @@ describe("per-badge detail sections (scope · cadence · verify)", () => {
     const badgesArr = trust.match(/const BADGES:[\s\S]*?\];/)?.[0] ?? "";
     expect(badgesArr).toBeTruthy();
     const matches = badgesArr.match(/scope:\s*"/g) ?? [];
-    expect(matches.length).toBe(3);
+    expect(matches.length).toBe(2);
     const cadences = badgesArr.match(/cadence:\s*"/g) ?? [];
-    expect(cadences.length).toBe(3);
+    expect(cadences.length).toBe(2);
     const verifies = badgesArr.match(/verify:\s*"/g) ?? [];
-    expect(verifies.length).toBe(3);
+    expect(verifies.length).toBe(2);
   });
 
   it("renders a labelled three-column detail grid in BadgeSection", () => {
@@ -129,13 +129,13 @@ describe("per-badge detail sections (scope · cadence · verify)", () => {
     expect(trust).toMatch(/\["How to verify", badge\.verify, "verify"\]/);
   });
 
-  it("middle (PBSA) section uses the dark band, others stay on warm paper", () => {
+  it("PBSA section stays on warm paper, FCRA section uses the dark band", () => {
     const badgesArr = trust.match(/const BADGES:[\s\S]*?\];/)?.[0] ?? "";
     // Pull each badge object as a chunk and check its `dark:` flag.
     const chunks = badgesArr.split(/\{\s*slug:/).slice(1);
-    expect(chunks.length).toBe(3);
+    expect(chunks.length).toBe(2);
     const flags = chunks.map((c) => /dark:\s*true/.test(c));
-    expect(flags).toEqual([false, true, false]);
+    expect(flags).toEqual([false, true]);
   });
 });
 

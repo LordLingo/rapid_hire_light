@@ -2,7 +2,7 @@
   Editorial Calm — header
   Hairline rules, ink wordmark, sparse nav, single ink-cobalt CTA.
   Does NOT replicate the dark utility bar with bright pills; the
-  HIPAA / SOC 2 trust signals live as quiet small-caps eyebrow text.
+  HIPAA / PBSA trust signals live as quiet small-caps eyebrow text.
 
   §79: the standalone "Blog" slot in the primary nav was promoted to a
   "Resources" dropdown that groups four buyer-facing resource pages
@@ -109,7 +109,7 @@ const RESOURCES_CHILDREN: ResourceChild[] = [
     label: "Trust & verification",
     href: "/trust",
     description:
-      "SOC 2 Type II, PBSA, FCRA-aligned — the attestation pack for procurement.",
+      "PBSA, FCRA-aligned — the attestation pack for procurement.",
   },
 ];
 
@@ -216,11 +216,11 @@ export default function Header() {
             </span>
             <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
               <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
-              SOC 2 Type II
+              PBSA Member
             </span>
             <span className="inline-flex items-center gap-2 group-hover:text-[color:var(--color-accent-ink)] transition-colors">
               <span className="size-1.5 rounded-full bg-[color:var(--color-accent-ink)]" />
-              PBSA Member
+              U.S.-based reps
             </span>
           </Link>
           <div className="ml-auto eyebrow text-[color:var(--color-ink-muted)]">

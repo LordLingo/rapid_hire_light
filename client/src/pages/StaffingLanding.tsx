@@ -809,7 +809,7 @@ function LeadForm({ tracking }: { tracking: TrackingParams }) {
         {!submitting && <ArrowRight className="size-4" strokeWidth={2} />}
       </button>
       <p className="mt-3 text-center text-[11.5px] text-[color:var(--color-ink-muted)]">
-        SOC 2 Type II · PBSA · FCRA-aligned. We never sell your data.
+        PBSA accredited · FCRA-aligned. We never sell your data.
       </p>
     </form>
   );
@@ -971,10 +971,6 @@ export default function StaffingLanding() {
             <p className="reveal-on-scroll mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] text-[color:var(--color-footer-muted)]">
               <span className="inline-flex items-center gap-1.5">
                 <ShieldCheck className="size-3.5 text-[color:var(--color-accent-on-dark)]" strokeWidth={1.75} />
-                SOC 2 Type II
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Check className="size-3.5 text-[color:var(--color-accent-on-dark)]" strokeWidth={2} />
                 PBSA accredited
               </span>
               <span className="inline-flex items-center gap-1.5">
@@ -1108,7 +1104,7 @@ export default function StaffingLanding() {
               {
                 icon: ShieldCheck,
                 title: "Compliance built in",
-                body: "FCRA-aligned adverse-action workflows, SOC 2 Type II controls, PBSA accreditation.",
+                body: "FCRA-aligned adverse-action workflows and PBSA accreditation.",
               },
               {
                 icon: Building2,

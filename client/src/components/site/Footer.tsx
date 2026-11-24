@@ -56,8 +56,8 @@ const COMPANY: FooterItem[] = [
   // 24-point checklist (§65) and the free 15-minute audit (§64) are
   // reachable from the global footer, not only the Compliance hero.
   { label: "Compliance", to: "/compliance" },
-  // §67: surface the dedicated Trust & verification page (SOC 2 Type II,
-  // PBSA, FCRA-aligned) from every page so procurement / vendor-risk
+  // §67: surface the dedicated Trust & verification page (PBSA,
+  // FCRA-aligned) from every page so procurement / vendor-risk
   // teams can reach the attestation pack without going through the
   // Compliance hub first.
   { label: "Trust & verification", to: "/trust" },
@@ -147,7 +147,7 @@ export default function Footer() {
             <div className="mt-6 flex items-center gap-3 eyebrow text-[color:var(--color-footer-muted)]">
               <span>HIPAA Compliant</span>
               <span aria-hidden>·</span>
-              <span>SOC 2 Compliant</span>
+              <span>PBSA Accredited</span>
               <span aria-hidden>·</span>
               <span>FCRA</span>
             </div>

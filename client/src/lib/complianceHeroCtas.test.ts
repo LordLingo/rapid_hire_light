@@ -95,7 +95,7 @@ describe("§61 — Compliance hero 4-bullet trust strip", () => {
       "FCRA §§604, 611, 613, 615 workflow",
       "EEOC 2012 individualized assessment",
       "35+ state & city overlays tracked",
-      "SOC 2 Type II + HIPAA aligned",
+      "PBSA accredited + HIPAA aligned",
     ];
     let cursor = 0;
     for (const label of labels) {
