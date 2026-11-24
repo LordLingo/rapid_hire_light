@@ -1,3 +1,4 @@
+import { normalizeSeoPath, routeSeo } from "@/lib/routeSeo";
 import { Link, useLocation } from "wouter";
 import SiteShell from "@/components/site/SiteShell";
 import PageHero from "@/components/site/PageHero";
@@ -146,7 +147,7 @@ function isStaticAssetLink(href: string): boolean {
 
 export default function BuyerIntent() {
   const [location] = useLocation();
-  const pathname = location.split("?")[0];
+  const pathname = normalizeSeoPath(location);
   const page = getPage(pathname);
 
   useSeo({
@@ -181,6 +182,7 @@ export default function BuyerIntent() {
         },
       },
     },
+    ...routeSeo(pathname),
   });
 
   return (

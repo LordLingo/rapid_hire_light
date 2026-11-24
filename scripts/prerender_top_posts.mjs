@@ -125,6 +125,24 @@ const MARKETING_PAGES = [
   },
 ];
 
+// These routes share metadata with their client pages, not the homepage shell.
+const ROUTE_SEO = JSON.parse(fs.readFileSync(path.join(PROJECT_ROOT, "shared", "route-seo.json"), "utf-8"));
+for (const [route, page] of Object.entries(ROUTE_SEO)) {
+  MARKETING_PAGES.push({
+    ...page,
+    route,
+    slug: route.slice(1),
+    marker: `prerendered:${route.slice(1)}`,
+    jsonLdKey: `route-seo:${route}`,
+    ogImage: `${SITE_BASE}/static/rhs5-og-card.png`,
+    preHydrationBody: [
+      `        <h1>${htmlEscape(page.h1)}</h1>`,
+      `        <p>${htmlEscape(page.summary)}</p>`,
+      `        <ul>${page.links.map(link => `<li><a href="${htmlEscape(link.href)}">${htmlEscape(link.label)}</a></li>`).join("")}</ul>`,
+    ].join("\n"),
+  });
+}
+
 const INDUSTRY_PAGES = [
   {
     route: "/industries/cleaning-companies",
